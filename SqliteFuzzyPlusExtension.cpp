@@ -483,6 +483,7 @@ extern "C"
         SQLITE3_CREATE_FUNCTION2(PhraseSomeWhatSimilar);
         SQLITE3_CREATE_FUNCTION2(PhraseSlightlySimilar);
         SQLITE3_CREATE_FUNCTION2(PhraseHardlySimilar);
+        SQLITE3_CREATE_FUNCTION2(PhraseSimplifiedDiff);
 
         SQLITE3_CREATE_FUNCTION2(HowSimilar);
         SQLITE3_CREATE_FUNCTION3(HowSimilar);
