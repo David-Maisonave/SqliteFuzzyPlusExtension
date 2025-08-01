@@ -3,8 +3,19 @@ SqliteFuzzyPlusExtension is a SQLite Fuzzy Extension which is build using both C
 95% of the source is taken from other fuzzy libraries like [SQLean](https://github.com/nalgeon/sqlean), [Edlib](https://github.com/Martinsos/edlib), [SimMetricsCore](https://github.com/HamedFathi/SimMetricsCore), [SimMetrics.Net](https://github.com/StefH/SimMetrics.Net), [soenneker.utils.string.jaccardsimilarity](https://github.com/soenneker/soenneker.utils.string.jaccardsimilarity).
 
 ## Using SqliteFuzzyPlusExtension
-The two DLL are both required (SqliteFuzzyPlusExtension.dll and FuzzyPlusCSharp.dll). When calling the libraries from source code, add SqliteFuzzyPlusExtension.lib to the build and for c++ code, add include SqliteFuzzyPlusExtension.h.
-#### Example Usage
+- As a SQLite extension, the two DLL's are both required (SqliteFuzzyPlusExtension.dll and FuzzyPlusCSharp.dll). 
+- When calling the libraries from source code, add SqliteFuzzyPlusExtension.lib to the build and for c++ code, add include **SqliteFuzzyPlusExtension.h**.
+- If building in C, add ``#define EXCLUDE_NAMESPACE_SQLITEFUZZYPLUSEXTENSION``, before including **SqliteFuzzyPlusExtension.h**.
+
+### Important Note!!!
+When using SqliteFuzzyPlusExtension.dll with an executable like **DB Browser for SQLite**, the FuzzyPlusCSharp.dll file MUST be in the same directory as the executable (**DB Browser for SQLite.exe**). While the SqliteFuzzyPlusExtension.dll can be located anywhere.
+
+## Using Fuzzy functions outside of SQLite
+Both the FuzzyPlusCSharp library and the SqliteFuzzyPlusExtension library can be used directly without SQLite.
+### C#
+C# code can use FuzzyPlusCSharp directly without using the SqliteFuzzyPlusExtension. The easiest way to use FuzzyPlusCSharp in C# is to just add the Fuzzy.cs file to the C# project.
+
+#### C++ Example Usage
 ```` C++
 #pragma comment(lib, "SqliteFuzzyPlusExtension.lib")
 #include "..\SqliteFuzzyPlusExtension.h"
@@ -34,7 +45,3 @@ double similar13 = HowSimilar("David", "davdi", SqliteFuzzyPlusExtension::Levens
 double similar14 = HowSimilar("David", "davdi", SqliteFuzzyPlusExtension::TanimotoCoefficientDistance);
 double similar15 = HowSimilar("David", "davdi", SqliteFuzzyPlusExtension::EdlibDistance);
 ````
-
-
-### Important Note!!!
-When using SqliteFuzzyPlusExtension.dll with an executable like **DB Browser for SQLite**, the FuzzyPlusCSharp.dll file MUST be in the same directory as the executable (**DB Browser for SQLite.exe**). While the SqliteFuzzyPlusExtension.dll can be located anywhere.
