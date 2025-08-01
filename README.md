@@ -4,7 +4,7 @@ This SQLite extension adds many different [fuzzy](https://en.wikipedia.org/wiki/
 ##### Example#1
 The following query finds a 90% match for the name "David Jorge" using the default distance method.
 ```` SQL
-select Name, HowSimilar(Name, "David Jorge") as d FROM SimilarNames where d > .9
+select Name, Similar(Name, "David Jorge") as s FROM SimilarNames where s > .9
 ````
 ##### Example#1
 Query to list the different results of different distance methods.
@@ -66,3 +66,64 @@ double similar13 = HowSimilar("David", "davdi", SqliteFuzzyPlusExtension::Levens
 double similar14 = HowSimilar("David", "davdi", SqliteFuzzyPlusExtension::TanimotoCoefficientDistance);
 double similar15 = HowSimilar("David", "davdi", SqliteFuzzyPlusExtension::EdlibDistance);
 ````
+# Function List
+## Fuzzy Distance Functions
+- CaverPhone
+- DamerauLevenshteinDistance
+- DiceSimilarity
+- EdlibDistance
+- fuzzy_caver
+- fuzzy_damlev
+- fuzzy_editdist
+- fuzzy_hamming
+- fuzzy_jarowin
+- fuzzy_leven
+- fuzzy_osadist
+- HammingDistance
+- JaccardDistance
+- JaroDistance
+- JaroWinklerDistance
+- Levenshtein
+- Levenshtein2Distance
+- LongestCommonSubsequenceDistance
+- LongestCommonSubstringDistance
+- NormalizedLevenshteinDistance
+- OverlapCoefficientDistance
+- PhraseSimplifiedDiff
+- RatcliffObershelpSimilarityDistance
+- SorensenDiceDistance
+- TanimotoCoefficientDistance
+- iEdlibDistance
+
+## Othe Fuzzy Functions
+- Distance
+- fuzzy_phonetic
+- fuzzy_rsoundex
+- fuzzy_script
+- fuzzy_soundex
+- fuzzy_translit
+- HasCharInSameOrder
+- HowSimilar
+- NormalizeNum
+- RegexMatch
+- RegexReplace
+- RegexSearch
+- SameName
+- SameRSound
+- SameSound
+- SetDefaultDistanceMethod
+
+## The Plus in SqliteFuzzyPlusExtension
+The plus is in the name because this extension has some extra functions that have little to do with fuzzy logic.
+Here's a list of the non-fuzzy functions.
+- MaxValue - Returns the value that is the highest of the two input arguments.
+- StringReverse - Returns the string in reverse order.
+- GetDirectoryName - Retrieves the directory information from a given path string.
+- GetExtension - Retrieves the extension from a given path string.
+- GetFileName - Retrieves the file name (including its extension) from a given path string.
+- GetFileNameWithoutExtension - Retrieves the file name (excluding its extension) from a given path string.
+- IsDirExist - Takes the path of the directory as a string argument and returns 1 or 0, where 1 means the directory exists.
+- IsFileExist - Takes a string path to determine if a specified file exists and returns 1 or 0, where 1 means the file exists.
+
+
+
