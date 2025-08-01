@@ -2,7 +2,7 @@ select Name
 -- Misc C++ fuzzy functions
 , SameName(Name, "David Jorge") as sn
 -- CSharp fuzzy functions
-, JaroWin(Name, "David Jorge") as JaroWin, LCStr(Name, "David Jorge") as LCStr, LCSq(Name, "David Jorge") as LCSq
+, JaroWin(Name, "David Jorge") as JaroWin, LCS(Name, "David Jorge") as LCS, LCSq(Name, "David Jorge") as LCSq
 -- Need to fix the following distance functions so that they return a percentage of the difference 
 , Lev(Name, "David Jorge") as Lev, DamLev(Name, "David Jorge") as DamLev, PhraseDiff(Name, "David Jorge") as PhraseDiff
 -- Need to fix the following distance functions.  They're returning 0.0 on strings that don't match

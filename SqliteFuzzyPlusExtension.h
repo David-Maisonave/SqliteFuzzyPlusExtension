@@ -95,6 +95,7 @@ DistanceMethod_ID SetDefaultDistanceMethod(const char* DistanceMethod_Name);
 SqliteFuzzyPlusExtension::
 #endif //EXCLUDE_NAMESPACE_SQLITEFUZZYPLUSEXTENSION
 DistanceMethod_ID SetDefaultDistanceMethod(int DistanceMethod_Id);
+unsigned __int64 NormalizeNum(const char* source);
 
 int DamLev_Exp2(const char* str1, const char* str2);// Test function
 #endif //SQLITEFUZZYPLUSEXTENSION_EXCLUDE_FUNC

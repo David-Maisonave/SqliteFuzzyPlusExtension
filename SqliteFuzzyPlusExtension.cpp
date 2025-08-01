@@ -285,10 +285,19 @@ static void RegexReplace(sqlite3_context* context, int argc, sqlite3_value** arg
 }
 
 static void RegexSearch(sqlite3_context* context, int argc, sqlite3_value** argv) {
-    assert(argc == 2);
+    assert(argc == 2 || argc == 3);
     String^ source = gcnew String((const char*)sqlite3_value_text(argv[0]));
     String^ pattern = gcnew String((const char*)sqlite3_value_text(argv[1]));
+    bool returnOriginalStringIfEmpty = false;
+    if (argc == 3)
+    {
+        int nIn = sqlite3_value_bytes(argv[2]);
+        if (nIn != 0)
+            returnOriginalStringIfEmpty = true;
+    }
     CString result(FuzzyPlusCSharp::Fuzzy::RegexSearch(source, pattern));
+    if (result.IsEmpty() && returnOriginalStringIfEmpty)
+        result = source;
     sqlite3_result_text16(context, result, -1, NULL);
 }
 
@@ -594,6 +603,11 @@ double HowSimilar(const char* source1, const char* source2, int DistanceMethod_I
 __declspec(dllexport)
 double HowSimilar(const char* source1, const char* source2, const char* DistanceMethod_Name) {
     return HowSimilar(source1, source2, GetDistanceMethod(DistanceMethod_Name));
+}
+
+__declspec(dllexport)
+unsigned __int64 NormalizeNum(const char* source) {
+    return convertToInt64(source);
 }
 
 

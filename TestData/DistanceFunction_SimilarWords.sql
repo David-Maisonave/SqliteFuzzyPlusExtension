@@ -1,5 +1,5 @@
 select Words
-, JaroWin(Words, "David") as JaroWin, LCStr(Words, "David") as LCStr, LCSq(Words, "David") as LCSq
+, JaroWin(Words, "David") as JaroWin, LCS(Words, "David") as LCS, LCSq(Words, "David") as LCSq
 -- Need to fix the following distance functions so that they return a percentage of the difference 
 , Lev(Words, "David") as Lev, DamLev(Words, "David") as DamLev, PhraseDiff(Words, "David") as PhraseDiff
 -- Need to fix the following distance functions.  They're returning 0.0 on strings that don't match
