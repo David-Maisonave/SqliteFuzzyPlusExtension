@@ -98,7 +98,7 @@ double similar15 = HowSimilar("David", "davdi", SqliteFuzzyPlusExtension::EdlibD
 ## Othe Fuzzy Functions
 - Distance
 - [fuzzy_phonetic](https://github.com/nalgeon/sqlean)
-- [fuzzy_rsoundex]([)](https://github.com/nalgeon/sqlean)
+- [fuzzy_rsoundex](https://github.com/nalgeon/sqlean)
 - [fuzzy_script](https://github.com/nalgeon/sqlean)
 - [fuzzy_soundex](https://github.com/nalgeon/sqlean)
 - [fuzzy_translit](https://github.com/nalgeon/sqlean)
