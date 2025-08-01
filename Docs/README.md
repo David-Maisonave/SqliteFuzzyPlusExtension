@@ -174,7 +174,8 @@ https://github.com/Martinsos/edlib
 
 ## TanimotoCoefficientDistance
 ``` SQL
-TanimotoCoefficientDistance(str)
+
+SELECT Phrases, TanimotoCoefficientDistance(FieldName,'David') t FROM SimilarPhrase WHERE t < 2;
 ```
 TanimotoCoefficientDistance (aka Tanimoto) also known as the Jaccard index, is a measure of similarity between two sets or vectors, often used to quantify the overlap between them. It's frequently applied to binary vectors or in cheminformatics to compare molecular fingerprints. The Tanimoto Distance, derived from the Tanimoto Coefficient, quantifies the dissimilarity between these sets or vectors, where a higher distance indicates less similarity.
 
@@ -183,7 +184,7 @@ TanimotoCoefficientDistance (aka Tanimoto) also known as the Jaccard index, is a
 
 ## NormalizeNum
 ``` SQL
-NormalizeNum(str)
+NormalizeNum(str);
 ```
 NormalizeNum converts a string number into an integer number.
 
