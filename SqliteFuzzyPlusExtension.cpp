@@ -5,6 +5,8 @@
 #include <ctype.h>
 #include <atlstr.h>
 #include "SqliteFuzzyPlusExtension_Internal.h"
+#define SQLITEFUZZYPLUSEXTENSION_EXCLUDE_FUNC
+#include "SqliteFuzzyPlusExtension.h"
 #include "edlib\include\edlib.h"
 using namespace System;
 
@@ -561,14 +563,38 @@ extern "C"
 }
 
 __declspec(dllexport)
-double Distance(const char* source1, const char* source2, int iDistanceMethod) {
-    return Distance(source1, source2, GetDistanceMethod(iDistanceMethod));
+SqliteFuzzyPlusExtension::DistanceMethod_ID SetDefaultDistanceMethod(const char* DistanceMethod_Name) {
+    String^ source1 = gcnew String(DistanceMethod_Name);
+    FuzzyPlusCSharp::Fuzzy::SetDefaultDistanceMethod(source1);
+    return (SqliteFuzzyPlusExtension::DistanceMethod_ID)FuzzyPlusCSharp::Fuzzy::DefaultDistanceMethod;
 }
 
 __declspec(dllexport)
-double HowSimilar(const char* source1, const char* source2, int iDistanceMethod) {
-    return HowSimilar(source1, source2, GetDistanceMethod(iDistanceMethod));
+SqliteFuzzyPlusExtension::DistanceMethod_ID SetDefaultDistanceMethod(int DistanceMethod_Id) {
+    FuzzyPlusCSharp::Fuzzy::SetDefaultDistanceMethod(DistanceMethod_Id);
+    return (SqliteFuzzyPlusExtension::DistanceMethod_ID)FuzzyPlusCSharp::Fuzzy::DefaultDistanceMethod;
 }
+
+__declspec(dllexport)
+double Distance(const char* source1, const char* source2, int DistanceMethod_Id) {
+    return Distance(source1, source2, GetDistanceMethod(DistanceMethod_Id));
+}
+
+__declspec(dllexport)
+double Distance(const char* source1, const char* source2, const char* DistanceMethod_Name) {
+    return Distance(source1, source2, GetDistanceMethod(DistanceMethod_Name));
+}
+
+__declspec(dllexport)
+double HowSimilar(const char* source1, const char* source2, int DistanceMethod_Id) {
+    return HowSimilar(source1, source2, GetDistanceMethod(DistanceMethod_Id));
+}
+
+__declspec(dllexport)
+double HowSimilar(const char* source1, const char* source2, const char* DistanceMethod_Name) {
+    return HowSimilar(source1, source2, GetDistanceMethod(DistanceMethod_Name));
+}
+
 
 // The following is a test only function
 __declspec(dllexport)

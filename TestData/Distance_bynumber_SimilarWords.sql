@@ -24,13 +24,13 @@ select Words
 , Distance(Words, "David", 20) as a20 -- PhraseTokenize,
 , Distance(Words, "David", 21) as a21 -- SimplePhraseTokenize,
 -- Sqlean Fuzzy functions			    
-, Distance(Words, "David", 32) as a32 -- Fuzzy_Damlev = SQLEAN_FUZZY,
-, Distance(Words, "David", 33) as a33 -- Fuzzy_Hamming,
-, Distance(Words, "David", 34) as a34 -- Fuzzy_Jarowin,
-, Distance(Words, "David", 35) as a35 -- Fuzzy_Leven,
-, Distance(Words, "David", 36) as a36 -- Fuzzy_Osadist,
-, Distance(Words, "David", 37) as a37 -- Fuzzy_Editdist, // Does NOT return standard results between 1 and 0
-, Distance(Words, "David", 38) as a38 -- Fuzzy_Jaro,
+, Distance(Words, "David", 64) as a32 -- Fuzzy_Damlev = SQLEAN_FUZZY,
+, Distance(Words, "David", 65) as a33 -- Fuzzy_Hamming,
+, Distance(Words, "David", 66) as a34 -- Fuzzy_Jarowin,
+, Distance(Words, "David", 67) as a35 -- Fuzzy_Leven,
+, Distance(Words, "David", 68) as a36 -- Fuzzy_Osadist,
+, Distance(Words, "David", 69) as a37 -- Fuzzy_Editdist, // Does NOT return standard results between 1 and 0
+, Distance(Words, "David", 70) as a38 -- Fuzzy_Jaro,
 -- Case INSENSITIVE versions
 , Distance(Words, "David", 129) as a129 -- iLevenshtein = CASE_INSENSITIVE + Levenshtein,
 , Distance(Words, "David", 130) as a130 -- iDamerauLevenshtein,
