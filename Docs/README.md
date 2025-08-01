@@ -10,6 +10,7 @@
 - [HasCharInSameOrder](#HasCharInSameOrder)
 - [SameRSound](#SameRSound)
 - [SameSound](#SameSound)
+- [iEdlibDistance](#iEdlibDistance)
 
 ### Fuzzy functions which don't have an associated Wiki link:
 - [TanimotoCoefficientDistance](#TanimotoCoefficientDistance)
@@ -71,6 +72,13 @@ SameSound(str)
 ```
 SameSound
 
+
+
+## iEdlibDistance
+``` SQL
+iEdlibDistance(str)
+```
+iEdlibDistance
 
 
 ## TanimotoCoefficientDistance
