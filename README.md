@@ -68,17 +68,16 @@ double similar15 = HowSimilar("David", "davdi", SqliteFuzzyPlusExtension::EdlibD
 ````
 # Function List
 ## Fuzzy Distance Functions
-- [CaverPhone](https://en.wikipedia.org/wiki/Caverphone)
 - [DamerauLevenshteinDistance](https://en.wikipedia.org/wiki/Damerau-Levenshtein_distance)
-- [DiceSimilarity]()
+- [DiceSimilarity](https://en.wikipedia.org/wiki/Dice-S%C3%B8rensen_coefficient)
 - [EdlibDistance](https://github.com/Martinsos/edlib)
 - [fuzzy_caver](https://github.com/nalgeon/sqlean)
-- [fuzzy_damlev](https://github.com/nalgeon/sqlean)
-- [fuzzy_editdist](https://github.com/nalgeon/sqlean)
-- [fuzzy_hamming](https://github.com/nalgeon/sqlean)
-- [fuzzy_jarowin](https://github.com/nalgeon/sqlean)
-- [fuzzy_leven](https://github.com/nalgeon/sqlean)
-- [fuzzy_osadist](https://github.com/nalgeon/sqlean)
+- [fuzzy_damlev](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#fuzzy_damlev)
+- [fuzzy_editdist](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#fuzzy_editdist)
+- [fuzzy_hamming](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#fuzzy_hamming)
+- [fuzzy_jarowin](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#fuzzy_jarowin)
+- [fuzzy_leven](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#fuzzy_leven)
+- [fuzzy_osadist](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#fuzzy_osadist)
 - [HammingDistance](https://en.wikipedia.org/wiki/Hamming_distance)
 - [JaccardDistance](https://en.wikipedia.org/wiki/Jaccard_index)
 - [JaroDistance](https://en.wikipedia.org/wiki/Jaro-Winkler_distance)
@@ -91,17 +90,18 @@ double similar15 = HowSimilar("David", "davdi", SqliteFuzzyPlusExtension::EdlibD
 - [OverlapCoefficientDistance](https://en.wikipedia.org/wiki/Overlap_coefficient)
 - [PhraseSimplifiedDiff]()
 - [RatcliffObershelpSimilarityDistance](https://distancia.readthedocs.io/en/latest/Ratcliff)
-- [SorensenDiceDistance]()
+- [SorensenDiceDistance](https://en.wikipedia.org/wiki/Dice-S%C3%B8rensen_coefficient)
 - [TanimotoCoefficientDistance]()
 - [iEdlibDistance](https://github.com/Martinsos/edlib)
 
 ## Othe Fuzzy Functions
+- [CaverPhone](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#fuzzy_caver)
 - Distance
-- [fuzzy_phonetic](https://github.com/nalgeon/sqlean)
-- [fuzzy_rsoundex](https://github.com/nalgeon/sqlean)
-- [fuzzy_script](https://github.com/nalgeon/sqlean)
-- [fuzzy_soundex](https://github.com/nalgeon/sqlean)
-- [fuzzy_translit](https://github.com/nalgeon/sqlean)
+- [fuzzy_phonetic](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#fuzzy_phonetic)
+- [fuzzy_rsoundex](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#phonetic-codes)
+- [fuzzy_script](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#transliteration)
+- [fuzzy_soundex](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#phonetic-codes)
+- [fuzzy_translit](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#transliteration)
 - HasCharInSameOrder
 - HowSimilar
 - [NormalizeNum]()
