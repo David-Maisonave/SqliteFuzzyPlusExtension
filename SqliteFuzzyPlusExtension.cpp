@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <ctype.h>
 #include <atlstr.h>
-#include "SqliteFuzzyPlusExtension.h"
+#include "SqliteFuzzyPlusExtension_Internal.h"
 #include "edlib\include\edlib.h"
 using namespace System;
 
@@ -558,11 +558,11 @@ extern "C"
 
         return sqlite_fuzzy_init(db, sqlite_api);
     }
+}
 
-    __declspec(dllexport) double
-        Distance(const char* source1, const char* source2, int iDistanceMethod) {
-        return Distance(source1, source2, GetDistanceMethod(iDistanceMethod));
-    }
+__declspec(dllexport)
+double Distance(const char* source1, const char* source2, int iDistanceMethod) {
+    return Distance(source1, source2, GetDistanceMethod(iDistanceMethod));
 }
 
 __declspec(dllexport)

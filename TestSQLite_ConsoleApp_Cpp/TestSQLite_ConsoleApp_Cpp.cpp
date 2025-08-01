@@ -1,19 +1,10 @@
 // TestSQLite_ConsoleApp_Cpp.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 #include "..\sqlite\sqlite3ext.h"
 SQLITE_EXTENSION_INIT3
 #pragma comment(lib, "SqliteFuzzyPlusExtension.lib")
+#include "..\SqliteFuzzyPlusExtension.h"
 
-__declspec(dllimport)
-int DamLev_Exp2(const char* str1, const char* str2);
-
-__declspec(dllimport)
-double HowSimilar(const char* source1, const char* source2, int iDistanceMethod);
-
-__declspec(dllimport)
-double Distance(const char* source1, const char* source2, int iDistanceMethod);
 
 int main()
 {

@@ -154,6 +154,7 @@
     <ClInclude Include="sqlean_fuzzy\extension.h" />
     <ClInclude Include="sqlean_fuzzy\fuzzy.h" />
     <ClInclude Include="SqliteFuzzyPlusExtension.h" />
+    <ClInclude Include="SqliteFuzzyPlusExtension_Internal.h" />
     <ClInclude Include="sqlite\sqlite3.h" />
     <ClInclude Include="sqlite\sqlite3ext.h" />
   </ItemGroup>

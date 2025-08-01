@@ -1,7 +1,7 @@
 #include <string>
 #include <stdexcept>
 #include <cassert>
-#include "SqliteFuzzyPlusExtension.h"
+#include "SqliteFuzzyPlusExtension_Internal.h"
 
 sqlite3_int64 convertToInt64(const std::string& input)
 {
