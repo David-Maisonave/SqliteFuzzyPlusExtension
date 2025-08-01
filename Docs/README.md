@@ -94,8 +94,7 @@ Replaces double spaces with a single space
 select Phrases, PhraseDiff(Phrases, 'Westside story, the') as p
 FROM SimilarPhrase WHERE p < 2
 ```
-Using this project test database, the above query yields the following results:
-
+**Results**:
 <img width="215" height="145" alt="PhraseSimplifiedDiff_Example2Results" src="https://github.com/user-attachments/assets/58fa4f7d-e71c-4ecd-87d7-3a47851d5bfd" />
 
 ## HasCharInSameOrder
@@ -109,7 +108,7 @@ Use this function on a WHERE clause to find a string that contains all the chara
 ``` SQL
 SELECT Words FROM SimilarWords WHERE Words like HasChr("david");
 ```
-Following are matches for above query.
+**Results**:
 ```
 david
 Davide
@@ -132,8 +131,7 @@ Daves
 SELECT Phrases, HasChr("similar phrase test") h FROM SimilarPhrase 
 WHERE Phrases like h
 ```
-
-Following are matches for above query.
+**Results**:
 ```
 This is similar as a phrase test
 This is similar phrases tests
@@ -192,15 +190,29 @@ NormalizeNum converts a string number into an integer number.
 
 ## SameName
 ``` SQL
-SameName(str)
+select Name, SameName(Name, "David") as sn FROM SimilarNames;
 ```
 Compares the 2 input arguments to see if it's the same name.
-
+**Results**:
+```
+David Jorge	1
+DavidJorge	1
+david jorge	1
+davidjorge	1
+David E. Jorge	1
+David E. Gorge	1
+Bob E. Gorge	0
+Bob Egor Gorge	0
+David Egor Gorge	1
+D. Jorge	0
+Jorge	0
+David	1
+```
 
 
 ## RegexMatch
 ``` SQL
-select Words, RegexMatch(Words, 'Dav[a-z][a-z]');
+select Words, RegexMatch(Words, 'Dav[a-z][a-z]') FROM SimilarWords;
 ```
 RegexMatch (aka XMatch) searches for the first occurrence of the regular expression pattern within the input string and returns 1 if a match is found, and 0 if no match.
 
@@ -209,7 +221,7 @@ RegexMatch (aka XMatch) searches for the first occurrence of the regular express
 select Words, RegexMatch(Words, 'Dav[a-z][a-z]') as r
 FROM SimilarWords  WHERE r = TRUE;
 ```
-Following are matches for above query.
+**Results**:
 ```
 David
 Davdi
@@ -228,7 +240,7 @@ Divad
 select Words, RegexMatch(Words, 'D[a-z]vid') as r
 FROM SimilarWords  WHERE r = 1;
 ```
-Following are matches for above query.
+**Results**:
 ```
 David
 david
@@ -244,7 +256,7 @@ Divad
 
 ## RegexReplace
 ``` SQL
-select Words, RegexReplace(Words, '([Dd]av)[ei][d]?', '$1id') as r
+select Words, RegexReplace(Words, '([Dd]av)[ei][d]?', '$1id') as r FROM SimilarWords;
 ```
 Searches for the first occurrence of the regular expression pattern within the input string and replaces the match with replacement string.
 If match found, it returns the string with replacement change.
@@ -269,7 +281,7 @@ david	david
 
 ## RegexSearch
 ``` SQL
-select Words, RegexSearch(Words, 'D[a-z]vid');
+select Words, RegexSearch(Words, 'D[a-z]vid') FROM SimilarWords;
 ```
 Searches for the first occurrence of the regular expression pattern within the input string and returns the match if found. Otherwise returns empty string.
 #### Example#1:
