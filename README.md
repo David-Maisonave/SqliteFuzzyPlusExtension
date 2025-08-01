@@ -1,4 +1,25 @@
 # SqliteFuzzyPlusExtension
+This SQLite extension adds many different [fuzzy](https://en.wikipedia.org/wiki/Fuzzy_logic) logic functions to SQLite.
+### Example SQLite Usage
+##### Example#1
+The following query finds a 90% match for the name "David Jorge" using the default distance method.
+```` SQL
+select Name, HowSimilar(Name, "David Jorge") as d FROM SimilarNames where d > .9
+````
+##### Example#1
+Query to list the different results of different distance methods.
+```` SQL
+select Name
+, HowSimilar(Name, "David Jorge", "Levenshtein") as lev, HowSimilar(Name, "David Jorge", "DamerauLevenshtein") as dlev, HowSimilar(Name, "David Jorge", "LongestCommonSequence") as lcs, HowSimilar(Name, "David Jorge", "NeedlemanWunsch") as n
+, HowSimilar(Name, "David Jorge", "JaroWinkler") as jw
+FROM SimilarNames
+````
+##### Example#3 (SQLean)
+Return a results that has less than 2 edit distance.
+```` SQL
+select Name, fuzzy_damlev(Name, "David Jorge") as d FROM SimilarNames where d < 2
+````
+
 SqliteFuzzyPlusExtension is a SQLite Fuzzy Extension which is build using both C/C++ and CSharp libraries. The Visual Studio solution builds 2 DLL (C++ & C#).
 95% of the source is taken from other fuzzy libraries like [SQLean](https://github.com/nalgeon/sqlean), [Edlib](https://github.com/Martinsos/edlib), [SimMetricsCore](https://github.com/HamedFathi/SimMetricsCore), [SimMetrics.Net](https://github.com/StefH/SimMetrics.Net), [soenneker.utils.string.jaccardsimilarity](https://github.com/soenneker/soenneker.utils.string.jaccardsimilarity).
 
