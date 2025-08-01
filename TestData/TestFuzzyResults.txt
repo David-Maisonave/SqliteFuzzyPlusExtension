@@ -1,0 +1,49 @@
+// HowSimilar test results
+P/F  Value
+[]   [] UseDefaultDistanceMethod = 0,
+[p]   [.8] Levenshtein,
+[p]   [.8] DamerauLevenshtein,
+[p]   [.8] JaroWinkler,
+[p]   [.8] LongestCommonSequence, //Add devide by 1
+[p]   [.93] JaccardIndex,
+[p]   [.96] OverlapCoefficient,
+[p]   [.8] NeedlemanWunsch,
+[p]   [.96] SorensenDiceDistance,
+[p]   [.96] RatcliffObershelpSimilarityDistance,
+[p]   [.84] HammingDistance,
+[p]   [.96] LongestCommonSubstringDistance,
+[p]   [.96] LongestCommonSubsequenceDistance,
+[p]   [.93] JaroDistance,
+[p]   [.84] NormalizedLevenshteinDistance,
+[p]   [.8] Levenshtein2Distance, // It's always returning 1
+[p]   [.93] TanimotoCoefficientDistance,
+
+// Token methods
+[p]   [0] CosineSimilarity, // Returns percentage for multi-word strings. Do not use for single words
+[p]   [0] JaccardSimilarity, // Returns percentage for multi-word strings. Do not use for single words
+[]   [] 
+[]   [] // Phrase token methods which are all case insensitive only
+[]   [] PhraseTokenize,
+[]   [] SimplePhraseTokenize,
+[]   []
+
+// Tested with same word but different case "David" vs "david"
+[]   [] // Case INSENSITIVE versions
+[]   [] iLevenshtein = CASE_INSENSITIVE + Levenshtein,
+[]   [] iDamerauLevenshtein,
+[]   [] iJaroWinkler,
+[]   [] iCosineSimilarity,
+[f]   [.2] iLongestCommonSequence,
+[]   [] iJaccardSimilarity,
+[]   [] iJaccardIndex,
+[?]   [.96] iOverlapCoefficient,
+[p]   [1] iNeedlemanWunsch,
+[?]   [.96] iSorensenDiceDistance,
+[?]   [.96]] iRatcliffObershelpSimilarityDistance,
+[?]   [.80] iHammingDistance,
+[]   [] iLongestCommonSubstringDistance,
+[]   [] iLongestCommonSubsequenceDistance,
+[?]   [.93] iJaroDistance,
+[?]   [.80] iNormalizedLevenshteinDistance,
+[]   [] iLevenshtein2Distance,
+[?]   [.93] iTanimotoCoefficientDistance,

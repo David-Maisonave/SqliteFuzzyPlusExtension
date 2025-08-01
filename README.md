@@ -1,0 +1,2 @@
+# SqliteFuzzyPlusExtension
+SQLite Fuzzy Extension
