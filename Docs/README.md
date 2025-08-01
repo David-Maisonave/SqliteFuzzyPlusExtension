@@ -63,7 +63,6 @@ FYI:
 The main diffence between Distance API and HowSimilar (aka Similar), is that HowSimilar attempts to return a percentage result for all distance methods.
 Where-as the Distance function makes no such attempt.
 
-
 ## Distance
 ``` SQL
 select Name, Distance(Name, "David Jorge") as d FROM SimilarNames WHERE d < 2;
@@ -78,13 +77,12 @@ FYI:
 The main diffence between Distance API and HowSimilar (aka Similar), is that HowSimilar attempts to return a percentage result for all distance methods.
 Where-as the Distance function makes no such attempt.
 
-
 ## PhraseSimplifiedDiff
 ``` SQL
 PhraseSimplifiedDiff('The Westside story', 'Westside story, the');
 ```
 PhraseSimplifiedDiff (aka PhraseDiff) gets the phrase difference after the phrases have been simplified.
-It returns percentage difference between the number of words different of the simplified strings divided by the maximum quantity of words in the simplified phrase. If one phrase has more words than the other, the division factor of the phrase with the most words is used.
+It returns number of words different of the simplified strings.
 
 The phrase gets simplified by the following:
 Removes abbreviated letters
@@ -93,48 +91,95 @@ Removes "The" and "A"
 Replaces double spaces with a single space
 
 ``` SQL
-select Phrases, PhraseSimplifiedDiff(Phrases, 'Westside story, the') as p
+select Phrases, PhraseDiff(Phrases, 'Westside story, the') as p
 FROM SimilarPhrase WHERE p < 2
 ```
 Using this project test database, the above query yields the following results:
-<img width="215" height="145" alt="PhraseSimplifiedDiff_Example2Results" src="https://github.com/user-attachments/assets/58fa4f7d-e71c-4ecd-87d7-3a47851d5bfd" />
 
+<img width="215" height="145" alt="PhraseSimplifiedDiff_Example2Results" src="https://github.com/user-attachments/assets/58fa4f7d-e71c-4ecd-87d7-3a47851d5bfd" />
 
 ## HasCharInSameOrder
 ``` SQL
-HasCharInSameOrder(str)
+SELECT Words FROM SimilarWords WHERE Words like HasCharInSameOrder("david");
 ```
-HasCharInSameOrder
+HasCharInSameOrder (aka HasChr).
+Use this function on a WHERE clause to find a string that contains all the characters of the input string and in the same order.
 
+#### Example#1:
+``` SQL
+SELECT Words FROM SimilarWords WHERE Words like HasChr("david");
+```
+Following are matches for above query.
+```
+david
+Davide
+D av id
+D-avi-d
+```
+
+Match FAILS:
+```
+Davdi
+Dave
+Dovid
+Divad
+Dadiv
+Daves
+```
+
+#### Example#2:
+``` SQL
+SELECT Phrases, HasChr("similar phrase test") h FROM SimilarPhrase 
+WHERE Phrases like h
+```
+
+Following are matches for above query.
+```
+This is similar as a phrase test
+This is similar phrases tests
+That similar fuzzy phrase tested
+```
+
+Match FAILS:
+```
+phrase similar test
+That is similar phrase
+test similar phrase
+```
 
 ## SameRSound
 ``` SQL
 SameRSound(str)
 ```
-SameRSound
+SameRSound (aka rsoundex) Uses SQLean fuzzy rsoundex to compare to strings, and returns 1 if rsoundex values are equal.
+If a 3rd argument is given, the 3rd argument is used to determine what distance method is used to compare the 2 rsoundex values.
 
-
+For more information see:[fuzzy_rsoundex](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#phonetic-codes)
 
 ## SameSound
 ``` SQL
 SameSound(str)
 ```
-SameSound
+SameSound (aka soundex) uses SQLean fuzzy soundex to compare to strings, and returns 1 if soundex values are equal.
+If a 3rd argument is given, the 3rd argument is used to determine what distance method is used to compare the 2 soundex values.
 
-
+For more information see: [fuzzy_soundex](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#phonetic-codes)
 
 ## iEdlibDistance
 ``` SQL
 iEdlibDistance(str)
 ```
-iEdlibDistance
+iEdlibDistance (aka iEdlib) is a distance case-insensitive function which uses the Edlib library.
 
+For details on edlib, see:
+https://github.com/Martinsos/edlib
 
 ## TanimotoCoefficientDistance
 ``` SQL
 TanimotoCoefficientDistance(str)
 ```
-TanimotoCoefficientDistance
+TanimotoCoefficientDistance (aka Tanimoto) also known as the Jaccard index, is a measure of similarity between two sets or vectors, often used to quantify the overlap between them. It's frequently applied to binary vectors or in cheminformatics to compare molecular fingerprints. The Tanimoto Distance, derived from the Tanimoto Coefficient, quantifies the dissimilarity between these sets or vectors, where a higher distance indicates less similarity.
+
 
 
 
@@ -142,37 +187,99 @@ TanimotoCoefficientDistance
 ``` SQL
 NormalizeNum(str)
 ```
-NormalizeNum
-
+NormalizeNum converts a string number into an integer number.
 
 
 ## SameName
 ``` SQL
 SameName(str)
 ```
-SameName
+Compares the 2 input arguments to see if it's the same name.
 
 
 
 ## RegexMatch
 ``` SQL
-RegexMatch(str)
+select Words, RegexMatch(Words, 'Dav[a-z][a-z]');
 ```
-RegexMatch
+RegexMatch (aka XMatch) searches for the first occurrence of the regular expression pattern within the input string and returns 1 if a match is found, and 0 if no match.
 
+#### Example#1:
+``` SQL
+select Words, RegexMatch(Words, 'Dav[a-z][a-z]') as r
+FROM SimilarWords  WHERE r = TRUE;
+```
+Following are matches for above query.
+```
+David
+Davdi
+david
+Daves
+```
 
+Match FAILS:
+```
+Dovid
+Dave
+Divad
+```
+#### Example#2:
+``` SQL
+select Words, RegexMatch(Words, 'D[a-z]vid') as r
+FROM SimilarWords  WHERE r = 1;
+```
+Following are matches for above query.
+```
+David
+david
+Dovid
+```
+
+Match FAILS:
+```
+Daves
+Davdi
+Divad
+```
 
 ## RegexReplace
 ``` SQL
-RegexReplace(str)
+select Words, RegexReplace(Words, '([Dd]av)[ei][d]?', '$1id') as r
 ```
-RegexReplace
+Searches for the first occurrence of the regular expression pattern within the input string and replaces the match with replacement string.
+If match found, it returns the string with replacement change.
+Otherwise it returns original string.
 
+Takes 3 arguments.
+source	= original string
+pattern = regex pattern to search for
+replacement = replacement string which can contain parameter numbers ($1, $2)
 
+#### Example#1:
+``` SQL
+select Words, RegexReplace(Words, '([Dd]av)[ei][d]?', '$1id') as r
+FROM SimilarWords  WHERE r like 'David';
+```
+**Results**:
+```
+David	David
+Dave	David
+david	david
+```
 
 ## RegexSearch
 ``` SQL
-RegexSearch(str)
+select Words, RegexSearch(Words, 'D[a-z]vid');
 ```
-RegexSearch
-
+Searches for the first occurrence of the regular expression pattern within the input string and returns the match if found. Otherwise returns empty string.
+#### Example#1:
+``` SQL
+select Words, RegexSearch(Words, 'D[a-z]vid') as r
+FROM SimilarWords  WHERE r <> '';
+```
+**Results**:
+```
+David	David
+david	david
+Dovid	Dovid
+```
