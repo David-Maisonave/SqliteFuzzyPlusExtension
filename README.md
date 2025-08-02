@@ -20,6 +20,8 @@ Return a results that has less than 2 edit distance.
 select Name, fuzzy_damlev(Name, "David Jorge") as d FROM SimilarNames where d < 2
 ````
 
+For more examples, see [Documentation](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs).
+
 SqliteFuzzyPlusExtension is a SQLite Fuzzy Extension which is build using both C/C++ and CSharp libraries. The Visual Studio solution builds 2 DLL (C++ & C#).
 95% of the source is taken from other fuzzy libraries like [SQLean](https://github.com/nalgeon/sqlean), [Edlib](https://github.com/Martinsos/edlib), [SimMetricsCore](https://github.com/HamedFathi/SimMetricsCore), [SimMetrics.Net](https://github.com/StefH/SimMetrics.Net), [soenneker.utils.string.jaccardsimilarity](https://github.com/soenneker/soenneker.utils.string.jaccardsimilarity).
 
