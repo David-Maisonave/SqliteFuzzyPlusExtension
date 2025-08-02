@@ -235,7 +235,7 @@ SameSound compares 2 strings, and returns 1 if the sound is similar.
     - 6
   - Note: The number values are ID values of the string listed values. (1="Caverphone2", 2="fuzzy_caver", etc...)
 - If a 4th argument is given, the 4th argument is used to determine what distance method is used to compare the 2 phonetic values. By default, strcmp is used to determine if the phonetic values are equal.
-  - See DistanceMethod names for allowed values.
+  - See [DistanceMethod](#DistanceMethod) for allowed values.
 - If a 5TH argument is present, the 5th argument is used to determine if the distance method should return IsVerySimilar or IsSimilar.  If the 5TH argument is 1, the function returns IsVerySimilar results. If the 5TH argument is 0, a IsSimilar result is returned. The 5th argument is only applicable if the 4th argument specifies a distance method other than "SameSound_StrCmp".
 
 
