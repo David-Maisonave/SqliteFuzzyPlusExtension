@@ -83,7 +83,7 @@ Where-as the Distance function makes no such attempt.
 
 ## PhraseSimplifiedDiff
 ``` SQL
-PhraseSimplifiedDiff('The Westside story', 'Westside story, the');
+SELECT Phrase FROM MyTable WHERE PhraseSimplifiedDiff('The Westside story', 'Westside story, the') < 2;
 ```
 PhraseSimplifiedDiff (aka PhraseDiff) gets the phrase difference after the phrases have been simplified.
 It returns number of words different of the simplified strings.
