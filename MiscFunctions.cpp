@@ -129,8 +129,8 @@ void NormalizeNum(sqlite3_context* context, int argc, sqlite3_value** argv) {
 
 void MaxValue(sqlite3_context* context, int argc, sqlite3_value** argv) {
     assert(argc == 2);
-    int i1 = sqlite3_value_bytes(argv[0]);
-    int i2 = sqlite3_value_bytes(argv[1]);
+    int i1 = sqlite3_value_int(argv[0]);
+    int i2 = sqlite3_value_int(argv[1]);
     int results = FuzzyPlusCSharp::Fuzzy::MaxValue(i1, i2);
     sqlite3_result_int(context, results);
 }

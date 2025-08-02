@@ -14,6 +14,7 @@ int main()
     int x = DamLev_Exp2(str1, str2);
     std::cout << "x = " << x << std::endl;
 
+    int maxlen = MaxValue(5, 6);
     unsigned __int64 i64_1 = NormalizeNum("123.4K");
     unsigned __int64 i64_2 = NormalizeNum("2K");
     unsigned __int64 i64_3 = NormalizeNum("123.4K");

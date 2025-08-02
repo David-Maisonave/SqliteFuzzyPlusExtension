@@ -93,7 +93,7 @@ static void SetDefaultDistanceMethod(sqlite3_context* context, int argc, sqlite3
     }
     else 
     {
-        int nIn = sqlite3_value_bytes(argv[0]);
+        int nIn = sqlite3_value_int(argv[0]);
         FuzzyPlusCSharp::Fuzzy::SetDefaultDistanceMethod(nIn);
         result = FuzzyPlusCSharp::Fuzzy::GetDistanceMethodName(nIn);
     }
@@ -102,7 +102,7 @@ static void SetDefaultDistanceMethod(sqlite3_context* context, int argc, sqlite3
 
 static void SetDefaultDistanceMethodByID(sqlite3_context* context, int argc, sqlite3_value** argv) {
     assert(argc == 1);
-    int nIn = sqlite3_value_bytes(argv[0]);
+    int nIn = sqlite3_value_int(argv[0]);
     FuzzyPlusCSharp::Fuzzy::SetDefaultDistanceMethod(nIn);
     CString result = FuzzyPlusCSharp::Fuzzy::GetDistanceMethodName(nIn);
     sqlite3_result_text16(context, result, -1, NULL);
@@ -189,7 +189,7 @@ static void HowSimilar(sqlite3_context* context, int argc, sqlite3_value** argv)
         }
         else
         {
-            int nIn = sqlite3_value_bytes(argv[2]);
+            int nIn = sqlite3_value_int(argv[2]);
             distance = GetIsCSharpFuzzy(nIn) ? FuzzyPlusCSharp::Fuzzy::HowSimilar(source1, source2, nIn) : HowSimilar(str1, str2, nIn);
         }
     }
@@ -261,7 +261,7 @@ static void Distance(sqlite3_context* context, int argc, sqlite3_value** argv)
         }
         else
         {
-            int nIn = sqlite3_value_bytes(argv[2]);
+            int nIn = sqlite3_value_int(argv[2]);
             distance = GetIsCSharpFuzzy(nIn) ? FuzzyPlusCSharp::Fuzzy::Distance(source1, source2, nIn) : Distance(str1, str2, nIn);
         }
     }
@@ -291,7 +291,7 @@ static void RegexSearch(sqlite3_context* context, int argc, sqlite3_value** argv
     bool returnOriginalStringIfEmpty = false;
     if (argc == 3)
     {
-        int nIn = sqlite3_value_bytes(argv[2]);
+        int nIn = sqlite3_value_int(argv[2]);
         if (nIn != 0)
             returnOriginalStringIfEmpty = true;
     }
@@ -329,7 +329,7 @@ static void fuzzy_soundex2(sqlite3_context* context, int argc, sqlite3_value** a
         }
         else
         {
-            int nIn = sqlite3_value_bytes(argv[2]);
+            int nIn = sqlite3_value_int(argv[2]);
             distance = GetIsCSharpFuzzy(nIn) ? FuzzyPlusCSharp::Fuzzy::HowSimilar(source1, source2, nIn) : HowSimilar(str1, str2, nIn);
         }
         sqlite3_result_double(context, distance);
@@ -366,7 +366,7 @@ static void fuzzy_rsoundex2(sqlite3_context* context, int argc, sqlite3_value** 
         }
         else
         {
-            int nIn = sqlite3_value_bytes(argv[2]);
+            int nIn = sqlite3_value_int(argv[2]);
             distance = GetIsCSharpFuzzy(nIn) ? FuzzyPlusCSharp::Fuzzy::HowSimilar(source1, source2, nIn) : HowSimilar(str1, str2, nIn);
         }
         sqlite3_result_double(context, distance);
@@ -615,6 +615,10 @@ unsigned __int64 NormalizeNum(const char* source) {
     }
 }
 
+__declspec(dllexport)
+int MaxValue(int source1, int source2) {
+    return FuzzyPlusCSharp::Fuzzy::MaxValue(source1, source2);
+}
 
 // The following is a test only function
 __declspec(dllexport)
