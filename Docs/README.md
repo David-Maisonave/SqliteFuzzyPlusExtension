@@ -165,7 +165,7 @@ For more information see: [fuzzy_soundex](https://github.com/nalgeon/sqlean/blob
 
 ## iEdlibDistance
 ``` SQL
-iEdlibDistance(str)
+SELECT Phrases, iEdlibDistance(FieldName,'David') t FROM SimilarPhrase WHERE t < 2;
 ```
 iEdlibDistance (aka iEdlib) is a distance case-insensitive function which uses the Edlib library.
 
