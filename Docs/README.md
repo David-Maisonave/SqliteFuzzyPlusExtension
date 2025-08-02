@@ -33,7 +33,7 @@
 Multiple functions have DistanceMethod as an optional or as a required parameter. The argument can be in the form of a string or as a number.
 - If performance is a key factor, use a number instead of a string name.
 - If readablity is more important, use the string name.
-The following is the list of names and associated ID number.
+#### The following is the list of names and associated ID number.
 - UseDefaultDistanceMethod = 0 
 - Levenshtein = 1
 - DamerauLevenshtein = 2
