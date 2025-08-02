@@ -186,7 +186,7 @@ TanimotoCoefficientDistance (aka Tanimoto) also known as the Jaccard index, is a
 ``` SQL
 SELECT StrNum, NormalizeNum('123.4K') as n FROM MyTable where n = '123400';
 ```
-converts human-friendly compact numbers to full 64-bit integers, e.g., `"100.2K"` into `100200`
+Converts human-friendly compact numbers to full 64-bit integers, e.g., `"100.2K"` into `100200`
 
 
 ## SameName
