@@ -1,6 +1,7 @@
 # SqliteFuzzyPlusExtension Documentation
 
 ### SqliteFuzzyPlusExtension Main Functions
+- [DistanceMethod Parameter](#DistanceMethod)
 - [SetDefaultDistanceMethod](#SetDefaultDistanceMethod)
 - [HowSimilar](#HowSimilar)
 - [Distance](#Distance)
@@ -28,6 +29,62 @@
 - [MinValue](#MinValue)
 - [MinLength](#MinLength)
 
+## DistanceMethod
+Multiple functions have DistanceMethod as an optional or as a required parameter. The argument can be in the form of a string or as a number.
+- If performance is a key factor, use a number instead of a string name.
+- If readablity is more important, use the string name.
+The following is the list of names and associated ID number.
+- UseDefaultDistanceMethod = 0 
+- Levenshtein = 1
+- DamerauLevenshtein = 2
+- JaroWinkler = 3
+- LongestCommonSequence = 4
+- JaccardIndex = 5
+- OverlapCoefficient = 6
+- NeedlemanWunsch = 7
+- SorensenDiceDistance = 8
+- RatcliffObershelpSimilarityDistance = 9
+- HammingDistance = 10
+- LongestCommonSubstringDistance = 11
+- LongestCommonSubsequenceDistance = 12
+- JaroDistance = 13
+- NormalizedLevenshteinDistance = 14
+- Levenshtein2Distance = 15
+- TanimotoCoefficientDistance = 16
+- EditDistance = 17
+- CosineSimilarity = 18
+- JaccardSimilarity = 19
+- PhraseTokenize = 20
+- SimplePhraseTokenize = 21
+- Fuzzy_Damlev = 64 (CPP_ONLY_FUZZY)
+- Fuzzy_Hamming = 65
+- Fuzzy_Jarowin = 66
+- Fuzzy_Leven = 67
+- Fuzzy_Osadist = 68
+- Fuzzy_Editdist = 69
+- Fuzzy_Jaro = 70
+- SameSound_StrCmp = 71
+- EdlibDistance = 72
+- iLevenshtein = 129 (CASE_INSENSITIVE + Levenshtein)
+- iDamerauLevenshtein = 130
+- iJaroWinkler = 131
+- iLongestCommonSequence = 132
+- iJaccardIndex = 133
+- iOverlapCoefficient = 134
+- iNeedlemanWunsch = 135
+- iSorensenDiceDistance = 136
+- iRatcliffObershelpSimilarityDistance = 137
+- iHammingDistance = 138
+- iLongestCommonSubstringDistance = 139
+- iLongestCommonSubsequenceDistance = 140
+- iJaroDistance = 141
+- iNormalizedLevenshteinDistance = 142
+- iLevenshtein2Distance = 143
+- iTanimotoCoefficientDistance = 144
+- iEditDistance = 145
+- iCosineSimilarity = 146
+- iJaccardSimilarity = 147
+- iEdlibDistance = 200 (CASE_INSENSITIVE + EdlibDistance)
 
 ## SetDefaultDistanceMethod
 ``` SQL
@@ -161,8 +218,25 @@ For more information see:[fuzzy_rsoundex](https://github.com/nalgeon/sqlean/blob
 ``` SQL
 SELECT Word, SameSound(Word,"there") sn FROM SimilarSoundingWords;
 ```
-SameSound (aka soundex) uses SQLean fuzzy soundex to compare to strings, and returns 1 if soundex values are equal.
-If a 3rd argument is given, the 3rd argument is used to determine what distance method is used to compare the 2 soundex values.
+SameSound compares 2 strings, and returns 1 if the sound is similar.
+- If a 3rd argument is given, the 3rd argument is used to determine what phonetic method is used to compare the 2 strings. By default Caverphone2 is used to compare the 2 input strings.
+  - Allowed 3rd parameter values:
+    - "Caverphone2"
+    - "fuzzy_caver"
+    - "fuzzy_phonetic"
+    - "fuzzy_soundex"
+    - "fuzzy_rsoundex"
+    - "fuzzy_translit"
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+  - Note: The number values are ID values of the string listed values. (1="Caverphone2", 2="fuzzy_caver", etc...)
+- If a 4th argument is given, the 4th argument is used to determine what distance method is used to compare the 2 phonetic values. By default, strcmp is used to determine if the phonetic values are equal.
+  - See DistanceMethod names for allowed values.
+- If a 5TH argument is present, the 5th argument is used to determine if the distance method should return IsVerySimilar or IsSimilar.  If the 5TH argument is 1, the function returns IsVerySimilar results. If the 5TH argument is 0, a IsSimilar result is returned. The 5th argument is only applicable if the 4th argument specifies a distance method other than "SameSound_StrCmp".
 
 
 #### Example#1:
