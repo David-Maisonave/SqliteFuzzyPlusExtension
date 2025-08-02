@@ -86,19 +86,19 @@ See [UsingFuzzyFunctionsOutsideSQLite.md](https://github.com/David-Maisonave/Sql
 These minimum and maximum functions are included to allow developers to implement custom percentage distance.
 - [MaxValue](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#MaxValue) - (alias = MaxVal)
 - [MaxLength](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#MaxLength) - (alias = MaxLen)
-- [MinValue](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#MinValue) - (alias = )
-- [MinLength](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#MinLength) - (alias = )
+- [MinValue](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#MinValue) - (alias = MinVal)
+- [MinLength](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#MinLength) - (alias = MinLen)
 
 ## The Plus in SqliteFuzzyPlusExtension
 The plus is in the name because this extension has some extra functions that have little to do with fuzzy logic.
 Here's a list of the non-fuzzy functions.
-- StringReverse - Returns the string in reverse order. - (alias = )
-- GetDirectoryName - Retrieves the directory information from a given path string. - (alias = )
-- GetExtension - Retrieves the extension from a given path string. - (alias = )
-- GetFileName - Retrieves the file name (including its extension) from a given path string. - (alias = )
-- GetFileNameWithoutExtension - Retrieves the file name (excluding its extension) from a given path string. - (alias = )
-- IsDirExist - Takes the path of the directory as a string argument and returns 1 or 0, where 1 means the directory exists. - (alias = )
-- IsFileExist - Takes a string path to determine if a specified file exists and returns 1 or 0, where 1 means the file exists. - (alias = )
+- StringReverse - Returns the string in reverse order. - (alias = StrRev)
+- GetDirectoryName - Retrieves the directory information from a given path string. - (alias = GetDirName)
+- GetExtension - Retrieves the extension from a given path string.
+- GetFileName - Retrieves the file name (including its extension) from a given path string. - (alias = GetFileNameWithExtension)
+- GetFileNameWithoutExtension - Retrieves the file name (excluding its extension) from a given path string.
+- IsDirExist - Takes the path of the directory as a string argument and returns 1 or 0, where 1 means the directory exists. - (alias = DirExist)
+- IsFileExist - Takes a string path to determine if a specified file exists and returns 1 or 0, where 1 means the file exists. - (alias = FileExist)
 
 
 
