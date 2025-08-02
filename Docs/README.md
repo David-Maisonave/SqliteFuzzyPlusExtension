@@ -38,6 +38,10 @@ When HowSimilar and Distance are called only using 2 argumenets, the default dis
 The default distance method is also used if these functions are called with the 3rd argument equal to zero.
 
 Functions like SameSound and SameRSound will also use the default distance method if a 3rd argument is passed with a zero value.
+#### Example#1 Set to build-in default method:
+``` SQL
+SetDefaultDistanceMethod(0);
+```
 
 ## HowSimilar
 ``` SQL
@@ -79,7 +83,7 @@ Where-as the Distance function makes no such attempt.
 
 ## PhraseSimplifiedDiff
 ``` SQL
-PhraseSimplifiedDiff('The Westside story', 'Westside story, the');
+SELECT Phrase FROM MyTable WHERE PhraseSimplifiedDiff('The Westside story', 'Westside story, the') < 2;
 ```
 PhraseSimplifiedDiff (aka PhraseDiff) gets the phrase difference after the phrases have been simplified.
 It returns number of words different of the simplified strings.
@@ -147,25 +151,97 @@ test similar phrase
 
 ## SameRSound
 ``` SQL
-SameRSound(str)
+SELECT Word, SameRSound(Word,"two") sn FROM SimilarSoundingWords;
 ```
 SameRSound (aka rsoundex) Uses SQLean fuzzy rsoundex to compare to strings, and returns 1 if rsoundex values are equal.
 If a 3rd argument is given, the 3rd argument is used to determine what distance method is used to compare the 2 rsoundex values.
+
+#### Example#1:
+``` SQL
+SELECT Word, SameRSound(Word,"two") sn FROM SimilarSoundingWords WHERE sn = 1;
+```
+**Results**:
+```
+to	1
+too	1
+two	1
+```
+
+Match FAILS:
+```
+top
+tool
+cool
+```
+
+
+#### Example#2:
+``` SQL
+SELECT Word, rsoundex(Word,"there") sn FROM SimilarSoundingWords WHERE sn = 1;
+```
+**Results**:
+```
+there	1
+they're	1
+```
+
+#### Example#3:
+``` SQL
+SELECT Word, rsoundex(Word,"pair") sn FROM SimilarSoundingWords WHERE sn = 1;
+```
+**Results**:
+```
+pair	1
+pear	1
+```
 
 For more information see:[fuzzy_rsoundex](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#phonetic-codes)
 
 ## SameSound
 ``` SQL
-SameSound(str)
+SELECT Word, SameSound(Word,"there") sn FROM SimilarSoundingWords;
 ```
 SameSound (aka soundex) uses SQLean fuzzy soundex to compare to strings, and returns 1 if soundex values are equal.
 If a 3rd argument is given, the 3rd argument is used to determine what distance method is used to compare the 2 soundex values.
+
+
+#### Example#1:
+``` SQL
+SELECT Word, SameSound(Word,"there") sn FROM SimilarSoundingWords WHERE sn = 1;
+```
+**Results**:
+```
+there	1
+their	1
+they're	1
+```
+
+#### Example#2:
+``` SQL
+SELECT Word, soundex(Word,"see") sn FROM SimilarSoundingWords WHERE sn = 1;
+```
+**Results**:
+```
+see	1
+sea	1
+
+```
+
+#### Example#3:
+``` SQL
+SELECT Word, soundex(Word,"pair") sn FROM SimilarSoundingWords WHERE sn = 1;
+```
+**Results**:
+```
+pair	1
+pear	1
+```
 
 For more information see: [fuzzy_soundex](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#phonetic-codes)
 
 ## iEdlibDistance
 ``` SQL
-iEdlibDistance(str)
+SELECT Phrases, iEdlibDistance(FieldName,'David') t FROM SimilarPhrase WHERE t < 2;
 ```
 iEdlibDistance (aka iEdlib) is a distance case-insensitive function which uses the Edlib library.
 
@@ -174,7 +250,8 @@ https://github.com/Martinsos/edlib
 
 ## TanimotoCoefficientDistance
 ``` SQL
-TanimotoCoefficientDistance(str)
+
+SELECT Phrases, TanimotoCoefficientDistance(FieldName,'David') t FROM SimilarPhrase WHERE t < 2;
 ```
 TanimotoCoefficientDistance (aka Tanimoto) also known as the Jaccard index, is a measure of similarity between two sets or vectors, often used to quantify the overlap between them. It's frequently applied to binary vectors or in cheminformatics to compare molecular fingerprints. The Tanimoto Distance, derived from the Tanimoto Coefficient, quantifies the dissimilarity between these sets or vectors, where a higher distance indicates less similarity.
 
@@ -183,16 +260,17 @@ TanimotoCoefficientDistance (aka Tanimoto) also known as the Jaccard index, is a
 
 ## NormalizeNum
 ``` SQL
-NormalizeNum(str)
+SELECT StrNum, NormalizeNum('123.4K') as n FROM MyTable where n = '123400';
 ```
-NormalizeNum converts a string number into an integer number.
+Converts human-friendly compact numbers to full 64-bit integers, e.g., `"100.2K"` into `100200`
 
+This function comes from the library in the following link: [sqlite-functions](https://github.com/brandonrobertz/sqlite-functions)
 
 ## SameName
 ``` SQL
 select Name, SameName(Name, "David") as sn FROM SimilarNames;
 ```
-Compares the 2 input arguments to see if it's the same name.
+A function that returns true if two names are determined to be the same despite different formats (e.g., "last, first mid" vs. "first mid last").
 **Results**:
 ```
 David Jorge	1
@@ -209,6 +287,7 @@ Jorge	0
 David	1
 ```
 
+This function comes from the library in the following link: [sqlite-functions](https://github.com/brandonrobertz/sqlite-functions)
 
 ## RegexMatch
 ``` SQL
