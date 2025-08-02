@@ -219,8 +219,9 @@ For more information see:[fuzzy_rsoundex](https://github.com/nalgeon/sqlean/blob
 SELECT Word, SameSound(Word,"there") sn FROM SimilarSoundingWords;
 ```
 SameSound compares 2 strings, and returns 1 if the sound is similar.
-- If a 3rd argument is given, the 3rd argument is used to determine what phonetic method is used to compare the 2 strings. By default Caverphone2 is used to compare the 2 input strings.
+- If a 3rd argument is given, the 3rd argument is used to determine what phonetic method is used to compare the 2 strings. By default Soundex is used to compare the 2 input strings.
   - Allowed 3rd parameter values:
+    - "Soundex"
     - "Caverphone2"
     - "fuzzy_caver"
     - "fuzzy_phonetic"
@@ -233,7 +234,8 @@ SameSound compares 2 strings, and returns 1 if the sound is similar.
     - 4
     - 5
     - 6
-  - Note: The number values are ID values of the string listed values. (1="Caverphone2", 2="fuzzy_caver", etc...)
+    - 7
+  - Note: The number values are ID values of the string listed values. (1="Soundex", 2="Caverphone2", etc...)
 - If a 4th argument is given, the 4th argument is used to determine what distance method is used to compare the 2 phonetic values. By default, strcmp is used to determine if the phonetic values are equal.
   - See [DistanceMethod](#DistanceMethod) for allowed values.
 - If a 5TH argument is present, the 5th argument is used to determine if the distance method should return IsVerySimilar or IsSimilar.  If the 5TH argument is 1, the function returns IsVerySimilar results. If the 5TH argument is 0, a IsSimilar result is returned. The 5th argument is only applicable if the 4th argument specifies a distance method other than "SameSound_StrCmp".
@@ -252,24 +254,23 @@ they're	1
 
 #### Example#2:
 ``` SQL
-SELECT Word, soundex(Word,"see") sn FROM SimilarSoundingWords WHERE sn = 1;
-```
+SELECT Words, SameSound(Words,"pair") sn, "pair" as comp FROM SimilarSoundingWords WHERE sn = 1
+union all
+SELECT Words, SameSound(Words,"too") sn, "too" as comp FROM SimilarSoundingWords WHERE sn = 1
+union all
+SELECT Words, SameSound(Words,"there") sn, "there" as comp FROM SimilarSoundingWords WHERE sn = 1;```
 **Results**:
 ```
-see	1
-sea	1
-
+pair	1	pair
+pear	1	pair
+to	1	too
+too	1	too
+two	1	too
+there	1	there
+their	1	there
+they're	1	there
 ```
 
-#### Example#3:
-``` SQL
-SELECT Word, soundex(Word,"pair") sn FROM SimilarSoundingWords WHERE sn = 1;
-```
-**Results**:
-```
-pair	1
-pear	1
-```
 
 For more information see: [fuzzy_soundex](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#phonetic-codes)
 
