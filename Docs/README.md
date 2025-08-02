@@ -229,7 +229,7 @@ sea	1
 
 #### Example#3:
 ``` SQL
-SELECT Word, rsoundex(Word,"pair") sn FROM SimilarSoundingWords WHERE sn = 1;
+SELECT Word, soundex(Word,"pair") sn FROM SimilarSoundingWords WHERE sn = 1;
 ```
 **Results**:
 ```
