@@ -1,6 +1,7 @@
 # SqliteFuzzyPlusExtension Documentation
 
 ### SqliteFuzzyPlusExtension Main Functions
+- [DistanceMethod Parameter](#DistanceMethod)
 - [SetDefaultDistanceMethod](#SetDefaultDistanceMethod)
 - [HowSimilar](#HowSimilar)
 - [Distance](#Distance)
@@ -8,25 +9,82 @@
 ### Fuzzy functions unique to SqliteFuzzyPlusExtension:
 - [PhraseSimplifiedDiff](#PhraseSimplifiedDiff)
 - [HasCharInSameOrder](#HasCharInSameOrder)
-- [SameRSound](#SameRSound)
 - [SameSound](#SameSound)
 - [iEdlibDistance](#iEdlibDistance)
-- [MaxValue](#MaxValue)
-- [MaxLength](#MaxLength)
-- [MinValue](#MinValue)
-- [MinLength](#MinLength)
 
 ### Fuzzy functions which don't have an associated Wiki link:
 - [TanimotoCoefficientDistance](#TanimotoCoefficientDistance)
 - [NormalizeNum](#NormalizeNum)
 - [SameName](#SameName)
-- [CaverPhone_CS](#CaverPhone_CS)
+- [CaverPhone2](#CaverPhone2)
 
 ### Regex functions
 - [RegexMatch](#RegexMatch)
 - [RegexReplace](#RegexReplace)
 - [RegexSearch](#RegexSearch)
 
+### Miscellaneous functions
+- [MaxValue](#MaxValue)
+- [MaxLength](#MaxLength)
+- [MinValue](#MinValue)
+- [MinLength](#MinLength)
+
+## DistanceMethod
+Multiple functions have DistanceMethod as an optional or as a required parameter. The argument can be in the form of a string or as a number.
+- If performance is a key factor, use a number instead of a string name.
+- If readablity is more important, use the string name.
+#### The following is the list of names and associated ID number.
+- UseDefaultDistanceMethod = 0 
+- Levenshtein = 1
+- DamerauLevenshtein = 2
+- JaroWinkler = 3
+- LongestCommonSequence = 4
+- JaccardIndex = 5
+- OverlapCoefficient = 6
+- NeedlemanWunsch = 7
+- SorensenDiceDistance = 8
+- RatcliffObershelpSimilarityDistance = 9
+- HammingDistance = 10
+- LongestCommonSubstringDistance = 11
+- LongestCommonSubsequenceDistance = 12
+- JaroDistance = 13
+- NormalizedLevenshteinDistance = 14
+- Levenshtein2Distance = 15
+- TanimotoCoefficientDistance = 16
+- EditDistance = 17
+- CosineSimilarity = 18
+- JaccardSimilarity = 19
+- PhraseTokenize = 20
+- SimplePhraseTokenize = 21
+- Fuzzy_Damlev = 64 (CPP_ONLY_FUZZY)
+- Fuzzy_Hamming = 65
+- Fuzzy_Jarowin = 66
+- Fuzzy_Leven = 67
+- Fuzzy_Osadist = 68
+- Fuzzy_Editdist = 69
+- Fuzzy_Jaro = 70
+- SameSound_StrCmp = 71
+- EdlibDistance = 72
+- iLevenshtein = 129 (CASE_INSENSITIVE + Levenshtein)
+- iDamerauLevenshtein = 130
+- iJaroWinkler = 131
+- iLongestCommonSequence = 132
+- iJaccardIndex = 133
+- iOverlapCoefficient = 134
+- iNeedlemanWunsch = 135
+- iSorensenDiceDistance = 136
+- iRatcliffObershelpSimilarityDistance = 137
+- iHammingDistance = 138
+- iLongestCommonSubstringDistance = 139
+- iLongestCommonSubsequenceDistance = 140
+- iJaroDistance = 141
+- iNormalizedLevenshteinDistance = 142
+- iLevenshtein2Distance = 143
+- iTanimotoCoefficientDistance = 144
+- iEditDistance = 145
+- iCosineSimilarity = 146
+- iJaccardSimilarity = 147
+- iEdlibDistance = 200 (CASE_INSENSITIVE + EdlibDistance)
 
 ## SetDefaultDistanceMethod
 ``` SQL
@@ -42,7 +100,7 @@ On startup, the default distance method is DamerauLevenshteinDistance.
 When HowSimilar and Distance are called only using 2 argumenets, the default distance method is used.
 The default distance method is also used if these functions are called with the 3rd argument equal to zero.
 
-Functions like SameSound and SameRSound will also use the default distance method if a 3rd argument is passed with a zero value.
+Functions like soundex and rsoundex will also use the default distance method if a 3rd argument is passed with a zero value.
 #### Example#1 Set to build-in default method:
 ``` SQL
 SetDefaultDistanceMethod(0);
@@ -154,60 +212,33 @@ That is similar phrase
 test similar phrase
 ```
 
-## SameRSound
-``` SQL
-SELECT Word, SameRSound(Word,"two") sn FROM SimilarSoundingWords;
-```
-SameRSound (aka rsoundex) Uses SQLean fuzzy rsoundex to compare to strings, and returns 1 if rsoundex values are equal.
-If a 3rd argument is given, the 3rd argument is used to determine what distance method is used to compare the 2 rsoundex values.
-
-#### Example#1:
-``` SQL
-SELECT Word, SameRSound(Word,"two") sn FROM SimilarSoundingWords WHERE sn = 1;
-```
-**Results**:
-```
-to	1
-too	1
-two	1
-```
-
-Match FAILS:
-```
-top
-tool
-cool
-```
-
-
-#### Example#2:
-``` SQL
-SELECT Word, rsoundex(Word,"there") sn FROM SimilarSoundingWords WHERE sn = 1;
-```
-**Results**:
-```
-there	1
-they're	1
-```
-
-#### Example#3:
-``` SQL
-SELECT Word, rsoundex(Word,"pair") sn FROM SimilarSoundingWords WHERE sn = 1;
-```
-**Results**:
-```
-pair	1
-pear	1
-```
-
 For more information see:[fuzzy_rsoundex](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#phonetic-codes)
 
 ## SameSound
 ``` SQL
 SELECT Word, SameSound(Word,"there") sn FROM SimilarSoundingWords;
 ```
-SameSound (aka soundex) uses SQLean fuzzy soundex to compare to strings, and returns 1 if soundex values are equal.
-If a 3rd argument is given, the 3rd argument is used to determine what distance method is used to compare the 2 soundex values.
+SameSound compares 2 strings, and returns 1 if the sound is similar.
+- If a 3rd argument is given, the 3rd argument is used to determine what phonetic method is used to compare the 2 strings. By default Soundex is used to compare the 2 input strings.
+  - Allowed 3rd parameter values:
+    - "Soundex"
+    - "Caverphone2"
+    - "fuzzy_caver"
+    - "fuzzy_phonetic"
+    - "fuzzy_soundex"
+    - "fuzzy_rsoundex"
+    - "fuzzy_translit"
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+  - Note: The number values are ID values of the string listed values. (1="Soundex", 2="Caverphone2", etc...)
+- If a 4th argument is given, the 4th argument is used to determine what distance method is used to compare the 2 phonetic values. By default, strcmp is used to determine if the phonetic values are equal.
+  - See [DistanceMethod](#DistanceMethod) for allowed values.
+- If a 5TH argument is present, the 5th argument is used to determine if the distance method should return IsVerySimilar or IsSimilar.  If the 5TH argument is 1, the function returns IsVerySimilar results. If the 5TH argument is 0, a IsSimilar result is returned. The 5th argument is only applicable if the 4th argument specifies a distance method other than "SameSound_StrCmp".
 
 
 #### Example#1:
@@ -223,24 +254,23 @@ they're	1
 
 #### Example#2:
 ``` SQL
-SELECT Word, soundex(Word,"see") sn FROM SimilarSoundingWords WHERE sn = 1;
-```
+SELECT Words, SameSound(Words,"pair") sn, "pair" as comp FROM SimilarSoundingWords WHERE sn = 1
+union all
+SELECT Words, SameSound(Words,"too") sn, "too" as comp FROM SimilarSoundingWords WHERE sn = 1
+union all
+SELECT Words, SameSound(Words,"there") sn, "there" as comp FROM SimilarSoundingWords WHERE sn = 1;```
 **Results**:
 ```
-see	1
-sea	1
-
+pair	1	pair
+pear	1	pair
+to	1	too
+too	1	too
+two	1	too
+there	1	there
+their	1	there
+they're	1	there
 ```
 
-#### Example#3:
-``` SQL
-SELECT Word, soundex(Word,"pair") sn FROM SimilarSoundingWords WHERE sn = 1;
-```
-**Results**:
-```
-pair	1
-pear	1
-```
 
 For more information see: [fuzzy_soundex](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#phonetic-codes)
 
@@ -319,14 +349,14 @@ David	1
 
 This function comes from the library in the following link: [sqlite-functions](https://github.com/brandonrobertz/sqlite-functions)
 
-## CaverPhone_CS
+## CaverPhone2
 ``` SQL
-select CaverPhone_CS('ate','eight');
+select CaverPhone2('ate','eight');
 ```
-CaverPhone_CS (aka CaverPhone2) calculates the Caverphone code. It takes two arguments comnpare to the SQLean CaverPhone, which only take one argument.
+CaverPhone2 (aka CaverPhone_CS) calculates the Caverphone code. It takes two arguments comnpare to the SQLean CaverPhone, which only take one argument.
 Example usage:
 ``` SQL
-SELECT Word, CaverPhone_CS(Word,"ate") cp FROM SimilarSoundingWords WHERE cp = 1;
+SELECT Word, CaverPhone2(Word,"ate") cp FROM SimilarSoundingWords WHERE cp = 1;
 ```
 **Results**:
 ```
