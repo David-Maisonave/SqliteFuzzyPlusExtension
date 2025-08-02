@@ -1,1 +1,1 @@
-SELECT Word, soundex(Word,"to") as sn, MaxValue(length(Word), length("to")) as L FROM SimilarSoundingWords WHERE sn = 1
+SELECT Words, soundex(Words,"to") as sn, MaxValue(length(Words), length("to")) as L FROM SimilarSoundingWords WHERE sn = 1

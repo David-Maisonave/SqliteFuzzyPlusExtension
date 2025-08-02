@@ -1,1 +1,1 @@
-SELECT Word, soundex(Word,"to") as sn, MaxLen(Word, "to") as mxL, MinLen(Word, "to") as mnL FROM SimilarSoundingWords WHERE sn = 1;
+SELECT Words, soundex(Words,"to") as sn, MaxLen(Words, "to") as mxL, MinLen(Words, "to") as mnL FROM SimilarSoundingWords WHERE sn = 1;

@@ -159,11 +159,11 @@ void MinLength(sqlite3_context* context, int argc, sqlite3_value** argv) {
     int results = std::min((int)strlen(source1), (int)strlen(source2));
     sqlite3_result_int(context, results);
 }
-void CaverPhone(sqlite3_context* context, int argc, sqlite3_value** argv) {
+void Caverphone2(sqlite3_context* context, int argc, sqlite3_value** argv) {
     assert(argc == 2);
     String^ source1 = gcnew String((const char*)sqlite3_value_text(argv[0]));
     String^ source2 = gcnew String((const char*)sqlite3_value_text(argv[1]));
-    int results = FuzzyPlusCSharp::Fuzzy::Caverphone(source1, source2);
+    int results = FuzzyPlusCSharp::Fuzzy::Caverphone2(source1, source2, FuzzyPlusCSharp::Fuzzy::DistanceMethod::SameSound_StrCmp, true);
     sqlite3_result_int(context, results);
 }
 

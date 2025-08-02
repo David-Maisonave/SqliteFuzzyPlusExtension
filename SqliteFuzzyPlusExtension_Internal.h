@@ -12,7 +12,7 @@ void MaxValue(sqlite3_context* context, int argc, sqlite3_value** argv);
 void MaxLength(sqlite3_context* context, int argc, sqlite3_value** argv);
 void MinValue(sqlite3_context* context, int argc, sqlite3_value** argv);
 void MinLength(sqlite3_context* context, int argc, sqlite3_value** argv);
-void CaverPhone(sqlite3_context* context, int argc, sqlite3_value** argv);
+void Caverphone2(sqlite3_context* context, int argc, sqlite3_value** argv);
 double GetPercentage(double distance, double length, double full = 1.0f);
 
 #define CREATE_FUNCTION_STR_RETURN(FuncName) static void FuncName(sqlite3_context* context, int argc, sqlite3_value** argv) { \
@@ -114,6 +114,8 @@ sqlite3_result_int(context, distance); \
 #define SQLITE3_CREATE_FUNCTION1(FuncName) sqlite3_create_function(db, #FuncName, 1, flags, 0, FuncName, 0, 0)
 #define SQLITE3_CREATE_FUNCTION2(FuncName) sqlite3_create_function(db, #FuncName, 2, flags, 0, FuncName, 0, 0)
 #define SQLITE3_CREATE_FUNCTION3(FuncName) sqlite3_create_function(db, #FuncName, 3, flags, 0, FuncName, 0, 0)
+#define SQLITE3_CREATE_FUNCTION4(FuncName) sqlite3_create_function(db, #FuncName, 4, flags, 0, FuncName, 0, 0)
+#define SQLITE3_CREATE_FUNCTION5(FuncName) sqlite3_create_function(db, #FuncName, 5, flags, 0, FuncName, 0, 0)
 #define SQLITE3_CREATE_FUNCTION_ALIAS1(FuncShortName,FuncName) sqlite3_create_function(db, #FuncShortName, 1, flags, 0, FuncName, 0, 0)
 #define SQLITE3_CREATE_FUNCTION_ALIAS2(FuncShortName,FuncName) sqlite3_create_function(db, #FuncShortName, 2, flags, 0, FuncName, 0, 0)
 #define SQLITE3_CREATE_FUNCTION_ALIAS3(FuncShortName,FuncName) sqlite3_create_function(db, #FuncShortName, 3, flags, 0, FuncName, 0, 0)

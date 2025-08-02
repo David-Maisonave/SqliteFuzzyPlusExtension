@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
 using static System.Net.Mime.MediaTypeNames;
 
 namespace FuzzyPlusCSharp
@@ -74,6 +76,7 @@ namespace FuzzyPlusCSharp
             Fuzzy_Osadist,
             Fuzzy_Editdist,
             Fuzzy_Jaro,
+            SameSound_StrCmp,
             // Other C++ (external) only functions. (NOT part of Sqlean)
             EdlibDistance,
             // ------------------------------------------------------------
@@ -143,6 +146,57 @@ namespace FuzzyPlusCSharp
             return distanceMethod.ToString();
         }
         #endregion DistanceMethod definitions
+        #region SameSoundMethod
+        public enum SameSoundMethod
+        {
+            UseDefaultSameSoundMethod = 0,
+            Soundex,    // Default SameSound method
+            Caverphone2, 
+            // ------------------------------------------------------------
+            // These functions are NOT supported by CSharp Fuzzy class code, and are only here for C++ SqliteFuzzyPlusExtension usage.
+            // SQLean phonetic external functions. 
+            fuzzy_caver,
+            fuzzy_phonetic,
+            fuzzy_soundex,
+            fuzzy_rsoundex,  //Refined Soundex
+            fuzzy_translit, //Transliteration
+        }
+        public static SameSoundMethod DefaultSameSoundMethod { get; private set; } = SameSoundMethod.Soundex;
+        public static void SetDefaultSameSoundMethod(SameSoundMethod sameSoundMethod) => DefaultSameSoundMethod = sameSoundMethod;
+        public static SameSoundMethod GetSameSoundMethod(int sameSoundMethod_ID) => (SameSoundMethod)sameSoundMethod_ID;
+        public static SameSoundMethod GetSameSoundMethod(string sameSoundMethod_Name)
+        { // This function is for SQLite extension purposes, and should only be called once!!!
+            SameSoundMethod sameSoundMethod = DefaultSameSoundMethod;
+            if (sameSoundMethod_Name != null && !sameSoundMethod_Name.Equals("UseDefaultSameSoundMethod", StringComparison.OrdinalIgnoreCase))
+            {
+                try
+                {
+                    sameSoundMethod = (SameSoundMethod)Enum.Parse(typeof(SameSoundMethod), sameSoundMethod_Name, true);
+                }
+                catch
+                {
+                    // ToDo: add error console logging here.
+                }
+            }
+            return sameSoundMethod;
+        }
+        public static bool SetDefaultSameSoundMethod(int sameSoundMethod_ID) // This function is to let SQL access setting default method
+        {
+            DefaultSameSoundMethod = (SameSoundMethod)sameSoundMethod_ID;
+            return true;
+        }
+        public static bool SetDefaultSameSoundMethod(string sameSoundMethod_Name)
+        { // This function is to let SQL access setting default method by using the distance method name explicitly.
+            //But this should only be called once. If repetitive calls are required, use ID method instead.
+            DefaultSameSoundMethod = GetSameSoundMethod(sameSoundMethod_Name);
+            return true;
+        }
+        public static string GetSameSoundMethodName(int sameSoundMethod_ID)
+        {
+            SameSoundMethod sameSoundMethod = GetSameSoundMethod(sameSoundMethod_ID);
+            return sameSoundMethod.ToString();
+        }
+        #endregion SameSoundMethod
         #region Similarity functions
         public static bool IsMatch(string source1, string source2, float desiredSimilarity, DistanceMethod distanceMethod = DistanceMethod.UseDefaultDistanceMethod) => HowSimilar(source1, source2, distanceMethod) >= desiredSimilarity;
         // The following HowSimilar method is to let SQLite access to HowSimilar
@@ -792,12 +846,48 @@ namespace FuzzyPlusCSharp
             float Nc = source1.Intersect(source2).Count();
             return Nc / (Na + Nb - Nc);
         }
-        public static bool Caverphone(this string source1, string source2)
+        public static bool Compare(string source1, string source2, DistanceMethod CompareMethod, bool isVerySimilar)
         {
-            string[] source = {source1, source2};
-            return CaverPhone.IsSimilar(source);
+            switch (CompareMethod)
+            {
+                case DistanceMethod.SameSound_StrCmp:
+                    return source1 == source2;
+                default:
+                    return isVerySimilar? IsVerySimilar(source1, source2, CompareMethod) : IsSimilar(source1, source2, CompareMethod);
+            }
         }
-
+        public static bool Caverphone2(this string source1, string source2,
+            DistanceMethod distanceMethod = DistanceMethod.SameSound_StrCmp,
+            bool isVerySimilar = true)
+        {
+            string s1 = Caverphone.BuildKey(source1);
+            string s2 = Caverphone.BuildKey(source2);
+            return Compare(s1, s2, distanceMethod, isVerySimilar);
+        }
+        public static bool CompareSoundex(this string source1, string source2,
+            DistanceMethod distanceMethod,
+            bool isVerySimilar)
+        {
+            string s1 = Soundex.Generate(source1);
+            string s2 = Soundex.Generate(source2);
+            return Compare(s1, s2, distanceMethod, isVerySimilar);
+        }
+        public static bool SameSound(this string source1, string source2, 
+            SameSoundMethod sameSoundMethod = SameSoundMethod.UseDefaultSameSoundMethod,
+            DistanceMethod distanceMethod = DistanceMethod.SameSound_StrCmp,
+            bool isVerySimilar = true)
+        {
+            if (sameSoundMethod == SameSoundMethod.UseDefaultSameSoundMethod)
+                sameSoundMethod = DefaultSameSoundMethod;
+            switch (sameSoundMethod)
+            {
+                case SameSoundMethod.Caverphone2:
+                    return Caverphone2(source1, source2, distanceMethod, isVerySimilar);
+                case SameSoundMethod.Soundex:
+                default:
+                    return CompareSoundex(source1, source2, distanceMethod, isVerySimilar);
+            }
+        }
         // Function to find the minimum number of operations to convert source1 to source2
         public static int EditDistance(string source1, string source2, bool isCaseSensitive = true)
         {
@@ -1235,7 +1325,7 @@ namespace FuzzyPlusCSharp
     /// Phonetic algorithm created by David Hood
     /// For more information see: <a href="http://en.wikipedia.org/wiki/Caverphone">http://en.wikipedia.org/wiki/Caverphone</a>
     /// </summary>
-    public class CaverPhone
+    public class Caverphone
     {
         public static readonly string[] EmptyKeys = new string[0];
         static readonly Regex Alpha = new Regex("[^a-z]", RegexOptions.Compiled);
