@@ -20,6 +20,7 @@
 - [TanimotoCoefficientDistance](#TanimotoCoefficientDistance)
 - [NormalizeNum](#NormalizeNum)
 - [SameName](#SameName)
+- [CaverPhone_CS](#CaverPhone_CS)
 
 ### Regex functions
 - [RegexMatch](#RegexMatch)
@@ -317,6 +318,12 @@ David	1
 ```
 
 This function comes from the library in the following link: [sqlite-functions](https://github.com/brandonrobertz/sqlite-functions)
+
+## CaverPhone_CS
+``` SQL
+select CaverPhone_CS('awesome');
+```
+Calculates the Caverphone code.
 
 ## RegexMatch
 ``` SQL
