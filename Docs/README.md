@@ -11,10 +11,6 @@
 - [SameRSound](#SameRSound)
 - [SameSound](#SameSound)
 - [iEdlibDistance](#iEdlibDistance)
-- [MaxValue](#MaxValue)
-- [MaxLength](#MaxLength)
-- [MinValue](#MinValue)
-- [MinLength](#MinLength)
 
 ### Fuzzy functions which don't have an associated Wiki link:
 - [TanimotoCoefficientDistance](#TanimotoCoefficientDistance)
@@ -26,6 +22,12 @@
 - [RegexMatch](#RegexMatch)
 - [RegexReplace](#RegexReplace)
 - [RegexSearch](#RegexSearch)
+
+### Miscellaneous functions
+- [MaxValue](#MaxValue)
+- [MaxLength](#MaxLength)
+- [MinValue](#MinValue)
+- [MinLength](#MinLength)
 
 
 ## SetDefaultDistanceMethod
