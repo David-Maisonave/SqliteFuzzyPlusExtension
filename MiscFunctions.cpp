@@ -1,6 +1,7 @@
 #include <string>
 #include <stdexcept>
 #include <cassert>
+#include <algorithm>
 #include "SqliteFuzzyPlusExtension_Internal.h"
 
 sqlite3_int64 convertToInt64(const std::string& input)
@@ -135,6 +136,29 @@ void MaxValue(sqlite3_context* context, int argc, sqlite3_value** argv) {
     sqlite3_result_int(context, results);
 }
 
+void MaxLength(sqlite3_context* context, int argc, sqlite3_value** argv) {
+    assert(argc == 2);
+    const char* source1 = (char*)sqlite3_value_text(argv[0]);
+    const char* source2 = (char*)sqlite3_value_text(argv[1]);
+    int results = std::max((int)strlen(source1), (int)strlen(source2));
+    sqlite3_result_int(context, results);
+}
+
+void MinValue(sqlite3_context* context, int argc, sqlite3_value** argv) {
+    assert(argc == 2);
+    int i1 = sqlite3_value_int(argv[0]);
+    int i2 = sqlite3_value_int(argv[1]);
+    int results = FuzzyPlusCSharp::Fuzzy::MinValue(i1, i2);
+    sqlite3_result_int(context, results);
+}
+
+void MinLength(sqlite3_context* context, int argc, sqlite3_value** argv) {
+    assert(argc == 2);
+    const char* source1 = (char*)sqlite3_value_text(argv[0]);
+    const char* source2 = (char*)sqlite3_value_text(argv[1]);
+    int results = std::min((int)strlen(source1), (int)strlen(source2));
+    sqlite3_result_int(context, results);
+}
 void CaverPhone(sqlite3_context* context, int argc, sqlite3_value** argv) {
     assert(argc == 2);
     String^ source1 = gcnew String((const char*)sqlite3_value_text(argv[0]));

@@ -896,6 +896,7 @@ namespace FuzzyPlusCSharp
             return new string(charArray);
         }
         public static int MaxValue(int x, int y) => Math.Max(x, y);
+        public static int MinValue(int x, int y) => Math.Min(x, y);
         public static bool IsFileExist(string path) => File.Exists(path);
         public static bool IsDirExist(string path) => Directory.Exists(path);
         public static string GetFileName(string path) => Path.GetFileName(path);

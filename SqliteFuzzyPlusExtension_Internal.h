@@ -9,6 +9,9 @@ void SameName(sqlite3_context* context, int argc, sqlite3_value** argv);
 sqlite3_int64 convertToInt64(const std::string& input);
 void NormalizeNum(sqlite3_context* context, int argc, sqlite3_value** argv);
 void MaxValue(sqlite3_context* context, int argc, sqlite3_value** argv);
+void MaxLength(sqlite3_context* context, int argc, sqlite3_value** argv);
+void MinValue(sqlite3_context* context, int argc, sqlite3_value** argv);
+void MinLength(sqlite3_context* context, int argc, sqlite3_value** argv);
 void CaverPhone(sqlite3_context* context, int argc, sqlite3_value** argv);
 double GetPercentage(double distance, double length, double full = 1.0f);
 

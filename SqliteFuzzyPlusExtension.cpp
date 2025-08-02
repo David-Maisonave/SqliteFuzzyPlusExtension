@@ -523,6 +523,9 @@ extern "C"
         SQLITE3_CREATE_FUNCTION_ALIAS2(XSearch, RegexSearch);
         SQLITE3_CREATE_FUNCTION_ALIAS1(StrRev, StringReverse);
         SQLITE3_CREATE_FUNCTION_ALIAS2(MaxVal, MaxValue);
+        SQLITE3_CREATE_FUNCTION_ALIAS2(MaxLen, MaxLength);
+        SQLITE3_CREATE_FUNCTION_ALIAS2(MinVal, MinValue);
+        SQLITE3_CREATE_FUNCTION_ALIAS2(MinLen, MinLength);
         SQLITE3_CREATE_FUNCTION_ALIAS1(GetFileNameWithExtension, GetFileName);
         SQLITE3_CREATE_FUNCTION_ALIAS1(HasChr, HasCharInSameOrder);
         SQLITE3_CREATE_FUNCTION_ALIAS2(Similar, HowSimilar);
@@ -557,6 +560,9 @@ extern "C"
         SQLITE3_CREATE_FUNCTION3(RegexReplace);
         SQLITE3_CREATE_FUNCTION1(StringReverse);
         SQLITE3_CREATE_FUNCTION2(MaxValue);
+        SQLITE3_CREATE_FUNCTION2(MaxLength);
+        SQLITE3_CREATE_FUNCTION2(MinValue);
+        SQLITE3_CREATE_FUNCTION2(MinLength);
         SQLITE3_CREATE_FUNCTION1(NormalizeNum);
         SQLITE3_CREATE_FUNCTION1(HasCharInSameOrder);
 
