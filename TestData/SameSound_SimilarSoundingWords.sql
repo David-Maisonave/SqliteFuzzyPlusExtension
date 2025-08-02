@@ -1,0 +1,1 @@
+SELECT Word, soundex(Word,"pair") sn FROM SimilarSoundingWords WHERE sn = 1

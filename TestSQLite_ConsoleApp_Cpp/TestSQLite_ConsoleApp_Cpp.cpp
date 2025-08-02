@@ -14,13 +14,10 @@ int main()
     int x = DamLev_Exp2(str1, str2);
     std::cout << "x = " << x << std::endl;
 
-    unsigned __int64 i64_1 = NormalizeNum("One Hundred");
-    unsigned __int64 i64_2 = NormalizeNum("Two Thousand");
-    unsigned __int64 i64_3 = NormalizeNum("twenty two");
-    unsigned __int64 i64_4 = NormalizeNum("fifthy five");
-    unsigned __int64 i64_5 = NormalizeNum("five");
-    unsigned __int64 i64_6 = NormalizeNum("IIV");
-    unsigned __int64 i64_7 = NormalizeNum("XI");
+    unsigned __int64 i64_1 = NormalizeNum("123.4K");
+    unsigned __int64 i64_2 = NormalizeNum("2K");
+    unsigned __int64 i64_3 = NormalizeNum("123.4K");
+    unsigned __int64 i64_4 = NormalizeNum("345.9K");
 
     double example1 = Distance("David", "David", SqliteFuzzyPlusExtension::Levenshtein);
     double example2 = Distance("David", "Davix", SqliteFuzzyPlusExtension::DamerauLevenshtein);

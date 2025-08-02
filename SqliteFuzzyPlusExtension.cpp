@@ -607,7 +607,12 @@ double HowSimilar(const char* source1, const char* source2, const char* Distance
 
 __declspec(dllexport)
 unsigned __int64 NormalizeNum(const char* source) {
-    return convertToInt64(source);
+    try {
+        return convertToInt64(source);
+    }
+    catch (...) {
+        return -1;
+    }
 }
 
 

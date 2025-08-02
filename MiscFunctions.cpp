@@ -117,7 +117,13 @@ void NormalizeNum(sqlite3_context* context, int argc, sqlite3_value** argv) {
     if (source == 0) {
         return;
     }
-    sqlite3_result_int64(context, convertToInt64(source));
+    try
+    {
+        sqlite3_result_int64(context, convertToInt64(source));
+    }
+    catch (...) {
+        sqlite3_result_text(context, "error", -1, NULL);
+    }
 }
 
 
