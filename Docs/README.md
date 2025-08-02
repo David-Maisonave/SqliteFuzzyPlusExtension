@@ -192,12 +192,13 @@ SELECT StrNum, NormalizeNum('123.4K') as n FROM MyTable where n = '123400';
 ```
 Converts human-friendly compact numbers to full 64-bit integers, e.g., `"100.2K"` into `100200`
 
+This function comes from the library in the following link: [sqlite-functions](https://github.com/brandonrobertz/sqlite-functions)
 
 ## SameName
 ``` SQL
 select Name, SameName(Name, "David") as sn FROM SimilarNames;
 ```
-Compares the 2 input arguments to see if it's the same name.
+A function that returns true if two names are determined to be the same despite different formats (e.g., "last, first mid" vs. "first mid last").
 **Results**:
 ```
 David Jorge	1
@@ -214,6 +215,7 @@ Jorge	0
 David	1
 ```
 
+This function comes from the library in the following link: [sqlite-functions](https://github.com/brandonrobertz/sqlite-functions)
 
 ## RegexMatch
 ``` SQL
