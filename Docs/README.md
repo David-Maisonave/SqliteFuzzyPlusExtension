@@ -321,9 +321,25 @@ This function comes from the library in the following link: [sqlite-functions](h
 
 ## CaverPhone_CS
 ``` SQL
-select CaverPhone_CS('awesome');
+select CaverPhone_CS('ate','eight');
 ```
-Calculates the Caverphone code.
+CaverPhone_CS (aka CaverPhone2) calculates the Caverphone code. It takes two arguments comnpare to the SQLean CaverPhone, which only take one argument.
+Example usage:
+``` SQL
+SELECT Word, CaverPhone_CS(Word,"ate") cp FROM SimilarSoundingWords WHERE cp = 1;
+```
+**Results**:
+```
+ate	1
+eight	1
+```
+
+Here's example usage for SQLean CaverPhone.
+``` SQL
+SELECT Word, CaverPhone(Word) cp FROM SimilarSoundingWords WHERE cp = CaverPhone("ate");;
+```
+
+They both give the same results, but IMHO the CaverPhone2 syntax is easier and more efficient to use.
 
 ## RegexMatch
 ``` SQL
