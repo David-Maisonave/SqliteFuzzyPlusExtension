@@ -20,7 +20,7 @@
 - [TanimotoCoefficientDistance](#TanimotoCoefficientDistance)
 - [NormalizeNum](#NormalizeNum)
 - [SameName](#SameName)
-- [CaverPhone_CS](#CaverPhone_CS)
+- [CaverPhone2](#CaverPhone2)
 
 ### Regex functions
 - [RegexMatch](#RegexMatch)
@@ -319,14 +319,14 @@ David	1
 
 This function comes from the library in the following link: [sqlite-functions](https://github.com/brandonrobertz/sqlite-functions)
 
-## CaverPhone_CS
+## CaverPhone2
 ``` SQL
-select CaverPhone_CS('ate','eight');
+select CaverPhone2('ate','eight');
 ```
-CaverPhone_CS (aka CaverPhone2) calculates the Caverphone code. It takes two arguments comnpare to the SQLean CaverPhone, which only take one argument.
+CaverPhone2 (aka CaverPhone_CS) calculates the Caverphone code. It takes two arguments comnpare to the SQLean CaverPhone, which only take one argument.
 Example usage:
 ``` SQL
-SELECT Word, CaverPhone_CS(Word,"ate") cp FROM SimilarSoundingWords WHERE cp = 1;
+SELECT Word, CaverPhone2(Word,"ate") cp FROM SimilarSoundingWords WHERE cp = 1;
 ```
 **Results**:
 ```
