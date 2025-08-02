@@ -8,7 +8,6 @@
 ### Fuzzy functions unique to SqliteFuzzyPlusExtension:
 - [PhraseSimplifiedDiff](#PhraseSimplifiedDiff)
 - [HasCharInSameOrder](#HasCharInSameOrder)
-- [SameRSound](#SameRSound)
 - [SameSound](#SameSound)
 - [iEdlibDistance](#iEdlibDistance)
 
@@ -44,7 +43,7 @@ On startup, the default distance method is DamerauLevenshteinDistance.
 When HowSimilar and Distance are called only using 2 argumenets, the default distance method is used.
 The default distance method is also used if these functions are called with the 3rd argument equal to zero.
 
-Functions like SameSound and SameRSound will also use the default distance method if a 3rd argument is passed with a zero value.
+Functions like soundex and rsoundex will also use the default distance method if a 3rd argument is passed with a zero value.
 #### Example#1 Set to build-in default method:
 ``` SQL
 SetDefaultDistanceMethod(0);
@@ -154,52 +153,6 @@ Match FAILS:
 phrase similar test
 That is similar phrase
 test similar phrase
-```
-
-## SameRSound
-``` SQL
-SELECT Word, SameRSound(Word,"two") sn FROM SimilarSoundingWords;
-```
-SameRSound (aka rsoundex) Uses SQLean fuzzy rsoundex to compare to strings, and returns 1 if rsoundex values are equal.
-If a 3rd argument is given, the 3rd argument is used to determine what distance method is used to compare the 2 rsoundex values.
-
-#### Example#1:
-``` SQL
-SELECT Word, SameRSound(Word,"two") sn FROM SimilarSoundingWords WHERE sn = 1;
-```
-**Results**:
-```
-to	1
-too	1
-two	1
-```
-
-Match FAILS:
-```
-top
-tool
-cool
-```
-
-
-#### Example#2:
-``` SQL
-SELECT Word, rsoundex(Word,"there") sn FROM SimilarSoundingWords WHERE sn = 1;
-```
-**Results**:
-```
-there	1
-they're	1
-```
-
-#### Example#3:
-``` SQL
-SELECT Word, rsoundex(Word,"pair") sn FROM SimilarSoundingWords WHERE sn = 1;
-```
-**Results**:
-```
-pair	1
-pear	1
 ```
 
 For more information see:[fuzzy_rsoundex](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#phonetic-codes)
