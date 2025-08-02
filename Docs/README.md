@@ -11,6 +11,7 @@
 - [SameRSound](#SameRSound)
 - [SameSound](#SameSound)
 - [iEdlibDistance](#iEdlibDistance)
+- [MaxValue](#MaxValue)
 
 ### Fuzzy functions which don't have an associated Wiki link:
 - [TanimotoCoefficientDistance](#TanimotoCoefficientDistance)
@@ -247,6 +248,12 @@ iEdlibDistance (aka iEdlib) is a distance case-insensitive function which uses t
 
 For details on edlib, see:
 https://github.com/Martinsos/edlib
+
+## MaxValue 
+``` SQL
+SELECT Word, soundex(Word,"to") as sn, MaxValue(length(Word), length("to")) as L FROM SimilarSoundingWords WHERE sn = 1;
+```
+Returns the value that is the highest of the two input arguments.
 
 ## TanimotoCoefficientDistance
 ``` SQL
