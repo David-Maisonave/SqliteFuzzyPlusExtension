@@ -12,6 +12,9 @@
 - [SameSound](#SameSound)
 - [iEdlibDistance](#iEdlibDistance)
 - [MaxValue](#MaxValue)
+- [MaxLength](#MaxLength)
+- [MinValue](#MinValue)
+- [MinLength](#MinLength)
 
 ### Fuzzy functions which don't have an associated Wiki link:
 - [TanimotoCoefficientDistance](#TanimotoCoefficientDistance)
@@ -254,6 +257,25 @@ https://github.com/Martinsos/edlib
 SELECT Word, soundex(Word,"to") as sn, MaxValue(length(Word), length("to")) as L FROM SimilarSoundingWords WHERE sn = 1;
 ```
 Returns the value that is the highest of the two input arguments.
+
+## MaxLength 
+``` SQL
+SELECT Word, soundex(Word,"to") as sn, MaxLength(Word, "to") as L FROM SimilarSoundingWords WHERE sn = 1;
+```
+Returns the value that is the longest length of the two input arguments.
+
+
+## MinValue 
+``` SQL
+SELECT Word, soundex(Word,"to") as sn, MinValue(length(Word), length("to")) as L FROM SimilarSoundingWords WHERE sn = 1;
+```
+Returns the value that is the minimum of the two input arguments.
+
+## MinLength 
+``` SQL
+SELECT Word, soundex(Word,"to") as sn, MinLength(Word, "to") as L FROM SimilarSoundingWords WHERE sn = 1;
+```
+Returns the value that is the shortest length of the two input arguments.
 
 ## TanimotoCoefficientDistance
 ``` SQL
