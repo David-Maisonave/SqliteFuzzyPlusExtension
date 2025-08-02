@@ -151,19 +151,91 @@ test similar phrase
 
 ## SameRSound
 ``` SQL
-SameRSound(str)
+SELECT Word, SameRSound(Word,"two") sn FROM SimilarSoundingWords;
 ```
 SameRSound (aka rsoundex) Uses SQLean fuzzy rsoundex to compare to strings, and returns 1 if rsoundex values are equal.
 If a 3rd argument is given, the 3rd argument is used to determine what distance method is used to compare the 2 rsoundex values.
+
+#### Example#1:
+``` SQL
+SELECT Word, SameRSound(Word,"two") sn FROM SimilarSoundingWords WHERE sn = 1;
+```
+**Results**:
+```
+to	1
+too	1
+two	1
+```
+
+Match FAILS:
+```
+top
+tool
+cool
+```
+
+
+#### Example#2:
+``` SQL
+SELECT Word, rsoundex(Word,"there") sn FROM SimilarSoundingWords WHERE sn = 1;
+```
+**Results**:
+```
+there	1
+they're	1
+```
+
+#### Example#3:
+``` SQL
+SELECT Word, rsoundex(Word,"pair") sn FROM SimilarSoundingWords WHERE sn = 1;
+```
+**Results**:
+```
+pair	1
+pear	1
+```
 
 For more information see:[fuzzy_rsoundex](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#phonetic-codes)
 
 ## SameSound
 ``` SQL
-SameSound(str)
+SELECT Word, SameSound(Word,"there") sn FROM SimilarSoundingWords;
 ```
 SameSound (aka soundex) uses SQLean fuzzy soundex to compare to strings, and returns 1 if soundex values are equal.
 If a 3rd argument is given, the 3rd argument is used to determine what distance method is used to compare the 2 soundex values.
+
+
+#### Example#1:
+``` SQL
+SELECT Word, SameSound(Word,"there") sn FROM SimilarSoundingWords WHERE sn = 1;
+```
+**Results**:
+```
+there	1
+their	1
+they're	1
+```
+
+#### Example#2:
+``` SQL
+SELECT Word, soundex(Word,"see") sn FROM SimilarSoundingWords WHERE sn = 1;
+```
+**Results**:
+```
+see	1
+sea	1
+
+```
+
+#### Example#3:
+``` SQL
+SELECT Word, rsoundex(Word,"pair") sn FROM SimilarSoundingWords WHERE sn = 1;
+```
+**Results**:
+```
+pair	1
+pear	1
+```
 
 For more information see: [fuzzy_soundex](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#phonetic-codes)
 
