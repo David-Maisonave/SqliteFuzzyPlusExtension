@@ -465,7 +465,6 @@ extern "C"
         SQLITE3_CREATE_FUNCTION2(iEdlibDistance);
         SQLITE3_CREATE_FUNCTION2(EditDistance);
         SQLITE3_CREATE_FUNCTION2(SameName);
-        SQLITE3_CREATE_FUNCTION2(CaverPhone);
         
         // Methods to set default distance functions either by name (string) or by ID (integer)
         SQLITE3_CREATE_FUNCTION1(SetDefaultDistanceMethod);
@@ -518,6 +517,8 @@ extern "C"
         SQLITE3_CREATE_FUNCTION_ALIAS2(Edlib, EdlibDistance);
         SQLITE3_CREATE_FUNCTION_ALIAS2(iEdlib, iEdlibDistance);
         SQLITE3_CREATE_FUNCTION_ALIAS2(PhraseDiff, PhraseSimplifiedDiff);
+        SQLITE3_CREATE_FUNCTION_ALIAS2(CaverPhone_CS, CaverPhone);
+        SQLITE3_CREATE_FUNCTION_ALIAS2(CaverPhone2, CaverPhone);
         SQLITE3_CREATE_FUNCTION_ALIAS2(Regex, RegexReplace);
         SQLITE3_CREATE_FUNCTION_ALIAS2(XMatch, RegexMatch);
         SQLITE3_CREATE_FUNCTION_ALIAS2(XSearch, RegexSearch);
