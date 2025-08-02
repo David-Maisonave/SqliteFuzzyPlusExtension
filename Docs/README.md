@@ -38,6 +38,10 @@ When HowSimilar and Distance are called only using 2 argumenets, the default dis
 The default distance method is also used if these functions are called with the 3rd argument equal to zero.
 
 Functions like SameSound and SameRSound will also use the default distance method if a 3rd argument is passed with a zero value.
+#### Example#1 Set to build-in default method:
+``` SQL
+SetDefaultDistanceMethod(0);
+```
 
 ## HowSimilar
 ``` SQL
