@@ -64,7 +64,7 @@ See [UsingFuzzyFunctionsOutsideSQLite.md](https://github.com/David-Maisonave/Sql
 - [iEdlibDistance](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#iEdlibDistance) - (alias = iEdlib)
 
 ## Othe Fuzzy Functions
-- [CaverPhone_CS](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#CaverPhone_CS) - (alias = CaverPhone2)
+- [CaverPhone2](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#CaverPhone2) - (alias = CaverPhone_CS)
 - [Distance](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#Distance)
 - [fuzzy_phonetic](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#fuzzy_phonetic) - (alias = phonetic_hash)
 - [fuzzy_rsoundex](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#phonetic-codes) - (alias = rsoundex)
