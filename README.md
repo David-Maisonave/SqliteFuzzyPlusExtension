@@ -83,7 +83,7 @@ See [UsingFuzzyFunctionsOutsideSQLite.md](https://github.com/David-Maisonave/Sql
 - [SetDefaultDistanceMethod](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#SetDefaultDistanceMethod)
 
 ## Miscellaneous Functions
-These minimum and maximum functions are included to allow developers to implement custom percentage distance.
+These minimum and maximum functions are included to allow developers to create custom percentage distance in a query.
 - [MaxValue](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#MaxValue) - (alias = MaxVal)
 - [MaxLength](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#MaxLength) - (alias = MaxLen)
 - [MinValue](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#MinValue) - (alias = MinVal)
