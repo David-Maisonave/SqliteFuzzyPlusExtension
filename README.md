@@ -122,3 +122,20 @@ Here's a list of the non-fuzzy functions.
 - SQL examples are listed in the following link: [Examples](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs/Examples).
 - Other examples will be posted before the non-beta version is posted.
 
+# ToDo
+- Add the following additioinal fuzzy logic.
+  - BlockDistance
+  - ChapmanLengthDeviation
+  - ChapmanMeanLength
+  - EuclideanDistance
+  - MatchingCoefficient
+  - MongeElkan
+  - QGramsDistance
+  - SmithWaterman
+  - SmithWatermanGotoh
+  - SmithWatermanGotohWindowedAffine
+- Add additional documentation for each function with examples.
+- Add more phonetic functions to the CSharp code. The C# code should have at least one version of all the SQLean phonetic functions.
+- Create C example project that attaches to the extension.
+- Try to figureout a way to load the extension to [DB Browser for SQLite]() without having to copy the **FuzzyPlusCSharp.dll** to the same folder as the executable.
+- Add an example C# project that uses the C# fuzzy functions with SQLite without having to attach extension.
