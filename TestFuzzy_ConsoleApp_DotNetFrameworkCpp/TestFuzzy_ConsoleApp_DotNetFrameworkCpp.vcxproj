@@ -152,6 +152,11 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FuzzyPlusCSharp\FuzzyPlusCSharp.csproj">
+      <Project>{b1de0268-d7e9-4868-bf3c-6298e5905597}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

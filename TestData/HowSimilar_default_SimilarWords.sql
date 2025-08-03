@@ -1,3 +1,1 @@
-select Words
-, HowSimilar(Words, "David", 4) as lev
-FROM SimilarWords
+select Words, HowSimilar(Words, "David") as lev FROM SimilarWords

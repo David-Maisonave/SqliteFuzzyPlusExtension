@@ -38,8 +38,11 @@ namespace FuzzyPlusCSharp
     public static class Fuzzy
     {
         #region DistanceMethod definitions
-        public const int CASE_INSENSITIVE = 128;
-        public const int CPP_ONLY_FUZZY = 64;
+        public const int CASE_INSENSITIVE = 256;
+        public const int CPP_ONLY_FUZZY = 128;
+        public const int TOKEN_METHODS = 64;
+        public const int PHRASE_METHODS = TOKEN_METHODS + 32;
+        public const int METHODS_UP_FOR_DELETION = PHRASE_METHODS + 16;
         public enum DistanceMethod
         {
             UseDefaultDistanceMethod = 0,
@@ -59,15 +62,6 @@ namespace FuzzyPlusCSharp
             NormalizedLevenshteinDistance,
             Levenshtein2Distance,
             TanimotoCoefficientDistance,
-            EditDistance,
-
-            //Token methods
-            CosineSimilarity,
-            JaccardSimilarity,
-            // Phrase token methods which are all case insensitive only
-            PhraseTokenize,
-            SimplePhraseTokenize,
-
             // Distance method from SimMetricsCore
             BlockDistance,
             ChapmanLengthDeviation,
@@ -79,6 +73,17 @@ namespace FuzzyPlusCSharp
             SmithWaterman,
             SmithWatermanGotoh,
             SmithWatermanGotohWindowedAffine,
+
+            //Token methods
+            CosineSimilarity = TOKEN_METHODS,
+            JaccardSimilarity,
+            
+            // Phrase token methods which are all case insensitive only
+            PhraseTokenize = PHRASE_METHODS,
+            SimplePhraseTokenize,
+
+            // EditDistance may get removed, replaced, or logic change 
+            EditDistance = METHODS_UP_FOR_DELETION,
 
             // ------------------------------------------------------------
             // These functions are NOT supported by CSharp Fuzzy class code, and are only here for C++ SqliteFuzzyPlusExtension usage.
@@ -176,7 +181,7 @@ namespace FuzzyPlusCSharp
         public enum SameSoundMethod
         {
             UseDefaultSameSoundMethod = 0,
-            Soundex,    // Default SameSound method
+            Soundex2,    // Default SameSound method
             Caverphone2, 
             // ------------------------------------------------------------
             // These functions are NOT supported by CSharp Fuzzy class code, and are only here for C++ SqliteFuzzyPlusExtension usage.
@@ -187,7 +192,7 @@ namespace FuzzyPlusCSharp
             fuzzy_rsoundex,  //Refined Soundex
             fuzzy_translit, //Transliteration
         }
-        public static SameSoundMethod DefaultSameSoundMethod { get; private set; } = SameSoundMethod.Soundex;
+        public static SameSoundMethod DefaultSameSoundMethod { get; private set; } = SameSoundMethod.Soundex2;
         public static void SetDefaultSameSoundMethod(SameSoundMethod sameSoundMethod) => DefaultSameSoundMethod = sameSoundMethod;
         public static SameSoundMethod GetSameSoundMethod(int sameSoundMethod_ID) => (SameSoundMethod)sameSoundMethod_ID;
         public static SameSoundMethod GetSameSoundMethod(string sameSoundMethod_Name)
@@ -990,48 +995,6 @@ namespace FuzzyPlusCSharp
             double Nc = source1.Intersect(source2).Count();
             return Nc / (Na + Nb - Nc);
         }
-        public static bool Compare(string source1, string source2, DistanceMethod CompareMethod, bool isVerySimilar)
-        {
-            switch (CompareMethod)
-            {
-                case DistanceMethod.SameSound_StrCmp:
-                    return source1 == source2;
-                default:
-                    return isVerySimilar? IsVerySimilar(source1, source2, CompareMethod) : IsSimilar(source1, source2, CompareMethod);
-            }
-        }
-        public static bool Caverphone2(this string source1, string source2,
-            DistanceMethod distanceMethod = DistanceMethod.SameSound_StrCmp,
-            bool isVerySimilar = true)
-        {
-            string s1 = Caverphone.BuildKey(source1);
-            string s2 = Caverphone.BuildKey(source2);
-            return Compare(s1, s2, distanceMethod, isVerySimilar);
-        }
-        public static bool CompareSoundex(this string source1, string source2,
-            DistanceMethod distanceMethod,
-            bool isVerySimilar)
-        {
-            string s1 = Soundex.Generate(source1);
-            string s2 = Soundex.Generate(source2);
-            return Compare(s1, s2, distanceMethod, isVerySimilar);
-        }
-        public static bool SameSound(this string source1, string source2, 
-            SameSoundMethod sameSoundMethod = SameSoundMethod.UseDefaultSameSoundMethod,
-            DistanceMethod distanceMethod = DistanceMethod.SameSound_StrCmp,
-            bool isVerySimilar = true)
-        {
-            if (sameSoundMethod == SameSoundMethod.UseDefaultSameSoundMethod)
-                sameSoundMethod = DefaultSameSoundMethod;
-            switch (sameSoundMethod)
-            {
-                case SameSoundMethod.Caverphone2:
-                    return Caverphone2(source1, source2, distanceMethod, isVerySimilar);
-                case SameSoundMethod.Soundex:
-                default:
-                    return CompareSoundex(source1, source2, distanceMethod, isVerySimilar);
-            }
-        }
         // Function to find the minimum number of operations to convert source1 to source2
         public static int EditDistance(string source1, string source2, bool isCaseSensitive = true)
         {
@@ -1102,6 +1065,71 @@ namespace FuzzyPlusCSharp
             return 0;
         }
         #endregion Distance functions
+        #region Phonetic (sound) functions
+        public static bool Caverphone2(this string source1, string source2,
+            DistanceMethod distanceMethod = DistanceMethod.SameSound_StrCmp,
+            bool isVerySimilar = true)
+        {
+            string s1 = Caverphone.BuildKey(source1);
+            string s2 = Caverphone.BuildKey(source2);
+            return Compare(s1, s2, distanceMethod, isVerySimilar);
+        }
+        public static string Caverphone2(string source1)
+        {
+            return Caverphone.BuildKey(source1);
+        }
+        public static bool Soundex2(this string source1, string source2,
+            DistanceMethod distanceMethod,
+            bool isVerySimilar)
+        {
+            string s1 = Soundex.Generate(source1);
+            string s2 = Soundex.Generate(source2);
+            return Compare(s1, s2, distanceMethod, isVerySimilar);
+        }
+        public static string Soundex2(string source1)
+        {
+            return Soundex.Generate(source1);
+        }
+        public static string GetSoundCode(string source1, SameSoundMethod sameSoundMethod = SameSoundMethod.UseDefaultSameSoundMethod)
+        {
+            if (sameSoundMethod == SameSoundMethod.UseDefaultSameSoundMethod)
+                sameSoundMethod = DefaultSameSoundMethod;
+            switch (sameSoundMethod)
+            {
+                case SameSoundMethod.Caverphone2:
+                    return Caverphone2(source1);
+                case SameSoundMethod.Soundex2:
+                default:
+                    return Soundex2(source1);
+            }
+        }
+        public static bool SameSound(this string source1, string source2,
+            SameSoundMethod sameSoundMethod = SameSoundMethod.UseDefaultSameSoundMethod,
+            DistanceMethod distanceMethod = DistanceMethod.SameSound_StrCmp,
+            bool isVerySimilar = true)
+        {
+            if (sameSoundMethod == SameSoundMethod.UseDefaultSameSoundMethod)
+                sameSoundMethod = DefaultSameSoundMethod;
+            switch (sameSoundMethod)
+            {
+                case SameSoundMethod.Caverphone2:
+                    return Caverphone2(source1, source2, distanceMethod, isVerySimilar);
+                case SameSoundMethod.Soundex2:
+                default:
+                    return Soundex2(source1, source2, distanceMethod, isVerySimilar);
+            }
+        }
+        public static bool Compare(string source1, string source2, DistanceMethod CompareMethod, bool isVerySimilar)
+        {
+            switch (CompareMethod)
+            {
+                case DistanceMethod.SameSound_StrCmp:
+                    return source1 == source2;
+                default:
+                    return isVerySimilar ? IsVerySimilar(source1, source2, CompareMethod) : IsSimilar(source1, source2, CompareMethod);
+            }
+        }
+        #endregion Phonetic (sound) functions
         #region Miscellaneous functions
         // ToDo: Consider adding the following fuzzy_score, vector search, MD5, UUID, sha256, date parser, JSON, path handler, URL handler, undo-redo
         //      math -> https://github.com/uzbekdev1/SqliteExtension
