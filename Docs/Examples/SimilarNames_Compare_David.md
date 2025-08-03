@@ -1,0 +1,32 @@
+``` SQL
+select Name
+-- Misc C++ fuzzy functions
+, SameName(Name, "David") as sn
+, JaroWin(Name, "David") as JaroWin, LCS(Name, "David") as LCS, LCSq(Name, "David") as LCSq
+-- Need to fix the following distance functions so that they return a percentage of the difference 
+, Lev(Name, "David") as Lev, DamLev(Name, "David") as DamLev, PhraseDiff(Name, "David") as PhraseDiff
+-- Need to fix the following distance functions.  They're returning 0.0 on strings that don't match
+, OverlapCoef(Name, "David") as OverlapCoef, Jaccard(Name, "David") as Jaccard, SorensenDice(Name, "David") as SorensenDice, Ratcliff(Name, "David") as Ratcliff, Tanimoto(Name, "David") as Tanimoto
+-- Need to fix the following distance functions.  They're returning 1 instead of zero for a full match
+, HammDist(Name, "David") as HammDist, Jaro(Name, "David") as Jaro, NormLev(Name, "David") as NormLev, Lev2(Name, "David") as Lev2
+-- SQLean Fuzzy functions
+, hamming(Name, "David") as ham, dlevenshtein(Name, "David") as dleve, levenshtein(Name, "David") as flev
+, jaro_winkler(Name, "David") as fjw, osa_distance(Name, "David") as fosa, edit_distance(Name, "David") as edi
+FROM SimilarNames
+```
+**Results**:
+```
+David Jorge	1	0.890909075737	0.0	0.0	6	6	1	0.0	0.545454502105713	0.375	0.375	0.545454502105713	-1.0	0.666666686534882	1.79999995231628	0.818181812763214	-1	6	6	0.872727272727273	6	520
+DavidJorge	1	0.899999976158142	0.0	0.0	5	5	1	0.0	0.5	0.333333313465118	0.333333313465118	0.5	-1.0	0.666666686534882	1.60000002384186	0.800000011920929	-1	5	5	0.883333333333333	5	420
+david jorge	1	0.5545454621315	0.199999988079071	0.199999988079071	7	7	1	0.199999988079071	0.636363625526428	0.5	0.5	0.666666626930237	-1.0	0.25	1.79999995231628	0.818181812763214	-1	7	7	0.554545454545455	7	600
+davidjorge	1	0.566666662693024	0.199999988079071	0.199999988079071	6	6	2	0.199999988079071	0.600000023841858	0.466666638851166	0.466666638851166	0.636363625526428	-1.0	0.25	1.60000002384186	0.800000011920929	-1	6	6	0.566666666666667	6	500
+David E. Jorge	1	0.871428608894348	0.0	0.0	9	9	2	0.0	0.615384578704834	0.473684191703796	0.473684191703796	0.642857134342194	-1.0	0.666666686534882	2.40000009536743	0.857142865657806	-1	9	9	0.85	9	820
+David E. Gorge	1	0.871428608894348	0.0	0.0	9	9	2	0.0	0.615384578704834	0.473684191703796	0.473684191703796	0.642857134342194	-1.0	0.666666686534882	2.40000009536743	0.857142865657806	-1	9	9	0.85	9	820
+Bob E. Gorge	0	0.0	1.0	1.0	12	12	4	1.0	1.0	1.0	1.0	1.0	-1.0	0.0	2.0	0.833333313465118	-1	12	12	0.0	12	945
+Bob Egor Gorge	0	0.0	1.0	1.0	14	14	4	1.0	1.0	1.0	1.0	1.0	-1.0	0.0	2.40000009536743	0.857142865657806	-1	14	14	0.0	14	1145
+David Egor Gorge	1	0.862500011920929	0.0	0.0	11	11	2	0.0	0.583333373069763	0.523809552192688	0.523809552192688	0.6875	-1.0	0.666666686534882	2.79999995231628	0.875	-1	11	11	0.839583333333333	11	940
+D. Jorge	0	0.441666692495346	0.800000011920929	0.800000011920929	7	7	3	0.800000011920929	0.916666686534882	0.846153855323792	0.846153855323792	0.916666686534882	-1.0	0.333333343267441	1.20000004768372	0.75	-1	7	7	0.4975	7	560
+Jorge	0	0.0	1.0	1.0	5	5	2	1.0	1.0	1.0	1.0	1.0	0.0	0.0	0.600000023841858	0.600000023841858	5	5	5	0.0	5	330
+David	1	1.0	0.0	0.0	0	0	0	0.0	0.0	0.0	0.0	0.0	1.0	1.0	1.0	1.0	0	0	0	1.0	0	0
+
+```

@@ -56,6 +56,47 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TestData\TestSqlStatements.txt = TestData\TestSqlStatements.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\README.md = Docs\README.md
+		Docs\UsingFuzzyFunctionsOutsideSQLite.md = Docs\UsingFuzzyFunctionsOutsideSQLite.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{8BD350D3-C072-40F0-BF92-A4F0519C852E}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\Examples\DistanceFunction_SimilarPhrase.md = Docs\Examples\DistanceFunction_SimilarPhrase.md
+		Docs\Examples\DistanceFunction_SimilarWords.md = Docs\Examples\DistanceFunction_SimilarWords.md
+		Docs\Examples\Distance_bynumber_SimilarNames.md = Docs\Examples\Distance_bynumber_SimilarNames.md
+		Docs\Examples\Distance_bynumber_SimilarPhase.md = Docs\Examples\Distance_bynumber_SimilarPhase.md
+		Docs\Examples\Distance_bynumber_SimilarWords.md = Docs\Examples\Distance_bynumber_SimilarWords.md
+		Docs\Examples\HasCharInSameOrder.md = Docs\Examples\HasCharInSameOrder.md
+		Docs\Examples\HasCharInSameOrder_SimilarPhrase.md = Docs\Examples\HasCharInSameOrder_SimilarPhrase.md
+		Docs\Examples\HowSimilarByID_SimilarPhrase.md = Docs\Examples\HowSimilarByID_SimilarPhrase.md
+		Docs\Examples\HowSimilarByName_aliasname_SimilarPhrase.md = Docs\Examples\HowSimilarByName_aliasname_SimilarPhrase.md
+		Docs\Examples\HowSimilarByName_oneonly_SimilarPhrase.md = Docs\Examples\HowSimilarByName_oneonly_SimilarPhrase.md
+		Docs\Examples\HowSimilarByName_SimilarPhrase.md = Docs\Examples\HowSimilarByName_SimilarPhrase.md
+		Docs\Examples\HowSimilarByName_SimilarWords.md = Docs\Examples\HowSimilarByName_SimilarWords.md
+		Docs\Examples\HowSimilar_bynumber_SimilarNames.md = Docs\Examples\HowSimilar_bynumber_SimilarNames.md
+		Docs\Examples\HowSimilar_bynumber_SimilarPhase.md = Docs\Examples\HowSimilar_bynumber_SimilarPhase.md
+		Docs\Examples\HowSimilar_bynumber_SimilarWords.md = Docs\Examples\HowSimilar_bynumber_SimilarWords.md
+		Docs\Examples\HowSimilar_default_SimilarWords.md = Docs\Examples\HowSimilar_default_SimilarWords.md
+		Docs\Examples\HowSimilar_SimilarNames.md = Docs\Examples\HowSimilar_SimilarNames.md
+		Docs\Examples\HowSimilar_SimilarWords.md = Docs\Examples\HowSimilar_SimilarWords.md
+		Docs\Examples\MaxLen.md = Docs\Examples\MaxLen.md
+		Docs\Examples\MaxValue_SimilarSoundingWords.md = Docs\Examples\MaxValue_SimilarSoundingWords.md
+		Docs\Examples\NormalizeNum.md = Docs\Examples\NormalizeNum.md
+		Docs\Examples\SameName.md = Docs\Examples\SameName.md
+		Docs\Examples\SameSound_SimilarSoundingWords.md = Docs\Examples\SameSound_SimilarSoundingWords.md
+		Docs\Examples\SameSound_WithDifferentQtyArguments_SimilarSoundingWords.md = Docs\Examples\SameSound_WithDifferentQtyArguments_SimilarSoundingWords.md
+		Docs\Examples\SimilarNames_Compare_David.md = Docs\Examples\SimilarNames_Compare_David.md
+		Docs\Examples\SimilarNames_Compare_DavidJorge.md = Docs\Examples\SimilarNames_Compare_DavidJorge.md
+		Docs\Examples\soundex_and_rsoundex_SimilarWords.md = Docs\Examples\soundex_and_rsoundex_SimilarWords.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{535B0801-14D9-45A9-A424-7F31C48FB335}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DBBrowserSQLite", "DBBrowserSQLite", "{59913A39-BDB4-4DD9-AFA6-6B07D6DFF9C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +194,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8BD350D3-C072-40F0-BF92-A4F0519C852E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{535B0801-14D9-45A9-A424-7F31C48FB335} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{59913A39-BDB4-4DD9-AFA6-6B07D6DFF9C1} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {76813B26-AC26-4E45-9223-DF2DDC17907D}
