@@ -10,6 +10,7 @@
   - SetDefaultSameSoundMethod
   - GetSameSoundMethod
 ### 0.1.2
+- Added BlockDistance, ChapmanLengthDeviation, ChapmanMeanLength, EuclideanDistance, MatchingCoefficient, MongeElkan, QGramsDistance, SmithWaterman, SmithWatermanGotoh, and SmithWatermanGotohWindowedAffine.
 - 
 
 

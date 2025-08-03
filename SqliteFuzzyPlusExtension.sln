@@ -97,6 +97,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DBBrowserSQLite", "DBBrowserSQLite", "{59913A39-BDB4-4DD9-AFA6-6B07D6DFF9C1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "History", "History", "{1AA591FF-A2E6-40C1-83E1-6BAE47DB20F7}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\version_history\README.md = Docs\version_history\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -199,6 +204,7 @@ Global
 		{8BD350D3-C072-40F0-BF92-A4F0519C852E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{535B0801-14D9-45A9-A424-7F31C48FB335} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{59913A39-BDB4-4DD9-AFA6-6B07D6DFF9C1} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{1AA591FF-A2E6-40C1-83E1-6BAE47DB20F7} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {76813B26-AC26-4E45-9223-DF2DDC17907D}

@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+using static FuzzyPlusCSharp.SmithWatermanGotohWindowedAffine;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace FuzzyPlusCSharp
@@ -26,8 +28,8 @@ namespace FuzzyPlusCSharp
         public bool IsSomeWhatSimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, 0.5f, distanceMethod); // Is 50% similar
         public bool IsSlightlySimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, 0.3f, distanceMethod); // Is 30% similar
         public bool IsHardlySimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, 0.1f, distanceMethod); // Is 10% similar
-        public bool IsMatch(string source1, string source2, float desiredSimilarity) => Fuzzy.HowSimilar(source1, source2, distanceMethod) >= desiredSimilarity;
-        public float HowSimilar(string source1, string source2) => Fuzzy.HowSimilar(source1, source2, distanceMethod);
+        public bool IsMatch(string source1, string source2, double desiredSimilarity) => Fuzzy.HowSimilar(source1, source2, distanceMethod) >= desiredSimilarity;
+        public double HowSimilar(string source1, string source2) => Fuzzy.HowSimilar(source1, source2, distanceMethod);
         public bool IsNotSimilar(string source1, string source2) => Fuzzy.IsNotSimilar(source1, source2, distanceMethod);
     }
     #endregion Non-Static version
@@ -66,6 +68,18 @@ namespace FuzzyPlusCSharp
             PhraseTokenize,
             SimplePhraseTokenize,
 
+            // Distance method from SimMetricsCore
+            BlockDistance,
+            ChapmanLengthDeviation,
+            ChapmanMeanLength,
+            EuclideanDistance,
+            MatchingCoefficient,
+            MongeElkan,
+            QGramsDistance,
+            SmithWaterman,
+            SmithWatermanGotoh,
+            SmithWatermanGotohWindowedAffine,
+
             // ------------------------------------------------------------
             // These functions are NOT supported by CSharp Fuzzy class code, and are only here for C++ SqliteFuzzyPlusExtension usage.
             // Sqlean Fuzzy external functions. 
@@ -103,6 +117,18 @@ namespace FuzzyPlusCSharp
             //Token methods
             iCosineSimilarity,
             iJaccardSimilarity,
+
+            // Distance method from SimMetricsCore
+            iBlockDistance,
+            iChapmanLengthDeviation,
+            iChapmanMeanLength,
+            iEuclideanDistance,
+            iMatchingCoefficient,
+            iMongeElkan,
+            iQGramsDistance,
+            iSmithWaterman,
+            iSmithWatermanGotoh,
+            iSmithWatermanGotohWindowedAffine,
 
             // ------------------------------------------------------------
             // These functions are NOT supported by CSharp Fuzzy class code, and are only here for C++ SqliteFuzzyPlusExtension usage.
@@ -198,18 +224,26 @@ namespace FuzzyPlusCSharp
         }
         #endregion SameSoundMethod
         #region Similarity functions
-        public static bool IsMatch(string source1, string source2, float desiredSimilarity, DistanceMethod distanceMethod = DistanceMethod.UseDefaultDistanceMethod) => HowSimilar(source1, source2, distanceMethod) >= desiredSimilarity;
+        public static bool IsMatch(string source1, string source2, double desiredSimilarity, DistanceMethod distanceMethod = DistanceMethod.UseDefaultDistanceMethod) => HowSimilar(source1, source2, distanceMethod) >= desiredSimilarity;
         // The following HowSimilar method is to let SQLite access to HowSimilar
         public static bool IsCaseSensitive(DistanceMethod distanceMethod) => (int)distanceMethod < CASE_INSENSITIVE;
-        public static float HowSimilar(string source1, string source2, int distanceMethod) => HowSimilar(source1, source2, GetDistanceMethod(distanceMethod));
-        public static float HowSimilar(string source1, string source2, string distanceMethod) => HowSimilar(source1, source2, GetDistanceMethod(distanceMethod));
-        public static float HowSimilar(string source1, string source2, DistanceMethod distanceMethod = DistanceMethod.UseDefaultDistanceMethod)
+        public static void FixIfIsCaseSensitive(ref string source1, ref string source2, bool isCaseSensitive)
+        {
+            if (isCaseSensitive)
+            {
+                source1 = source1.ToLower();
+                source2 = source2.ToLower();
+            }
+        }
+        public static double HowSimilar(string source1, string source2, int distanceMethod) => HowSimilar(source1, source2, GetDistanceMethod(distanceMethod));
+        public static double HowSimilar(string source1, string source2, string distanceMethod) => HowSimilar(source1, source2, GetDistanceMethod(distanceMethod));
+        public static double HowSimilar(string source1, string source2, DistanceMethod distanceMethod = DistanceMethod.UseDefaultDistanceMethod)
         {
             if (distanceMethod == DistanceMethod.UseDefaultDistanceMethod)
                 distanceMethod = DefaultDistanceMethod;
             bool isCaseSensitive = IsCaseSensitive(distanceMethod);
-            float sourceLength = Math.Max(source1.Length, source2.Length);
-            float diff;
+            double sourceLength = Math.Max(source1.Length, source2.Length);
+            double diff;
             switch (distanceMethod) 
             {
                 case DistanceMethod.Levenshtein:
@@ -281,6 +315,66 @@ namespace FuzzyPlusCSharp
                 case DistanceMethod.iEditDistance:
                     diff = EditDistance(source1, source2, isCaseSensitive);
                     break;
+                case DistanceMethod.BlockDistance:
+                case DistanceMethod.iBlockDistance:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    BlockDistance sim2 = new BlockDistance();
+                    diff = sim2.GetSimilarity(source1, source2);
+                    break;
+                case DistanceMethod.ChapmanLengthDeviation:
+                case DistanceMethod.iChapmanLengthDeviation:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    ChapmanLengthDeviation sim3 = new ChapmanLengthDeviation();
+                    diff = sim3.GetSimilarity(source1, source2);
+                    break;
+                case DistanceMethod.ChapmanMeanLength:
+                case DistanceMethod.iChapmanMeanLength:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    ChapmanMeanLength sim0 = new ChapmanMeanLength();
+                    diff = sim0.GetSimilarity(source1, source2);
+                    break;
+                case DistanceMethod.EuclideanDistance:
+                case DistanceMethod.iEuclideanDistance:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    EuclideanDistance sim4 = new EuclideanDistance();
+                    diff = sim4.GetSimilarity(source1, source2);
+                    break;
+                case DistanceMethod.MatchingCoefficient:
+                case DistanceMethod.iMatchingCoefficient:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    MatchingCoefficient sim5 = new MatchingCoefficient();
+                    diff = sim5.GetSimilarity(source1, source2);
+                    break;
+                case DistanceMethod.MongeElkan:
+                case DistanceMethod.iMongeElkan:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    MongeElkan sim6 = new MongeElkan();
+                    diff = sim6.GetSimilarity(source1, source2);
+                    break;
+                case DistanceMethod.QGramsDistance:
+                case DistanceMethod.iQGramsDistance:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    QGramsDistance sim7 = new QGramsDistance();
+                    diff = sim7.GetSimilarity(source1, source2);
+                    break;
+                case DistanceMethod.SmithWaterman:
+                case DistanceMethod.iSmithWaterman:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    SmithWaterman sim8 = new SmithWaterman();
+                    diff = sim8.GetSimilarity(source1, source2);
+                    break;
+                case DistanceMethod.SmithWatermanGotoh:
+                case DistanceMethod.iSmithWatermanGotoh:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    SmithWatermanGotoh sim9 = new SmithWatermanGotoh();
+                    diff = sim9.GetSimilarity(source1, source2);
+                    break;
+                case DistanceMethod.SmithWatermanGotohWindowedAffine:
+                case DistanceMethod.iSmithWatermanGotohWindowedAffine:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    SmithWatermanGotohWindowedAffine sim1 = new SmithWatermanGotohWindowedAffine();
+                    diff = sim1.GetSimilarity(source1, source2);
+                    break;
                 case DistanceMethod.PhraseTokenize:
                     diff = GetPhraseDifference(source1, source2);
                     sourceLength = Math.Max(GetKeywordList(ref source1).Length, GetKeywordList(ref source2).Length);
@@ -297,7 +391,7 @@ namespace FuzzyPlusCSharp
             }
             return diff == 0 ? 1.0f : (sourceLength - diff) / sourceLength;
         }
-        public static float Distance(string source1, string source2, DistanceMethod distanceMethod = DistanceMethod.UseDefaultDistanceMethod)
+        public static double Distance(string source1, string source2, DistanceMethod distanceMethod = DistanceMethod.UseDefaultDistanceMethod)
         {
             if (distanceMethod == DistanceMethod.UseDefaultDistanceMethod)
                 distanceMethod = DefaultDistanceMethod;
@@ -358,6 +452,56 @@ namespace FuzzyPlusCSharp
                 case DistanceMethod.EditDistance:
                 case DistanceMethod.iEditDistance:
                     return EditDistance(source1, source2, isCaseSensitive);
+                case DistanceMethod.BlockDistance:
+                case DistanceMethod.iBlockDistance:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    BlockDistance sim2 = new BlockDistance();
+                    return sim2.GetSimilarity(source1, source2);
+                case DistanceMethod.ChapmanLengthDeviation:
+                case DistanceMethod.iChapmanLengthDeviation:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    ChapmanLengthDeviation sim3 = new ChapmanLengthDeviation();
+                    return sim3.GetSimilarity(source1, source2);
+                case DistanceMethod.ChapmanMeanLength:
+                case DistanceMethod.iChapmanMeanLength:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    ChapmanMeanLength sim0 = new ChapmanMeanLength();
+                    return sim0.GetSimilarity(source1, source2);
+                case DistanceMethod.EuclideanDistance:
+                case DistanceMethod.iEuclideanDistance:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    EuclideanDistance sim4 = new EuclideanDistance();
+                    return sim4.GetSimilarity(source1, source2);
+                case DistanceMethod.MatchingCoefficient:
+                case DistanceMethod.iMatchingCoefficient:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    MatchingCoefficient sim5 = new MatchingCoefficient();
+                    return sim5.GetSimilarity(source1, source2);
+                case DistanceMethod.MongeElkan:
+                case DistanceMethod.iMongeElkan:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    MongeElkan sim6 = new MongeElkan();
+                    return sim6.GetSimilarity(source1, source2);
+                case DistanceMethod.QGramsDistance:
+                case DistanceMethod.iQGramsDistance:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    QGramsDistance sim7 = new QGramsDistance();
+                    return sim7.GetSimilarity(source1, source2);
+                case DistanceMethod.SmithWaterman:
+                case DistanceMethod.iSmithWaterman:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    SmithWaterman sim8 = new SmithWaterman();
+                    return sim8.GetSimilarity(source1, source2);
+                case DistanceMethod.SmithWatermanGotoh:
+                case DistanceMethod.iSmithWatermanGotoh:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    SmithWatermanGotoh sim9 = new SmithWatermanGotoh();
+                    return sim9.GetSimilarity(source1, source2);
+                case DistanceMethod.SmithWatermanGotohWindowedAffine:
+                case DistanceMethod.iSmithWatermanGotohWindowedAffine:
+                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+                    SmithWatermanGotohWindowedAffine sim1 = new SmithWatermanGotohWindowedAffine();
+                    return sim1.GetSimilarity(source1, source2);
                 case DistanceMethod.PhraseTokenize:
                     return GetPhraseDifference(source1, source2);
                 case DistanceMethod.SimplePhraseTokenize:
@@ -368,8 +512,8 @@ namespace FuzzyPlusCSharp
                     return DamerauLevenshteinDistance(source1, source2, isCaseSensitive);
             }
         }
-        public static float Distance(string source1, string source2, int distanceMethod) => Distance(source1, source2, GetDistanceMethod(distanceMethod));
-        public static float Distance(string source1, string source2, string distanceMethod) => Distance(source1, source2, GetDistanceMethod(distanceMethod));
+        public static double Distance(string source1, string source2, int distanceMethod) => Distance(source1, source2, GetDistanceMethod(distanceMethod));
+        public static double Distance(string source1, string source2, string distanceMethod) => Distance(source1, source2, GetDistanceMethod(distanceMethod));
         public static bool IsNotSimilar(string source1, string source2) => IsNotSimilar(source1, source2, DistanceMethod.UseDefaultDistanceMethod);
         public static bool IsNotSimilar(string source1, string source2, DistanceMethod distanceMethod)
         {
@@ -548,12 +692,12 @@ namespace FuzzyPlusCSharp
         /// <returns>
         ///     Returns the Jaro-Winkler distance between the specified strings. The distance is symmetric and will fall in the range 0 (perfect match) to 1 (no match). 
         /// </returns>
-        public static float JaroWinklerPercentage(string source1, string source2, bool isCaseSensitive = true)
+        public static double JaroWinklerPercentage(string source1, string source2, bool isCaseSensitive = true)
         {
             return 1.0f - JaroWinklerDistance(source1, source2, isCaseSensitive);
         }
         /// The Winkler modification will not be applied unless the percent match was at or above the JaroWinklerWeightThreshold percent without the modification. Winkler's paper used a default value of 0.7
-        private static readonly float JaroWinklerWeightThreshold = 0.7f;
+        private static readonly double JaroWinklerWeightThreshold = 0.7f;
         /// Size of the prefix to be considered by the Winkler modification. Winkler's paper used a default value of 4
         private static readonly int JaroWinklerNumChars = 4;
         /// <summary>
@@ -564,7 +708,7 @@ namespace FuzzyPlusCSharp
         /// <returns>
         /// Returns the Jaro-Winkler distance between the specified strings. The distance is symmetric and will fall in the range 0 (no match) to 1 (perfect match). 
         /// </returns>
-        public static float JaroWinklerDistance(string source1, string source2, bool isCaseSensitive = true)
+        public static double JaroWinklerDistance(string source1, string source2, bool isCaseSensitive = true)
         {
             int source1Length = source1.Length;
             int source2Length = source2.Length;
@@ -610,8 +754,8 @@ namespace FuzzyPlusCSharp
                 ++k;
             }
             int lNumTransposed = lNumHalfTransposed / 2;
-            float lNumCommonD = lNumCommon;
-            float lWeight = ((lNumCommonD / source1Length) + (lNumCommonD / source2Length) + ((lNumCommon - lNumTransposed) / lNumCommonD)) / 3.0f;
+            double lNumCommonD = lNumCommon;
+            double lWeight = ((lNumCommonD / source1Length) + (lNumCommonD / source2Length) + ((lNumCommon - lNumTransposed) / lNumCommonD)) / 3.0f;
             if (lWeight <= JaroWinklerWeightThreshold) 
                 return lWeight;
             int lMax = Math.Min(JaroWinklerNumChars, Math.Min(source1.Length, source2.Length));
@@ -647,49 +791,49 @@ namespace FuzzyPlusCSharp
             }
             return returnStr;
         }
-        public static float OverlapCoefficientDistance(this string source1, string source2, bool isCaseSensitive = true)
+        public static double OverlapCoefficientDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
             if (!isCaseSensitive)
             {
                 source1 = source1.ToLower();
                 source2 = source2.ToLower();
             }
-            return 1.0f - (float)source1.OverlapCoefficient(source2);
+            return 1.0f - (double)source1.OverlapCoefficient(source2);
         }
         public static double OverlapCoefficient(this string source1, string source2) => Convert.ToDouble(source1.Intersect(source2).Count()) / Convert.ToDouble(Math.Min(source1.Length, source2.Length));
-        public static float JaccardDistance(this string source1, string source2, bool isCaseSensitive = true)
+        public static double JaccardDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
             if (!isCaseSensitive)
             {
                 source1 = source1.ToLower();
                 source2 = source2.ToLower();
             }
-            return 1.0f - (float)source1.JaccardIndex(source2);
+            return 1.0f - (double)source1.JaccardIndex(source2);
         }
 
         public static double JaccardIndex(this string source1, string source2) => Convert.ToDouble(source1.Intersect(source2).Count()) / Convert.ToDouble(source1.Union(source2).Count());
         // ToDo: Add the following distance functions to the enum list of DistanceMethods
-        public static float SorensenDiceDistance(this string source1, string source2, bool isCaseSensitive = true)
+        public static double SorensenDiceDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
             if (!isCaseSensitive)
             {
                 source1 = source1.ToLower();
                 source2 = source2.ToLower();
             }
-            return 1.0f - (float)source1.SorensenDiceIndex(source2);
+            return 1.0f - (double)source1.SorensenDiceIndex(source2);
         }
         public static double SorensenDiceIndex(this string source1, string source2) => 2 * Convert.ToDouble(source1.Intersect(source2).Count()) / Convert.ToDouble(source1.Length + source2.Length);
-        public static float RatcliffObershelpSimilarityDistance(this string source1, string source2, bool isCaseSensitive = true)
+        public static double RatcliffObershelpSimilarityDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
             if (!isCaseSensitive)
             {
                 source1 = source1.ToLower();
                 source2 = source2.ToLower();
             }
-            return 1.0f - (float)source1.RatcliffObershelpSimilarity(source2);
+            return 1.0f - (double)source1.RatcliffObershelpSimilarity(source2);
         }
         public static double RatcliffObershelpSimilarity(this string source1, string source2) => 2 * Convert.ToDouble(source1.Intersect(source2).Count()) / Convert.ToDouble(source1.Length + source2.Length);
-        public static float HammingDistance(this string source1, string source2, bool isCaseSensitive = true)
+        public static double HammingDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
             if (source1.Length != source2.Length) // Can only use HammingDiceDistance on string of equal length
                 return -1.0f;
@@ -698,7 +842,7 @@ namespace FuzzyPlusCSharp
                 source1 = source1.ToLower();
                 source2 = source2.ToLower();
             }
-            return 1.0f - ((float)source1.Hamming(source2) / (float)source2.Length);
+            return 1.0f - ((double)source1.Hamming(source2) / (double)source2.Length);
         }
         public static int Hamming(this string source1, string source2)
         {
@@ -708,14 +852,14 @@ namespace FuzzyPlusCSharp
                     distance++;
             return distance;
         }
-        public static float LongestCommonSubstringDistance(this string source1, string source2, bool isCaseSensitive = true)
+        public static double LongestCommonSubstringDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
             if (!isCaseSensitive)
             {
                 source1 = source1.ToLower();
                 source2 = source2.ToLower();
             }
-            return 1.0f - ((float)source1.GetLongestCommonSubstring(source2).Length / (float)Math.Min(source1.Length, source2.Length));
+            return 1.0f - ((double)source1.GetLongestCommonSubstring(source2).Length / (double)Math.Min(source1.Length, source2.Length));
         }
         public static string GetLongestCommonSubstring(this string source1, string source2)
         {
@@ -752,14 +896,14 @@ namespace FuzzyPlusCSharp
             }
             return stringBuilder.ToString();
         }
-        public static float LongestCommonSubsequenceDistance(this string source1, string source2, bool isCaseSensitive = true)
+        public static double LongestCommonSubsequenceDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
             if (!isCaseSensitive)
             {
                 source1 = source1.ToLower();
                 source2 = source2.ToLower();
             }
-            return 1.0f - ((float)source1.LongestCommonSubsequence(source2).Length / (float)Math.Min(source1.Length, source2.Length));
+            return 1.0f - ((double)source1.LongestCommonSubsequence(source2).Length / (double)Math.Min(source1.Length, source2.Length));
         }
         public static string LongestCommonSubsequence(this string source1, string source2)
         {
@@ -788,7 +932,7 @@ namespace FuzzyPlusCSharp
                     ? LongestCommonSubsequenceBacktrack(C, source1, source2, i, j - 1)
                     : LongestCommonSubsequenceBacktrack(C, source1, source2, i - 1, j);
         }
-        public static float JaroDistance(this string source1, string source2, bool isCaseSensitive = true)
+        public static double JaroDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
             if (!isCaseSensitive)
             {
@@ -807,9 +951,9 @@ namespace FuzzyPlusCSharp
             foreach (char character in targetIntersectSource)  
                 targetSourceIntersectAsString += character; 
             double t = sourceTargetIntersectAsString.LevenshteinDistance(targetSourceIntersectAsString, isCaseSensitive) / 2;
-            return (float)((m / source1.Length) + (m / source2.Length) + ((m - t) / m)) / 3;
+            return (double)((m / source1.Length) + (m / source2.Length) + ((m - t) / m)) / 3;
         }
-        public static float NormalizedLevenshteinDistance(this string source1, string source2, bool isCaseSensitive = true)
+        public static double NormalizedLevenshteinDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
             if (!isCaseSensitive)
             {
@@ -817,9 +961,9 @@ namespace FuzzyPlusCSharp
                 source2 = source2.ToLower();
             }
             double distance = Convert.ToDouble(Levenshtein2.NormalizedLevenshteinDistance(source1, source2)) / Convert.ToDouble(Math.Max(source1.Length, source2.Length) - Levenshtein2.LevenshteinDistanceLowerBounds(source1, source2));
-            return 1.0f - (float)distance;
+            return 1.0f - (double)distance;
         }
-        public static float Levenshtein2Distance(this string source1, string source2, bool isCaseSensitive = true)
+        public static double Levenshtein2Distance(this string source1, string source2, bool isCaseSensitive = true)
         {
             if (!isCaseSensitive)
             {
@@ -828,9 +972,9 @@ namespace FuzzyPlusCSharp
             }
             //double distance = Convert.ToDouble(Levenshtein2.LevenshteinDistance2(source1, source2)) / Convert.ToDouble(Levenshtein2.LevenshteinDistanceUpperBounds(source1, source2)); // LevenshteinDistanceUpperBounds Fails!!!!
             double distance = Convert.ToDouble(Levenshtein2.LevenshteinDistance2(source1, source2)) / Convert.ToDouble(Math.Max(source1.Length, source2.Length));
-            return 1.0f - (float)distance;
+            return 1.0f - (double)distance;
         }
-        public static float TanimotoCoefficientDistance(this string source1, string source2, bool isCaseSensitive = true)
+        public static double TanimotoCoefficientDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
             if (!isCaseSensitive)
             {
@@ -839,11 +983,11 @@ namespace FuzzyPlusCSharp
             }
             return 1.0f - source1.TanimotoCoefficient(source2);
         }
-        public static float TanimotoCoefficient(this string source1, string source2)
+        public static double TanimotoCoefficient(this string source1, string source2)
         {
-            float Na = source1.Length;
-            float Nb = source2.Length;
-            float Nc = source1.Intersect(source2).Count();
+            double Na = source1.Length;
+            double Nb = source2.Length;
+            double Nc = source1.Intersect(source2).Count();
             return Nc / (Na + Nb - Nc);
         }
         public static bool Compare(string source1, string source2, DistanceMethod CompareMethod, bool isVerySimilar)
@@ -1019,15 +1163,15 @@ namespace FuzzyPlusCSharp
             return misMatchCount;
         }
         public static int PhraseSimplifiedDiff(string source1, string source2) => GetPhraseDifference(source1, source2, true);
-        public static float PhraseHowSimilar(string source1, string source2)
+        public static double PhraseHowSimilar(string source1, string source2)
         {
             string[] list1 = GetKeywordList(ref source1, false, true);
             string[] list2 = GetKeywordList(ref source2, false, true);
-            float sourceLength = Math.Max(list1.Length, list2.Length);
-            float diff = GetPhraseDifference(source1, source2,false, true);
+            double sourceLength = Math.Max(list1.Length, list2.Length);
+            double diff = GetPhraseDifference(source1, source2,false, true);
             return diff == 0 ? 1.0f : (sourceLength - diff) / sourceLength;
         }
-        public static bool IsPhraseSimilar(string source1, string source2, float desiredSimilarity) => PhraseHowSimilar(source1, source2) >= desiredSimilarity;
+        public static bool IsPhraseSimilar(string source1, string source2, double desiredSimilarity) => PhraseHowSimilar(source1, source2) >= desiredSimilarity;
         public static bool PhraseVerySimilar(string source1, string source2) => IsPhraseSimilar(source1, source2, 0.9f); // Is 90% similar
         public static bool PhraseSimilar(string source1, string source2) => IsPhraseSimilar(source1, source2, 0.75f); // Is 75% similar
         public static bool PhraseSomeWhatSimilar(string source1, string source2) => IsPhraseSimilar(source1, source2, 0.5f); // Is 50% similar
@@ -1122,7 +1266,7 @@ namespace FuzzyPlusCSharp
             /// <param name="source1">The first string.</param>
             /// <param name="source2">The second string.</param>
             /// <returns>The similarity percentage between the two strings. It's a number between 0 and 1 that represents how similar two strings are. The closer to 1, the more similar they are.</returns>
-            public static float Percentage(string source1, string source2, bool isCaseSensitive = true) => (float)CalculateSimilarity(source1, source2, isCaseSensitive);
+            public static double Percentage(string source1, string source2, bool isCaseSensitive = true) => (double)CalculateSimilarity(source1, source2, isCaseSensitive);
             public static double CalculateSimilarity(string source1, string source2, bool isCaseSensitive = true)
             {
                 if (!isCaseSensitive)
@@ -1169,7 +1313,7 @@ namespace FuzzyPlusCSharp
             /// <param name="source1">The first string.</param>
             /// <param name="source2">The second string.</param>
             /// <returns>The similarity between the two strings as a percentage.</returns>
-            public static float Percentage(string source1, string source2, bool isCaseSensitive = true) => (float)CalculateSimilarity(source1, source2, isCaseSensitive);
+            public static double Percentage(string source1, string source2, bool isCaseSensitive = true) => (double)CalculateSimilarity(source1, source2, isCaseSensitive);
             public static int[] CalculateSimilarityArray(string source1, string source2)
             {
                 int m = source1.Length;
@@ -1215,8 +1359,8 @@ namespace FuzzyPlusCSharp
         /// <param name="source1">The first string.</param>
         /// <param name="source2">The second string.</param>
         /// <returns>The similarity percentage between the two strings.</returns>
-        public static float Percentage(string source1, string source2, bool isCaseSensitive = true) => (float)CalculateSimilarity(source1, source2, isCaseSensitive);
-        public static float CalculateSimilarity(string source1, string source2, bool isCaseSensitive = true)
+        public static double Percentage(string source1, string source2, bool isCaseSensitive = true) => (double)CalculateSimilarity(source1, source2, isCaseSensitive);
+        public static double CalculateSimilarity(string source1, string source2, bool isCaseSensitive = true)
         {
             if (!isCaseSensitive)
             {
@@ -1228,11 +1372,11 @@ namespace FuzzyPlusCSharp
             // Split strings into sets of words and create HashSets
             HashSet<string> hashSet1 = new HashSet<string>(source1.Split(' '));
             HashSet<string> hashSet2 = new HashSet<string>(source2.Split(' '));
-            float originalCount1 = hashSet1.Count;
+            double originalCount1 = hashSet1.Count;
             hashSet1.IntersectWith(hashSet2);
-            float intersectionCount = hashSet1.Count;
-            float unionCount = originalCount1 + hashSet2.Count - intersectionCount;
-            return (float)intersectionCount / unionCount;
+            double intersectionCount = hashSet1.Count;
+            double unionCount = originalCount1 + hashSet2.Count - intersectionCount;
+            return (double)intersectionCount / unionCount;
         }
     }
     /// <summary>
@@ -1246,7 +1390,7 @@ namespace FuzzyPlusCSharp
         /// <param name="source1">The first string.</param>
         /// <param name="source2">The second string.</param>
         /// <returns>The similarity percentage between the two strings.</returns>
-        public static float Percentage(string source1, string source2, bool isCaseSensitive = true)
+        public static double Percentage(string source1, string source2, bool isCaseSensitive = true)
         {
             if (!isCaseSensitive)
             {
@@ -1256,8 +1400,8 @@ namespace FuzzyPlusCSharp
             if (source1 == source2)
                 return 1.0f;
             int similarityScore = CalculateSimilarity(source1, source2);
-            float maxPossibleScore = Math.Max(source1.Length, source2.Length);
-            float similarityPercentage = 1 - (similarityScore / maxPossibleScore);
+            double maxPossibleScore = Math.Max(source1.Length, source2.Length);
+            double similarityPercentage = 1 - (similarityScore / maxPossibleScore);
             return similarityPercentage;
         }
         public static int CalculateSimilarity(string source1, string source2)
@@ -1664,6 +1808,1840 @@ namespace FuzzyPlusCSharp
             }
         }
     }
+    #region Code from SimMetricsCore
+    public interface IStringMetric
+    {
+        double GetSimilarity(string firstWord, string secondWord);
+        string GetSimilarityExplained(string firstWord, string secondWord);
+        long GetSimilarityTimingActual(string firstWord, string secondWord);
+        double GetSimilarityTimingEstimated(string firstWord, string secondWord);
+        double GetUnnormalisedSimilarity(string firstWord, string secondWord);
+
+        string LongDescriptionString { get; }
+
+        string ShortDescriptionString { get; }
+    }
+    public abstract class AbstractStringMetric : IStringMetric
+    {
+        protected AbstractStringMetric()
+        {
+        }
+
+        public double[] BatchCompareSet(string[] setRenamed, string comparator)
+        {
+            if ((setRenamed == null) || (comparator == null))
+            {
+                return null;
+            }
+            double[] numArray = new double[setRenamed.Length];
+            for (int i = 0; i < setRenamed.Length; i++)
+            {
+                numArray[i] = this.GetSimilarity(setRenamed[i], comparator);
+            }
+            return numArray;
+        }
+
+        public double[] BatchCompareSets(string[] firstSet, string[] secondSet)
+        {
+            double[] numArray;
+            if ((firstSet == null) || (secondSet == null))
+            {
+                return null;
+            }
+            numArray = firstSet.Length <= secondSet.Length ? (new double[firstSet.Length]) : (new double[secondSet.Length]);
+            for (int i = 0; i < numArray.Length; i++)
+            {
+                numArray[i] = this.GetSimilarity(firstSet[i], secondSet[i]);
+            }
+            return numArray;
+        }
+
+        public abstract double GetSimilarity(string firstWord, string secondWord);
+        public abstract string GetSimilarityExplained(string firstWord, string secondWord);
+        public long GetSimilarityTimingActual(string firstWord, string secondWord)
+        {
+            long num = (DateTime.Now.Ticks - 0x89f7ff5f7b58000L) / 0x2710L;
+            this.GetSimilarity(firstWord, secondWord);
+            long num2 = (DateTime.Now.Ticks - 0x89f7ff5f7b58000L) / 0x2710L;
+            return num2 - num;
+        }
+
+        public abstract double GetSimilarityTimingEstimated(string firstWord, string secondWord);
+        public abstract double GetUnnormalisedSimilarity(string firstWord, string secondWord);
+
+        public abstract string LongDescriptionString { get; }
+
+        public abstract string ShortDescriptionString { get; }
+    }
+    public sealed class DummyStopTermHandler : ITermHandler
+    {
+        public void AddWord(string termToAdd)
+        {
+        }
+
+        public bool IsWord(string termToTest)
+        {
+            return false;
+        }
+
+        public void RemoveWord(string termToRemove)
+        {
+        }
+
+        public int NumberOfWords
+        {
+            get
+            {
+                return 0;
+            }
+        }
+
+        public string ShortDescriptionString
+        {
+            get
+            {
+                return "DummyStopTermHandler";
+            }
+        }
+
+        public StringBuilder WordsAsBuffer
+        {
+            get
+            {
+                return new StringBuilder();
+            }
+        }
+    }
+#pragma warning disable IDE0028
+#pragma warning disable IDE0079
+#pragma warning disable IDE0047
+#pragma warning disable IDE0046
+#pragma warning disable IDE0044
+#pragma warning disable IDE0032 // Use auto property
+    public class TokeniserUtilities<T>
+    {
+        private Collection<T> allTokens;
+        private int firstSetTokenCount;
+        private int firstTokenCount;
+        private int secondSetTokenCount;
+        private int secondTokenCount;
+        private Collection<T> tokenSet;
+
+        public TokeniserUtilities()
+        {
+            this.AllTokens = new Collection<T>();
+            this.tokenSet = new Collection<T>();
+        }
+
+        private void AddTokens(Collection<T> tokenList)
+        {
+            foreach (T local in tokenList)
+            {
+                this.AllTokens.Add(local);
+            }
+        }
+
+        private void AddUniqueTokens(Collection<T> tokenList)
+        {
+            foreach (T local in tokenList)
+            {
+                if (!this.tokenSet.Contains(local))
+                {
+                    this.tokenSet.Add(local);
+                }
+            }
+        }
+
+        private int CalculateUniqueTokensCount(Collection<T> tokenList)
+        {
+            Collection<T> collection = new Collection<T>();
+            foreach (T local in tokenList)
+            {
+                if (!collection.Contains(local))
+                {
+                    collection.Add(local);
+                }
+            }
+            return collection.Count;
+        }
+
+        public int CommonSetTerms()
+        {
+            return this.FirstSetTokenCount + this.SecondSetTokenCount - this.tokenSet.Count;
+        }
+
+        public int CommonTerms()
+        {
+            return this.FirstTokenCount + this.SecondTokenCount - this.AllTokens.Count;
+        }
+
+        public Collection<T> CreateMergedList(Collection<T> firstTokens, Collection<T> secondTokens)
+        {
+            this.AllTokens.Clear();
+            this.firstTokenCount = firstTokens.Count;
+            this.secondTokenCount = secondTokens.Count;
+            this.MergeLists(firstTokens);
+            this.MergeLists(secondTokens);
+            return this.AllTokens;
+        }
+
+        public Collection<T> CreateMergedSet(Collection<T> firstTokens, Collection<T> secondTokens)
+        {
+            this.tokenSet.Clear();
+            this.firstSetTokenCount = this.CalculateUniqueTokensCount(firstTokens);
+            this.secondSetTokenCount = this.CalculateUniqueTokensCount(secondTokens);
+            this.MergeIntoSet(firstTokens);
+            this.MergeIntoSet(secondTokens);
+            return this.tokenSet;
+        }
+
+        public Collection<T> CreateSet(Collection<T> tokenList)
+        {
+            this.tokenSet.Clear();
+            this.AddUniqueTokens(tokenList);
+            this.firstTokenCount = this.tokenSet.Count;
+            this.secondTokenCount = 0;
+            return this.tokenSet;
+        }
+
+        public void MergeIntoSet(Collection<T> firstTokens)
+        {
+            this.AddUniqueTokens(firstTokens);
+        }
+
+        public void MergeLists(Collection<T> firstTokens)
+        {
+            this.AddTokens(firstTokens);
+        }
+
+        public int FirstSetTokenCount
+        {
+            get
+            {
+                return this.firstSetTokenCount;
+            }
+        }
+
+        public int FirstTokenCount
+        {
+            get
+            {
+                return this.firstTokenCount;
+            }
+        }
+
+        public Collection<T> MergedTokens
+        {
+            get
+            {
+                return this.AllTokens;
+            }
+        }
+
+        public int SecondSetTokenCount
+        {
+            get
+            {
+                return this.secondSetTokenCount;
+            }
+        }
+
+        public int SecondTokenCount
+        {
+            get
+            {
+                return this.secondTokenCount;
+            }
+        }
+
+        public Collection<T> TokenSet
+        {
+            get
+            {
+                return this.tokenSet;
+            }
+        }
+
+        public Collection<T> AllTokens { get => AllTokens1; set => AllTokens1 = value; }
+        public Collection<T> AllTokens1 { get => allTokens; set => allTokens = value; }
+    }
+
+    public interface ITermHandler
+    {
+        void AddWord(string termToAdd);
+        bool IsWord(string termToTest);
+        void RemoveWord(string termToRemove);
+
+        int NumberOfWords { get; }
+
+        string ShortDescriptionString { get; }
+
+        StringBuilder WordsAsBuffer { get; }
+    }
+    public interface ITokeniser
+    {
+        Collection<string> Tokenize(string word);
+        Collection<string> TokenizeToSet(string word);
+
+        string Delimiters { get; }
+
+        string ShortDescriptionString { get; }
+
+        ITermHandler StopWordHandler { get; set; }
+    }
+    public sealed class TokeniserWhitespace : ITokeniser
+    {
+        private string delimiters = "\r\n\t \x00a0";
+        private ITermHandler stopWordHandler = new DummyStopTermHandler();
+        private TokeniserUtilities<string> tokenUtilities = new TokeniserUtilities<string>();
+
+        public Collection<string> Tokenize(string word)
+        {
+            Collection<string> collection = new Collection<string>();
+            if (word != null)
+            {
+                int length;
+                for (int i = 0; i < word.Length; i = length)
+                {
+                    char c = word[i];
+                    if (char.IsWhiteSpace(c))
+                    {
+                        i++;
+                    }
+                    length = word.Length;
+                    for (int j = 0; j < this.delimiters.Length; j++)
+                    {
+                        int index = word.IndexOf(this.delimiters[j], i);
+                        if ((index < length) && (index != -1))
+                        {
+                            length = index;
+                        }
+                    }
+                    string termToTest = word.Substring(i, length - i);
+                    if (!this.stopWordHandler.IsWord(termToTest))
+                    {
+                        collection.Add(termToTest);
+                    }
+                }
+            }
+            return collection;
+        }
+        public Collection<string> TokenizeToSet(string word)
+        {
+            return word != null ? this.tokenUtilities.CreateSet(this.Tokenize(word)) : null;
+        }
+
+        public string Delimiters
+        {
+            get
+            {
+                return this.delimiters;
+            }
+        }
+
+        public string ShortDescriptionString
+        {
+            get
+            {
+                return "TokeniserWhitespace";
+            }
+        }
+
+        public ITermHandler StopWordHandler
+        {
+            get
+            {
+                return this.stopWordHandler;
+            }
+            set
+            {
+                this.stopWordHandler = value;
+            }
+        }
+    }
+    public sealed class BlockDistance : AbstractStringMetric
+    {
+        private double estimatedTimingConstant;
+        private ITokeniser tokeniser;
+        private TokeniserUtilities<string> tokenUtilities;
+
+        public BlockDistance() : this(new TokeniserWhitespace())
+        {
+        }
+
+        public BlockDistance(ITokeniser tokeniserToUse)
+        {
+            this.estimatedTimingConstant = 6.4457140979357064E-05;
+            this.tokeniser = tokeniserToUse;
+            this.tokenUtilities = new TokeniserUtilities<string>();
+        }
+
+        private double GetActualSimilarity(Collection<string> firstTokens, Collection<string> secondTokens)
+        {
+            Collection<string> collection = this.tokenUtilities.CreateMergedList(firstTokens, secondTokens);
+            int num = 0;
+            foreach (string str in collection)
+            {
+                int num2 = 0;
+                int num3 = 0;
+                if (firstTokens.Contains(str))
+                {
+                    num2++;
+                }
+                if (secondTokens.Contains(str))
+                {
+                    num3++;
+                }
+                if (num2 > num3)
+                {
+                    num += num2 - num3;
+                }
+                else
+                {
+                    num += num3 - num2;
+                }
+            }
+            return (double)num;
+        }
+
+        public override double GetSimilarity(string firstWord, string secondWord)
+        {
+            Collection<string> firstTokens = this.tokeniser.Tokenize(firstWord);
+            Collection<string> secondTokens = this.tokeniser.Tokenize(secondWord);
+            int num = firstTokens.Count + secondTokens.Count;
+            double actualSimilarity = this.GetActualSimilarity(firstTokens, secondTokens);
+            return (num - actualSimilarity) / ((double)num);
+        }
+
+        public override string GetSimilarityExplained(string firstWord, string secondWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double GetSimilarityTimingEstimated(string firstWord, string secondWord)
+        {
+            double count = this.tokeniser.Tokenize(firstWord).Count;
+            double num2 = this.tokeniser.Tokenize(secondWord).Count;
+            return (((count + num2) * count) + ((count + num2) * num2)) * estimatedTimingConstant;
+        }
+
+        public override double GetUnnormalisedSimilarity(string firstWord, string secondWord)
+        {
+            Collection<string> firstTokens = this.tokeniser.Tokenize(firstWord);
+            Collection<string> secondTokens = this.tokeniser.Tokenize(secondWord);
+            return this.GetActualSimilarity(firstTokens, secondTokens);
+        }
+
+        public override string LongDescriptionString
+        {
+            get
+            {
+                return "Implements the Block distance algorithm whereby vector space block distance is used to determine a similarity";
+            }
+        }
+
+        public override string ShortDescriptionString
+        {
+            get
+            {
+                return "BlockDistance";
+            }
+        }
+    }
+    public sealed class ChapmanLengthDeviation : AbstractStringMetric
+    {
+        public override double GetSimilarity(string firstWord, string secondWord)
+        {
+            if ((firstWord == null) || (secondWord == null))
+            {
+                return 0.0;
+            }
+            double length = firstWord.Length;
+            double num2 = secondWord.Length;
+            return length >= num2 ? num2 / length : length / num2;
+        }
+
+        public override string GetSimilarityExplained(string firstWord, string secondWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double GetSimilarityTimingEstimated(string firstWord, string secondWord)
+        {
+            return 0.0;
+        }
+
+        public override double GetUnnormalisedSimilarity(string firstWord, string secondWord)
+        {
+            return this.GetSimilarity(firstWord, secondWord);
+        }
+
+        public override string LongDescriptionString
+        {
+            get
+            {
+                return "Implements the Chapman Length Deviation algorithm whereby the length deviation of the word strings is used to determine if the strings are similar in size - This approach is not intended to be used single handedly but rather alongside other approaches";
+            }
+        }
+
+        public override string ShortDescriptionString
+        {
+            get
+            {
+                return "ChapmanLengthDeviation";
+            }
+        }
+    }
+    public sealed class ChapmanMeanLength : AbstractStringMetric
+    {
+        private const int chapmanMeanLengthMaxString = 500;
+        private const double defaultMismatchScore = 0.0;
+        private const double defaultPerfectScore = 1.0;
+
+        public override double GetSimilarity(string firstWord, string secondWord)
+        {
+            if ((firstWord == null) || (secondWord == null))
+            {
+                return 0.0;
+            }
+            double num = secondWord.Length + firstWord.Length;
+            if (num > 500.0)
+            {
+                return 1.0;
+            }
+            double num2 = (500.0 - num) / 500.0;
+            return 1.0 - (num2 * num2 * num2 * num2);
+        }
+
+        public override string GetSimilarityExplained(string firstWord, string secondWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double GetSimilarityTimingEstimated(string firstWord, string secondWord)
+        {
+            return 0.0;
+        }
+
+        public override double GetUnnormalisedSimilarity(string firstWord, string secondWord)
+        {
+            return this.GetSimilarity(firstWord, secondWord);
+        }
+
+        public override string LongDescriptionString
+        {
+            get
+            {
+                return "Implements the Chapman Mean Length algorithm provides a similarity measure between two strings from size of the mean length of the vectors - this approach is supposed to be used to determine which metrics may be best to apply rather than giving a valid response itself";
+            }
+        }
+
+        public override string ShortDescriptionString
+        {
+            get
+            {
+                return "ChapmanMeanLength";
+            }
+        }
+    }
+    public sealed class EuclideanDistance : AbstractStringMetric
+    {
+        private const double defaultMismatchScore = 0.0;
+        private double estimatedTimingConstant;
+        private ITokeniser tokeniser;
+        private TokeniserUtilities<string> tokenUtilities;
+
+        public EuclideanDistance() : this(new TokeniserWhitespace())
+        {
+        }
+
+        public EuclideanDistance(ITokeniser tokeniserToUse)
+        {
+            this.estimatedTimingConstant = 7.4457137088757008E-05;
+            this.tokeniser = tokeniserToUse;
+            this.tokenUtilities = new TokeniserUtilities<string>();
+        }
+
+        private double GetActualDistance(Collection<string> firstTokens, Collection<string> secondTokens)
+        {
+            Collection<string> collection = this.tokenUtilities.CreateMergedList(firstTokens, secondTokens);
+            int num = 0;
+            foreach (string str in collection)
+            {
+                int num2 = 0;
+                int num3 = 0;
+                if (firstTokens.Contains(str))
+                {
+                    num2++;
+                }
+                if (secondTokens.Contains(str))
+                {
+                    num3++;
+                }
+                num += (num2 - num3) * (num2 - num3);
+            }
+            return Math.Sqrt((double)num);
+        }
+
+        public double GetEuclidDistance(string firstWord, string secondWord)
+        {
+            if ((firstWord != null) && (secondWord != null))
+            {
+                Collection<string> firstTokens = this.tokeniser.Tokenize(firstWord);
+                Collection<string> secondTokens = this.tokeniser.Tokenize(secondWord);
+                return this.GetActualDistance(firstTokens, secondTokens);
+            }
+            return 0.0;
+        }
+
+        public override double GetSimilarity(string firstWord, string secondWord)
+        {
+            if ((firstWord != null) && (secondWord != null))
+            {
+                double unnormalisedSimilarity = this.GetUnnormalisedSimilarity(firstWord, secondWord);
+                double num2 = Math.Sqrt((double)(this.tokenUtilities.FirstTokenCount + this.tokenUtilities.SecondTokenCount));
+                return (num2 - unnormalisedSimilarity) / num2;
+            }
+            return 0.0;
+        }
+
+        public override string GetSimilarityExplained(string firstWord, string secondWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double GetSimilarityTimingEstimated(string firstWord, string secondWord)
+        {
+            if ((firstWord != null) && (secondWord != null))
+            {
+                double count = this.tokeniser.Tokenize(firstWord).Count;
+                double num2 = this.tokeniser.Tokenize(secondWord).Count;
+                return ((((count + num2) * count) + ((count + num2) * num2)) * this.estimatedTimingConstant);
+            }
+            return 0.0;
+        }
+
+        public override double GetUnnormalisedSimilarity(string firstWord, string secondWord)
+        {
+            return this.GetEuclidDistance(firstWord, secondWord);
+        }
+
+        public override string LongDescriptionString
+        {
+            get
+            {
+                return "Implements the Euclidean Distancey algorithm providing a similarity measure between two strings using the vector space of combined terms as the dimensions";
+            }
+        }
+
+        public override string ShortDescriptionString
+        {
+            get
+            {
+                return "EuclideanDistance";
+            }
+        }
+    }
+    public sealed class MatchingCoefficient : AbstractStringMetric
+    {
+        private const double defaultMismatchScore = 0.0;
+        private double estimatedTimingConstant;
+        private ITokeniser tokeniser;
+        private TokeniserUtilities<string> tokenUtilities;
+
+        public MatchingCoefficient() : this(new TokeniserWhitespace())
+        {
+        }
+
+        public MatchingCoefficient(ITokeniser tokeniserToUse)
+        {
+            this.estimatedTimingConstant = 0.00019999999494757503;
+            this.tokeniser = tokeniserToUse;
+            this.tokenUtilities = new TokeniserUtilities<string>();
+        }
+
+        private double GetActualSimilarity(Collection<string> firstTokens, Collection<string> secondTokens)
+        {
+            this.tokenUtilities.CreateMergedList(firstTokens, secondTokens);
+            int num = 0;
+            foreach (string str in firstTokens)
+            {
+                if (secondTokens.Contains(str))
+                {
+                    num++;
+                }
+            }
+            return (double)num;
+        }
+
+        public override double GetSimilarity(string firstWord, string secondWord)
+        {
+            if ((firstWord != null) && (secondWord != null))
+            {
+                double unnormalisedSimilarity = this.GetUnnormalisedSimilarity(firstWord, secondWord);
+                int num2 = Math.Max(this.tokenUtilities.FirstTokenCount, this.tokenUtilities.SecondTokenCount);
+                return (unnormalisedSimilarity / ((double)num2));
+            }
+            return 0.0;
+        }
+
+        public override string GetSimilarityExplained(string firstWord, string secondWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double GetSimilarityTimingEstimated(string firstWord, string secondWord)
+        {
+            if ((firstWord != null) && (secondWord != null))
+            {
+                double count = this.tokeniser.Tokenize(firstWord).Count;
+                double num2 = this.tokeniser.Tokenize(secondWord).Count;
+                return ((num2 * count) * this.estimatedTimingConstant);
+            }
+            return 0.0;
+        }
+
+        public override double GetUnnormalisedSimilarity(string firstWord, string secondWord)
+        {
+            Collection<string> firstTokens = this.tokeniser.Tokenize(firstWord);
+            Collection<string> secondTokens = this.tokeniser.Tokenize(secondWord);
+            return this.GetActualSimilarity(firstTokens, secondTokens);
+        }
+
+        public override string LongDescriptionString
+        {
+            get
+            {
+                return "Implements the Matching Coefficient algorithm providing a similarity measure between two strings";
+            }
+        }
+
+        public override string ShortDescriptionString
+        {
+            get
+            {
+                return "MatchingCoefficient";
+            }
+        }
+    }
+    public interface ISubstitutionCost
+    {
+        double GetCost(string firstWord, int firstWordIndex, string secondWord, int secondWordIndex);
+
+        double MaxCost { get; }
+
+        double MinCost { get; }
+
+        string ShortDescriptionString { get; }
+    }
+    public abstract class AbstractSubstitutionCost : ISubstitutionCost
+    {
+        protected AbstractSubstitutionCost()
+        {
+        }
+
+        public abstract double GetCost(string firstWord, int firstWordIndex, string secondWord, int secondWordIndex);
+
+        public abstract double MaxCost { get; }
+
+        public abstract double MinCost { get; }
+
+        public abstract string ShortDescriptionString { get; }
+    }
+    public interface IAffineGapCost
+    {
+        double GetCost(string textToGap, int stringIndexStartGap, int stringIndexEndGap);
+
+        double MaxCost { get; }
+
+        double MinCost { get; }
+
+        string ShortDescriptionString { get; }
+    }
+    public abstract class AbstractAffineGapCost : IAffineGapCost
+    {
+        protected AbstractAffineGapCost()
+        {
+        }
+
+        public abstract double GetCost(string textToGap, int stringIndexStartGap, int stringIndexEndGap);
+
+        public abstract double MaxCost { get; }
+
+        public abstract double MinCost { get; }
+
+        public abstract string ShortDescriptionString { get; }
+    }
+    public sealed class AffineGapRange5To0Multiplier1 : AbstractAffineGapCost
+    {
+        private const int charExactMatchScore = 5;
+        private const int charMismatchMatchScore = 0;
+
+        public override double GetCost(string textToGap, int stringIndexStartGap, int stringIndexEndGap)
+        {
+            if (stringIndexStartGap >= stringIndexEndGap)
+            {
+                return 0.0;
+            }
+            return (double)(5 + ((stringIndexEndGap - 1) - stringIndexStartGap));
+        }
+
+        public override double MaxCost
+        {
+            get
+            {
+                return 5.0;
+            }
+        }
+
+        public override double MinCost
+        {
+            get
+            {
+                return 0.0;
+            }
+        }
+
+        public override string ShortDescriptionString
+        {
+            get
+            {
+                return "AffineGapRange5To0Multiplier1";
+            }
+        }
+    }
+    public sealed class SubCostRange5ToMinus3 : AbstractSubstitutionCost
+    {
+        private Collection<string>[] approx = new Collection<string>[7];
+        private const int charApproximateMatchScore = 3;
+        private const int charExactMatchScore = 5;
+        private const int charMismatchMatchScore = -3;
+
+        public SubCostRange5ToMinus3()
+        {
+            this.approx[0] = new Collection<string>();
+            this.approx[0].Add("d");
+            this.approx[0].Add("t");
+            this.approx[1] = new Collection<string>();
+            this.approx[1].Add("g");
+            this.approx[1].Add("j");
+            this.approx[2] = new Collection<string>();
+            this.approx[2].Add("l");
+            this.approx[2].Add("r");
+            this.approx[3] = new Collection<string>();
+            this.approx[3].Add("m");
+            this.approx[3].Add("n");
+            this.approx[4] = new Collection<string>();
+            this.approx[4].Add("b");
+            this.approx[4].Add("p");
+            this.approx[4].Add("v");
+            this.approx[5] = new Collection<string>();
+            this.approx[5].Add("a");
+            this.approx[5].Add("e");
+            this.approx[5].Add("i");
+            this.approx[5].Add("o");
+            this.approx[5].Add("u");
+            this.approx[6] = new Collection<string>();
+            this.approx[6].Add(",");
+            this.approx[6].Add(".");
+        }
+
+        public override double GetCost(string firstWord, int firstWordIndex, string secondWord, int secondWordIndex)
+        {
+            if ((firstWord != null) && (secondWord != null))
+            {
+                if ((firstWord.Length <= firstWordIndex) || (firstWordIndex < 0))
+                {
+                    return -3.0;
+                }
+                if ((secondWord.Length <= secondWordIndex) || (secondWordIndex < 0))
+                {
+                    return -3.0;
+                }
+                if (firstWord[firstWordIndex] == secondWord[secondWordIndex])
+                {
+                    return 5.0;
+                }
+                char ch = firstWord[firstWordIndex];
+                string item = ch.ToString().ToLowerInvariant();
+                char ch2 = secondWord[secondWordIndex];
+                string str2 = ch2.ToString().ToLowerInvariant();
+                for (int i = 0; i < this.approx.Length; i++)
+                {
+                    if (this.approx[i].Contains(item) && this.approx[i].Contains(str2))
+                    {
+                        return 3.0;
+                    }
+                }
+            }
+            return -3.0;
+        }
+
+        public override double MaxCost
+        {
+            get
+            {
+                return 5.0;
+            }
+        }
+
+        public override double MinCost
+        {
+            get
+            {
+                return -3.0;
+            }
+        }
+
+        public override string ShortDescriptionString
+        {
+            get
+            {
+                return "SubCostRange5ToMinus3";
+            }
+        }
+    }
+    public class SmithWatermanGotohWindowedAffine : AbstractStringMetric
+    {
+        private AbstractSubstitutionCost dCostFunction;
+        private const double defaultMismatchScore = 0.0;
+        private const double defaultPerfectScore = 1.0;
+        private const int defaultWindowSize = 100;
+        private double estimatedTimingConstant;
+        private AbstractAffineGapCost gGapFunction;
+        private int windowSize;
+
+        public SmithWatermanGotohWindowedAffine() : this(new AffineGapRange5To0Multiplier1(), new SubCostRange5ToMinus3(), 100)
+        {
+        }
+
+        public SmithWatermanGotohWindowedAffine(AbstractAffineGapCost gapCostFunction) : this(gapCostFunction, new SubCostRange5ToMinus3(), 100)
+        {
+        }
+
+        public SmithWatermanGotohWindowedAffine(AbstractSubstitutionCost costFunction) : this(new AffineGapRange5To0Multiplier1(), costFunction, 100)
+        {
+        }
+
+        public SmithWatermanGotohWindowedAffine(int affineGapWindowSize) : this(new AffineGapRange5To0Multiplier1(), new SubCostRange5ToMinus3(), affineGapWindowSize)
+        {
+        }
+
+        public SmithWatermanGotohWindowedAffine(AbstractAffineGapCost gapCostFunction, AbstractSubstitutionCost costFunction) : this(gapCostFunction, costFunction, 100)
+        {
+        }
+
+        public SmithWatermanGotohWindowedAffine(AbstractAffineGapCost gapCostFunction, int affineGapWindowSize) : this(gapCostFunction, new SubCostRange5ToMinus3(), affineGapWindowSize)
+        {
+        }
+
+        public SmithWatermanGotohWindowedAffine(AbstractSubstitutionCost costFunction, int affineGapWindowSize) : this(new AffineGapRange5To0Multiplier1(), costFunction, affineGapWindowSize)
+        {
+        }
+
+        public SmithWatermanGotohWindowedAffine(AbstractAffineGapCost gapCostFunction, AbstractSubstitutionCost costFunction, int affineGapWindowSize)
+        {
+            this.estimatedTimingConstant = 4.5000000682193786E-05;
+            this.gGapFunction = gapCostFunction;
+            this.dCostFunction = costFunction;
+            this.windowSize = affineGapWindowSize;
+        }
+
+        public override double GetSimilarity(string firstWord, string secondWord)
+        {
+            if ((firstWord == null) || (secondWord == null))
+            {
+                return 0.0;
+            }
+            double unnormalisedSimilarity = this.GetUnnormalisedSimilarity(firstWord, secondWord);
+            double num2 = Math.Min(firstWord.Length, secondWord.Length);
+            if (this.dCostFunction.MaxCost > -this.gGapFunction.MaxCost)
+            {
+                num2 *= this.dCostFunction.MaxCost;
+            }
+            else
+            {
+                num2 *= -this.gGapFunction.MaxCost;
+            }
+            if (num2 == 0.0)
+            {
+                return 1.0;
+            }
+            return (unnormalisedSimilarity / num2);
+        }
+
+        public override string GetSimilarityExplained(string firstWord, string secondWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double GetSimilarityTimingEstimated(string firstWord, string secondWord)
+        {
+            if ((firstWord != null) && (secondWord != null))
+            {
+                double length = firstWord.Length;
+                double num2 = secondWord.Length;
+                return ((((length * num2) * this.windowSize) + ((length * num2) * this.windowSize)) * this.estimatedTimingConstant);
+            }
+            return 0.0;
+        }
+        public static class MathFunctions
+        {
+            public static double MaxOf3(double firstNumber, double secondNumber, double thirdNumber)
+            {
+                return Math.Max(firstNumber, Math.Max(secondNumber, thirdNumber));
+            }
+
+            public static int MaxOf3(int firstNumber, int secondNumber, int thirdNumber)
+            {
+                return Math.Max(firstNumber, Math.Max(secondNumber, thirdNumber));
+            }
+
+            public static double MaxOf4(double firstNumber, double secondNumber, double thirdNumber, double fourthNumber)
+            {
+                return Math.Max(Math.Max(firstNumber, secondNumber), Math.Max(thirdNumber, fourthNumber));
+            }
+
+            public static double MinOf3(double firstNumber, double secondNumber, double thirdNumber)
+            {
+                return Math.Min(firstNumber, Math.Min(secondNumber, thirdNumber));
+            }
+
+            public static int MinOf3(int firstNumber, int secondNumber, int thirdNumber)
+            {
+                return Math.Min(firstNumber, Math.Min(secondNumber, thirdNumber));
+            }
+        }
+        public override double GetUnnormalisedSimilarity(string firstWord, string secondWord)
+        {
+            if ((firstWord == null) || (secondWord == null))
+            {
+                return 0.0;
+            }
+            int length = firstWord.Length;
+            int num2 = secondWord.Length;
+            if (length == 0)
+            {
+                return (double)num2;
+            }
+            if (num2 == 0)
+            {
+                return (double)length;
+            }
+            double[][] numArray = new double[length][];
+            for (int i = 0; i < length; i++)
+            {
+                numArray[i] = new double[num2];
+            }
+            double num4 = 0.0;
+            for (int j = 0; j < length; j++)
+            {
+                double num6 = this.dCostFunction.GetCost(firstWord, j, secondWord, 0);
+                if (j == 0)
+                {
+                    numArray[0][0] = Math.Max(0.0, num6);
+                }
+                else
+                {
+                    double num7 = 0.0;
+                    int num8 = j - this.windowSize;
+                    if (num8 < 1)
+                    {
+                        num8 = 1;
+                    }
+                    for (int n = num8; n < j; n++)
+                    {
+                        num7 = Math.Max(num7, numArray[j - n][0] - this.gGapFunction.GetCost(firstWord, j - n, j));
+                    }
+                    numArray[j][0] = MathFunctions.MaxOf3(0.0, num7, num6);
+                }
+                if (numArray[j][0] > num4)
+                {
+                    num4 = numArray[j][0];
+                }
+            }
+            for (int k = 0; k < num2; k++)
+            {
+                double num11 = this.dCostFunction.GetCost(firstWord, 0, secondWord, k);
+                if (k == 0)
+                {
+                    numArray[0][0] = Math.Max(0.0, num11);
+                }
+                else
+                {
+                    double num12 = 0.0;
+                    int num13 = k - this.windowSize;
+                    if (num13 < 1)
+                    {
+                        num13 = 1;
+                    }
+                    for (int num14 = num13; num14 < k; num14++)
+                    {
+                        num12 = Math.Max(num12, numArray[0][k - num14] - this.gGapFunction.GetCost(secondWord, k - num14, k));
+                    }
+                    numArray[0][k] = MathFunctions.MaxOf3(0.0, num12, num11);
+                }
+                if (numArray[0][k] > num4)
+                {
+                    num4 = numArray[0][k];
+                }
+            }
+            for (int m = 1; m < length; m++)
+            {
+                for (int num16 = 1; num16 < num2; num16++)
+                {
+                    double num17 = this.dCostFunction.GetCost(firstWord, m, secondWord, num16);
+                    double num18 = 0.0;
+                    double num19 = 0.0;
+                    int num20 = m - this.windowSize;
+                    if (num20 < 1)
+                    {
+                        num20 = 1;
+                    }
+                    for (int num21 = num20; num21 < m; num21++)
+                    {
+                        num18 = Math.Max(num18, numArray[m - num21][num16] - this.gGapFunction.GetCost(firstWord, m - num21, m));
+                    }
+                    num20 = num16 - this.windowSize;
+                    if (num20 < 1)
+                    {
+                        num20 = 1;
+                    }
+                    for (int num22 = num20; num22 < num16; num22++)
+                    {
+                        num19 = Math.Max(num19, numArray[m][num16 - num22] - this.gGapFunction.GetCost(secondWord, num16 - num22, num16));
+                    }
+                    numArray[m][num16] = MathFunctions.MaxOf4(0.0, num18, num19, numArray[m - 1][num16 - 1] + num17);
+                    if (numArray[m][num16] > num4)
+                    {
+                        num4 = numArray[m][num16];
+                    }
+                }
+            }
+            return num4;
+        }
+
+        public AbstractSubstitutionCost DCostFunction
+        {
+            get
+            {
+                return this.dCostFunction;
+            }
+            set
+            {
+                this.dCostFunction = value;
+            }
+        }
+
+        public AbstractAffineGapCost GGapFunction
+        {
+            get
+            {
+                return this.gGapFunction;
+            }
+            set
+            {
+                this.gGapFunction = value;
+            }
+        }
+
+        public override string LongDescriptionString
+        {
+            get
+            {
+                return "Implements the Smith-Waterman-Gotoh algorithm with a windowed affine gap providing a similarity measure between two string";
+            }
+        }
+
+        public override string ShortDescriptionString
+        {
+            get
+            {
+                return "SmithWatermanGotohWindowedAffine";
+            }
+        }
+    }
+    public sealed class SmithWatermanGotoh : SmithWatermanGotohWindowedAffine
+    {
+        private const int affineGapWindowSize = 0x7fffffff;
+        private const double estimatedTimingConstant = 2.2000000171829015E-05;
+
+        public SmithWatermanGotoh() : base(new AffineGapRange5To0Multiplier1(), new SubCostRange5ToMinus3(), 0x7fffffff)
+        {
+        }
+
+        public SmithWatermanGotoh(AbstractAffineGapCost gapCostFunction) : base(gapCostFunction, new SubCostRange5ToMinus3(), 0x7fffffff)
+        {
+        }
+
+        public SmithWatermanGotoh(AbstractSubstitutionCost costFunction) : base(new AffineGapRange5To0Multiplier1(), costFunction, 0x7fffffff)
+        {
+        }
+
+        public SmithWatermanGotoh(AbstractAffineGapCost gapCostFunction, AbstractSubstitutionCost costFunction) : base(gapCostFunction, costFunction, 0x7fffffff)
+        {
+        }
+
+        public override double GetSimilarityTimingEstimated(string firstWord, string secondWord)
+        {
+            if ((firstWord != null) && (secondWord != null))
+            {
+                double length = firstWord.Length;
+                double num2 = secondWord.Length;
+                return ((((length * num2) * length) + ((length * num2) * num2)) * 2.2000000171829015E-05);
+            }
+            return 0.0;
+        }
+
+        public override string LongDescriptionString
+        {
+            get
+            {
+                return "Implements the Smith-Waterman-Gotoh algorithm providing a similarity measure between two string";
+            }
+        }
+
+        public override string ShortDescriptionString
+        {
+            get
+            {
+                return "SmithWatermanGotoh";
+            }
+        }
+    }
+    public class MongeElkan : AbstractStringMetric
+    {
+        private const double defaultMismatchScore = 0.0;
+        private double estimatedTimingConstant;
+        private AbstractStringMetric internalStringMetric;
+        internal ITokeniser tokeniser;
+
+        public MongeElkan() : this(new TokeniserWhitespace())
+        {
+        }
+
+        public MongeElkan(AbstractStringMetric metricToUse)
+        {
+            this.estimatedTimingConstant = 0.034400001168251038;
+            this.tokeniser = new TokeniserWhitespace();
+            this.internalStringMetric = metricToUse;
+        }
+
+        public MongeElkan(ITokeniser tokeniserToUse)
+        {
+            this.estimatedTimingConstant = 0.034400001168251038;
+            this.tokeniser = tokeniserToUse;
+            this.internalStringMetric = new SmithWatermanGotoh();
+        }
+
+        public MongeElkan(ITokeniser tokeniserToUse, AbstractStringMetric metricToUse)
+        {
+            this.estimatedTimingConstant = 0.034400001168251038;
+            this.tokeniser = tokeniserToUse;
+            this.internalStringMetric = metricToUse;
+        }
+
+        public override double GetSimilarity(string firstWord, string secondWord)
+        {
+            if ((firstWord == null) || (secondWord == null))
+            {
+                return 0.0;
+            }
+            Collection<string> collection = this.tokeniser.Tokenize(firstWord);
+            Collection<string> collection2 = this.tokeniser.Tokenize(secondWord);
+            double num = 0.0;
+            for (int i = 0; i < collection.Count; i++)
+            {
+                string str = collection[i];
+                double num3 = 0.0;
+                for (int j = 0; j < collection2.Count; j++)
+                {
+                    string str2 = collection2[j];
+                    double similarity = this.internalStringMetric.GetSimilarity(str, str2);
+                    if (similarity > num3)
+                    {
+                        num3 = similarity;
+                    }
+                }
+                num += num3;
+            }
+            return (num / ((double)collection.Count));
+        }
+
+        public override string GetSimilarityExplained(string firstWord, string secondWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double GetSimilarityTimingEstimated(string firstWord, string secondWord)
+        {
+            if ((firstWord != null) && (secondWord != null))
+            {
+                double count = this.tokeniser.Tokenize(firstWord).Count;
+                double num2 = this.tokeniser.Tokenize(secondWord).Count;
+                return ((((count + num2) * count) + ((count + num2) * num2)) * this.estimatedTimingConstant);
+            }
+            return 0.0;
+        }
+
+        public override double GetUnnormalisedSimilarity(string firstWord, string secondWord)
+        {
+            return this.GetSimilarity(firstWord, secondWord);
+        }
+
+        public override string LongDescriptionString
+        {
+            get
+            {
+                return "Implements the Monge Elkan algorithm providing an matching style similarity measure between two strings";
+            }
+        }
+
+        public override string ShortDescriptionString
+        {
+            get
+            {
+                return "MongeElkan";
+            }
+        }
+    }
+    public class TokeniserQGram3 : AbstractTokeniserQGramN
+    {
+        public TokeniserQGram3()
+        {
+            base.StopWordHandler = new DummyStopTermHandler();
+            base.TokenUtilities = new TokeniserUtilities<string>();
+            base.CharacterCombinationIndex = 0;
+            base.QGramLength = 3;
+        }
+
+        public override Collection<string> Tokenize(string word)
+        {
+            return base.Tokenize(word, false, base.QGramLength, base.CharacterCombinationIndex);
+        }
+
+        public override string ToString()
+        {
+            if (string.IsNullOrEmpty(base.SuppliedWord))
+            {
+                return string.Format("{0} : not word passed for tokenizing yet.", this.ShortDescriptionString);
+            }
+            return string.Format("{0} - currently holding : {1}.{2}The method is using a QGram length of {3}.", new object[] { this.ShortDescriptionString, base.SuppliedWord, Environment.NewLine, Convert.ToInt32(base.QGramLength) });
+        }
+
+        public override string ShortDescriptionString
+        {
+            get
+            {
+                return "TokeniserQGram3";
+            }
+        }
+    }
+    public abstract class AbstractTokeniserQGramN : ITokeniser
+    {
+        private int characterCombinationIndex;
+        private const string defaultEndPadCharacter = "#";
+        private const string defaultStartPadCharacter = "?";
+        private int qGramLength;
+        private ITermHandler stopWordHandler;
+        private string suppliedWord;
+        private TokeniserUtilities<string> tokenUtilities;
+
+        protected AbstractTokeniserQGramN()
+        {
+        }
+
+        public abstract Collection<string> Tokenize(string word);
+        public Collection<string> Tokenize(string word, bool extended, int tokenLength, int characterCombinationIndexValue)
+        {
+            int num3;
+            if (string.IsNullOrEmpty(word))
+            {
+                return null;
+            }
+            this.SuppliedWord = word;
+            Collection<string> collection = new Collection<string>();
+            int length = word.Length;
+            int count = 0;
+            if (tokenLength > 0)
+            {
+                count = tokenLength - 1;
+            }
+            StringBuilder builder = new StringBuilder(length + (2 * count));
+            if (extended)
+            {
+                builder.Insert(0, "?", count);
+            }
+            builder.Append(word);
+            if (extended)
+            {
+                builder.Insert(builder.Length, "#", count);
+            }
+            string str = builder.ToString();
+            num3 = extended ? length + count : (length - tokenLength) + 1;
+            for (int i = 0; i < num3; i++)
+            {
+                string termToTest = str.Substring(i, tokenLength);
+                if (!this.stopWordHandler.IsWord(termToTest))
+                {
+                    collection.Add(termToTest);
+                }
+            }
+            if (characterCombinationIndexValue != 0)
+            {
+                str = builder.ToString();
+                num3--;
+                for (int j = 0; j < num3; j++)
+                {
+                    string str3 = str.Substring(j, count) + str.Substring(j + tokenLength, 1);
+                    if (!this.stopWordHandler.IsWord(str3) && !collection.Contains(str3))
+                    {
+                        collection.Add(str3);
+                    }
+                }
+            }
+            return collection;
+        }
+
+        public Collection<string> TokenizeToSet(string word)
+        {
+            if (!string.IsNullOrEmpty(word))
+            {
+                this.SuppliedWord = word;
+                return this.TokenUtilities.CreateSet(this.Tokenize(word));
+            }
+            return null;
+        }
+
+        public int CharacterCombinationIndex
+        {
+            get
+            {
+                return this.characterCombinationIndex;
+            }
+            set
+            {
+                this.characterCombinationIndex = value;
+            }
+        }
+
+        public string Delimiters
+        {
+            get
+            {
+                return string.Empty;
+            }
+        }
+
+        public int QGramLength
+        {
+            get
+            {
+                return this.qGramLength;
+            }
+            set
+            {
+                this.qGramLength = value;
+            }
+        }
+
+        public abstract string ShortDescriptionString { get; }
+
+        public ITermHandler StopWordHandler
+        {
+            get
+            {
+                return this.stopWordHandler;
+            }
+            set
+            {
+                this.stopWordHandler = value;
+            }
+        }
+
+        public string SuppliedWord
+        {
+            get
+            {
+                return this.suppliedWord;
+            }
+            set
+            {
+                this.suppliedWord = value;
+            }
+        }
+
+        public TokeniserUtilities<string> TokenUtilities
+        {
+            get
+            {
+                return this.tokenUtilities;
+            }
+            set
+            {
+                this.tokenUtilities = value;
+            }
+        }
+    }
+    public class TokeniserQGram3Extended : TokeniserQGram3
+    {
+        public override Collection<string> Tokenize(string word)
+        {
+            return base.Tokenize(word, true, base.QGramLength, base.CharacterCombinationIndex);
+        }
+
+        public override string ToString()
+        {
+            if (string.IsNullOrEmpty(base.SuppliedWord))
+            {
+                return string.Format("{0} : not word passed for tokenizing yet.", this.ShortDescriptionString);
+            }
+            return string.Format("{0} - currently holding : {1}.{2}The method is using a QGram length of {3}.", new object[] { this.ShortDescriptionString, base.SuppliedWord, Environment.NewLine, Convert.ToInt32(base.QGramLength) });
+        }
+
+        public override string ShortDescriptionString
+        {
+            get
+            {
+                return "TokeniserQGram3Extended";
+            }
+        }
+    }
+    public sealed class QGramsDistance : AbstractStringMetric
+    {
+        private const double defaultMismatchScore = 0.0;
+        private double estimatedTimingConstant;
+        private ITokeniser tokeniser;
+        private TokeniserUtilities<string> tokenUtilities;
+
+        public QGramsDistance() : this(new TokeniserQGram3Extended())
+        {
+        }
+
+        public QGramsDistance(ITokeniser tokeniserToUse)
+        {
+            this.estimatedTimingConstant = 0.0001340000017080456;
+            this.tokeniser = tokeniserToUse;
+            this.tokenUtilities = new TokeniserUtilities<string>();
+        }
+
+        private double GetActualSimilarity(Collection<string> firstTokens, Collection<string> secondTokens)
+        {
+            Collection<string> collection = this.tokenUtilities.CreateMergedSet(firstTokens, secondTokens);
+            int num = 0;
+            foreach (string str in collection)
+            {
+                int num2 = 0;
+                for (int i = 0; i < firstTokens.Count; i++)
+                {
+                    if (firstTokens[i].Equals(str))
+                    {
+                        num2++;
+                    }
+                }
+                int num4 = 0;
+                for (int j = 0; j < secondTokens.Count; j++)
+                {
+                    if (secondTokens[j].Equals(str))
+                    {
+                        num4++;
+                    }
+                }
+                if (num2 > num4)
+                {
+                    num += num2 - num4;
+                }
+                else
+                {
+                    num += num4 - num2;
+                }
+            }
+            return (double)num;
+        }
+
+        public override double GetSimilarity(string firstWord, string secondWord)
+        {
+            if ((firstWord != null) && (secondWord != null))
+            {
+                double unnormalisedSimilarity = this.GetUnnormalisedSimilarity(firstWord, secondWord);
+                int num2 = this.tokenUtilities.FirstTokenCount + this.tokenUtilities.SecondTokenCount;
+                if (num2 != 0)
+                {
+                    return ((num2 - unnormalisedSimilarity) / ((double)num2));
+                }
+            }
+            return 0.0;
+        }
+
+        public override string GetSimilarityExplained(string firstWord, string secondWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double GetSimilarityTimingEstimated(string firstWord, string secondWord)
+        {
+            if ((firstWord != null) && (secondWord != null))
+            {
+                double length = firstWord.Length;
+                double num2 = secondWord.Length;
+                return ((length * num2) * this.estimatedTimingConstant);
+            }
+            return 0.0;
+        }
+
+        public override double GetUnnormalisedSimilarity(string firstWord, string secondWord)
+        {
+            Collection<string> firstTokens = this.tokeniser.Tokenize(firstWord);
+            Collection<string> secondTokens = this.tokeniser.Tokenize(secondWord);
+            this.tokenUtilities.CreateMergedList(firstTokens, secondTokens);
+            return this.GetActualSimilarity(firstTokens, secondTokens);
+        }
+
+        public override string LongDescriptionString
+        {
+            get
+            {
+                return "Implements the Q Grams Distance algorithm providing a similarity measure between two strings using the qGram approach check matching qGrams/possible matching qGrams";
+            }
+        }
+
+        public override string ShortDescriptionString
+        {
+            get
+            {
+                return "QGramsDistance";
+            }
+        }
+    }
+    public sealed class SubCostRange1ToMinus2 : AbstractSubstitutionCost
+    {
+        private const int charExactMatchScore = 1;
+        private const int charMismatchMatchScore = -2;
+
+        public override double GetCost(string firstWord, int firstWordIndex, string secondWord, int secondWordIndex)
+        {
+            if ((firstWord == null) || (secondWord == null))
+            {
+                return -2.0;
+            }
+            if ((firstWord.Length <= firstWordIndex) || (firstWordIndex < 0))
+            {
+                return -2.0;
+            }
+            if ((secondWord.Length <= secondWordIndex) || (secondWordIndex < 0))
+            {
+                return -2.0;
+            }
+            return ((firstWord[firstWordIndex] != secondWord[secondWordIndex]) ? ((double)(-2)) : ((double)1));
+        }
+
+        public override double MaxCost
+        {
+            get
+            {
+                return 1.0;
+            }
+        }
+
+        public override double MinCost
+        {
+            get
+            {
+                return -2.0;
+            }
+        }
+
+        public override string ShortDescriptionString
+        {
+            get
+            {
+                return "SubCostRange1ToMinus2";
+            }
+        }
+    }
+    public sealed class SmithWaterman : AbstractStringMetric
+    {
+        private AbstractSubstitutionCost dCostFunction;
+        private const double defaultGapCost = 0.5;
+        private const double defaultMismatchScore = 0.0;
+        private const double defaultPerfectMatchScore = 1.0;
+        private const double estimatedTimingConstant = 0.0001610000035725534;
+        private double gapCost;
+
+        public SmithWaterman() : this(0.5, new SubCostRange1ToMinus2())
+        {
+        }
+
+        public SmithWaterman(AbstractSubstitutionCost costFunction) : this(0.5, costFunction)
+        {
+        }
+
+        public SmithWaterman(double costG) : this(costG, new SubCostRange1ToMinus2())
+        {
+        }
+
+        public SmithWaterman(double costG, AbstractSubstitutionCost costFunction)
+        {
+            this.gapCost = costG;
+            this.dCostFunction = costFunction;
+        }
+
+        public override double GetSimilarity(string firstWord, string secondWord)
+        {
+            if ((firstWord == null) || (secondWord == null))
+            {
+                return 0.0;
+            }
+            double unnormalisedSimilarity = this.GetUnnormalisedSimilarity(firstWord, secondWord);
+            double num2 = Math.Min(firstWord.Length, secondWord.Length);
+            if (this.dCostFunction.MaxCost > -this.gapCost)
+            {
+                num2 *= this.dCostFunction.MaxCost;
+            }
+            else
+            {
+                num2 *= -this.gapCost;
+            }
+            if (num2 == 0.0)
+            {
+                return 1.0;
+            }
+            return (unnormalisedSimilarity / num2);
+        }
+
+        public override string GetSimilarityExplained(string firstWord, string secondWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double GetSimilarityTimingEstimated(string firstWord, string secondWord)
+        {
+            if ((firstWord != null) && (secondWord != null))
+            {
+                double length = firstWord.Length;
+                double num2 = secondWord.Length;
+                return ((((length * num2) + length) + num2) * 0.0001610000035725534);
+            }
+            return 0.0;
+        }
+
+        public override double GetUnnormalisedSimilarity(string firstWord, string secondWord)
+        {
+            if ((firstWord == null) || (secondWord == null))
+            {
+                return 0.0;
+            }
+            int length = firstWord.Length;
+            int num2 = secondWord.Length;
+            if (length == 0)
+            {
+                return (double)num2;
+            }
+            if (num2 == 0)
+            {
+                return (double)length;
+            }
+            double[][] numArray = new double[length][];
+            for (int i = 0; i < length; i++)
+            {
+                numArray[i] = new double[num2];
+            }
+            double num4 = 0.0;
+            for (int j = 0; j < length; j++)
+            {
+                double thirdNumber = this.dCostFunction.GetCost(firstWord, j, secondWord, 0);
+                if (j == 0)
+                {
+                    numArray[0][0] = MathFunctions.MaxOf3(0.0, -this.gapCost, thirdNumber);
+                }
+                else
+                {
+                    numArray[j][0] = MathFunctions.MaxOf3(0.0, numArray[j - 1][0] - this.gapCost, thirdNumber);
+                }
+                if (numArray[j][0] > num4)
+                {
+                    num4 = numArray[j][0];
+                }
+            }
+            for (int k = 0; k < num2; k++)
+            {
+                double num8 = this.dCostFunction.GetCost(firstWord, 0, secondWord, k);
+                if (k == 0)
+                {
+                    numArray[0][0] = MathFunctions.MaxOf3(0.0, -this.gapCost, num8);
+                }
+                else
+                {
+                    numArray[0][k] = MathFunctions.MaxOf3(0.0, numArray[0][k - 1] - this.gapCost, num8);
+                }
+                if (numArray[0][k] > num4)
+                {
+                    num4 = numArray[0][k];
+                }
+            }
+            for (int m = 1; m < length; m++)
+            {
+                for (int n = 1; n < num2; n++)
+                {
+                    double num11 = this.dCostFunction.GetCost(firstWord, m, secondWord, n);
+                    numArray[m][n] = MathFunctions.MaxOf4(0.0, numArray[m - 1][n] - this.gapCost, numArray[m][n - 1] - this.gapCost, numArray[m - 1][n - 1] + num11);
+                    if (numArray[m][n] > num4)
+                    {
+                        num4 = numArray[m][n];
+                    }
+                }
+            }
+            return num4;
+        }
+
+        public AbstractSubstitutionCost DCostFunction
+        {
+            get
+            {
+                return this.dCostFunction;
+            }
+            set
+            {
+                this.DCostFunction = value;
+            }
+        }
+
+        public double GapCost
+        {
+            get
+            {
+                return this.gapCost;
+            }
+            set
+            {
+                this.gapCost = value;
+            }
+        }
+
+        public override string LongDescriptionString
+        {
+            get
+            {
+                return "Implements the Smith-Waterman algorithm providing a similarity measure between two string";
+            }
+        }
+
+        public override string ShortDescriptionString
+        {
+            get
+            {
+                return "SmithWaterman";
+            }
+        }
+    }
+#pragma warning restore IDE0032
+#pragma warning restore IDE0044
+#pragma warning restore IDE0046
+#pragma warning restore IDE0047
+#pragma warning disable IDE0079
+#pragma warning disable IDE0028
+
+    #endregion Code from SimMetricsCore
     #endregion Fuzzy classes
 }
 // Goals for supporting distance algorithms 

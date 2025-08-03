@@ -73,7 +73,7 @@ if (argc == 3) \
 } \
 String^ sourc1 = gcnew String(str1); \
 String^ sourc2 = gcnew String(str2); \
-float distance = FuzzyPlusCSharp::Fuzzy::FuncName(sourc1, sourc2, isCaseSensitive); \
+double distance = FuzzyPlusCSharp::Fuzzy::FuncName(sourc1, sourc2, isCaseSensitive); \
 sqlite3_result_double(context, distance); \
 }
 

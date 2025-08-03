@@ -123,7 +123,7 @@ static FuzzyPlusCSharp::Fuzzy::DistanceMethod GetDistanceMethod(int iDistanceMet
 
 static double HowSimilar(std::string source1, std::string source2, FuzzyPlusCSharp::Fuzzy::DistanceMethod distanceMethod = FuzzyPlusCSharp::Fuzzy::DistanceMethod::UseDefaultDistanceMethod)
 {
-    float length = (float)max(source1.length(), source2.length());
+    double length = (double)max(source1.length(), source2.length());
     switch (distanceMethod) 
     {
     case FuzzyPlusCSharp::Fuzzy::DistanceMethod::Fuzzy_Damlev:
@@ -268,7 +268,7 @@ static bool SameSound(std::string source1, std::string source2,
     FuzzyPlusCSharp::Fuzzy::DistanceMethod distanceMethod = FuzzyPlusCSharp::Fuzzy::DistanceMethod::SameSound_StrCmp, 
     bool isVerySimilar = true)
 {
-    float length = (float)max(source1.length(), source2.length());
+    double length = (double)max(source1.length(), source2.length());
     char* s1 = NULL;
     char* s2 = NULL;
     bool results = false;
