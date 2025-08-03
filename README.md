@@ -1,5 +1,8 @@
 # SqliteFuzzyPlusExtension
 This SQLite extension is the ultimate library on [fuzzy](https://en.wikipedia.org/wiki/Fuzzy_logic) logic.
+- [Using SqliteFuzzyPlusExtension](#Using-SqliteFuzzyPlusExtension)
+- [Fuzzy Distance Functions](#Fuzzy Distance Functions)
+
 ### Example SQLite Usage
 ##### Example#1
 The following query finds a 90% match for the name "David Jorge" using the default distance method.
