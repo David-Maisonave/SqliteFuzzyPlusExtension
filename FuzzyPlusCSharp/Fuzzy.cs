@@ -32,7 +32,7 @@ namespace FuzzyPlusCSharp
     }
     #endregion Non-Static version
     //////////////////////////////////////////////////////////////////////
-    /// Static version
+    /// Static version 
     public static class Fuzzy
     {
         #region DistanceMethod definitions
