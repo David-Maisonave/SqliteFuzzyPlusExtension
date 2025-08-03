@@ -1,4 +1,4 @@
-##### This page was added starting on version 1.0.0 to keep track of newly added features between versions.
+##### This page was added starting on version 0.1.1 to keep track of newly added features between versions.
 ### 0.1.0
 - Initial Upload.
 ### 0.1.1
