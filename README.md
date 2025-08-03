@@ -101,5 +101,7 @@ Here's a list of the non-fuzzy functions.
 - IsDirExist - Takes the path of the directory as a string argument and returns 1 or 0, where 1 means the directory exists. - (alias = DirExist)
 - IsFileExist - Takes a string path to determine if a specified file exists and returns 1 or 0, where 1 means the file exists. - (alias = FileExist)
 
-
+# Examples
+- SQL examples are listed in the following link: [Examples](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs/Examples).
+- Other examples will be posted before the non-beta version is posted.
 
