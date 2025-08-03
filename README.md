@@ -2,6 +2,9 @@
 This SQLite extension is the ultimate library on [fuzzy](https://en.wikipedia.org/wiki/Fuzzy_logic) logic.
 - [Using SqliteFuzzyPlusExtension](#Using-SqliteFuzzyPlusExtension)
 - [Fuzzy Distance Functions](#Fuzzy-Distance-Functions)
+- [Othe Fuzzy Functions](#Othe-Fuzzy-Functions)
+- [Miscellaneous Functions](#Miscellaneous-Functions)
+- [Examples](#Examples)
 
 ### Example SQLite Usage
 ##### Example#1
