@@ -17,6 +17,7 @@
 - [NormalizeNum](#NormalizeNum)
 - [SameName](#SameName)
 - [CaverPhone2](#CaverPhone2)
+- [Soundex2](#Soundex2)
 
 ### Regex functions
 - [RegexMatch](#RegexMatch)
@@ -370,6 +371,12 @@ SELECT Word, CaverPhone(Word) cp FROM SimilarSoundingWords WHERE cp = CaverPhone
 ```
 
 They both give the same results, but IMHO the CaverPhone2 syntax is easier and more efficient to use.
+
+## Soundex2
+``` SQL
+select Soundex2('too','two');
+```
+Soundex2 calculates the Soundex code. It takes two arguments.
 
 ## RegexMatch
 ``` SQL
