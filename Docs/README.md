@@ -384,7 +384,8 @@ Soundex2 calculates the Soundex code. It takes two arguments.
 select SameSound('being', 'bean', 'EnPhoneticDistance');
 ```
 EnPhoneticDistance caculates if two words sounds the same.
-
+#### Important!!!: EnPhoneticDistance requires SqliteFuzzyPlusExtensionWithMsPhoneticMatching
+EnPhoneticDistance is in the SqliteFuzzyPlusExtensionWithMsPhoneticMatching version of the binaries.
 
 ## RegexMatch
 ``` SQL
