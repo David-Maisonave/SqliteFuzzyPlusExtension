@@ -65,7 +65,7 @@ See [UsingFuzzyFunctionsOutsideSQLite.md](https://github.com/David-Maisonave/Sql
 - [fuzzy_leven](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#fuzzy_leven) - (alias = levenshtein)
 - [fuzzy_osadist](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#fuzzy_osadist) - (alias = osa_distance)
 - [HammingDistance](https://en.wikipedia.org/wiki/Hamming_distance) - (alias = HammDist)
-- [iEdlibDistance](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#iEdlibDistance) - (alias = iEdlib)
+- [iEdlibDistance](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#iEdlibDistance) - (alias = iEdlib)
 - [JaccardDistance](https://en.wikipedia.org/wiki/Jaccard_index) - (alias = Jaccard)
 - [JaccardIndex](https://en.wikipedia.org/wiki/Jaccard_index)
 - [JaccardSimilarity](https://wiki.melissadata.com/index.php?title=Matchcode_Optimization:Jaccard_Similarity_Coefficient)
@@ -81,46 +81,48 @@ See [UsingFuzzyFunctionsOutsideSQLite.md](https://github.com/David-Maisonave/Sql
 - [NeedlemanWunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) - [more](https://wiki.melissadata.com/index.php?title=Matchcode_Optimization:Needleman-Wunsch)
 - [NormalizedLevenshteinDistance](https://en.wikipedia.org/wiki/Levenshtein_distance) - (alias = NormLev)
 - [OverlapCoefficientDistance](https://en.wikipedia.org/wiki/Overlap_coefficient) - [more](https://wiki.melissadata.com/index.php?title=Matchcode_Optimization:Overlap_Coefficient) - (alias = OverlapCoef)
-- [PhraseSimplifiedDiff](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#PhraseSimplifiedDiff) - (alias = PhraseDiff)
+- [PhraseSimplifiedDiff](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#PhraseSimplifiedDiff) - (alias = PhraseDiff)
 - [QGramsDistance](https://tilores.io/q-gram-algorithm-online-tool)
 - [RatcliffObershelpSimilarityDistance](https://distancia.readthedocs.io/en/latest/Ratcliff) - (alias = Ratcliff)
 - [SmithWaterman](https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm)
 - [SmithWatermanGotoh](https://wiki.melissadata.com/index.php?title=Matchcode_Optimization:Smith-Waterman-Gotoh)
 - [SmithWatermanGotohWindowedAffine](https://github.com/amuller/libsim/commit/19e5c21919dee595696890d0d6e324377e93e734)
 - [SorensenDiceDistance](https://en.wikipedia.org/wiki/Dice-S%C3%B8rensen_coefficient) - (alias = SorensenDice)
-- [TanimotoCoefficientDistance](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#TanimotoCoefficientDistance) - (alias = Tanimoto)
+- [TanimotoCoefficientDistance](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#TanimotoCoefficientDistance) - (alias = Tanimoto)
 
 ## Phonetic Fuzzy Functions
-- [CaverPhone2](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#CaverPhone2)
+- [CaverPhone2](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#CaverPhone2)
 - [fuzzy_phonetic](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#fuzzy_phonetic) - (alias = phonetic_hash)
 - [fuzzy_rsoundex](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#phonetic-codes) - (alias = rsoundex)
 - [fuzzy_soundex](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#phonetic-codes) - (alias = soundex)
 - [fuzzy_translit](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#transliteration) - (alias = translit)
-- [SameSound](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#SameSound)
+- [EnPhoneticDistance](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#EnPhoneticDistance)
+- [Soundex2](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#Soundex2)
+- [SameSound](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#SameSound)
 
 ## Regex Functions
-- [RegexMatch](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#RegexMatch) - (alias = XMatch)
-- [RegexReplace](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#RegexReplace) - (alias = Regex)
-- [RegexSearch](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#RegexSearch) - (alias = XSearch)
+- [RegexMatch](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#RegexMatch) - (alias = XMatch)
+- [RegexReplace](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#RegexReplace) - (alias = Regex)
+- [RegexSearch](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#RegexSearch) - (alias = XSearch)
 
 ## SqliteFuzzyPlusExtension Fuzzy Wrapper Functions
-- [Distance](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#Distance)
-- [HowSimilar](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#HowSimilar) - (alias = Similar)
-- [SameSound](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#SameSound)
-- [SetDefaultDistanceMethod](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#SetDefaultDistanceMethod)
+- [Distance](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#Distance)
+- [HowSimilar](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#HowSimilar) - (alias = Similar)
+- [SameSound](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#SameSound)
+- [SetDefaultDistanceMethod](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#SetDefaultDistanceMethod)
 
 ## Miscellaneous Fuzzy Functions
 - [fuzzy_script](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#transliteration) - (alias = script_code)
-- [HasCharInSameOrder](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#HasCharInSameOrder) - (alias = HasChr)
-- [SameName](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#SameName)
+- [HasCharInSameOrder](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#HasCharInSameOrder) - (alias = HasChr)
+- [SameName](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#SameName)
 
 ## Miscellaneous Functions
 These minimum and maximum functions are included to allow developers to create custom percentage distance in a query.
-- [MaxValue](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#MaxValue) - (alias = MaxVal)
-- [MaxLength](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#MaxLength) - (alias = MaxLen)
-- [MinValue](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#MinValue) - (alias = MinVal)
-- [MinLength](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#MinLength) - (alias = MinLen)
-- [NormalizeNum](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#NormalizeNum)
+- [MaxValue](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#MaxValue) - (alias = MaxVal)
+- [MaxLength](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#MaxLength) - (alias = MaxLen)
+- [MinValue](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#MinValue) - (alias = MinVal)
+- [MinLength](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#MinLength) - (alias = MinLen)
+- [NormalizeNum](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#NormalizeNum)
 
 ## The Plus in SqliteFuzzyPlusExtension
 The plus is in the name because this extension has some extra functions that have little to do with fuzzy logic.
