@@ -18,6 +18,7 @@
 - [SameName](#SameName)
 - [CaverPhone2](#CaverPhone2)
 - [Soundex2](#Soundex2)
+- [EnPhoneticDistance](#EnPhoneticDistance)
 
 ### Regex functions
 - [RegexMatch](#RegexMatch)
@@ -377,6 +378,13 @@ They both give the same results, but IMHO the CaverPhone2 syntax is easier and m
 select Soundex2('too','two');
 ```
 Soundex2 calculates the Soundex code. It takes two arguments.
+
+## EnPhoneticDistance
+``` SQL
+select SameSound('being', 'bean', 'EnPhoneticDistance');
+```
+EnPhoneticDistance caculates if two words sounds the same.
+
 
 ## RegexMatch
 ``` SQL
