@@ -12,5 +12,6 @@
 ### 0.1.2
 - Added BlockDistance, ChapmanLengthDeviation, ChapmanMeanLength, EuclideanDistance, MatchingCoefficient, MongeElkan, QGramsDistance, SmithWaterman, SmithWatermanGotoh, and SmithWatermanGotohWindowedAffine.
 - Added Soundex2 and changed Caverphone2 so it can take 1 or 2 arguments.
+- Added function EnPhoneticDistance which is functional when downloading SqliteFuzzyPlusExtensionWithMsPhoneticMatching.
 
 
