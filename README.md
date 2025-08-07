@@ -49,6 +49,16 @@ See [UsingFuzzyFunctionsOutsideSQLite.md](https://github.com/David-Maisonave/Sql
 
 # Function List
 ## Fuzzy Distance Functions
+- [BlockDistance](https://en.wikipedia.org/wiki/Damerau-Levenshtein_distance](https://ieeexplore.ieee.org/document/8491441)
+- [ChapmanLengthDeviation](https://github.com/kwunshing123/chapman-length-deviation)
+- [ChapmanMeanLength](https://www.numberanalytics.com/blog/mastering-mean-length-utterance-language-sampling)
+- [EuclideanDistance](https://pro.arcgis.com/en/pro-app/3.3/tool-reference/spatial-analyst/understanding-euclidean-distance-analysis.htm)
+- [MatchingCoefficient]()
+- [MongeElkan]()
+- [QGramsDistance]()
+- [SmithWaterman]()
+- [SmithWatermanGotoh]()
+- [SmithWatermanGotohWindowedAffine]()
 - [DamerauLevenshteinDistance](https://en.wikipedia.org/wiki/Damerau-Levenshtein_distance) - (alias = DamLev)
 - [DiceSimilarity](https://en.wikipedia.org/wiki/Dice-S%C3%B8rensen_coefficient)
 - [EdlibDistance](https://github.com/Martinsos/edlib) - (alias = Edlib)
