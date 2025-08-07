@@ -52,15 +52,10 @@ See [UsingFuzzyFunctionsOutsideSQLite.md](https://github.com/David-Maisonave/Sql
 - [BlockDistance](https://en.wikipedia.org/wiki/Damerau-Levenshtein_distance](https://ieeexplore.ieee.org/document/8491441)
 - [ChapmanLengthDeviation](https://github.com/kwunshing123/chapman-length-deviation)
 - [ChapmanMeanLength](https://www.numberanalytics.com/blog/mastering-mean-length-utterance-language-sampling)
-- [EuclideanDistance](https://pro.arcgis.com/en/pro-app/3.3/tool-reference/spatial-analyst/understanding-euclidean-distance-analysis.htm)
-- [MatchingCoefficient]()
-- [MongeElkan]()
-- [QGramsDistance]()
-- [SmithWaterman]()
-- [SmithWatermanGotoh]()
-- [SmithWatermanGotohWindowedAffine]()
+- [CosineSimilarity](https://en.wikipedia.org/wiki/Cosine_similarity)
+- [EuclideanDistance](https://en.wikipedia.org/wiki/Euclidean_distance) - [more](https://pro.arcgis.com/en/pro-app/3.3/tool-reference/spatial-analyst/understanding-euclidean-distance-analysis.htm)
 - [DamerauLevenshteinDistance](https://en.wikipedia.org/wiki/Damerau-Levenshtein_distance) - (alias = DamLev)
-- [DiceSimilarity](https://en.wikipedia.org/wiki/Dice-S%C3%B8rensen_coefficient)
+- [DiceSimilarity](https://en.wikipedia.org/wiki/Dice-S%C3%B8rensen_coefficient) - [more](https://wiki.melissadata.com/index.php?title=Matchcode_Optimization:Dice%27s_Coefficient)
 - [EdlibDistance](https://github.com/Martinsos/edlib) - (alias = Edlib)
 - [fuzzy_caver](https://github.com/nalgeon/sqlean) - (alias = caverphone)
 - [fuzzy_damlev](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#fuzzy_damlev) - (alias = dlevenshtein)
@@ -70,20 +65,30 @@ See [UsingFuzzyFunctionsOutsideSQLite.md](https://github.com/David-Maisonave/Sql
 - [fuzzy_leven](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#fuzzy_leven) - (alias = levenshtein)
 - [fuzzy_osadist](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#fuzzy_osadist) - (alias = osa_distance)
 - [HammingDistance](https://en.wikipedia.org/wiki/Hamming_distance) - (alias = HammDist)
+- [iEdlibDistance](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#iEdlibDistance) - (alias = iEdlib)
 - [JaccardDistance](https://en.wikipedia.org/wiki/Jaccard_index) - (alias = Jaccard)
-- [JaroDistance](https://en.wikipedia.org/wiki/Jaro-Winkler_distance) - (alias = Jaro)
-- [JaroWinklerDistance](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance) - (alias = JaroWin)
+- [JaccardIndex](https://en.wikipedia.org/wiki/Jaccard_index)
+- [JaccardSimilarity](https://wiki.melissadata.com/index.php?title=Matchcode_Optimization:Jaccard_Similarity_Coefficient)
+- [JaroDistance](https://en.wikipedia.org/wiki/Jaro-Winkler_distance) - [more](https://wiki.melissadata.com/index.php?title=Matchcode_Optimization:Jaro) - (alias = Jaro)
+- [JaroWinklerDistance](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance) - [more](https://wiki.melissadata.com/index.php?title=Matchcode_Optimization:Jaro-Winkler) - (alias = JaroWin)
 - [Levenshtein](https://en.wikipedia.org/wiki/Levenshtein_distance) - (alias = Lev)
 - [Levenshtein2Distance](https://en.wikipedia.org/wiki/Levenshtein_distance) - (alias = Lev2)
+- [LongestCommonSequence](https://reference.wolfram.com/language/ref/LongestCommonSequence.html)
 - [LongestCommonSubsequenceDistance](https://en.wikipedia.org/wiki/Longest_common_subsequence) - (alias = LCSQ)
 - [LongestCommonSubstringDistance](https://en.wikipedia.org/wiki/Longest_common_substring) - (alias = LCS)
+- [MatchingCoefficient](https://en.wikipedia.org/wiki/Simple_matching_coefficient)
+- [MongeElkan](https://anhaidgroup.github.io/py_stringmatching/v0.4.x/MongeElkan.html) - [more](https://www.gelbukh.com/CV/Publications/2009/Generalized%20Mongue-Elkan%20Method%20for%20Approximate%20Text%20String.pdf)
+- [NeedlemanWunsch](https://en.wikipedia.org/wiki/Needleman%E2%80%93Wunsch_algorithm) - [more](https://wiki.melissadata.com/index.php?title=Matchcode_Optimization:Needleman-Wunsch)
 - [NormalizedLevenshteinDistance](https://en.wikipedia.org/wiki/Levenshtein_distance) - (alias = NormLev)
-- [OverlapCoefficientDistance](https://en.wikipedia.org/wiki/Overlap_coefficient) - (alias = OverlapCoef)
+- [OverlapCoefficientDistance](https://en.wikipedia.org/wiki/Overlap_coefficient) - [more](https://wiki.melissadata.com/index.php?title=Matchcode_Optimization:Overlap_Coefficient) - (alias = OverlapCoef)
 - [PhraseSimplifiedDiff](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#PhraseSimplifiedDiff) - (alias = PhraseDiff)
+- [QGramsDistance](https://tilores.io/q-gram-algorithm-online-tool)
 - [RatcliffObershelpSimilarityDistance](https://distancia.readthedocs.io/en/latest/Ratcliff) - (alias = Ratcliff)
+- [SmithWaterman](https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm)
+- [SmithWatermanGotoh](https://wiki.melissadata.com/index.php?title=Matchcode_Optimization:Smith-Waterman-Gotoh)
+- [SmithWatermanGotohWindowedAffine](https://github.com/amuller/libsim/commit/19e5c21919dee595696890d0d6e324377e93e734)
 - [SorensenDiceDistance](https://en.wikipedia.org/wiki/Dice-S%C3%B8rensen_coefficient) - (alias = SorensenDice)
 - [TanimotoCoefficientDistance](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#TanimotoCoefficientDistance) - (alias = Tanimoto)
-- [iEdlibDistance](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#iEdlibDistance) - (alias = iEdlib)
 
 ## Phonetic Fuzzy Functions
 - [CaverPhone2](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/README.md#CaverPhone2)
@@ -133,17 +138,6 @@ Here's a list of the non-fuzzy functions.
 - Other examples will be posted before the non-beta version is posted.
 
 # ToDo
-- Add the following additioinal fuzzy logic.
-  - BlockDistance
-  - ChapmanLengthDeviation
-  - ChapmanMeanLength
-  - EuclideanDistance
-  - MatchingCoefficient
-  - MongeElkan
-  - QGramsDistance
-  - SmithWaterman
-  - SmithWatermanGotoh
-  - SmithWatermanGotohWindowedAffine
 - Add additional documentation for each function with examples.
 - Add more phonetic functions to the CSharp code. The C# code should have at least one version of all the SQLean phonetic functions.
 - Create C example project that attaches to the extension.
