@@ -49,7 +49,7 @@ See [UsingFuzzyFunctionsOutsideSQLite.md](https://github.com/David-Maisonave/Sql
 
 # Function List
 ## Fuzzy Distance Functions
-- [BlockDistance](https://en.wikipedia.org/wiki/Damerau-Levenshtein_distance](https://ieeexplore.ieee.org/document/8491441)
+- [BlockDistance](https://ieeexplore.ieee.org/document/8491441)
 - [ChapmanLengthDeviation](https://github.com/kwunshing123/chapman-length-deviation)
 - [ChapmanMeanLength](https://www.numberanalytics.com/blog/mastering-mean-length-utterance-language-sampling)
 - [CosineSimilarity](https://en.wikipedia.org/wiki/Cosine_similarity)
