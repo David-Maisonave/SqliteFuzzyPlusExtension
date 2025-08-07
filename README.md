@@ -91,7 +91,7 @@ See [UsingFuzzyFunctionsOutsideSQLite.md](https://github.com/David-Maisonave/Sql
 - [TanimotoCoefficientDistance](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#TanimotoCoefficientDistance) - (alias = Tanimoto)
 
 ## Phonetic Fuzzy Functions
-- [CaverPhone2](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#CaverPhone2)
+- [Caverphone2](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#Caverphone2)
 - [fuzzy_phonetic](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#fuzzy_phonetic) - (alias = phonetic_hash)
 - [fuzzy_rsoundex](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#phonetic-codes) - (alias = rsoundex)
 - [fuzzy_soundex](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#phonetic-codes) - (alias = soundex)
