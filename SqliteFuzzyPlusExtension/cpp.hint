@@ -2,3 +2,11 @@
 // such as names of functions and macros.
 // For more information see https://go.microsoft.com/fwlink/?linkid=865984
 #define SQLITE_EXTENSION_INIT3
+#define C_ENUM_NAMING_CONVENTION__(name)
+#define NAMESPACE_SQLITEFUZZYPLUSEXTENSION  SqliteFuzzyPlusExtension::
+#define EXCLUDE_NAMESPACE_SQLITEFUZZYPLUSEXTENSION
+#define CASE_INSENSITIVE 256
+#define CPP_ONLY_FUZZY 128
+#define TOKEN_METHODS 64
+#define PHRASE_METHODS TOKEN_METHODS + 32
+#define METHODS_UP_FOR_DELETION PHRASE_METHODS + 16

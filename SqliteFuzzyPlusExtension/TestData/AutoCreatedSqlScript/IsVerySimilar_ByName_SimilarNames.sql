@@ -26,6 +26,7 @@ select Name
 , IsVerySimilar(Name, 'David Jorge', 'SmithWaterman') as a24 -- SmithWaterman (ID# 24)
 , IsVerySimilar(Name, 'David Jorge', 'SmithWatermanGotoh') as a25 -- SmithWatermanGotoh (ID# 25)
 , IsVerySimilar(Name, 'David Jorge', 'SmithWatermanGotohWindowedAffine') as a26 -- SmithWatermanGotohWindowedAffine (ID# 26)
+, IsVerySimilar(Name, 'David Jorge', 'DiceSimilarity') as a27 -- DiceSimilarity (ID# 27)
 , IsVerySimilar(Name, 'David Jorge', 'CosineSimilarity') as a64 -- CosineSimilarity (ID# 64)
 , IsVerySimilar(Name, 'David Jorge', 'JaccardSimilarity') as a65 -- JaccardSimilarity (ID# 65)
 , IsVerySimilar(Name, 'David Jorge', 'PhraseTokenize') as a96 -- PhraseTokenize (ID# 96)
@@ -69,6 +70,7 @@ select Name
 , IsVerySimilar(Name, 'David Jorge', 'iSmithWaterman') as a283 -- iSmithWaterman (ID# 283)
 , IsVerySimilar(Name, 'David Jorge', 'iSmithWatermanGotoh') as a284 -- iSmithWatermanGotoh (ID# 284)
 , IsVerySimilar(Name, 'David Jorge', 'iSmithWatermanGotohWindowedAffine') as a285 -- iSmithWatermanGotohWindowedAffine (ID# 285)
+, IsVerySimilar(Name, 'David Jorge', 'iDiceSimilarity') as a286 -- iDiceSimilarity (ID# 286)
 FROM SimilarNames;
 -- Note: Case insensitive functions have an ID number greater than 256
 --       C++ functions have an ID number equal to or greater than  128 and less than 256

@@ -26,6 +26,7 @@ select Phrases
 , IsNotSimilar(Phrases, 'This is a similar phrase test', 24) as a24 -- SmithWaterman (ID# 24)
 , IsNotSimilar(Phrases, 'This is a similar phrase test', 25) as a25 -- SmithWatermanGotoh (ID# 25)
 , IsNotSimilar(Phrases, 'This is a similar phrase test', 26) as a26 -- SmithWatermanGotohWindowedAffine (ID# 26)
+, IsNotSimilar(Phrases, 'This is a similar phrase test', 27) as a27 -- DiceSimilarity (ID# 27)
 , IsNotSimilar(Phrases, 'This is a similar phrase test', 64) as a64 -- CosineSimilarity (ID# 64)
 , IsNotSimilar(Phrases, 'This is a similar phrase test', 65) as a65 -- JaccardSimilarity (ID# 65)
 , IsNotSimilar(Phrases, 'This is a similar phrase test', 96) as a96 -- PhraseTokenize (ID# 96)
@@ -69,6 +70,7 @@ select Phrases
 , IsNotSimilar(Phrases, 'This is a similar phrase test', 283) as a283 -- iSmithWaterman (ID# 283)
 , IsNotSimilar(Phrases, 'This is a similar phrase test', 284) as a284 -- iSmithWatermanGotoh (ID# 284)
 , IsNotSimilar(Phrases, 'This is a similar phrase test', 285) as a285 -- iSmithWatermanGotohWindowedAffine (ID# 285)
+, IsNotSimilar(Phrases, 'This is a similar phrase test', 286) as a286 -- iDiceSimilarity (ID# 286)
 FROM SimilarPhrase;
 -- Note: Case insensitive functions have an ID number greater than 256
 --       C++ functions have an ID number equal to or greater than  128 and less than 256

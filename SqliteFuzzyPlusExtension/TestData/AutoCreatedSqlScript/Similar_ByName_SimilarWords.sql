@@ -26,6 +26,7 @@ select Words
 , Similar(Words, 'David', 'SmithWaterman') as a24 -- SmithWaterman (ID# 24)
 , Similar(Words, 'David', 'SmithWatermanGotoh') as a25 -- SmithWatermanGotoh (ID# 25)
 , Similar(Words, 'David', 'SmithWatermanGotohWindowedAffine') as a26 -- SmithWatermanGotohWindowedAffine (ID# 26)
+, Similar(Words, 'David', 'DiceSimilarity') as a27 -- DiceSimilarity (ID# 27)
 , Similar(Words, 'David', 'CosineSimilarity') as a64 -- CosineSimilarity (ID# 64)
 , Similar(Words, 'David', 'JaccardSimilarity') as a65 -- JaccardSimilarity (ID# 65)
 , Similar(Words, 'David', 'PhraseTokenize') as a96 -- PhraseTokenize (ID# 96)
@@ -69,6 +70,7 @@ select Words
 , Similar(Words, 'David', 'iSmithWaterman') as a283 -- iSmithWaterman (ID# 283)
 , Similar(Words, 'David', 'iSmithWatermanGotoh') as a284 -- iSmithWatermanGotoh (ID# 284)
 , Similar(Words, 'David', 'iSmithWatermanGotohWindowedAffine') as a285 -- iSmithWatermanGotohWindowedAffine (ID# 285)
+, Similar(Words, 'David', 'iDiceSimilarity') as a286 -- iDiceSimilarity (ID# 286)
 FROM SimilarWords;
 -- Note: Case insensitive functions have an ID number greater than 256
 --       C++ functions have an ID number equal to or greater than  128 and less than 256

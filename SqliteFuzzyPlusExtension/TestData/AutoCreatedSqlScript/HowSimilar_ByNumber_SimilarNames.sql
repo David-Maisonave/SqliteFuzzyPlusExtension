@@ -26,6 +26,7 @@ select Name
 , HowSimilar(Name, 'David Jorge', 24) as a24 -- SmithWaterman (ID# 24)
 , HowSimilar(Name, 'David Jorge', 25) as a25 -- SmithWatermanGotoh (ID# 25)
 , HowSimilar(Name, 'David Jorge', 26) as a26 -- SmithWatermanGotohWindowedAffine (ID# 26)
+, HowSimilar(Name, 'David Jorge', 27) as a27 -- DiceSimilarity (ID# 27)
 , HowSimilar(Name, 'David Jorge', 64) as a64 -- CosineSimilarity (ID# 64)
 , HowSimilar(Name, 'David Jorge', 65) as a65 -- JaccardSimilarity (ID# 65)
 , HowSimilar(Name, 'David Jorge', 96) as a96 -- PhraseTokenize (ID# 96)
@@ -69,6 +70,7 @@ select Name
 , HowSimilar(Name, 'David Jorge', 283) as a283 -- iSmithWaterman (ID# 283)
 , HowSimilar(Name, 'David Jorge', 284) as a284 -- iSmithWatermanGotoh (ID# 284)
 , HowSimilar(Name, 'David Jorge', 285) as a285 -- iSmithWatermanGotohWindowedAffine (ID# 285)
+, HowSimilar(Name, 'David Jorge', 286) as a286 -- iDiceSimilarity (ID# 286)
 FROM SimilarNames;
 -- Note: Case insensitive functions have an ID number greater than 256
 --       C++ functions have an ID number equal to or greater than  128 and less than 256

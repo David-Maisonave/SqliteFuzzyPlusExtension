@@ -8,7 +8,6 @@ using namespace std;
 using namespace System;
 #include "..\SqliteFuzzyPlusExtension.h"
 
-
 static void CreateScriptSimilarWords(string rootDir, string fieldName, string table, string FunctionName, string CompareTo, bool byName) 
 {
     string fileName = byName ? "_ByName_" : "_ByNumber_";
@@ -42,13 +41,13 @@ static void CreateScriptSimilarWords(string rootDir, string fieldName, string ta
 }
 
 // Function to trim leading whitespace
-std::string ltrim(const std::string& s, string whatToTrim = " \t\n\r\f\v") {
+static std::string ltrim(const std::string& s, string whatToTrim = " \t\n\r\f\v") {
     size_t start = s.find_first_not_of(whatToTrim);
     return (start == std::string::npos) ? "" : s.substr(start);
 }
 
 // Function to trim trailing whitespace
-std::string rtrim(const std::string& s, string whatToTrim = " \t\n\r\f\v") {
+static std::string rtrim(const std::string& s, string whatToTrim = " \t\n\r\f\v") {
     size_t end = s.find_last_not_of(whatToTrim);
     return (end == std::string::npos) ? "" : s.substr(0, end + 1);
 }

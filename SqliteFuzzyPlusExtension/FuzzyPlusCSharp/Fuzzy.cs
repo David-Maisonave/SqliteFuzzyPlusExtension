@@ -72,6 +72,7 @@ namespace FuzzyPlusCSharp
             SmithWaterman,
             SmithWatermanGotoh,
             SmithWatermanGotohWindowedAffine,
+            DiceSimilarity,
 
             //Token methods
             CosineSimilarity = TOKEN_METHODS,
@@ -133,6 +134,7 @@ namespace FuzzyPlusCSharp
             iSmithWaterman,
             iSmithWatermanGotoh,
             iSmithWatermanGotohWindowedAffine,
+            iDiceSimilarity,
 
             // ------------------------------------------------------------
             // These functions are NOT supported by CSharp Fuzzy class code, and are only here for C++ SqliteFuzzyPlusExtension usage.
@@ -234,7 +236,7 @@ namespace FuzzyPlusCSharp
         public static bool IsCaseSensitive(DistanceMethod distanceMethod) => (int)distanceMethod < CASE_INSENSITIVE;
         public static void FixIfIsCaseSensitive(ref string source1, ref string source2, bool isCaseSensitive)
         {
-            if (isCaseSensitive)
+            if (!isCaseSensitive)
             {
                 source1 = source1.ToLower();
                 source2 = source2.ToLower();
@@ -261,13 +263,13 @@ namespace FuzzyPlusCSharp
                     break;
                 case DistanceMethod.CosineSimilarity:
                 case DistanceMethod.iCosineSimilarity:
-                    return CosineSimilarity.Percentage(source1, source2, isCaseSensitive);
+                    return CosineSimilarityClass.Percentage(source1, source2, isCaseSensitive);
                 case DistanceMethod.LongestCommonSequence:
                 case DistanceMethod.iLongestCommonSequence:
-                    return LongestCommonSequence.Percentage(source1, source2, isCaseSensitive);
+                    return LongestCommonSequenceClass.Percentage(source1, source2, isCaseSensitive);
                 case DistanceMethod.JaccardSimilarity:
                 case DistanceMethod.iJaccardSimilarity:
-                    return JaccardSimilarity.Percentage(source1, source2, isCaseSensitive);
+                    return JaccardSimilarityClass.Percentage(source1, source2, isCaseSensitive);
                 case DistanceMethod.JaccardIndex:
                 case DistanceMethod.iJaccardIndex:
                     diff = JaccardDistance(source1, source2, isCaseSensitive);
@@ -278,7 +280,7 @@ namespace FuzzyPlusCSharp
                     break;
                 case DistanceMethod.NeedlemanWunsch:
                 case DistanceMethod.iNeedlemanWunsch:
-                    return NeedlemanWunsch.Percentage(source1, source2, isCaseSensitive);
+                    return NeedlemanWunschClass.Percentage(source1, source2, isCaseSensitive);
                 case DistanceMethod.SorensenDiceDistance:
                 case DistanceMethod.iSorensenDiceDistance:
                     diff = SorensenDiceDistance(source1, source2, isCaseSensitive);
@@ -380,6 +382,10 @@ namespace FuzzyPlusCSharp
                     SmithWatermanGotohWindowedAffine sim1 = new SmithWatermanGotohWindowedAffine();
                     diff = sim1.GetSimilarity(source1, source2);
                     break;
+                case DistanceMethod.DiceSimilarity:
+                case DistanceMethod.iDiceSimilarity:
+                    diff = DiceSimilarity(source1, source2, isCaseSensitive);
+                    break;
                 case DistanceMethod.PhraseTokenize:
                     diff = GetPhraseDifference(source1, source2);
                     sourceLength = Math.Max(GetKeywordList(ref source1).Length, GetKeywordList(ref source2).Length);
@@ -411,13 +417,13 @@ namespace FuzzyPlusCSharp
                     return JaroWinklerPercentage(source1, source2, isCaseSensitive);
                 case DistanceMethod.CosineSimilarity:
                 case DistanceMethod.iCosineSimilarity:
-                    return CosineSimilarity.Percentage(source1, source2, isCaseSensitive);
+                    return CosineSimilarityClass.Percentage(source1, source2, isCaseSensitive);
                 case DistanceMethod.LongestCommonSequence:
                 case DistanceMethod.iLongestCommonSequence:
-                    return LongestCommonSequence.Percentage(source1, source2, isCaseSensitive);
+                    return LongestCommonSequenceClass.Percentage(source1, source2, isCaseSensitive);
                 case DistanceMethod.JaccardSimilarity:
                 case DistanceMethod.iJaccardSimilarity:
-                    return JaccardSimilarity.Percentage(source1, source2, isCaseSensitive);
+                    return JaccardSimilarityClass.Percentage(source1, source2, isCaseSensitive);
                 case DistanceMethod.JaccardIndex:
                 case DistanceMethod.iJaccardIndex:
                     return JaccardDistance(source1, source2, isCaseSensitive);
@@ -426,7 +432,7 @@ namespace FuzzyPlusCSharp
                     return OverlapCoefficientDistance(source1, source2, isCaseSensitive);
                 case DistanceMethod.NeedlemanWunsch:
                 case DistanceMethod.iNeedlemanWunsch:
-                    return NeedlemanWunsch.Percentage(source1, source2, isCaseSensitive);
+                    return NeedlemanWunschClass.Percentage(source1, source2, isCaseSensitive);
                 case DistanceMethod.SorensenDiceDistance:
                 case DistanceMethod.iSorensenDiceDistance:
                     return SorensenDiceDistance(source1, source2, isCaseSensitive);
@@ -507,6 +513,9 @@ namespace FuzzyPlusCSharp
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     SmithWatermanGotohWindowedAffine sim1 = new SmithWatermanGotohWindowedAffine();
                     return sim1.GetSimilarity(source1, source2);
+                case DistanceMethod.DiceSimilarity:
+                case DistanceMethod.iDiceSimilarity:
+                    return DiceSimilarity(source1, source2, isCaseSensitive);
                 case DistanceMethod.PhraseTokenize:
                     return GetPhraseDifference(source1, source2);
                 case DistanceMethod.SimplePhraseTokenize:
@@ -535,10 +544,10 @@ namespace FuzzyPlusCSharp
                     return JaroWinklerPercentage(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
                 case DistanceMethod.CosineSimilarity:
                 case DistanceMethod.iCosineSimilarity:
-                    return CosineSimilarity.Percentage(source1, source2, isCaseSensitive) == 0;
+                    return CosineSimilarityClass.Percentage(source1, source2, isCaseSensitive) == 0;
                 case DistanceMethod.JaccardSimilarity:
                 case DistanceMethod.iJaccardSimilarity:
-                    return JaccardSimilarity.Percentage(source1, source2, isCaseSensitive) == 0;
+                    return JaccardSimilarityClass.Percentage(source1, source2, isCaseSensitive) == 0;
                 case DistanceMethod.JaccardIndex:
                 case DistanceMethod.iJaccardIndex:
                     return JaccardDistance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
@@ -547,10 +556,10 @@ namespace FuzzyPlusCSharp
                     return OverlapCoefficientDistance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
                 case DistanceMethod.NeedlemanWunsch:
                 case DistanceMethod.iNeedlemanWunsch:
-                    return NeedlemanWunsch.Percentage(source1, source2, isCaseSensitive) == 0;
+                    return NeedlemanWunschClass.Percentage(source1, source2, isCaseSensitive) == 0;
                 case DistanceMethod.LongestCommonSequence:
                 case DistanceMethod.iLongestCommonSequence:
-                    return LongestCommonSequence.Difference(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
+                    return LongestCommonSequenceClass.Difference(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
                 case DistanceMethod.SorensenDiceDistance:
                 case DistanceMethod.iSorensenDiceDistance:
                     return SorensenDiceDistance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
@@ -616,11 +625,7 @@ namespace FuzzyPlusCSharp
             // If any entry empty return full length of other
             if (source1.Length == 0 || source2.Length == 0)
                 return Math.Max(source1.Length, source2.Length);
-            if (!isCaseSensitive)
-            {
-                source1 = source1.ToLower();
-                source2 = source2.ToLower();
-            }
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             int source1Length = source1.Length;
             int source2Length = source2.Length;
             // Initialization of matrix with row size source1Length and columns size source2Length
@@ -660,11 +665,7 @@ namespace FuzzyPlusCSharp
             // If any entry empty return full length of other
             if (source1.Length == 0 || source2.Length == 0)
                 return Math.Max(source1.Length, source2.Length);
-            if (!isCaseSensitive)
-            {
-                source1 = source1.ToLower();
-                source2 = source2.ToLower();
-            }
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             int source1Length = source1.Length;
             int source2Length = source2.Length;
             int[,] matrix = new int[source1Length + 1, source2Length + 1];
@@ -719,11 +720,7 @@ namespace FuzzyPlusCSharp
             int source2Length = source2.Length;
             if (source1Length == 0)
                 return source2Length == 0 ? 1.0f : 0.0f;
-            if (!isCaseSensitive)
-            {
-                source1 = source1.ToLower();
-                source2 = source2.ToLower();
-            }
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             int lSearchRange = Math.Max(0, (Math.Max(source1Length, source2Length) / 2) - 1);
             bool[] lMatched1 = new bool[source1Length];
             bool[] lMatched2 = new bool[source2Length];
@@ -798,21 +795,13 @@ namespace FuzzyPlusCSharp
         }
         public static double OverlapCoefficientDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
-            if (!isCaseSensitive)
-            {
-                source1 = source1.ToLower();
-                source2 = source2.ToLower();
-            }
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             return 1.0f - (double)source1.OverlapCoefficient(source2);
         }
         public static double OverlapCoefficient(this string source1, string source2) => Convert.ToDouble(source1.Intersect(source2).Count()) / Convert.ToDouble(Math.Min(source1.Length, source2.Length));
         public static double JaccardDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
-            if (!isCaseSensitive)
-            {
-                source1 = source1.ToLower();
-                source2 = source2.ToLower();
-            }
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             return 1.0f - (double)source1.JaccardIndex(source2);
         }
 
@@ -820,21 +809,13 @@ namespace FuzzyPlusCSharp
         // ToDo: Add the following distance functions to the enum list of DistanceMethods
         public static double SorensenDiceDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
-            if (!isCaseSensitive)
-            {
-                source1 = source1.ToLower();
-                source2 = source2.ToLower();
-            }
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             return 1.0f - (double)source1.SorensenDiceIndex(source2);
         }
         public static double SorensenDiceIndex(this string source1, string source2) => 2 * Convert.ToDouble(source1.Intersect(source2).Count()) / Convert.ToDouble(source1.Length + source2.Length);
         public static double RatcliffObershelpSimilarityDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
-            if (!isCaseSensitive)
-            {
-                source1 = source1.ToLower();
-                source2 = source2.ToLower();
-            }
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             return 1.0f - (double)source1.RatcliffObershelpSimilarity(source2);
         }
         public static double RatcliffObershelpSimilarity(this string source1, string source2) => 2 * Convert.ToDouble(source1.Intersect(source2).Count()) / Convert.ToDouble(source1.Length + source2.Length);
@@ -842,11 +823,7 @@ namespace FuzzyPlusCSharp
         {
             if (source1.Length != source2.Length) // Can only use HammingDiceDistance on string of equal length
                 return -1.0f;
-            if (!isCaseSensitive)
-            {
-                source1 = source1.ToLower();
-                source2 = source2.ToLower();
-            }
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             return 1.0f - ((double)source1.Hamming(source2) / (double)source2.Length);
         }
         public static int Hamming(this string source1, string source2)
@@ -859,11 +836,7 @@ namespace FuzzyPlusCSharp
         }
         public static double LongestCommonSubstringDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
-            if (!isCaseSensitive)
-            {
-                source1 = source1.ToLower();
-                source2 = source2.ToLower();
-            }
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             return 1.0f - ((double)source1.GetLongestCommonSubstring(source2).Length / (double)Math.Min(source1.Length, source2.Length));
         }
         public static string GetLongestCommonSubstring(this string source1, string source2)
@@ -903,11 +876,7 @@ namespace FuzzyPlusCSharp
         }
         public static double LongestCommonSubsequenceDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
-            if (!isCaseSensitive)
-            {
-                source1 = source1.ToLower();
-                source2 = source2.ToLower();
-            }
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             return 1.0f - ((double)source1.LongestCommonSubsequence(source2).Length / (double)Math.Min(source1.Length, source2.Length));
         }
         public static string LongestCommonSubsequence(this string source1, string source2)
@@ -939,11 +908,7 @@ namespace FuzzyPlusCSharp
         }
         public static double JaroDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
-            if (!isCaseSensitive)
-            {
-                source1 = source1.ToLower();
-                source2 = source2.ToLower();
-            }
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             int m = source1.Intersect(source2).Count();
             if (m == 0) 
                 return 0;
@@ -960,32 +925,20 @@ namespace FuzzyPlusCSharp
         }
         public static double NormalizedLevenshteinDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
-            if (!isCaseSensitive)
-            {
-                source1 = source1.ToLower();
-                source2 = source2.ToLower();
-            }
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             double distance = Convert.ToDouble(Levenshtein2.NormalizedLevenshteinDistance(source1, source2)) / Convert.ToDouble(Math.Max(source1.Length, source2.Length) - Levenshtein2.LevenshteinDistanceLowerBounds(source1, source2));
             return 1.0f - (double)distance;
         }
         public static double Levenshtein2Distance(this string source1, string source2, bool isCaseSensitive = true)
         {
-            if (!isCaseSensitive)
-            {
-                source1 = source1.ToLower();
-                source2 = source2.ToLower();
-            }
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             //double distance = Convert.ToDouble(Levenshtein2.LevenshteinDistance2(source1, source2)) / Convert.ToDouble(Levenshtein2.LevenshteinDistanceUpperBounds(source1, source2)); // LevenshteinDistanceUpperBounds Fails!!!!
             double distance = Convert.ToDouble(Levenshtein2.LevenshteinDistance2(source1, source2)) / Convert.ToDouble(Math.Max(source1.Length, source2.Length));
             return 1.0f - (double)distance;
         }
         public static double TanimotoCoefficientDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
-            if (!isCaseSensitive)
-            {
-                source1 = source1.ToLower();
-                source2 = source2.ToLower();
-            }
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             return 1.0f - source1.TanimotoCoefficient(source2);
         }
         public static double TanimotoCoefficient(this string source1, string source2)
@@ -998,11 +951,7 @@ namespace FuzzyPlusCSharp
         // Function to find the minimum number of operations to convert source1 to source2
         public static int EditDistance(string source1, string source2, bool isCaseSensitive = true)
         {
-            if (!isCaseSensitive)
-            {
-                source1 = source1.ToLower();
-                source2 = source2.ToLower();
-            }
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             int m = source1.Length;
             int n = source2.Length;
             // Stores dp[i-1][j-1]
@@ -1023,46 +972,142 @@ namespace FuzzyPlusCSharp
             }
             return curr[n];
         }
+        public static double BlockDistance(this string source1, string source2, bool isCaseSensitive = true)
+        {
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            BlockDistance sim2 = new BlockDistance();
+            return sim2.GetSimilarity(source1, source2);
+        }
+        public static double NeedlemanWunsch(this string source1, string source2, bool isCaseSensitive = true) => NeedlemanWunschClass.Percentage(source1, source2, isCaseSensitive);
+        public static double JaccardIndex(this string source1, string source2, bool isCaseSensitive = true) => JaccardDistance(source1, source2, isCaseSensitive);
+        public static double ChapmanLengthDeviation(this string source1, string source2, bool isCaseSensitive = true)
+        {
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            ChapmanLengthDeviation sim3 = new ChapmanLengthDeviation();
+            return sim3.GetSimilarity(source1, source2);
+        }
+        public static double ChapmanMeanLength(this string source1, string source2, bool isCaseSensitive = true)
+        {
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            ChapmanMeanLength sim0 = new ChapmanMeanLength();
+            return sim0.GetSimilarity(source1, source2);
+        }
+        public static double EuclideanDistance(this string source1, string source2, bool isCaseSensitive = true)
+        {
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            EuclideanDistance sim4 = new EuclideanDistance();
+            return sim4.GetSimilarity(source1, source2);
+        }
+        public static double MatchingCoefficient(this string source1, string source2, bool isCaseSensitive = true)
+        {
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            MatchingCoefficient sim5 = new MatchingCoefficient();
+            return sim5.GetSimilarity(source1, source2);
+        }
+        public static double MongeElkan(this string source1, string source2, bool isCaseSensitive = true)
+        {
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            MongeElkan sim6 = new MongeElkan();
+            return sim6.GetSimilarity(source1, source2);
+        }
+        public static double QGramsDistance(this string source1, string source2, bool isCaseSensitive = true)
+        {
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            QGramsDistance sim7 = new QGramsDistance();
+            return sim7.GetSimilarity(source1, source2);
+        }
+        public static double SmithWaterman(this string source1, string source2, bool isCaseSensitive = true)
+        {
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            SmithWaterman sim8 = new SmithWaterman();
+            return sim8.GetSimilarity(source1, source2);
+        }
+        public static double SmithWatermanGotoh(this string source1, string source2, bool isCaseSensitive = true)
+        {
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            SmithWatermanGotoh sim9 = new SmithWatermanGotoh();
+            return sim9.GetSimilarity(source1, source2);
+        }
+        public static double SmithWatermanGotohWindowedAffine(this string source1, string source2, bool isCaseSensitive = true)
+        {
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            SmithWatermanGotohWindowedAffine sim1 = new SmithWatermanGotohWindowedAffine();
+            return sim1.GetSimilarity(source1, source2);
+        }
+        public static double DiceSimilarity(this string source1, string source2, bool isCaseSensitive = true)
+        {
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            DiceSimilarity sim1 = new DiceSimilarity();
+            return sim1.GetSimilarity(source1, source2);
+        }
+        public static double CosineSimilarity(this string source1, string source2, bool isCaseSensitive = true) => CosineSimilarityClass.Percentage(source1, source2, isCaseSensitive);
+        public static double JaccardSimilarity(this string source1, string source2, bool isCaseSensitive = true) => JaccardSimilarityClass.Percentage(source1, source2, isCaseSensitive);
+        public static double LongestCommonSequence(this string source1, string source2, bool isCaseSensitive = true) => LongestCommonSequenceClass.Percentage(source1, source2, isCaseSensitive);
+        public static double PhraseTokenize(this string source1, string source2, bool isCaseSensitive = true)
+        {
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            return GetPhraseDifference(source1, source2);
+        }
+        public static double SimplePhraseTokenize(this string source1, string source2, bool isCaseSensitive = true)
+        {
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            return PhraseSimplifiedDiff(source1, source2);
+        }
         // ToDo: Implement the following functions
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Remove unused parameter", "IDE0060")]//      These functions are just place holders, so removing IntelliSense warning messages
-        public static int SameFirstLastName(string source1, string source2, bool isCaseSensitive = true)
+        public static string NormalizeFirstLastName(string name)
         {
-            return 0;
+            name = Regex.Replace(name, "[\\s][A-Za-z]\\.", "");
+            name = Regex.Replace(name, "[\\s][A-Za-z]$", "");
+            name = Regex.Replace(name, "[\\s][0-9][A-Za-z]{2}", "");
+            name = Regex.Replace(name, "[\\s][JSjs][Rr]\\.?", "");
+            name = Regex.Replace(name, "[\\s][Ii]+$", "");
+            name = Regex.Replace(name, "[\\s][Ii]+\\s", "");
+            name = Regex.Replace(name, "([A-Za-z]+)\\s*\\,\\s*([A-Za-z]+.*)", "$2 $1");
+            name = Regex.Replace(name, "[^A-Za-z\\s]+", "");
+            name = name.Replace("  ", " ");
+            return name;
         }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Remove unused parameter", "IDE0060")]
-        public static int SamePhone(string source1, string source2, bool isCaseSensitive = true)
+        public static bool SameFirstLastName(string source1, string source2, bool isCaseSensitive = false)
+        {
+            source1 = NormalizeFirstLastName(source1);
+            source2 = NormalizeFirstLastName(source2);
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            return source1 == source2;
+        }
+        public static bool SamePhone(string source1, string source2, bool isCaseSensitive = false)
         {// Remove non-numeric characters, and remove first number if it starts with a 1
-            return 0;
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            return false;
         }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Remove unused parameter", "IDE0060")]
-        public static int SameSocial(string source1, string source2, bool isCaseSensitive = true)
+        public static bool SameSocial(string source1, string source2, bool isCaseSensitive = false)
         {// Remove non-numeric characters
-            return 0;
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            return false;
         }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Remove unused parameter", "IDE0060")]
-        public static int SameZip(string source1, string source2, bool isCaseSensitive = true)
+        public static bool SameZip(string source1, string source2, bool isCaseSensitive = false)
         {
-            return 0;
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            return false;
         }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Remove unused parameter", "IDE0060")]
-        public static int SameAddress(string source1, string source2, bool isCaseSensitive = true)
+        public static bool SameAddress(string source1, string source2, bool isCaseSensitive = false)
         {
-            return 0;
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            return false;
         }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Remove unused parameter", "IDE0060")]
-        public static int SameDate(string source1, string source2, bool isCaseSensitive = true)
+        public static bool SameDate(string source1, string source2, bool isCaseSensitive = false)
         {
-            return 0;
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            return false;
         }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Remove unused parameter", "IDE0060")]
-        public static int SameFileName(string source1, string source2, bool isCaseSensitive = true)
+        public static bool SameFileName(string source1, string source2, bool isCaseSensitive = false)
         {
-            return 0;
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            return false;
         }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Remove unused parameter", "IDE0060")]
-        public static int SameNumber(string source1, string source2, bool isCaseSensitive = true)
+        public static bool SameNumber(string source1, string source2, bool isCaseSensitive = false)
         {// Convert word numbers (five=5) to numbers, convert roman numbers, and remove non-numeric characters
-            return 0;
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            return false;
         }
         #endregion Distance functions
         #region Phonetic (sound) functions
@@ -1261,11 +1306,7 @@ namespace FuzzyPlusCSharp
             phrase2 = GetKeywordStr(phrase2, true, simplify, insertSpacesBetweenCapitalLetters);
             if (String.IsNullOrEmpty(phrase1) || String.IsNullOrEmpty(phrase2))
                 return 0;
-            if (!isCaseSensitive)
-            {
-                phrase1 = phrase1.ToLower();
-                phrase2 = phrase2.ToLower();
-            }
+            FixIfIsCaseSensitive(ref phrase1, ref phrase2, isCaseSensitive);
             qtyNotMatching = 0;
             int matchCount = 0;
             string matchingLetters = "";
@@ -1296,7 +1337,7 @@ namespace FuzzyPlusCSharp
         }
         #endregion Phrase comparison associated functions
         #region Fuzzy classes
-        public static class CosineSimilarity
+        public static class CosineSimilarityClass
         {
             /// <summary>
             /// Calculates the similarity percentage between two strings via Cosine Similarity. 
@@ -1307,11 +1348,7 @@ namespace FuzzyPlusCSharp
             public static double Percentage(string source1, string source2, bool isCaseSensitive = true) => (double)CalculateSimilarity(source1, source2, isCaseSensitive);
             public static double CalculateSimilarity(string source1, string source2, bool isCaseSensitive = true)
             {
-                if (!isCaseSensitive)
-                {
-                    source1 = source1.ToLower();
-                    source2 = source2.ToLower();
-                }
+                FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                 if (source1 == source2)
                     return 1;
                 string[] words1 = source1.Split();
@@ -1343,7 +1380,7 @@ namespace FuzzyPlusCSharp
                 return wordVector;
             }
         }
-        public static class LongestCommonSequence   // A class for comparing strings via the Longest Common Sequence algorithm
+        public static class LongestCommonSequenceClass   // A class for comparing strings via the Longest Common Sequence algorithm
         {
             /// <summary>
             /// Calculates the similarity between two strings as a percentage.
@@ -1372,11 +1409,7 @@ namespace FuzzyPlusCSharp
             }
             public static int Difference(string source1, string source2, bool isCaseSensitive)
             {
-                if (!isCaseSensitive)
-                {
-                    source1 = source1.ToLower();
-                    source2 = source2.ToLower();
-                }
+                FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                 if (source1 == source2)
                     return Math.Max(source1.Length, source2.Length);
                 int[] lcsRow = CalculateSimilarityArray(source1, source2);
@@ -1389,7 +1422,7 @@ namespace FuzzyPlusCSharp
     /// <summary>
     /// A class for comparing strings via the Jaccard similarity algorithm
     /// </summary>
-    public static class JaccardSimilarity
+    public static class JaccardSimilarityClass
     {
         /// <summary>
         /// Calculates the similarity percentage between two strings via Jaccard Similarity
@@ -1420,7 +1453,7 @@ namespace FuzzyPlusCSharp
     /// <summary>
     /// A class for comparing strings via the Needleman-Wunsch algorithm
     /// </summary>
-    public static class NeedlemanWunsch
+    public static class NeedlemanWunschClass
     {
         /// <summary>
         /// Calculates the similarity percentage between two strings using the Needleman-Wunsch algorithm.
@@ -3672,6 +3705,69 @@ namespace FuzzyPlusCSharp
             }
         }
     }
+    public sealed class DiceSimilarity : AbstractStringMetric
+    {
+        private double estimatedTimingConstant;
+        private ITokeniser tokeniser;
+        private TokeniserUtilities<string> tokenUtilities;
+
+        public DiceSimilarity() : this(new TokeniserWhitespace())
+        {
+        }
+
+        public DiceSimilarity(ITokeniser tokeniserToUse)
+        {
+            this.estimatedTimingConstant = 3.4457139008736704E-07;
+            this.tokeniser = tokeniserToUse;
+            this.tokenUtilities = new TokeniserUtilities<string>();
+        }
+
+        public override double GetSimilarity(string firstWord, string secondWord)
+        {
+            if (((firstWord != null) && (secondWord != null)) && (this.tokenUtilities.CreateMergedSet(this.tokeniser.Tokenize(firstWord), this.tokeniser.Tokenize(secondWord)).Count > 0))
+            {
+                return ((2.0 * this.tokenUtilities.CommonSetTerms()) / ((double)(this.tokenUtilities.FirstSetTokenCount + this.tokenUtilities.SecondSetTokenCount)));
+            }
+            return 0.0;
+        }
+
+        public override string GetSimilarityExplained(string firstWord, string secondWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double GetSimilarityTimingEstimated(string firstWord, string secondWord)
+        {
+            if ((firstWord != null) && (secondWord != null))
+            {
+                double length = firstWord.Length;
+                double num2 = secondWord.Length;
+                return ((length + num2) * ((length + num2) * this.estimatedTimingConstant));
+            }
+            return 0.0;
+        }
+
+        public override double GetUnnormalisedSimilarity(string firstWord, string secondWord)
+        {
+            return this.GetSimilarity(firstWord, secondWord);
+        }
+
+        public override string LongDescriptionString
+        {
+            get
+            {
+                return "Implements the DiceSimilarity algorithm providing a similarity measure between two strings using the vector space of present terms";
+            }
+        }
+
+        public override string ShortDescriptionString
+        {
+            get
+            {
+                return "DiceSimilarity";
+            }
+        }
+    }
 #pragma warning restore IDE0032
 #pragma warning restore IDE0044
 #pragma warning restore IDE0046
@@ -3686,10 +3782,10 @@ namespace FuzzyPlusCSharp
 //       BlockDistance
 //       ChapmanLengthDeviation
 //       ChapmanMeanLength
-//       *CosineSimilarity
+//       *CosineSimilarityClass
 //       DiceSimilarity
 //       EuclideanDistance
-//       *JaccardSimilarity
+//       *JaccardSimilarityClass
 //       *Jaro
 //       *JaroWinkler
 //       *Levenstein

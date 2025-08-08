@@ -45,33 +45,13 @@ sqlite3_int64 convertToInt64(const std::string& input)
     return static_cast<sqlite3_int64>(number);
 }
 
-void SameName(sqlite3_context* context, int argc, sqlite3_value** argv)
+__declspec(dllexport)
+bool SameName(const char* name1, const char* name2)
 {
-    assert(argc == 2);
-    // 1) get shortest of two names, this is maxlen
-    // 2) init name1 and name2 char index pointers = 0
-    // 3) loop over each character, while name1 & name2 pointers < maxlen :
-    //   a) if one is a space or a period, increase that name char
-    //   index, repeat loop with same other char
-    //   b) lowercase each if necessary
-    //
-    // Lower case strings:
-    //   for ( ; *p; ++p) *p = tolower(*p);
-    // Convert names to char* and calculate min length
-    const char* name1 = (const char*)sqlite3_value_text(argv[0]);
-    const char* name2 = (const char*)sqlite3_value_text(argv[1]);
-    if (name1 == NULL || name2 == NULL)
-    {
-        sqlite3_result_int(context, 0);
-        return;
-    }
     size_t name1len = strlen(name1);
     size_t name2len = strlen(name2);
     if ((name1len == 0) || (name2len == 0))
-    {
-        sqlite3_result_int(context, 0);
-        return;
-    }
+        return 0;
     int minlen = (name2len < name1len) ? (int)name2len : (int)name1len;
     char* n = (char*)name1;
     char* m = (char*)name2;
@@ -108,6 +88,29 @@ void SameName(sqlite3_context* context, int argc, sqlite3_value** argv)
     // all-invalid strings are not equal
     if (!compared) 
         equal = 0;
+    return equal == 1;
+}
+void SameName(sqlite3_context* context, int argc, sqlite3_value** argv)
+{
+    assert(argc == 2);
+    // 1) get shortest of two names, this is maxlen
+    // 2) init name1 and name2 char index pointers = 0
+    // 3) loop over each character, while name1 & name2 pointers < maxlen :
+    //   a) if one is a space or a period, increase that name char
+    //   index, repeat loop with same other char
+    //   b) lowercase each if necessary
+    //
+    // Lower case strings:
+    //   for ( ; *p; ++p) *p = tolower(*p);
+    // Convert names to char* and calculate min length
+    const char* name1 = (const char*)sqlite3_value_text(argv[0]);
+    const char* name2 = (const char*)sqlite3_value_text(argv[1]);
+    if (name1 == NULL || name2 == NULL)
+    {
+        sqlite3_result_int(context, 0);
+        return;
+    }
+    int equal = SameName(name1, name2);
     sqlite3_result_int(context, equal);
 }
 

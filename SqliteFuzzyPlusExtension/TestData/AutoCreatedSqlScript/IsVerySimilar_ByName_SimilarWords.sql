@@ -26,6 +26,7 @@ select Words
 , IsVerySimilar(Words, 'David', 'SmithWaterman') as a24 -- SmithWaterman (ID# 24)
 , IsVerySimilar(Words, 'David', 'SmithWatermanGotoh') as a25 -- SmithWatermanGotoh (ID# 25)
 , IsVerySimilar(Words, 'David', 'SmithWatermanGotohWindowedAffine') as a26 -- SmithWatermanGotohWindowedAffine (ID# 26)
+, IsVerySimilar(Words, 'David', 'DiceSimilarity') as a27 -- DiceSimilarity (ID# 27)
 , IsVerySimilar(Words, 'David', 'CosineSimilarity') as a64 -- CosineSimilarity (ID# 64)
 , IsVerySimilar(Words, 'David', 'JaccardSimilarity') as a65 -- JaccardSimilarity (ID# 65)
 , IsVerySimilar(Words, 'David', 'PhraseTokenize') as a96 -- PhraseTokenize (ID# 96)
@@ -69,6 +70,7 @@ select Words
 , IsVerySimilar(Words, 'David', 'iSmithWaterman') as a283 -- iSmithWaterman (ID# 283)
 , IsVerySimilar(Words, 'David', 'iSmithWatermanGotoh') as a284 -- iSmithWatermanGotoh (ID# 284)
 , IsVerySimilar(Words, 'David', 'iSmithWatermanGotohWindowedAffine') as a285 -- iSmithWatermanGotohWindowedAffine (ID# 285)
+, IsVerySimilar(Words, 'David', 'iDiceSimilarity') as a286 -- iDiceSimilarity (ID# 286)
 FROM SimilarWords;
 -- Note: Case insensitive functions have an ID number greater than 256
 --       C++ functions have an ID number equal to or greater than  128 and less than 256

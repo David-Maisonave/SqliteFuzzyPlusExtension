@@ -13,5 +13,10 @@
 - Added BlockDistance, ChapmanLengthDeviation, ChapmanMeanLength, EuclideanDistance, MatchingCoefficient, MongeElkan, QGramsDistance, SmithWaterman, SmithWatermanGotoh, and SmithWatermanGotohWindowedAffine.
 - Added Soundex2 and changed Caverphone2 so it can take 1 or 2 arguments.
 - Added function EnPhoneticDistance which is functional when downloading SqliteFuzzyPlusExtensionWithMsPhoneticMatching.
-
-
+### 0.1.3
+- Updated enum's in SqliteFuzzyPlusExtension.h with the enum's in Fuzzy.cs.
+- Created the following export functions so that the fuzzy code can be used outside of SQLite:
+  - fuzzy_script, SameName, HasCharInSameOrder, DamerauLevenshteinDistance, DamerauLevenshtein, LevenshteinDistance, Levenshtein, HammingDistance, Hamming, JaccardDistance, JaroDistance,
+  - JaroWinklerDistance, Levenshtein2Distance, LongestCommonSubsequenceDistance, LongestCommonSubstringDistance, NormalizedLevenshteinDistance, OverlapCoefficientDistance, RatcliffObershelpSimilarityDistance,
+  - SorensenDiceDistance, TanimotoCoefficientDistance, BlockDistance, NeedlemanWunsch, JaccardIndex, ChapmanLengthDeviation, ChapmanMeanLength, EuclideanDistance, MatchingCoefficient, MongeElkan, QGramsDistance,
+  - SmithWaterman, SmithWatermanGotoh, SmithWatermanGotohWindowedAffine, CosineSimilarity, JaccardSimilarity, LongestCommonSequence, DiceSimilarity, PhraseTokenize, SimplePhraseTokenize
