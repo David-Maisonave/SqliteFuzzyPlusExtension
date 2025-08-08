@@ -16,7 +16,9 @@
 - [TanimotoCoefficientDistance](#TanimotoCoefficientDistance)
 - [NormalizeNum](#NormalizeNum)
 - [SameName](#SameName)
-- [CaverPhone2](#CaverPhone2)
+- [Caverphone2](#Caverphone2)
+- [Soundex2](#Soundex2)
+- [EnPhoneticDistance](#EnPhoneticDistance)
 
 ### Regex functions
 - [RegexMatch](#RegexMatch)
@@ -349,14 +351,14 @@ David	1
 
 This function comes from the library in the following link: [sqlite-functions](https://github.com/brandonrobertz/sqlite-functions)
 
-## CaverPhone2
+## Caverphone2
 ``` SQL
-select CaverPhone2('ate','eight');
+select Caverphone2('ate','eight');
 ```
-CaverPhone2 (aka CaverPhone_CS) calculates the Caverphone code. It takes two arguments comnpare to the SQLean CaverPhone, which only take one argument.
+Caverphone2 (aka CaverPhone_CS) calculates the Caverphone code. It takes two arguments comnpare to the SQLean CaverPhone, which only take one argument.
 Example usage:
 ``` SQL
-SELECT Word, CaverPhone2(Word,"ate") cp FROM SimilarSoundingWords WHERE cp = 1;
+SELECT Word, Caverphone2(Word,"ate") cp FROM SimilarSoundingWords WHERE cp = 1;
 ```
 **Results**:
 ```
@@ -369,7 +371,21 @@ Here's example usage for SQLean CaverPhone.
 SELECT Word, CaverPhone(Word) cp FROM SimilarSoundingWords WHERE cp = CaverPhone("ate");;
 ```
 
-They both give the same results, but IMHO the CaverPhone2 syntax is easier and more efficient to use.
+They both give the same results, but IMHO the Caverphone2 syntax is easier and more efficient to use.
+
+## Soundex2
+``` SQL
+select Soundex2('too','two');
+```
+Soundex2 calculates the Soundex code. It takes two arguments.
+
+## EnPhoneticDistance
+``` SQL
+select SameSound('being', 'bean', 'EnPhoneticDistance');
+```
+EnPhoneticDistance caculates if two words sounds the same.
+#### Important!!!: EnPhoneticDistance requires SqliteFuzzyPlusExtensionWithMsPhoneticMatching
+EnPhoneticDistance is in the SqliteFuzzyPlusExtensionWithMsPhoneticMatching version of the binaries.
 
 ## RegexMatch
 ``` SQL
