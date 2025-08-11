@@ -1,0 +1,48 @@
+select Phrases
+, HowSimilarByName(Phrases, "This is a similar phrase test", "Levenshtein") as lev, HowSimilarByName(Phrases, "This is a similar phrase test", "DamerauLevenshtein") as dlev
+, HowSimilarByName(Phrases, "This is a similar phrase test", "JaroWinkler") as jw, HowSimilarByName(Phrases, "This is a similar phrase test", "CosineSimilarity") as cosn
+, HowSimilarByName(Phrases, "This is a similar phrase test", "LongestCommonSequence") as lcs, HowSimilarByName(Phrases, "This is a similar phrase test", "JaccardSimilarity") as Jacs
+, HowSimilarByName(Phrases, "This is a similar phrase test", "JaccardIndex") as jaci, HowSimilarByName(Phrases, "This is a similar phrase test", "OverlapCoefficient") as ocoef
+, HowSimilarByName(Phrases, "This is a similar phrase test", "NeedlemanWunsch") as n, HowSimilarByName(Phrases, "This is a similar phrase test", "SorensenDiceDistance") as sd
+, HowSimilarByName(Phrases, "This is a similar phrase test", "RatcliffObershelpSimilarityDistance") as r, HowSimilarByName(Phrases, "This is a similar phrase test", "HammingDistance") as h
+, HowSimilarByName(Phrases, "This is a similar phrase test", "LongestCommonSubstringDistance") as lcsd, HowSimilarByName(Phrases, "This is a similar phrase test", "LongestCommonSubsequenceDistance") as lcsq
+, HowSimilarByName(Phrases, "This is a similar phrase test", "JaroDistance") as jd, HowSimilarByName(Phrases, "This is a similar phrase test", "NormalizedLevenshteinDistance") as nld
+, HowSimilarByName(Phrases, "This is a similar phrase test", "Levenshtein2Distance") as lev2, HowSimilarByName(Phrases, "This is a similar phrase test", "TanimotoCoefficientDistance") as t
+, HowSimilarByName(Phrases, "This is a similar phrase test", "PhraseTokenize") as pt, HowSimilarByName(Phrases, "This is a similar phrase test", "SimplePhraseTokenize") as spt
+FROM SimilarPhrase
+
+select Words
+, HowSimilarByName(Words, "David", "Levenshtein") as lev, HowSimilarByName(Words, "David", "DamerauLevenshtein") as dlev
+, HowSimilarByName(Words, "David", "JaroWinkler") as jw, HowSimilarByName(Words, "David", "CosineSimilarity") as cosn
+, HowSimilarByName(Words, "David", "LongestCommonSequence") as lcs, HowSimilarByName(Words, "David", "JaccardSimilarity") as Jacs
+, HowSimilarByName(Words, "David", "JaccardIndex") as jaci, HowSimilarByName(Words, "David", "OverlapCoefficient") as ocoef
+, HowSimilarByName(Words, "David", "NeedlemanWunsch") as n, HowSimilarByName(Words, "David", "SorensenDiceDistance") as sd
+, HowSimilarByName(Words, "David", "RatcliffObershelpSimilarityDistance") as r, HowSimilarByName(Words, "David", "HammingDistance") as h
+, HowSimilarByName(Words, "David", "LongestCommonSubstringDistance") as lcsd, HowSimilarByName(Words, "David", "LongestCommonSubsequenceDistance") as lcsq
+, HowSimilarByName(Words, "David", "JaroDistance") as jd, HowSimilarByName(Words, "David", "NormalizedLevenshteinDistance") as nld
+, HowSimilarByName(Words, "David", "Levenshtein2Distance") as lev2, HowSimilarByName(Words, "David", "TanimotoCoefficientDistance") as t
+, HowSimilarByName(Words, "David", "PhraseTokenize") as pt, HowSimilarByName(Words, "David", "SimplePhraseTokenize") as spt
+FROM SimilarWords
+
+select Words
+, Lev(Words, "David") as Lev, DamLev(Words, "David") as DamLev, JaroWin(Words, "David") as JaroWin
+, PhraseDiff(Words, "David") as PhraseDiff
+, OverlapCoef(Words, "David") as OverlapCoef, Jaccard(Words, "David") as Jaccard, SorensenDice(Words, "David") as SorensenDice
+, Ratcliff(Words, "David") as Ratcliff, HammDist(Words, "David") as HammDist, LCStr(Words, "David") as LCStr
+, LCSq(Words, "David") as LCSq, Jaro(Words, "David") as Jaro, Tanimoto(Words, "David") as Tanimoto
+, NormLev(Words, "David") as NormLev
+, Lev2(Words, "David") as Lev2
+FROM SimilarWords
+
+select Phrases
+, Lev(Phrases, "This is a similar phrase test") as Lev, DamLev(Phrases, "This is a similar phrase test") as DamLev, JaroWin(Phrases, "This is a similar phrase test") as JaroWin
+, PhraseDiff(Phrases, "This is a similar phrase test") as PhraseDiff
+, OverlapCoef(Phrases, "This is a similar phrase test") as OverlapCoef, Jaccard(Phrases, "This is a similar phrase test") as Jaccard, SorensenDice(Phrases, "This is a similar phrase test") as SorensenDice
+, Ratcliff(Phrases, "This is a similar phrase test") as Ratcliff, HammDist(Phrases, "This is a similar phrase test") as HammDist, LCStr(Phrases, "This is a similar phrase test") as LCStr
+, LCSq(Phrases, "This is a similar phrase test") as LCSq, Jaro(Phrases, "This is a similar phrase test") as Jaro, Tanimoto(Phrases, "This is a similar phrase test") as Tanimoto
+, NormLev(Phrases, "This is a similar phrase test") as NormLev
+, Lev2(Phrases, "This is a similar phrase test") as Lev2
+FROM SimilarPhrase
+
+
+ 

@@ -1,0 +1,1 @@
+SELECT Source, NormalizeNum(Source) as n FROM TextToConvert

@@ -16,6 +16,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestSQLite_ConsoleApp_Cpp",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestFuzzy_ConsoleApp_DotNetFrameworkCpp", "TestFuzzy_ConsoleApp_DotNetFrameworkCpp\TestFuzzy_ConsoleApp_DotNetFrameworkCpp.vcxproj", "{E27EDAB2-C3CC-23CF-A1D7-25F674E59D76}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTestConsole_C_Runner", "..\SqliteFuzzyPlusExtension\UnitTestConsole_C_Runner\UnitTestConsole_C_Runner.vcxproj", "{6CFFB0D3-D5A8-421A-9D43-49624A29C328}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E50AF77F-B0A9-37C2-BEE9-E0203EB9712C} = {E50AF77F-B0A9-37C2-BEE9-E0203EB9712C}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +91,18 @@ Global
 		{E27EDAB2-C3CC-23CF-A1D7-25F674E59D76}.Release|x64.Build.0 = Release|x64
 		{E27EDAB2-C3CC-23CF-A1D7-25F674E59D76}.Release|x86.ActiveCfg = Release|Win32
 		{E27EDAB2-C3CC-23CF-A1D7-25F674E59D76}.Release|x86.Build.0 = Release|Win32
+		{6CFFB0D3-D5A8-421A-9D43-49624A29C328}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{6CFFB0D3-D5A8-421A-9D43-49624A29C328}.Debug|Any CPU.Build.0 = Debug|x64
+		{6CFFB0D3-D5A8-421A-9D43-49624A29C328}.Debug|x64.ActiveCfg = Debug|x64
+		{6CFFB0D3-D5A8-421A-9D43-49624A29C328}.Debug|x64.Build.0 = Debug|x64
+		{6CFFB0D3-D5A8-421A-9D43-49624A29C328}.Debug|x86.ActiveCfg = Debug|Win32
+		{6CFFB0D3-D5A8-421A-9D43-49624A29C328}.Debug|x86.Build.0 = Debug|Win32
+		{6CFFB0D3-D5A8-421A-9D43-49624A29C328}.Release|Any CPU.ActiveCfg = Release|x64
+		{6CFFB0D3-D5A8-421A-9D43-49624A29C328}.Release|Any CPU.Build.0 = Release|x64
+		{6CFFB0D3-D5A8-421A-9D43-49624A29C328}.Release|x64.ActiveCfg = Release|x64
+		{6CFFB0D3-D5A8-421A-9D43-49624A29C328}.Release|x64.Build.0 = Release|x64
+		{6CFFB0D3-D5A8-421A-9D43-49624A29C328}.Release|x86.ActiveCfg = Release|Win32
+		{6CFFB0D3-D5A8-421A-9D43-49624A29C328}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

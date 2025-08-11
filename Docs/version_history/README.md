@@ -14,7 +14,11 @@
 - Added Soundex2 and changed Caverphone2 so it can take 1 or 2 arguments.
 - Added function EnPhoneticDistance which is functional when downloading SqliteFuzzyPlusExtensionWithMsPhoneticMatching.
 ### 0.1.3
+- Made SqliteFuzzyPlusExtension C language compatible. Changed the main header file and added extern "C" to all the C compatible functions.
+- Added C language project (UnitTestConsole_C_Runner) for test purposes.
 - Updated enum's in SqliteFuzzyPlusExtension.h with the enum's in Fuzzy.cs.
+- Added phonetic methods MatchRatingApproach, Metaphone, CaverPhonePhonix, and DoubleMetaphone from Phonix project.
+- Added phonetic method ColognePhonetics.
 - Created the following export functions so that the fuzzy code can be used outside of SQLite:
   - fuzzy_script, SameName, HasCharInSameOrder, DamerauLevenshteinDistance, DamerauLevenshtein, LevenshteinDistance, Levenshtein, HammingDistance, Hamming, JaccardDistance, JaroDistance,
   - JaroWinklerDistance, Levenshtein2Distance, LongestCommonSubsequenceDistance, LongestCommonSubstringDistance, NormalizedLevenshteinDistance, OverlapCoefficientDistance, RatcliffObershelpSimilarityDistance,

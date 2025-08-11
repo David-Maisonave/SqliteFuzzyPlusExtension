@@ -105,6 +105,10 @@
       <GenerateMapFile>true</GenerateMapFile>
       <UseDynamicDebugging>true</UseDynamicDebugging>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.dll" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.dll"
+copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.lib" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.lib"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -121,6 +125,10 @@
       <GenerateMapFile>true</GenerateMapFile>
       <UseDynamicDebugging>true</UseDynamicDebugging>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.dll" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.dll"
+copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.lib" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.lib"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -134,6 +142,10 @@
       <AdditionalDependencies />
       <AdditionalOptions> /ignore:4248 %(AdditionalOptions)</AdditionalOptions>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.dll" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.dll"
+copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.lib" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.lib"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -147,6 +159,10 @@
       <AdditionalDependencies />
       <AdditionalOptions> /ignore:4248 %(AdditionalOptions)</AdditionalOptions>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.dll" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.dll"
+copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.lib" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.lib"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Reference Include="System" />
