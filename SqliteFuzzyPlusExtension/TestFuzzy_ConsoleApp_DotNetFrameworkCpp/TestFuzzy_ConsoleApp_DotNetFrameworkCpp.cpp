@@ -4,8 +4,10 @@
 #include <iostream>
 #include <windows.h>
 #include <atlstr.h>
+#include <stdio.h>
 using namespace std;
 using namespace System;
+#define SQLITEFUZZYPLUSEXTENSION_INCLUDE_FUNCTION_MACROS_FOR_C
 #include "..\SqliteFuzzyPlusExtension.h"
 
 static void CreateScriptSimilarWords(string rootDir, string fieldName, string table, string FunctionName, string CompareTo, bool byName) 
@@ -113,14 +115,111 @@ static void CreateUnitTestSqlFiles()
     CreateScriptSimilarSound(rootDir, "Words", "SimilarSoundingWords", "SameSound", "'their'");
 }
 
+static void TestPhonetics(const char* defaultSoundMethod)
+{
+    if (defaultSoundMethod != NULL) {
+        SetDefaultSameSoundMethodByName(defaultSoundMethod);
+        printf("Using sound method '%s' as default sound method.\n", defaultSoundMethod);
+    }
+    else
+        printf("Using sound method '%i' as default sound method.\n", GetDefaultSoundMethod());
+    bool s1 = SameSound("to", "to", SqliteFuzzyPlusExtension::Soundex2, GetDistanceMethodID("SameSound_StrCmp"), 1);
+    bool s2 = SameSound("to", "two", SqliteFuzzyPlusExtension::Soundex2, GetDistanceMethodID("SameSound_StrCmp"), 1);
+    bool s3 = SameSound("to", "too", GetSameSoundMethodID("Soundex2"), GetDistanceMethodID("SameSound_StrCmp"), 1);
+    bool s4 = SameSound("to", "if", GetSameSoundMethodID("Soundex2"), GetDistanceMethodID("SameSound_StrCmp"), 1);
+    bool s5 = SameSound("to", "no", SqliteFuzzyPlusExtension::Soundex2, GetDistanceMethodID("SameSound_StrCmp"), 1);
+    bool s6 = SameSound("to", "to", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("SameSound_StrCmp"), 1);
+    bool s7 = SameSound("to", "two", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("SameSound_StrCmp"), 1);
+    bool s8 = SameSound("to", "too", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("SameSound_StrCmp"), 1);
+    bool s9 = SameSound("to", "if", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("SameSound_StrCmp"), 1);
+    bool s0 = SameSound("to", "no", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("SameSound_StrCmp"), 1);
+    printf("(to) s1=%i, s2=%i, s3=%i, s4=%i, s5=%i, s6=%i, s7=%i, s8=%i, s9=%i, s0=%i\n", s1, s2, s3, s4, s5, s6, s7, s8, s9, s0);
+    s1 = SAMESOUND("there", "there");
+    s2 = SAMESOUND("there", "their");
+    s3 = SAMESOUND("there", "they're");
+    s4 = SAMESOUND("there", "bear");
+    s5 = SAMESOUND("there", "band");
+    s6 = SAMESOUND_NM("there", "there", "fuzzy_soundex");
+    s7 = SAMESOUND_NM("there", "their", "fuzzy_soundex");
+    s8 = SAMESOUND_NM("there", "they're", "fuzzy_soundex");
+    s9 = SAMESOUND_ID("there", "bear", SqliteFuzzyPlusExtension::fuzzy_soundex);
+    s0 = SAMESOUND_ID("there", "band", SqliteFuzzyPlusExtension::fuzzy_soundex);
+    printf("(there) s1=%i, s2=%i, s3=%i, s4=%i, s5=%i, s6=%i, s7=%i, s8=%i, s9=%i, s0=%i\n", s1, s2, s3, s4, s5, s6, s7, s8, s9, s0);
+    // Most phonetic test fail when comparing "been", "being" and "bin", except for EnPhoneticDistance
+    printf("Most phonetic test fail when comparing 'been', 'being' and 'bin', except for EnPhoneticDistance, and MatchRatingApproach\n");
+    printf("Phonetic methods (1-3=default, 4-6=fuzzy_soundex, 7-9=CaverPhonePhonix, a-c=MatchRatingApproach)\n");
+    bool b1 = SAMESOUND("been", "being");  // This should pass, but it fails!!!
+    bool b2 = SAMESOUND("been", "bin");  // This should fail, but it passes!!!
+    bool b3 = SAMESOUND("been", "bean");
+    bool b4 = SAMESOUND_NM("been", "being", "fuzzy_soundex");  // This should pass, but it fails!!!
+    bool b5 = SAMESOUND_NM("been", "bin", "fuzzy_soundex");  // This should fail, but it passes!!!
+    bool b6 = SAMESOUND_NM("been", "bean", "fuzzy_soundex");
+    bool b7 = SAMESOUND_NM("been", "being", "CaverPhonePhonix");  // This should pass, but it fails!!!
+    bool b8 = SAMESOUND_NM("been", "bin", "CaverPhonePhonix");  // This should fail, but it passes!!!
+    bool b9 = SAMESOUND_NM("been", "bean", "CaverPhonePhonix");
+    bool ba = SAMESOUND_NM("been", "being", "MatchRatingApproach");
+    bool bb = SAMESOUND_NM("been", "bin", "MatchRatingApproach");
+    bool bc = SAMESOUND_NM("been", "bean", "MatchRatingApproach");
+
+    if (EnPhoneticDistance_IsSupported()) {
+        bool e1 = SAMESOUND_NM("been", "been", "EnPhoneticDistance");
+        bool e2 = SAMESOUND_NM("been", "being", "EnPhoneticDistance");  // This passes correctly using EnPhoneticDistance
+        bool e3 = SAMESOUND_NM("been", "flat", "EnPhoneticDistance");
+        bool e4 = SAMESOUND_ID("been", "bean", SqliteFuzzyPlusExtension::EnPhoneticDistance);
+        bool e5 = SAMESOUND_ID("been", "bin", SqliteFuzzyPlusExtension::EnPhoneticDistance);  // This fails correctly using EnPhoneticDistance
+        printf("(been) b1=%i, b2=%i, b3=%i, b4=%i, b5=%i, b6=%i, b7=%i, b8=%i, b9=%i, ba=%i, bb=%i, bc=%i,\ne1=%i, e2=%i, e3=%i, e4=%i, e5=%i\n", b1, b2, b3, b4, b5, b6, b7, b8, b9, ba, bb, bc, e1, e2, e3, e4, e5);
+    } // Mibspealled word tesxt hearedd
+    else
+        printf("(been) b1=%i, b2=%i, b3=%i, b4=%i, b5=%i, b6=%i, b7=%i, b8=%i, b9=%i, ba=%i, bb=%i, bc=%i\n", b1, b2, b3, b4, b5, b6, b7, b8, b9, ba, bb, bc);
+    if (defaultSoundMethod == NULL)
+    {
+        printf("Phonix phonetic (1-4=Metaphone, 5-8=DoubleMetaphone, 9-c=CaverPhonePhonix, d-h=MatchRatingApproach)\n");
+        bool f1 = SAMESOUND_NM("been", "being", "Metaphone");
+        bool f2 = SAMESOUND_NM("been", "bin", "Metaphone");
+        bool f3 = SAMESOUND_NM("been", "bean", "Metaphone");
+        bool f4 = SAMESOUND_NM("been", "flat", "Metaphone");
+        bool f5 = SAMESOUND_NM("been", "being", "DoubleMetaphone");
+        bool f6 = SAMESOUND_NM("been", "bin", "DoubleMetaphone");
+        bool f7 = SAMESOUND_NM("been", "bean", "DoubleMetaphone");
+        bool f8 = SAMESOUND_NM("been", "flat", "DoubleMetaphone");
+        bool f9 = SAMESOUND_NM("been", "being", "CaverPhonePhonix");
+        bool fa = SAMESOUND_NM("been", "bin", "CaverPhonePhonix");
+        bool fb = SAMESOUND_NM("been", "bean", "CaverPhonePhonix");
+        bool fc = SAMESOUND_NM("been", "flat", "CaverPhonePhonix");
+        bool fd = SAMESOUND_NM("been", "being", "MatchRatingApproach");
+        bool fe = SAMESOUND_NM("been", "bin", "MatchRatingApproach");
+        bool ff = SAMESOUND_NM("been", "bean", "MatchRatingApproach");
+        bool fg = SAMESOUND_NM("been", "flat", "MatchRatingApproach"); // This should fail, but it passes!!!
+        bool fh = SAMESOUND_NM("been", "xxxx", "MatchRatingApproach"); // This should fail, but it passes!!!
+        printf("(been) f1=%i, f2=%i, f3=%i, f4=%i, f5=%i, f6=%i, f7=%i, f8=%i, f9=%i, fa=%i, fb=%i, fc=%i, fd=%i, fe=%i, ff=%i, fg=%i, fh=%i\n", f1, f2, f3, f4, f5, f6, f7, f8, f9, fa, fb, fc, fd, fe, ff, fg, fh);
+    }
+    printf("\n\n");
+}
+
 int main() //array<System::String ^> ^args)
 {
     CreateUnitTestSqlFiles();
+    TestPhonetics(NULL);
+    TestPhonetics("MatchRatingApproach");
+    TestPhonetics("ColognePhonetics");
+    SAMESOUND_NM("been", "been", "MatchRatingApproach");
+    SAMESOUND_NM("been", "being", "MatchRatingApproach");
+    SAMESOUND_NM("been", "bean", "MatchRatingApproach");
+    SAMESOUND_NM("been", "bing", "MatchRatingApproach");
+    SAMESOUND_NM("been", "bin", "MatchRatingApproach");
+    SAMESOUND_NM("been", "ban", "MatchRatingApproach");
+    SAMESOUND_NM("been", "bone", "MatchRatingApproach");
+    SAMESOUND_NM("been", "bind", "MatchRatingApproach");
+    SAMESOUND_NM("been", "blind", "MatchRatingApproach");
+    SAMESOUND_NM("bind", "blind", "MatchRatingApproach");
+    SAMESOUND_NM("been", "beeningbond", "MatchRatingApproach");
+    SAMESOUND_NM("been", "bingbong", "MatchRatingApproach");
 
     const char* str1 = "Hello World";
     const char* str2 = "Hellx sorld";
     int x = DamerauLevenshteinDistance(str1, str2);
     std::cout << "x = " << x << std::endl;
+
 
     const char* sound1 = "been";
     const char* sound2 = "being";

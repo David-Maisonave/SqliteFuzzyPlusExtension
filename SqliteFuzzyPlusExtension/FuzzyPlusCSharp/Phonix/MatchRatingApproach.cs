@@ -155,7 +155,8 @@ namespace Phonix
             int rating = 6 - (large.Length);
 
             //If the similarity rating equal to or greater than the minimum rating then the match is considered good.
-            if (rating >= minRating) { return rating; }
+            if (rating >= minRating) 
+                return rating;
 
             return 0;
         }
@@ -224,13 +225,18 @@ namespace Phonix
 
             for (int i = 0; i < encoders.Length - 1; i++)
             {
-                if (encoders[i] != encoders[i + 1])
+                if (encoders[i] != encoders[i + 1] || encoders[i] == 0)
                 {
                     return false;
                 }
             }
 
             return true;
+        }
+        public bool IsSimilar(string source1, string source2)
+        {
+            int isSimilar = MatchRatingCompute(source1, source2);
+            return isSimilar > 3;
         }
     }
 }

@@ -1,30 +1,29 @@
 #ifndef SQLITEFUZZYPLUSEXTENSION_H
 #define SQLITEFUZZYPLUSEXTENSION_H
 
-#ifndef SQLITEFUZZYPLUSEXTENSION_EXCLUDE_FUNC
-#ifndef SQLITEFUZZYPLUSEXTENSION_LIB
-#define SQLITEFUZZYPLUSEXTENSION_LIB "SqliteFuzzyPlusExtension.lib"
-#endif //!SQLITEFUZZYPLUSEXTENSION_LIB
-#endif //!SQLITEFUZZYPLUSEXTENSION_EXCLUDE_FUNC
-
 #ifdef __cplusplus
 #include <string>
 #define C_ENUM_NAMING_CONVENTION__(name) name
 #define NAMESPACE_SQLITEFUZZYPLUSEXTENSION  SqliteFuzzyPlusExtension::
 #else
-#define COMPILE_TO_C_LANGUAGE__
+#define SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
 #endif // __cplusplus
 
-#ifdef COMPILE_TO_C_LANGUAGE__
+#ifdef SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
 #define EXCLUDE_NAMESPACE_SQLITEFUZZYPLUSEXTENSION
 #include "stdbool.h"
 #define C_ENUM_NAMING_CONVENTION__(name) enum_##name
-#ifndef EXCLUDE_FUNCTION_MACROS_FOR_C
+#ifndef SQLITEFUZZYPLUSEXTENSION_EXCLUDE_FUNCTION_MACROS_FOR_C
+#define SQLITEFUZZYPLUSEXTENSION_INCLUDE_FUNCTION_MACROS_FOR_C
+#endif // !SQLITEFUZZYPLUSEXTENSION_EXCLUDE_FUNCTION_MACROS_FOR_C
+#endif // SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
+
+#ifdef SQLITEFUZZYPLUSEXTENSION_INCLUDE_FUNCTION_MACROS_FOR_C
 #define SAMESOUND(word1, word2) SameSound(word1, word2, 0, 0, 1)
 #define SAMESOUND_NM(word1, word2, methodName) SameSound(word1, word2, GetSameSoundMethodID(methodName), GetDistanceMethodID("SameSound_StrCmp"), 1)
 #define SAMESOUND_ID(word1, word2, methodID) SameSound(word1, word2, methodID, GetDistanceMethodID("SameSound_StrCmp"), 1)
-#endif // !EXCLUDE_FUNCTION_MACROS_FOR_C
-#endif // COMPILE_TO_C_LANGUAGE__
+#endif // SQLITEFUZZYPLUSEXTENSION_INCLUDE_FUNCTION_MACROS_FOR_C
+
 
 #ifdef EXCLUDE_NAMESPACE_SQLITEFUZZYPLUSEXTENSION
 #define NAMESPACE_SQLITEFUZZYPLUSEXTENSION
@@ -35,19 +34,19 @@
 #ifndef EXCLUDE_NAMESPACE_SQLITEFUZZYPLUSEXTENSION
 namespace SqliteFuzzyPlusExtension {
 #endif //!EXCLUDE_NAMESPACE_SQLITEFUZZYPLUSEXTENSION
-#ifdef COMPILE_TO_C_LANGUAGE__
+#ifdef SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
 #define CASE_INSENSITIVE 256
 #define CPP_ONLY_FUZZY 128
 #define TOKEN_METHODS 64
 #define PHRASE_METHODS TOKEN_METHODS + 32
 #define METHODS_UP_FOR_DELETION PHRASE_METHODS + 16
-#else // COMPILE_TO_C_LANGUAGE__
+#else // SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
     const int CASE_INSENSITIVE = 256;
     const int CPP_ONLY_FUZZY = 128;
     const int TOKEN_METHODS = 64;
     const int PHRASE_METHODS = TOKEN_METHODS + 32;
     const int METHODS_UP_FOR_DELETION = PHRASE_METHODS + 16;
-#endif // COMPILE_TO_C_LANGUAGE__
+#endif // SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
     // Note: In C language, the enums can not use the same name as a function, so macro C_ENUM_NAMING_CONVENTION__ has been added for C-Only code where all the enums with this macro have an "enum_" prefixed to the name.
     //       The C++ code will still reference all the enums by the original name.
     enum DistanceMethod_ID
@@ -169,12 +168,14 @@ namespace SqliteFuzzyPlusExtension {
 #endif //EXCLUDE_NAMESPACE_SQLITEFUZZYPLUSEXTENSION
 
 #ifndef SQLITEFUZZYPLUSEXTENSION_EXCLUDE_FUNC
+#ifdef SQLITEFUZZYPLUSEXTENSION_LIB
 #pragma comment(lib, SQLITEFUZZYPLUSEXTENSION_LIB)
+#endif // SQLITEFUZZYPLUSEXTENSION_LIB
 /////////////////////////////////////////////////////////////////////////////////
 // Function compiled with extern "C"
-#ifndef COMPILE_TO_C_LANGUAGE__
+#ifndef SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
 extern "C" {
-#endif // !COMPILE_TO_C_LANGUAGE__
+#endif // !SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
     double HowSimilar(const char* source1, const char* source2, int DistanceMethod_Id);
     double HowSimilarById(const char* source1, const char* source2, int DistanceMethod_Id);
     double HowSimilarByName(const char* source1, const char* source2, const char* DistanceMethod_Name);
@@ -184,14 +185,16 @@ extern "C" {
     int GetSameSoundMethodID(const char* SameSoundMethod_Name);
     int SetDefaultDistanceMethodByName(const char* DistanceMethod_Name);
     int SetDefaultDistanceMethodByID(int DistanceMethod_Id);
+    int GetDefaultDistanceMethod();
     int SetDefaultSameSoundMethod(int sameSoundMethod_ID);
     int SetDefaultSameSoundMethodByName(const char* sameSoundMethod_Name);
+    int GetDefaultSoundMethod();
     // C language code can simulate overloaded SameSound functions by using GetSameSoundMethodID and GetDistanceMethodID
     // Example: SameSound("been", "being", GetSameSoundMethodID("Soundex2"), GetDistanceMethodID("Levenshtein"), 1);
     bool SameSound(const char* source1, const char* source2, int SameSoundMethod_Id, int DistanceMethod_Id, bool isVerySimilar);
     /////////////////////////////////////////////////////////////////////////////////
     // Distance Functions
-#ifndef COMPILE_TO_C_LANGUAGE__
+#ifndef SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
     int DamerauLevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive = true);
     int DamerauLevenshtein(const char* str1, const char* str2, bool isCaseSensitive = true); // This is an alias for DamerauLevenshteinDistance
     int LevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive = true);
@@ -227,7 +230,7 @@ extern "C" {
     double DiceSimilarity(const char* source1, const char* source2, bool isCaseSensitive = true);
     double PhraseTokenize(const char* source1, const char* source2, bool isCaseSensitive = true);
     double SimplePhraseTokenize(const char* source1, const char* source2, bool isCaseSensitive = true);
-#endif // !COMPILE_TO_C_LANGUAGE__
+#endif // !SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
     int PhraseSimplifiedDiff(const char* str1, const char* str2);
     // SQLean fuzzy Distance Functions
     unsigned fuzzy_damlev(const char* source1, const char* source2);
@@ -291,13 +294,13 @@ extern "C" {
     int MaxLength(const char* str1, const char* str2);
     int MinLength(const char* str1, const char* str2);
     unsigned __int64 NormalizeNum(const char* source);
-#ifndef COMPILE_TO_C_LANGUAGE__
+#ifndef SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
 }
     double HowSimilar(const char* source1, const char* source2, const char* DistanceMethod_Name);
     double Distance(const char* source1, const char* source2, const char* DistanceMethod_Name);
     NAMESPACE_SQLITEFUZZYPLUSEXTENSION DistanceMethod_ID SetDefaultDistanceMethod(const char* DistanceMethod_Name);
     NAMESPACE_SQLITEFUZZYPLUSEXTENSION DistanceMethod_ID SetDefaultDistanceMethod(int DistanceMethod_Id);
-    bool SameSound(const char* source1, const char* source2, const char* SameSoundMethod_Name, const char* DistanceMethod_Name, bool isVerySimilar);
+    bool SameSound(const char* source1, const char* source2, const char* SameSoundMethod_Name = NULL, const char* DistanceMethod_Name = NULL, bool isVerySimilar = true);
     bool SameSound(const char* source1, const char* source2, int SameSoundMethod_Id, int DistanceMethod_Id);
     bool SameSound(const char* source1, const char* source2, const char* SameSoundMethod_Name, const char* DistanceMethod_Name);
     /////////////////////////////////////////////////////////////////////////////////
@@ -315,7 +318,7 @@ extern "C" {
     // Miscellaneous Functions
     std::string HasCharInSameOrder(const char* str);
     std::string NormalizeFirstLastName(const char* name);
-#else  // !COMPILE_TO_C_LANGUAGE__
+#else  // !SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
     /////////////////////////////////////////////////////////////////////////////////
     // Distance Functions
     int DamerauLevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive);
@@ -353,7 +356,7 @@ extern "C" {
     double DiceSimilarity(const char* source1, const char* source2, bool isCaseSensitive);
     double PhraseTokenize(const char* source1, const char* source2, bool isCaseSensitive);
     double SimplePhraseTokenize(const char* source1, const char* source2, bool isCaseSensitive);
-#endif // !COMPILE_TO_C_LANGUAGE__
+#endif // !SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
 
 #endif //SQLITEFUZZYPLUSEXTENSION_EXCLUDE_FUNC
 #endif //SQLITEFUZZYPLUSEXTENSION_H

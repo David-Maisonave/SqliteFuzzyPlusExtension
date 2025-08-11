@@ -462,6 +462,16 @@ extern "C"
     }
 
     __declspec(dllexport)
+        int GetDefaultDistanceMethod() {
+        return (int)FuzzyPlusCSharp::Fuzzy::DefaultDistanceMethod;
+    }
+
+    __declspec(dllexport)
+        int GetDefaultSoundMethod() {
+        return (int)FuzzyPlusCSharp::Fuzzy::DefaultSameSoundMethod;
+    }
+
+    __declspec(dllexport)
         double Distance(const char* source1, const char* source2, int DistanceMethod_Id) {
         return Distance(source1, source2, GetDistanceMethod(DistanceMethod_Id));
     }
@@ -767,6 +777,10 @@ double HowSimilar(const char* source1, const char* source2, const char* Distance
 // Export Phonetic Functions
 __declspec(dllexport)
 bool SameSound(const char* source1, const char* source2, const char* SameSoundMethod_Name, const char* DistanceMethod_Name, bool isVerySimilar) {
+    if (SameSoundMethod_Name == NULL)
+        return SameSound(source1, source2, 0, 0, true);
+    if (DistanceMethod_Name == NULL)
+        return SameSound(source1, source2, GetSameSoundMethod(SameSoundMethod_Name), GetDistanceMethod(0), true);
     return SameSound(source1, source2, GetSameSoundMethod(SameSoundMethod_Name), GetDistanceMethod(DistanceMethod_Name), isVerySimilar);
 }
 

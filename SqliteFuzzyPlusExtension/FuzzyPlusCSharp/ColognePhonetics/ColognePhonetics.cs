@@ -4,8 +4,9 @@ using System.Text;
 
 namespace ColognePhoneticsSharp
 {
+#pragma warning disable IDE0044
     /// <summary>
-    /// Transforms a word into the respective Cologne Phontetics notation
+    /// Transforms a word into the respective Cologne Phonetics notation
     /// </summary>
     public class ColognePhonetics
     {
@@ -61,7 +62,7 @@ namespace ColognePhoneticsSharp
         private static char[] groupXFollow = new char[] { 'C', 'K', 'Q' };
 
         /// <summary>
-        /// Process all three steps of encoding the Cologene Phonetics
+        /// Process all three steps of encoding the Cologne Phonetics
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>

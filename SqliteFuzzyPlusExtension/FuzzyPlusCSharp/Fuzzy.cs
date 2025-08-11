@@ -1109,8 +1109,7 @@ namespace FuzzyPlusCSharp
         #region Phonetic (sound) functions
         public static bool MatchRatingApproach(this string source1, string source2)
         {
-            string[] sources = { source1,  source2 };
-            return matchRatingApproach.IsSimilar(sources);
+            return matchRatingApproach.IsSimilar(source1, source2);
         }
         public static bool Metaphone(this string source1, string source2)
         {

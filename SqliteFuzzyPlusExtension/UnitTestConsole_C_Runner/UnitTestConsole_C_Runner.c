@@ -1,14 +1,17 @@
 // UnitTestConsole_C_Runner.c : This file contains the 'main' function. Program execution begins and ends there.
 //
-
 #include <stdio.h>
-//#define COMPILE_TO_C_LANGUAGE__
+//#define SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
 #include "..\SqliteFuzzyPlusExtension.h"
 
 static void TestPhonetics(const char* defaultSoundMethod) 
 {
-    if (defaultSoundMethod != NULL)
+    if (defaultSoundMethod != NULL) {
         SetDefaultSameSoundMethodByName(defaultSoundMethod);
+        printf("Using sound method '%s' as default sound method.\n", defaultSoundMethod);
+    }
+    else
+        printf("Using sound method '%i' as default sound method.\n", GetDefaultSoundMethod());
     bool s1 = SameSound("to", "to", enum_Soundex2, GetDistanceMethodID("SameSound_StrCmp"), 1);
     bool s2 = SameSound("to", "two", enum_Soundex2, GetDistanceMethodID("SameSound_StrCmp"), 1);
     bool s3 = SameSound("to", "too", GetSameSoundMethodID("Soundex2"), GetDistanceMethodID("SameSound_StrCmp"), 1);
@@ -133,6 +136,7 @@ int main()
 {
     printf("Running UnitTestConsole_C_Runner\n");
     TestPhonetics(NULL);
+    TestPhonetics("MatchRatingApproach");
     TestPhonetics("ColognePhonetics");
     TestDistanceFunctions();
 }
