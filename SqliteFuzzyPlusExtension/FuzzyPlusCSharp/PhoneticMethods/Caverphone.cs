@@ -1,15 +1,19 @@
-﻿using System.Text.RegularExpressions;
-using Phonix.Encoding;
-using Phonix.Similarity;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
-namespace Phonix
+namespace FuzzyPlusCSharp.PhoneticMethods
 {
     /// <summary>
     /// Phonetic algorithm created by David Hood
-    /// For more info see: <a href="http://en.wikipedia.org/wiki/Caverphone">http://en.wikipedia.org/wiki/Caverphone</a>
+    /// For more information see: <a href="http://en.wikipedia.org/wiki/Caverphone">http://en.wikipedia.org/wiki/Caverphone</a>
     /// </summary>
-    public sealed class CaverPhone : PhoneticEncoder, ISimilarity
+    public class Caverphone
     {
+        public static readonly string[] EmptyKeys = new string[0];
         static readonly Regex Alpha = new Regex("[^a-z]", RegexOptions.Compiled);
         static readonly Regex LowerVowel = new Regex("[aeiou]", RegexOptions.Compiled);
 
@@ -58,12 +62,9 @@ namespace Phonix
             }
             //all other vowels with a 3
             key = LowerVowel.Replace(key, "3");
-
             //the next 2 were moved up for the revised caverphone in 2004
-
             //j with y
             key = key.Replace("j", "y");
-
             //revised in 2004 to only affect the INITIAL y3.
             //y3 with Y3
             //key = key.Replace("y3", "Y3");
@@ -71,7 +72,6 @@ namespace Phonix
             {
                 key = "Y3" + key.Substring(2 < nameLength ? 2 : nameLength);
             }
-
             //this was new in revised 2004
             //any initial y with an A
             if (key.Substring(0, 1) == "y")
@@ -107,7 +107,6 @@ namespace Phonix
             key = key.Replace("w3", "W3");
             //wh3 with Wh3
             key = key.Replace("wh3", "Wh3");
-
             //next 2 were removed in the revised caverphone in 2004
             ////wy with Wy
             //key = key.Replace("wy", "Wy");
@@ -177,7 +176,6 @@ namespace Phonix
             //remove all
             //3s
             key = key.Replace("3", string.Empty);
-
             return key;
         }
 
@@ -221,24 +219,22 @@ namespace Phonix
             {
                 name = "m2" + name.Substring(2 < nameLength ? 2 : nameLength);
             }
-
             return name;
         }
-
         /// <summary>
         /// Returns a list of Keys generated from the string passed as parameter
         /// </summary>
         /// <param name="word"></param>
         /// <returns></returns>
-        public override string[] BuildKeys(string word)
+        public static string[] BuildKeys(string word)
         {
             return !string.IsNullOrEmpty(word) ? new[] { BuildKey(word) } : EmptyKeys;
         }
 
-        public override string BuildKey(string word)
+        public static string BuildKey(string word)
         {
-            if (string.IsNullOrEmpty(word)) 
-                return string.Empty; 
+            if (string.IsNullOrEmpty(word))
+                return string.Empty;
 
             var key = word.ToLower();
             key = Alpha.Replace(key, string.Empty);
@@ -263,33 +259,21 @@ namespace Phonix
             //take the first 10 characters as the code
             return key.Substring(0, 10);
         }
-
-        public bool IsSimilar(string[] words)
+        public static bool IsSimilar(string[] words)
         {
             string[] encoders = new string[words.Length];
 
-            for (int i = 0; i < words.Length; i++)
+            for (var i = 0; i < words.Length; i++)
             {
                 encoders[i] = BuildKey(words[i]);
-                if (i == 0) 
+                if (i == 0)
                     continue;
                 if (encoders[i] != encoders[i - 1])
+                {
                     return false;
+                }
             }
             return true;
-        }
-        public bool IsVerySimilar(string source1, string source2)
-        {
-            string s1 = BuildKey(source1);
-            string s2 = BuildKey(source2);
-            return s1 == s2;
-        }
-        public bool IsSimilar(string source1, string source2)
-        {
-            string s1 = BuildKey(source1);
-            string s2 = BuildKey(source2);
-            // ToDo: Add Levenshtein method to compare s1 and s2
-            return s1 == s2;
         }
     }
 }

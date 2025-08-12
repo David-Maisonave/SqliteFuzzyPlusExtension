@@ -37,12 +37,14 @@ namespace SqliteFuzzyPlusExtension {
 #ifdef SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
 #define CASE_INSENSITIVE 256
 #define CPP_ONLY_FUZZY 128
+#define MICROSOFT_PHONETIC_METHODS 64
 #define TOKEN_METHODS 64
 #define PHRASE_METHODS TOKEN_METHODS + 32
 #define METHODS_UP_FOR_DELETION PHRASE_METHODS + 16
 #else // SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
     const int CASE_INSENSITIVE = 256;
     const int CPP_ONLY_FUZZY = 128;
+    const int MICROSOFT_PHONETIC_METHODS = 64;
     const int TOKEN_METHODS = 64;
     const int PHRASE_METHODS = TOKEN_METHODS + 32;
     const int METHODS_UP_FOR_DELETION = PHRASE_METHODS + 16;
@@ -153,7 +155,12 @@ namespace SqliteFuzzyPlusExtension {
         UseDefaultSameSoundMethod = 0,
         C_ENUM_NAMING_CONVENTION__(Soundex2),    // Default SameSound method
         C_ENUM_NAMING_CONVENTION__(Caverphone2),
-        C_ENUM_NAMING_CONVENTION__(EnPhoneticDistance),
+        C_ENUM_NAMING_CONVENTION__(MatchRatingApproach),
+        C_ENUM_NAMING_CONVENTION__(Metaphone),
+        C_ENUM_NAMING_CONVENTION__(CaverPhonePhonix),
+        C_ENUM_NAMING_CONVENTION__(DoubleMetaphone),
+        C_ENUM_NAMING_CONVENTION__(ColognePhonetics),
+        C_ENUM_NAMING_CONVENTION__(EnPhoneticDistance) = MICROSOFT_PHONETIC_METHODS,
         // ------------------------------------------------------------
         // These functions are NOT supported by CSharp Fuzzy class code, and are only here for C++ SqliteFuzzyPlusExtension usage.
         // SQLean phonetic external functions. 

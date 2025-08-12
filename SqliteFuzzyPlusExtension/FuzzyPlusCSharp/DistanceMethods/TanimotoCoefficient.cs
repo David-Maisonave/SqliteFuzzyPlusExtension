@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FuzzyPlusCSharp.DistanceMethods
+{
+    public static class TanimotoCoefficient
+    {
+        public static double Percentage(this string source1, string source2, bool isCaseSensitive = true)
+        {
+            return 1.0f - Distance(source1, source2, isCaseSensitive);
+        }
+        public static double Distance(string source1, string source2, bool isCaseSensitive)
+        {
+            Fuzzy.FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            double Na = source1.Length;
+            double Nb = source2.Length;
+            double Nc = source1.Intersect(source2).Count();
+            return Nc / (Na + Nb - Nc);
+        }
+    }
+}
