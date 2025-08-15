@@ -6,8 +6,33 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.DistanceMethods
 {
-    public class SmithWatermanGotohWindowedAffine : AbstractStringMetric
+    public class SmithWatermanGotohWindowedAffine : AbstractStringMetric, FuzzyPlusCSharp.DistanceMethods.IDistance
     {
+        public double Percentage(string source1, string source2, bool isCaseSensitive = true)
+        {
+            Fuzzy.FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            return GetSimilarity(source1, source2);
+        }
+        public double Distance(string source1, string source2, bool isCaseSensitive = true)
+        {
+            if ((source1 == null) || (source2 == null))
+            {
+                return -1;
+            }
+            Fuzzy.FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            double unnormalisedSimilarity = this.GetUnnormalisedSimilarity(source1, source2);
+            double num2 = Math.Min(source1.Length, source2.Length);
+            if (this.DCostFunction.MaxCost > -this.GGapFunction.MaxCost)
+            {
+                num2 *= this.DCostFunction.MaxCost;
+            }
+            else
+            {
+                num2 *= -this.GGapFunction.MaxCost;
+            }
+            double distance = num2 - unnormalisedSimilarity;
+            return num2 == 0.0 ? 0.0 : distance;
+        }
         private const double defaultMismatchScore = 0.0;
         private const double defaultPerfectScore = 1.0;
         private const int defaultWindowSize = 100;

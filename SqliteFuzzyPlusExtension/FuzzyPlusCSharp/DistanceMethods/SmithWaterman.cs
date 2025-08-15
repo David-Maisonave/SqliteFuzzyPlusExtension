@@ -8,8 +8,18 @@ using static FuzzyPlusCSharp.DistanceMethods.SmithWatermanGotohWindowedAffine;
 
 namespace FuzzyPlusCSharp.DistanceMethods
 {
-    public sealed class SmithWaterman : AbstractStringMetric
+    public sealed class SmithWaterman : AbstractStringMetric, FuzzyPlusCSharp.DistanceMethods.IDistance
     {
+        public double Percentage(string source1, string source2, bool isCaseSensitive = true)
+        {
+            Fuzzy.FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            return GetSimilarity(source1, source2);
+        }
+        public double Distance(string source1, string source2, bool isCaseSensitive = true)
+        {
+            double distance = Percentage(source1, source2, isCaseSensitive);
+            return (1.0f - distance) * 10;
+        }
         private readonly AbstractSubstitutionCost dCostFunction;
         private const double defaultGapCost = 0.5;
         private const double defaultMismatchScore = 0.0;

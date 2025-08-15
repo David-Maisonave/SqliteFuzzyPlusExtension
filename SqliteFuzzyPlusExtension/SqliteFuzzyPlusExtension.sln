@@ -24,6 +24,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSQLite_ConsoleApp_DotNe
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFuzzy_ConsoleApp_DotNetFrameworkCSharp", "TestFuzzy_ConsoleApp_DotNetFrameworkCSharp\TestFuzzy_ConsoleApp_DotNetFrameworkCSharp.csproj", "{2D73B686-FC76-4246-936F-FBAFA64F039F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B1DE0268-D7E9-4868-BF3C-6298E5905597} = {B1DE0268-D7E9-4868-BF3C-6298E5905597}
+		{E50AF77F-B0A9-37C2-BEE9-E0203EB9712C} = {E50AF77F-B0A9-37C2-BEE9-E0203EB9712C}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestFuzzy_ConsoleApp_DotNetFrameworkCpp", "TestFuzzy_ConsoleApp_DotNetFrameworkCpp\TestFuzzy_ConsoleApp_DotNetFrameworkCpp.vcxproj", "{E27EDAB2-C3CC-23CF-A1D7-25F674E59D76}"
 EndProject
@@ -56,11 +60,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "History", "History", "{02EA
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTestCreator_PostCodeModifier", "UnitTestCreator_PostCodeModifier\UnitTestCreator_PostCodeModifier.vcxproj", "{89F4F18D-4BE6-EA99-4911-43FEEE0F95E5}"
 	ProjectSection(ProjectDependencies) = postProject
+		{B1DE0268-D7E9-4868-BF3C-6298E5905597} = {B1DE0268-D7E9-4868-BF3C-6298E5905597}
 		{E50AF77F-B0A9-37C2-BEE9-E0203EB9712C} = {E50AF77F-B0A9-37C2-BEE9-E0203EB9712C}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTestConsole_C_Runner", "UnitTestConsole_C_Runner\UnitTestConsole_C_Runner.vcxproj", "{6CFFB0D3-D5A8-421A-9D43-49624A29C328}"
 	ProjectSection(ProjectDependencies) = postProject
+		{B1DE0268-D7E9-4868-BF3C-6298E5905597} = {B1DE0268-D7E9-4868-BF3C-6298E5905597}
 		{E50AF77F-B0A9-37C2-BEE9-E0203EB9712C} = {E50AF77F-B0A9-37C2-BEE9-E0203EB9712C}
 	EndProjectSection
 EndProject

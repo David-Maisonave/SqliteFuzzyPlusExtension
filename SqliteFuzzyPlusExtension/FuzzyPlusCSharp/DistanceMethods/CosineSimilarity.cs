@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.DistanceMethods
 {
+    public class ICosineSimilarity : FuzzyPlusCSharp.DistanceMethods.IDistance
+    {
+        public double Percentage(string source1, string source2, bool isCaseSensitive = true) => CosineSimilarity.Percentage(source1, source2, isCaseSensitive);
+        public double Distance(string source1, string source2, bool isCaseSensitive = true) => CosineSimilarity.Distance(source1, source2, isCaseSensitive);
+    }
     public class CosineSimilarity
     {
         /// <summary>
@@ -14,12 +19,13 @@ namespace FuzzyPlusCSharp.DistanceMethods
         /// <param name="source1">The first string.</param>
         /// <param name="source2">The second string.</param>
         /// <returns>The similarity percentage between the two strings. It's a number between 0 and 1 that represents how similar two strings are. The closer to 1, the more similar they are.</returns>
-        public static double Percentage(string source1, string source2, bool isCaseSensitive = true) => (double)CalculateSimilarity(source1, source2, isCaseSensitive);
-        public static double CalculateSimilarity(string source1, string source2, bool isCaseSensitive = true)
+        public static double Percentage(string source1, string source2, bool isCaseSensitive = true) => (double)CalculateSimilarity(source1, source2, isCaseSensitive, false);
+        public static double Distance(string source1, string source2, bool isCaseSensitive = true) => (double)CalculateSimilarity(source1, source2, isCaseSensitive, true);
+        public static double CalculateSimilarity(string source1, string source2, bool isCaseSensitive = true, bool getDistance = false)
         {
             Fuzzy.FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             if (source1 == source2)
-                return 1;
+                return getDistance ? 0 : 1;
             string[] words1 = source1.Split();
             string[] words2 = source2.Split();
             Dictionary<string, int> vector1 = GetWordVector(words1);
@@ -30,6 +36,8 @@ namespace FuzzyPlusCSharp.DistanceMethods
             double magnitude2 = 0;
             foreach (string word in intersection)
                 dotProduct += vector1[word] * vector2[word];
+            if (getDistance)
+                return (magnitude1 == 0 || magnitude2 == 0) ? 0 : dotProduct;
             foreach (int value in vector1.Values)
                 magnitude1 += value * value;
             foreach (int value in vector2.Values)

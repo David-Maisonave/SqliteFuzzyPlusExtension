@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.DistanceMethods
 {
+    public class ILevenshtein : FuzzyPlusCSharp.DistanceMethods.IDistance
+    {
+        public double Percentage(string source1, string source2, bool isCaseSensitive = true) => Levenshtein.Percentage(source1, source2, isCaseSensitive);
+        public double Distance(string source1, string source2, bool isCaseSensitive = true) => Levenshtein.Distance(source1, source2, isCaseSensitive);
+    }
     public static class Levenshtein
     {
         /// <summary>
@@ -45,6 +50,11 @@ namespace FuzzyPlusCSharp.DistanceMethods
                 }
             }
             return matrix[source1Length, source2Length];
+        }
+        public static double Percentage(this string source1, string source2, bool isCaseSensitive = true)
+        {
+            double d = (double)Distance(source1, source2, isCaseSensitive);
+            return 1.0f - (d / Math.Max(source1.Length, source2.Length));
         }
     }
 }

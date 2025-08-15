@@ -1,4 +1,6 @@
-﻿using Phonix;
+﻿using FuzzyPlusCSharp.DistanceMethods;
+
+using Phonix;
 
 using System;
 using System.Collections;
@@ -10,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
 using static System.Net.Mime.MediaTypeNames;
 
 namespace FuzzyPlusCSharp
@@ -22,11 +25,11 @@ namespace FuzzyPlusCSharp
         {
             this.distanceMethod = distanceMethod;
         }
-        public bool IsVerySimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, 0.9f, distanceMethod); // Is 90% similar
-        public bool IsSimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, 0.75f, distanceMethod); // Is 75% similar
-        public bool IsSomeWhatSimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, 0.5f, distanceMethod); // Is 50% similar
-        public bool IsSlightlySimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, 0.3f, distanceMethod); // Is 30% similar
-        public bool IsHardlySimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, 0.1f, distanceMethod); // Is 10% similar
+        public bool IsVerySimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, Fuzzy.ISVERYSIMILAR, distanceMethod); // Is 90% similar
+        public bool IsSimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, Fuzzy.ISSIMILAR, distanceMethod); // Is 75% similar
+        public bool IsSomeWhatSimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, Fuzzy.ISSOMEWHATSIMILAR, distanceMethod); // Is 50% similar
+        public bool IsSlightlySimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, Fuzzy.ISSLIGHTLYSIMILAR, distanceMethod); // Is 30% similar
+        public bool IsHardlySimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, Fuzzy.ISHARDLYSIMILAR, distanceMethod); // Is 10% similar
         public bool IsMatch(string source1, string source2, double desiredSimilarity) => Fuzzy.HowSimilar(source1, source2, distanceMethod) >= desiredSimilarity;
         public double HowSimilar(string source1, string source2) => Fuzzy.HowSimilar(source1, source2, distanceMethod);
         public bool IsNotSimilar(string source1, string source2) => Fuzzy.IsNotSimilar(source1, source2, distanceMethod);
@@ -36,6 +39,19 @@ namespace FuzzyPlusCSharp
     /// Static version 
     public static class Fuzzy
     {
+        #region Constants
+        public const double ISVERYSIMILAR = 0.9f;
+        public const double ISSIMILAR = 0.75f;
+        public const double ISSOMEWHATSIMILAR = 0.5f;
+        public const double ISSLIGHTLYSIMILAR = 0.3f;
+        public const double ISHARDLYSIMILAR = 0.1f;
+        public const int CASE_INSENSITIVE = 256;
+        public const int CPP_ONLY_FUZZY = 128;
+        public const int TOKEN_METHODS = 64;
+        public const int MICROSOFT_PHONETIC_METHODS = 64;
+        public const int PHRASE_METHODS = TOKEN_METHODS + 32;
+        public const int METHODS_UP_FOR_DELETION = PHRASE_METHODS + 16;
+        #endregion Constants
         #region Distance and Phonetic class members
         // Distance classes
         public static DistanceMethods.BlockDistance blockDistance = new DistanceMethods.BlockDistance();
@@ -56,12 +72,6 @@ namespace FuzzyPlusCSharp
         public static DoubleMetaphone doubleMetaphone = new DoubleMetaphone();
         #endregion Distance classes members
         #region DistanceMethod definitions
-        public const int CASE_INSENSITIVE = 256;
-        public const int CPP_ONLY_FUZZY = 128;
-        public const int TOKEN_METHODS = 64;
-        public const int MICROSOFT_PHONETIC_METHODS = 64;
-        public const int PHRASE_METHODS = TOKEN_METHODS + 32;
-        public const int METHODS_UP_FOR_DELETION = PHRASE_METHODS + 16;
         public enum DistanceMethod
         {
             UseDefaultDistanceMethod = 0,
@@ -115,7 +125,7 @@ namespace FuzzyPlusCSharp
             Fuzzy_Osadist,
             Fuzzy_Editdist,
             Fuzzy_Jaro,
-            SameSound_StrCmp,
+            ExactMatch,
             // Other C++ (external) only functions. (NOT part of Sqlean)
             EdlibDistance,
             // ------------------------------------------------------------
@@ -339,8 +349,7 @@ namespace FuzzyPlusCSharp
                     return DistanceMethods.TanimotoCoefficient.Percentage(source1, source2, isCaseSensitive);
                 case DistanceMethod.EditDistance:
                 case DistanceMethod.iEditDistance:
-                    diff = EditDistance(source1, source2, isCaseSensitive);
-                    break;
+                    return DistanceMethods.EditDistanceWithWildCard.Percentage(source1, source2, isCaseSensitive);
                 case DistanceMethod.BlockDistance:
                 case DistanceMethod.iBlockDistance:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
@@ -416,6 +425,9 @@ namespace FuzzyPlusCSharp
             if (distanceMethod == DistanceMethod.UseDefaultDistanceMethod)
                 distanceMethod = DefaultDistanceMethod;
             bool isCaseSensitive = IsCaseSensitive(distanceMethod);
+            IDistance i = GetIDistance(distanceMethod);
+            if (i != null)
+                return i.Distance(source1, source2, isCaseSensitive);
             switch (distanceMethod) 
             {
                 case DistanceMethod.Levenshtein:
@@ -423,16 +435,16 @@ namespace FuzzyPlusCSharp
                     return DistanceMethods.Levenshtein.Distance(source1, source2, isCaseSensitive);
                 case DistanceMethod.JaroWinkler:
                 case DistanceMethod.iJaroWinkler:
-                    return DistanceMethods.JaroWinkler.Percentage(source1, source2, isCaseSensitive);
+                    return DistanceMethods.JaroWinkler.Distance(source1, source2, isCaseSensitive);
                 case DistanceMethod.CosineSimilarity:
                 case DistanceMethod.iCosineSimilarity:
-                    return DistanceMethods.CosineSimilarity.Percentage(source1, source2, isCaseSensitive);
+                    return DistanceMethods.CosineSimilarity.Distance(source1, source2, isCaseSensitive);
                 case DistanceMethod.LongestCommonSequence:
                 case DistanceMethod.iLongestCommonSequence:
-                    return DistanceMethods.LongestCommonSequence.Percentage(source1, source2, isCaseSensitive);
+                    return DistanceMethods.LongestCommonSequence.Distance(source1, source2, isCaseSensitive);
                 case DistanceMethod.JaccardSimilarity:
                 case DistanceMethod.iJaccardSimilarity:
-                    return DistanceMethods.JaccardSimilarity.Percentage(source1, source2, isCaseSensitive);
+                    return DistanceMethods.JaccardSimilarity.Distance(source1, source2, isCaseSensitive);
                 case DistanceMethod.JaccardIndex:
                 case DistanceMethod.iJaccardIndex:
                     return DistanceMethods.JaccardIndex.Distance(source1, source2, isCaseSensitive);
@@ -441,7 +453,7 @@ namespace FuzzyPlusCSharp
                     return DistanceMethods.OverlapCoefficient.Distance(source1, source2, isCaseSensitive);
                 case DistanceMethod.NeedlemanWunsch:
                 case DistanceMethod.iNeedlemanWunsch:
-                    return DistanceMethods.NeedlemanWunsch.Percentage(source1, source2, isCaseSensitive);
+                    return DistanceMethods.NeedlemanWunsch.Distance(source1, source2, isCaseSensitive);
                 case DistanceMethod.SorensenDiceDistance:
                 case DistanceMethod.iSorensenDiceDistance:
                     return DistanceMethods.SorensenDice.Distance(source1, source2, isCaseSensitive);
@@ -471,7 +483,7 @@ namespace FuzzyPlusCSharp
                     return DistanceMethods.TanimotoCoefficient.Distance(source1, source2, isCaseSensitive);
                 case DistanceMethod.EditDistance:
                 case DistanceMethod.iEditDistance:
-                    return EditDistance(source1, source2, isCaseSensitive);
+                    return DistanceMethods.EditDistanceWithWildCard.Distance(source1, source2, isCaseSensitive);
                 case DistanceMethod.BlockDistance:
                 case DistanceMethod.iBlockDistance:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
@@ -510,8 +522,7 @@ namespace FuzzyPlusCSharp
                     return smithWatermanGotoh.GetSimilarity(source1, source2);
                 case DistanceMethod.SmithWatermanGotohWindowedAffine:
                 case DistanceMethod.iSmithWatermanGotohWindowedAffine:
-                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
-                    return smithWatermanGotohWindowedAffine.GetSimilarity(source1, source2);
+                    return smithWatermanGotohWindowedAffine.Distance(source1, source2, isCaseSensitive);
                 case DistanceMethod.DiceSimilarity:
                 case DistanceMethod.iDiceSimilarity:
                     return DiceSimilarity(source1, source2, isCaseSensitive);
@@ -597,47 +608,130 @@ namespace FuzzyPlusCSharp
             }
         }
         public static bool IsVerySimilar(string source1, string source2) => IsVerySimilar(source1, source2, DistanceMethod.UseDefaultDistanceMethod);
-        public static bool IsVerySimilar(string source1, string source2, DistanceMethod distanceMethod) => IsMatch(source1, source2, 0.9f, distanceMethod); // Is 90% similar
+        public static bool IsVerySimilar(string source1, string source2, DistanceMethod distanceMethod) => IsMatch(source1, source2, Fuzzy.ISVERYSIMILAR, distanceMethod); // Is 90% similar
         public static bool IsSimilar(string source1, string source2) => IsSimilar(source1, source2, DistanceMethod.UseDefaultDistanceMethod);
-        public static bool IsSimilar(string source1, string source2, DistanceMethod distanceMethod) => IsMatch(source1, source2, 0.75f, distanceMethod); // Is 75% similar
+        public static bool IsSimilar(string source1, string source2, DistanceMethod distanceMethod) => IsMatch(source1, source2, Fuzzy.ISSIMILAR, distanceMethod); // Is 75% similar
         public static bool IsSomeWhatSimilar(string source1, string source2) => IsSomeWhatSimilar(source1, source2, DistanceMethod.UseDefaultDistanceMethod);
-        public static bool IsSomeWhatSimilar(string source1, string source2, DistanceMethod distanceMethod) => IsMatch(source1, source2, 0.5f, distanceMethod); // Is 50% similar
+        public static bool IsSomeWhatSimilar(string source1, string source2, DistanceMethod distanceMethod) => IsMatch(source1, source2, Fuzzy.ISSOMEWHATSIMILAR, distanceMethod); // Is 50% similar
         public static bool IsSlightlySimilar(string source1, string source2) => IsSlightlySimilar(source1, source2, DistanceMethod.UseDefaultDistanceMethod);
-        public static bool IsSlightlySimilar(string source1, string source2, DistanceMethod distanceMethod) => IsMatch(source1, source2, 0.3f, distanceMethod); // Is 30% similar
+        public static bool IsSlightlySimilar(string source1, string source2, DistanceMethod distanceMethod) => IsMatch(source1, source2, Fuzzy.ISSLIGHTLYSIMILAR, distanceMethod); // Is 30% similar
         public static bool IsHardlySimilar(string source1, string source2) => IsHardlySimilar(source1, source2, DistanceMethod.UseDefaultDistanceMethod);
-        public static bool IsHardlySimilar(string source1, string source2, DistanceMethod distanceMethod) => IsMatch(source1, source2, 0.1f, distanceMethod); // Is 10% similar
+        public static bool IsHardlySimilar(string source1, string source2, DistanceMethod distanceMethod) => IsMatch(source1, source2, Fuzzy.ISHARDLYSIMILAR, distanceMethod); // Is 10% similar
+        // GetIDistance should NOT be used until all associated classes have implementation for Percentage and Distance methods.
+        // Classes that do NOT begin with an I, are classes which need work on these methods.
+        public static IDistance GetIDistance(DistanceMethod distanceMethod)
+        {
+            if (distanceMethod == DistanceMethod.UseDefaultDistanceMethod)
+                distanceMethod = DefaultDistanceMethod;
+            switch (distanceMethod)
+            {
+                case DistanceMethod.Levenshtein:
+                case DistanceMethod.iLevenshtein:
+                    return new DistanceMethods.ILevenshtein();
+                case DistanceMethod.JaroWinkler:
+                case DistanceMethod.iJaroWinkler:
+                    return new DistanceMethods.IJaroWinkler();
+                case DistanceMethod.CosineSimilarity:
+                case DistanceMethod.iCosineSimilarity:
+                    return new DistanceMethods.ICosineSimilarity();
+                case DistanceMethod.LongestCommonSequence:
+                case DistanceMethod.iLongestCommonSequence:
+                    return new DistanceMethods.ILongestCommonSequence();
+                case DistanceMethod.JaccardSimilarity:
+                case DistanceMethod.iJaccardSimilarity:
+                    return new DistanceMethods.IJaccardSimilarity();
+                case DistanceMethod.JaccardIndex:
+                case DistanceMethod.iJaccardIndex:
+                    return new DistanceMethods.IJaccardIndex();
+                case DistanceMethod.OverlapCoefficient:
+                case DistanceMethod.iOverlapCoefficient:
+                    return new DistanceMethods.IOverlapCoefficient();
+                case DistanceMethod.NeedlemanWunsch:
+                case DistanceMethod.iNeedlemanWunsch:
+                    return new DistanceMethods.INeedlemanWunsch();
+                case DistanceMethod.SorensenDiceDistance:
+                case DistanceMethod.iSorensenDiceDistance:
+                    return new DistanceMethods.ISorensenDice();
+                case DistanceMethod.RatcliffObershelpSimilarityDistance:
+                case DistanceMethod.iRatcliffObershelpSimilarityDistance:
+                    return new DistanceMethods.IRatcliffObershelpSimilarity();
+                case DistanceMethod.HammingDistance:
+                case DistanceMethod.iHammingDistance:
+                    return new DistanceMethods.IHamming();
+                case DistanceMethod.LongestCommonSubstringDistance:
+                case DistanceMethod.iLongestCommonSubstringDistance:
+                    return new DistanceMethods.ILongestCommonSubstring();
+                case DistanceMethod.LongestCommonSubsequenceDistance:
+                case DistanceMethod.iLongestCommonSubsequenceDistance:
+                    return new DistanceMethods.ILongestCommonSubsequence();
+                case DistanceMethod.JaroDistance:
+                case DistanceMethod.iJaroDistance:
+                    return new DistanceMethods.IJaro();
+                case DistanceMethod.NormalizedLevenshteinDistance:
+                case DistanceMethod.iNormalizedLevenshteinDistance:
+                    return new DistanceMethods.INormalizedLevenshtein();
+                case DistanceMethod.Levenshtein2Distance:
+                case DistanceMethod.iLevenshtein2Distance:
+                    return new DistanceMethods.ILevenshtein2();
+                case DistanceMethod.TanimotoCoefficientDistance:
+                case DistanceMethod.iTanimotoCoefficientDistance:
+                    return new DistanceMethods.ITanimotoCoefficient();
+                case DistanceMethod.EditDistance:
+                case DistanceMethod.iEditDistance:
+                    return new DistanceMethods.IEditDistanceWithWildCard();
+                case DistanceMethod.BlockDistance:
+                case DistanceMethod.iBlockDistance:
+                    return new DistanceMethods.BlockDistance();
+                case DistanceMethod.ChapmanLengthDeviation:
+                case DistanceMethod.iChapmanLengthDeviation:
+                    return new DistanceMethods.ChapmanLengthDeviation();
+                case DistanceMethod.ChapmanMeanLength:
+                case DistanceMethod.iChapmanMeanLength:
+                    return new DistanceMethods.ChapmanMeanLength();
+                case DistanceMethod.EuclideanDistance:
+                case DistanceMethod.iEuclideanDistance:
+                    return new DistanceMethods.EuclideanDistance();
+                case DistanceMethod.MatchingCoefficient:
+                case DistanceMethod.iMatchingCoefficient:
+                    return new DistanceMethods.MatchingCoefficient();
+                case DistanceMethod.MongeElkan:
+                case DistanceMethod.iMongeElkan:
+                    return new DistanceMethods.MongeElkan();
+                case DistanceMethod.QGramsDistance:
+                case DistanceMethod.iQGramsDistance:
+                    return new DistanceMethods.QGramsDistance();
+                case DistanceMethod.SmithWaterman:
+                case DistanceMethod.iSmithWaterman:
+                    return new DistanceMethods.SmithWaterman();
+                case DistanceMethod.SmithWatermanGotoh:
+                case DistanceMethod.iSmithWatermanGotoh:
+                    return new DistanceMethods.SmithWatermanGotoh();
+                case DistanceMethod.SmithWatermanGotohWindowedAffine:
+                case DistanceMethod.iSmithWatermanGotohWindowedAffine:
+                    return new DistanceMethods.SmithWatermanGotohWindowedAffine();
+                case DistanceMethod.DiceSimilarity:
+                case DistanceMethod.iDiceSimilarity:
+                    return new DistanceMethods.DiceSimilarity();
+                case DistanceMethod.PhraseTokenize:
+                    return new DistanceMethods.IPhraseTokenize();
+                case DistanceMethod.SimplePhraseTokenize:
+                    return new DistanceMethods.ISimplePhraseTokenize();
+                case DistanceMethod.DamerauLevenshtein:
+                case DistanceMethod.iDamerauLevenshtein:
+                    return new DistanceMethods.IDamerauLevenshtein();
+                default:
+                    return null;
+            }
+        }
+
         #endregion Similarity functions
         #region Distance functions
-        // Function to find the minimum number of operations to convert source1 to source2
-        public static int EditDistance(string source1, string source2, bool isCaseSensitive = true)
-        {
-            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
-            int m = source1.Length;
-            int n = source2.Length;
-            // Stores dp[i-1][j-1]
-            int prev;
-            int[] curr = new int[n + 1];
-            for (int j = 0; j <= n; j++)
-                curr[j] = j;
-            for (int i = 1; i <= m; i++)
-            {
-                prev = curr[0];
-                curr[0] = i;
-                for (int j = 1; j <= n; j++)
-                {
-                    int temp = curr[j];
-                    curr[j] = source1[i - 1] == source2[j - 1] ? prev : 1 + Math.Min(Math.Min(curr[j - 1], prev), curr[j]);
-                    prev = temp;
-                }
-            }
-            return curr[n];
-        }
+        public static double EditDistance(string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.EditDistanceWithWildCard.Distance(source1, source2, isCaseSensitive);
         public static double BlockDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
             FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             return blockDistance.GetSimilarity(source1, source2);
         }
-        public static double NeedlemanWunsch(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.NeedlemanWunsch.Percentage(source1, source2, isCaseSensitive);
         public static double ChapmanLengthDeviation(this string source1, string source2, bool isCaseSensitive = true)
         {
             FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
@@ -688,21 +782,38 @@ namespace FuzzyPlusCSharp
             FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             return diceSimilarity.GetSimilarity(source1, source2);
         }
+        public static double NeedlemanWunsch(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.NeedlemanWunsch.Percentage(source1, source2, isCaseSensitive);
         public static double CosineSimilarity(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.CosineSimilarity.Percentage(source1, source2, isCaseSensitive);
         public static double JaccardSimilarity(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.JaccardSimilarity.Percentage(source1, source2, isCaseSensitive);
         public static double LongestCommonSequence(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.LongestCommonSequence.Percentage(source1, source2, isCaseSensitive);
         public static double PhraseTokenize(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.PhraseTokenize.Distance(source1, source2, isCaseSensitive);
         public static double SimplePhraseTokenize(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.SimplePhraseTokenize.Distance(source1, source2, isCaseSensitive);
+        public static double LevenshteinDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.Levenshtein.Distance(source1, source2, isCaseSensitive);
+        public static double DamerauLevenshteinDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.DamerauLevenshtein.Distance(source1, source2, isCaseSensitive);
+        public static double JaroWinklerDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.JaroWinkler.Distance(source1, source2, isCaseSensitive);
+        public static double OverlapCoefficientDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.OverlapCoefficient.Distance(source1, source2, isCaseSensitive);
+        public static double JaccardDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.JaccardIndex.Distance(source1, source2, isCaseSensitive);
+        public static double JaccardIndex(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.JaccardIndex.Distance(source1, source2, isCaseSensitive);
+        public static double SorensenDiceDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.SorensenDice.Distance(source1, source2, isCaseSensitive);
+        public static double RatcliffObershelpSimilarityDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.RatcliffObershelpSimilarity.Distance(source1, source2, isCaseSensitive);
+        public static double HammingDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.Hamming.Distance(source1, source2, isCaseSensitive);
+        public static double LongestCommonSubstringDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.LongestCommonSubstring.Distance(source1, source2, isCaseSensitive);
+        public static double LongestCommonSubsequenceDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.LongestCommonSubsequence.Distance(source1, source2, isCaseSensitive);
+        public static double JaroDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.Jaro.Distance(source1, source2, isCaseSensitive);
+        public static double NormalizedLevenshteinDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.NormalizedLevenshtein.Distance(source1, source2, isCaseSensitive);
+        public static double Levenshtein2Distance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.Levenshtein2.Distance(source1, source2, isCaseSensitive);
+        public static double TanimotoCoefficientDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.TanimotoCoefficient.Distance(source1, source2, isCaseSensitive);
+        public static double PhraseSimplifiedDiff(this string source1, string source2) => DistanceMethods.SimplePhraseTokenize.Distance(source1, source2, false);
         #endregion Distance functions
         #region SameFunc functions
-        public static bool SameFirstLastName(string source1, string source2, bool isCaseSensitive = false) => Misc.SamenessAndNormalize.SameFirstLastName(source1, source2, isCaseSensitive);
-        public static bool SamePhone(string source1, string source2, bool isCaseSensitive = false) => Misc.SamenessAndNormalize.SamePhone(source1, source2, isCaseSensitive);
-        public static bool SameSocial(string source1, string source2, bool isCaseSensitive = false) => Misc.SamenessAndNormalize.SameSocial(source1, source2, isCaseSensitive);
-        public static bool SameZip(string source1, string source2, bool isCaseSensitive = false) => Misc.SamenessAndNormalize.SameZip(source1, source2, isCaseSensitive);
-        public static bool SameAddress(string source1, string source2, bool isCaseSensitive = false) => Misc.SamenessAndNormalize.SameAddress(source1, source2, isCaseSensitive);
-        public static bool SameDate(string source1, string source2, bool isCaseSensitive = false) => Misc.SamenessAndNormalize.SameDate(source1, source2, isCaseSensitive);
-        public static bool SameFileName(string source1, string source2, bool isCaseSensitive = false) => Misc.SamenessAndNormalize.SameFileName(source1, source2, isCaseSensitive);
-        public static bool SameNumber(string source1, string source2, bool isCaseSensitive = false) => Misc.SamenessAndNormalize.SameNumber(source1, source2, isCaseSensitive);
+        public static bool SameFirstLastName(string source1, string source2, bool isCaseSensitive = false) => Misc.Sameness.SameFirstLastName(source1, source2, isCaseSensitive);
+        public static bool SamePhone(string source1, string source2, bool isCaseSensitive = false) => Misc.Sameness.SamePhone(source1, source2, isCaseSensitive);
+        public static bool SameSocial(string source1, string source2, bool isCaseSensitive = false) => Misc.Sameness.SameSocial(source1, source2, isCaseSensitive);
+        public static bool SameZip(string source1, string source2, bool isCaseSensitive = false) => Misc.Sameness.SameZip(source1, source2, isCaseSensitive);
+        public static bool SameAddress(string source1, string source2, bool isCaseSensitive = false) => Misc.Sameness.SameAddress(source1, source2, isCaseSensitive);
+        public static bool SameDate(string source1, string source2, bool isCaseSensitive = false) => Misc.Sameness.SameDate(source1, source2, isCaseSensitive);
+        public static bool SameFileName(string source1, string source2, bool isCaseSensitive = false) => Misc.Sameness.SameFileName(source1, source2, isCaseSensitive);
+        public static bool SameNumber(string source1, string source2, bool isCaseSensitive = false) => Misc.Sameness.SameNumber(source1, source2, isCaseSensitive);
         #endregion SameFunc functions
         #region Phonetic (sound) functions
         public static bool MatchRatingApproach(this string source1, string source2, bool isVerySimilar = true)
@@ -738,7 +849,7 @@ namespace FuzzyPlusCSharp
             string s2 = PhoneticMethods.Caverphone.BuildKey(source2);
             return Compare(s1, s2, distanceMethod, isVerySimilar);
         }
-        public static bool Caverphone2(this string source1, string source2) => Caverphone2(source1, source2, DistanceMethod.SameSound_StrCmp);
+        public static bool Caverphone2(this string source1, string source2) => Caverphone2(source1, source2, DistanceMethod.ExactMatch);
         public static string Caverphone2(string source1)
         {
             return PhoneticMethods.Caverphone.BuildKey(source1);
@@ -751,7 +862,7 @@ namespace FuzzyPlusCSharp
             string s2 = PhoneticMethods.Soundex.Generate(source2);
             return Compare(s1, s2, distanceMethod, isVerySimilar);
         }
-        public static bool Soundex2(this string source1, string source2) => Soundex2(source1, source2, DistanceMethod.SameSound_StrCmp, true);
+        public static bool Soundex2(this string source1, string source2) => Soundex2(source1, source2, DistanceMethod.ExactMatch, true);
         public static string Soundex2(string source1)
         {
             return PhoneticMethods.Soundex.Generate(source1);
@@ -759,7 +870,7 @@ namespace FuzzyPlusCSharp
         public static bool EnPhoneticDistance_IsSupported() => FuzzyPhoneticMatching.EnPhoneticDistance_Supported;
         public static bool EnPhoneticDistance(this string source1, string source2, bool isVerySimilar = true)
         {
-            return FuzzyPhoneticMatching.EnPhoneticDistance_Supported ? FuzzyPhoneticMatching.EnPhoneticDistance(source1, source2, isVerySimilar) : Soundex2(source1, source2, DistanceMethod.SameSound_StrCmp, isVerySimilar);
+            return FuzzyPhoneticMatching.EnPhoneticDistance_Supported ? FuzzyPhoneticMatching.EnPhoneticDistance(source1, source2, isVerySimilar) : Soundex2(source1, source2, DistanceMethod.ExactMatch, isVerySimilar);
         }
         public static string GetSoundCode(string source1, SameSoundMethod sameSoundMethod = SameSoundMethod.UseDefaultSameSoundMethod)
         {
@@ -776,7 +887,7 @@ namespace FuzzyPlusCSharp
         }
         public static bool SameSound(this string source1, string source2,
             SameSoundMethod sameSoundMethod = SameSoundMethod.UseDefaultSameSoundMethod,
-            DistanceMethod distanceMethod = DistanceMethod.SameSound_StrCmp,
+            DistanceMethod distanceMethod = DistanceMethod.ExactMatch,
             bool isVerySimilar = true)
         {
             if (sameSoundMethod == SameSoundMethod.UseDefaultSameSoundMethod)
@@ -806,7 +917,7 @@ namespace FuzzyPlusCSharp
         {
             switch (CompareMethod)
             {
-                case DistanceMethod.SameSound_StrCmp:
+                case DistanceMethod.ExactMatch:
                     return source1 == source2;
                 default:
                     return isVerySimilar ? IsVerySimilar(source1, source2, CompareMethod) : IsSimilar(source1, source2, CompareMethod);
@@ -866,11 +977,11 @@ namespace FuzzyPlusCSharp
             return diff == 0 ? 1.0f : (sourceLength - diff) / sourceLength;
         }
         public static bool IsPhraseSimilar(string source1, string source2, double desiredSimilarity) => PhraseHowSimilar(source1, source2) >= desiredSimilarity;
-        public static bool PhraseVerySimilar(string source1, string source2) => IsPhraseSimilar(source1, source2, 0.9f); // Is 90% similar
-        public static bool PhraseSimilar(string source1, string source2) => IsPhraseSimilar(source1, source2, 0.75f); // Is 75% similar
-        public static bool PhraseSomeWhatSimilar(string source1, string source2) => IsPhraseSimilar(source1, source2, 0.5f); // Is 50% similar
-        public static bool PhraseSlightlySimilar(string source1, string source2) => IsPhraseSimilar(source1, source2, 0.3f); // Is 30% similar
-        public static bool PhraseHardlySimilar(string source1, string source2) => IsPhraseSimilar(source1, source2, 0.1f); // Is 10% similar
+        public static bool PhraseVerySimilar(string source1, string source2) => IsPhraseSimilar(source1, source2, Fuzzy.ISVERYSIMILAR); // Is 90% similar
+        public static bool PhraseSimilar(string source1, string source2) => IsPhraseSimilar(source1, source2, Fuzzy.ISSIMILAR); // Is 75% similar
+        public static bool PhraseSomeWhatSimilar(string source1, string source2) => IsPhraseSimilar(source1, source2, Fuzzy.ISSOMEWHATSIMILAR); // Is 50% similar
+        public static bool PhraseSlightlySimilar(string source1, string source2) => IsPhraseSimilar(source1, source2, Fuzzy.ISSLIGHTLYSIMILAR); // Is 30% similar
+        public static bool PhraseHardlySimilar(string source1, string source2) => IsPhraseSimilar(source1, source2, Fuzzy.ISHARDLYSIMILAR); // Is 10% similar
         public static string GetKeywordStr(string name, bool removeSpace = false, bool simplify = false, bool insertSpacesBetweenCapitalLetters = true)
         {
             if (insertSpacesBetweenCapitalLetters)

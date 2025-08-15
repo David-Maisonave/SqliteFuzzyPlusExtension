@@ -255,7 +255,7 @@ static bool Compare(const char* source1, const char* source2, FuzzyPlusCSharp::F
     String^ s2;
     switch (CompareMethod)
     {
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::SameSound_StrCmp:
+    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::ExactMatch:
         return strcmp(source1, source2) == 0;
     default:
         s1 = gcnew String(source1);
@@ -266,7 +266,7 @@ static bool Compare(const char* source1, const char* source2, FuzzyPlusCSharp::F
 
 static bool SameSound(std::string source1, std::string source2, 
     FuzzyPlusCSharp::Fuzzy::SameSoundMethod sameSoundMethod = FuzzyPlusCSharp::Fuzzy::SameSoundMethod::UseDefaultSameSoundMethod,
-    FuzzyPlusCSharp::Fuzzy::DistanceMethod distanceMethod = FuzzyPlusCSharp::Fuzzy::DistanceMethod::SameSound_StrCmp, 
+    FuzzyPlusCSharp::Fuzzy::DistanceMethod distanceMethod = FuzzyPlusCSharp::Fuzzy::DistanceMethod::ExactMatch, 
     bool isVerySimilar = true)
 {
     double length = (double)max(source1.length(), source2.length());
@@ -321,7 +321,7 @@ static void SameSound(sqlite3_context* context, int argc, sqlite3_value** argv)
     bool isSameSound = false;
     if (argc > 2)
     {
-        FuzzyPlusCSharp::Fuzzy::DistanceMethod distanceMethod = FuzzyPlusCSharp::Fuzzy::DistanceMethod::SameSound_StrCmp;
+        FuzzyPlusCSharp::Fuzzy::DistanceMethod distanceMethod = FuzzyPlusCSharp::Fuzzy::DistanceMethod::ExactMatch;
         bool isVerySimilar = true;
         if (argc > 3) 
         {
@@ -355,10 +355,11 @@ static void SameSound(sqlite3_context* context, int argc, sqlite3_value** argv)
 
 static double Distance(std::string source1, std::string source2, FuzzyPlusCSharp::Fuzzy::DistanceMethod distanceMethod = FuzzyPlusCSharp::Fuzzy::DistanceMethod::UseDefaultDistanceMethod)
 {
+    String^ s1 = gcnew String(source1.c_str());
+    String^ s2 = gcnew String(source2.c_str());
     switch (distanceMethod)
     {
     case FuzzyPlusCSharp::Fuzzy::DistanceMethod::Fuzzy_Damlev:
-    default:
         return (double)damerau_levenshtein(source1.c_str(), source2.c_str());
     case FuzzyPlusCSharp::Fuzzy::DistanceMethod::Fuzzy_Hamming:
         return (double)hamming(source1.c_str(), source2.c_str());
@@ -376,8 +377,10 @@ static double Distance(std::string source1, std::string source2, FuzzyPlusCSharp
         return Edlib_Distance(source1.c_str(), source2.c_str(), true);
     case FuzzyPlusCSharp::Fuzzy::DistanceMethod::iEdlibDistance:
         return Edlib_Distance(source1.c_str(), source2.c_str(), false);
+    default:
+        return FuzzyPlusCSharp::Fuzzy::Distance(s1, s2, distanceMethod);
     }
-    return 1.0f;
+    return 0.0f;
 }
 
 static double Distance(std::string source1, std::string source2, std::string str_DistanceMethod) {
@@ -533,7 +536,7 @@ static void Caverphone2(sqlite3_context* context, int argc, sqlite3_value** argv
     {
         const char* str2 = (const char*)sqlite3_value_text(argv[1]);
         String^ source2 = gcnew String(str2);
-        int results = FuzzyPlusCSharp::Fuzzy::Caverphone2(source1, source2, FuzzyPlusCSharp::Fuzzy::DistanceMethod::SameSound_StrCmp, true);
+        int results = FuzzyPlusCSharp::Fuzzy::Caverphone2(source1, source2, FuzzyPlusCSharp::Fuzzy::DistanceMethod::ExactMatch, true);
         sqlite3_result_int(context, results);
         return;
     }
@@ -554,7 +557,7 @@ static void Soundex2(sqlite3_context* context, int argc, sqlite3_value** argv) {
     {
         const char* str2 = (const char*)sqlite3_value_text(argv[1]);
         String^ source2 = gcnew String(str2);
-        int results = FuzzyPlusCSharp::Fuzzy::Soundex2(source1, source2, FuzzyPlusCSharp::Fuzzy::DistanceMethod::SameSound_StrCmp, true);
+        int results = FuzzyPlusCSharp::Fuzzy::Soundex2(source1, source2, FuzzyPlusCSharp::Fuzzy::DistanceMethod::ExactMatch, true);
         sqlite3_result_int(context, results);
         return;
     }
@@ -563,9 +566,9 @@ static void Soundex2(sqlite3_context* context, int argc, sqlite3_value** argv) {
 }
 
 
-CREATE_FUNCTION(LevenshteinDistance);
-CREATE_FUNCTION(DamerauLevenshteinDistance);
-CREATE_FUNCTION(EditDistance);
+CREATE_FUNCTION_FLOAT(LevenshteinDistance);
+CREATE_FUNCTION_FLOAT(DamerauLevenshteinDistance);
+CREATE_FUNCTION_FLOAT(EditDistance);
 CREATE_FUNCTION_FLOAT(JaroWinklerDistance);
 CREATE_FUNCTION_FLOAT(OverlapCoefficientDistance);
 CREATE_FUNCTION_FLOAT(JaccardDistance);
@@ -584,7 +587,7 @@ CREATE_FUNCTION_DISTANCE(IsSimilar);
 CREATE_FUNCTION_DISTANCE(IsSomeWhatSimilar);
 CREATE_FUNCTION_DISTANCE(IsSlightlySimilar);
 CREATE_FUNCTION_DISTANCE(IsHardlySimilar);
-CREATE_FUNCTION2(PhraseSimplifiedDiff);
+CREATE_FUNCTION2_FLOAT(PhraseSimplifiedDiff);
 CREATE_FUNCTION2(PhraseVerySimilar);
 CREATE_FUNCTION2(PhraseSimilar);
 CREATE_FUNCTION2(PhraseSomeWhatSimilar);
@@ -604,13 +607,13 @@ CREATE_FUNCTION2(RegexMatch);
 namespace SqliteFuzzyPlusExtension {
     public ref class Fuzzy
     {
-        static int DamLev(std::string str1, std::string str2, bool isCaseSensitive) {
+        static double DamLev(std::string str1, std::string str2, bool isCaseSensitive) {
             String^ source1 = gcnew String(str1.c_str());
             String^ source2 = gcnew String(str2.c_str());
-            int distance = FuzzyPlusCSharp::Fuzzy::DamerauLevenshteinDistance(source1, source2, isCaseSensitive);
+            double distance = FuzzyPlusCSharp::Fuzzy::DamerauLevenshteinDistance(source1, source2, isCaseSensitive);
             return distance;
         }
-        static int DamLev(std::string source1, std::string source2) {
+        static double DamLev(std::string source1, std::string source2) {
             return DamLev(source1, source2, TRUE);
         }
         static double HowSimilar(std::string source1, std::string source2, int iDistanceMethod) {

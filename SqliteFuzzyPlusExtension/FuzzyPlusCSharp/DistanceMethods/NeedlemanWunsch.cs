@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.DistanceMethods
 {
+    public class INeedlemanWunsch : FuzzyPlusCSharp.DistanceMethods.IDistance
+    {
+        public double Percentage(string source1, string source2, bool isCaseSensitive = true) => NeedlemanWunsch.Percentage(source1, source2, isCaseSensitive);
+        public double Distance(string source1, string source2, bool isCaseSensitive = true) => NeedlemanWunsch.Distance(source1, source2, isCaseSensitive);
+    }
     /// <summary>
     /// A class for comparing strings via the Needleman-Wunsch algorithm
     /// </summary>
@@ -30,6 +35,15 @@ namespace FuzzyPlusCSharp.DistanceMethods
             double maxPossibleScore = Math.Max(source1.Length, source2.Length);
             double similarityPercentage = 1 - (similarityScore / maxPossibleScore);
             return similarityPercentage;
+        }
+        public static double Distance(string source1, string source2, bool isCaseSensitive = true)
+        {
+            if (!isCaseSensitive)
+            {
+                source1 = source1.ToLower();
+                source2 = source2.ToLower();
+            }
+            return CalculateSimilarity(source1, source2);
         }
         public static int CalculateSimilarity(string source1, string source2)
         {

@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.DistanceMethods
 {
+    public class ISorensenDice : FuzzyPlusCSharp.DistanceMethods.IDistance
+    {
+        public double Percentage(string source1, string source2, bool isCaseSensitive = true) => SorensenDice.Percentage(source1, source2, isCaseSensitive);
+        public double Distance(string source1, string source2, bool isCaseSensitive = true) => SorensenDice.Distance(source1, source2, isCaseSensitive);
+    }
     public class SorensenDice
     {
         public static double Percentage(string source1, string source2, bool isCaseSensitive = true)

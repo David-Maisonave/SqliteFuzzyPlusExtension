@@ -123,16 +123,16 @@ static void TestPhonetics(const char* defaultSoundMethod)
     }
     else
         printf("Using sound method '%i' as default sound method.\n", GetDefaultSoundMethod());
-    bool s1 = SameSound("to", "to", SqliteFuzzyPlusExtension::Soundex2, GetDistanceMethodID("SameSound_StrCmp"), 1);
-    bool s2 = SameSound("to", "two", SqliteFuzzyPlusExtension::Soundex2, GetDistanceMethodID("SameSound_StrCmp"), 1);
-    bool s3 = SameSound("to", "too", GetSameSoundMethodID("Soundex2"), GetDistanceMethodID("SameSound_StrCmp"), 1);
-    bool s4 = SameSound("to", "if", GetSameSoundMethodID("Soundex2"), GetDistanceMethodID("SameSound_StrCmp"), 1);
-    bool s5 = SameSound("to", "no", SqliteFuzzyPlusExtension::Soundex2, GetDistanceMethodID("SameSound_StrCmp"), 1);
-    bool s6 = SameSound("to", "to", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("SameSound_StrCmp"), 1);
-    bool s7 = SameSound("to", "two", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("SameSound_StrCmp"), 1);
-    bool s8 = SameSound("to", "too", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("SameSound_StrCmp"), 1);
-    bool s9 = SameSound("to", "if", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("SameSound_StrCmp"), 1);
-    bool s0 = SameSound("to", "no", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("SameSound_StrCmp"), 1);
+    bool s1 = SameSound("to", "to", SqliteFuzzyPlusExtension::Soundex2, GetDistanceMethodID("ExactMatch"), 1);
+    bool s2 = SameSound("to", "two", SqliteFuzzyPlusExtension::Soundex2, GetDistanceMethodID("ExactMatch"), 1);
+    bool s3 = SameSound("to", "too", GetSameSoundMethodID("Soundex2"), GetDistanceMethodID("ExactMatch"), 1);
+    bool s4 = SameSound("to", "if", GetSameSoundMethodID("Soundex2"), GetDistanceMethodID("ExactMatch"), 1);
+    bool s5 = SameSound("to", "no", SqliteFuzzyPlusExtension::Soundex2, GetDistanceMethodID("ExactMatch"), 1);
+    bool s6 = SameSound("to", "to", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("ExactMatch"), 1);
+    bool s7 = SameSound("to", "two", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("ExactMatch"), 1);
+    bool s8 = SameSound("to", "too", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("ExactMatch"), 1);
+    bool s9 = SameSound("to", "if", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("ExactMatch"), 1);
+    bool s0 = SameSound("to", "no", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("ExactMatch"), 1);
     printf("(to) s1=%i, s2=%i, s3=%i, s4=%i, s5=%i, s6=%i, s7=%i, s8=%i, s9=%i, s0=%i\n", s1, s2, s3, s4, s5, s6, s7, s8, s9, s0);
     s1 = SAMESOUND("there", "there");
     s2 = SAMESOUND("there", "their");
@@ -196,8 +196,64 @@ static void TestPhonetics(const char* defaultSoundMethod)
     printf("\n\n");
 }
 
+static void TestDistanceIsZeroForMatches()
+{
+    double d0 = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::Levenshtein);
+    double d1 = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::LongestCommonSequence);
+    double d2 = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::NeedlemanWunsch);
+    double d3 = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::HammingDistance);
+    double d4 = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::JaroDistance);
+    double d5 = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::NormalizedLevenshteinDistance);
+    double d6 = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::Levenshtein2Distance);
+    double d7 = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::BlockDistance);
+    double d8 = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::ChapmanLengthDeviation);
+    double d9 = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::ChapmanMeanLength); //(0.164720987904));
+    double da = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::EuclideanDistance);
+    double db = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::MatchingCoefficient);
+    double dc = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::MongeElkan);
+    double dd = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::QGramsDistance);
+    double de = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::SmithWaterman);
+    double df = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::SmithWatermanGotoh);
+    double dg = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::SmithWatermanGotohWindowedAffine);
+    double dh = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::CosineSimilarity);
+    double dj = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::JaccardSimilarity);
+    double dk = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::Fuzzy_Jaro);
+    double dl = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iLongestCommonSequence);
+    double dm = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iNeedlemanWunsch);
+    double dn = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iHammingDistance);
+    double dO = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iNormalizedLevenshteinDistance);
+    double dp = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iLevenshtein2Distance);
+    double dq = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iCosineSimilarity);
+    double dr = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iJaccardSimilarity);
+    double ds = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iBlockDistance);
+    double dt = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iChapmanLengthDeviation);
+    double du = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iEuclideanDistance);
+    double dv = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iMatchingCoefficient);
+    double dw = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iMongeElkan);
+    dw = Distance("ThisIsATestToSeeIfLengthChangesDistance", "ThatIsNotTheSameWord", SqliteFuzzyPlusExtension::iMongeElkan);
+    dw = Distance("This is a test to see if length changes the distance", "It is not the same words", SqliteFuzzyPlusExtension::iMongeElkan);
+    dw = Distance("David", "David", SqliteFuzzyPlusExtension::iMongeElkan);
+    dw = Distance("David", "Davix", SqliteFuzzyPlusExtension::iMongeElkan);
+    dw = Distance("David", "Davxx", SqliteFuzzyPlusExtension::iMongeElkan);
+    dw = Distance("David", "Daxxx", SqliteFuzzyPlusExtension::iMongeElkan);
+    dw = Distance("David", "Dxxxx", SqliteFuzzyPlusExtension::iMongeElkan);
+    dw = Distance("David", "xxxxx", SqliteFuzzyPlusExtension::iMongeElkan);
+    dw = Distance("David", "zzzzz", SqliteFuzzyPlusExtension::iMongeElkan);
+    dw = Distance("David", "Jorge", SqliteFuzzyPlusExtension::iMongeElkan);
+    dw = HowSimilar("David", "David", SqliteFuzzyPlusExtension::iMongeElkan);
+    dw = HowSimilar("David", "Daved", SqliteFuzzyPlusExtension::iMongeElkan);
+    dw = HowSimilar("David", "Davdi", SqliteFuzzyPlusExtension::iMongeElkan);
+    dw = HowSimilar("David", "zzzzz", SqliteFuzzyPlusExtension::iMongeElkan);
+    double dx = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iQGramsDistance);
+    double dy = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iSmithWaterman);
+    double dz = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iSmithWatermanGotoh);
+    double d_ = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iSmithWatermanGotohWindowedAffine);
+    double d__ = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iSmithWatermanGotohWindowedAffine);
+}
+
 int main() //array<System::String ^> ^args)
 {
+    TestDistanceIsZeroForMatches();
     CreateUnitTestSqlFiles();
     TestPhonetics(NULL);
     TestPhonetics("MatchRatingApproach");
@@ -217,14 +273,14 @@ int main() //array<System::String ^> ^args)
 
     const char* str1 = "Hello World";
     const char* str2 = "Hellx sorld";
-    int x = DamerauLevenshteinDistance(str1, str2);
+    double x = DamerauLevenshteinDistance(str1, str2);
     std::cout << "x = " << x << std::endl;
 
 
     const char* sound1 = "been";
     const char* sound2 = "being";
     int x1 = EnPhoneticDistance(sound1, sound2);
-    int x2 = DamerauLevenshteinDistance(sound1, sound2);
+    double x2 = DamerauLevenshteinDistance(sound1, sound2);
     int x3 = Soundex2(sound1, sound2);
     int x4 = EnPhoneticDistance(sound1, sound1);
     int x5 = EnPhoneticDistance(sound2, sound2);

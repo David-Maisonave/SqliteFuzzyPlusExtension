@@ -7,8 +7,18 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.DistanceMethods
 {
-    public sealed class BlockDistance : AbstractStringMetric
+    public sealed class BlockDistance : AbstractStringMetric, FuzzyPlusCSharp.DistanceMethods.IDistance
     {
+        public double Percentage(string source1, string source2, bool isCaseSensitive = true)
+        {
+            Fuzzy.FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            return GetSimilarity(source1, source2);
+        }
+        public double Distance(string source1, string source2, bool isCaseSensitive = true)
+        {
+            double distance = Percentage(source1, source2, isCaseSensitive);
+            return (1.0f - distance) * 10;
+        }
         private readonly double estimatedTimingConstant;
         private readonly ITokeniser tokeniser;
         private readonly TokeniserUtilities<string> tokenUtilities;

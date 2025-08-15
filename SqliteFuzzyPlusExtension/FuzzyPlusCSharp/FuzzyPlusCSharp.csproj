@@ -50,8 +50,10 @@
     <Compile Include="DistanceMethods\CosineSimilarity.cs" />
     <Compile Include="DistanceMethods\DamerauLevenshtein.cs" />
     <Compile Include="DistanceMethods\DiceSimilarity.cs" />
+    <Compile Include="DistanceMethods\EditDistanceWithWildCard.cs" />
     <Compile Include="DistanceMethods\Euclidean.cs" />
     <Compile Include="DistanceMethods\Hamming.cs" />
+    <Compile Include="DistanceMethods\IDistance.cs" />
     <Compile Include="DistanceMethods\JaccardIndex.cs" />
     <Compile Include="DistanceMethods\JaccardSimilarity.cs" />
     <Compile Include="DistanceMethods\Jaro.cs" />
@@ -78,7 +80,8 @@
     <Compile Include="Fuzzy.cs" />
     <Compile Include="FuzzyPhoneticMatching.cs" />
     <Compile Include="Misc\HasInSameOrder.cs" />
-    <Compile Include="Misc\SamenessAndNormalize.cs" />
+    <Compile Include="Misc\Normalize.cs" />
+    <Compile Include="Misc\Sameness.cs" />
     <Compile Include="PhoneticMethods\Caverphone.cs" />
     <Compile Include="PhoneticMethods\Soundex.cs" />
     <Compile Include="Phonix\Caverphone.cs" />

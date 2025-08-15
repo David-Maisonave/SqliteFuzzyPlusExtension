@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.DistanceMethods
 {
+    public class IJaccardIndex : FuzzyPlusCSharp.DistanceMethods.IDistance
+    {
+        public double Percentage(string source1, string source2, bool isCaseSensitive = true) => JaccardIndex.Percentage(source1, source2, isCaseSensitive);
+        public double Distance(string source1, string source2, bool isCaseSensitive = true) => JaccardIndex.Distance(source1, source2, isCaseSensitive);
+    }
     internal class JaccardIndex
     {
         public static double Percentage(string source1, string source2, bool isCaseSensitive = true)

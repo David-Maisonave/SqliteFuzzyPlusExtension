@@ -7,8 +7,18 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.DistanceMethods
 {
-    public class MongeElkan : AbstractStringMetric
+    public class MongeElkan : AbstractStringMetric, FuzzyPlusCSharp.DistanceMethods.IDistance
     {
+        public double Percentage(string source1, string source2, bool isCaseSensitive = true)
+        {
+            Fuzzy.FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            return GetSimilarity(source1, source2);
+        }
+        public double Distance(string source1, string source2, bool isCaseSensitive = true)
+        {
+            double distance = Percentage(source1, source2, isCaseSensitive);
+            return (1.0f - distance) * 10;
+        }
         private const double defaultMismatchScore = 0.0;
         private readonly double estimatedTimingConstant;
         private readonly AbstractStringMetric internalStringMetric;
@@ -43,7 +53,7 @@ namespace FuzzyPlusCSharp.DistanceMethods
         {
             if ((firstWord == null) || (secondWord == null))
             {
-                return 0.0;
+                return -1;
             }
             Collection<string> collection = this.tokeniser.Tokenize(firstWord);
             Collection<string> collection2 = this.tokeniser.Tokenize(secondWord);

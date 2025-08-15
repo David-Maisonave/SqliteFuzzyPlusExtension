@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.DistanceMethods
 {
+    public class IDamerauLevenshtein : FuzzyPlusCSharp.DistanceMethods.IDistance
+    {
+        public double Percentage(string source1, string source2, bool isCaseSensitive = true) => DamerauLevenshtein.Percentage(source1, source2, isCaseSensitive);
+        public double Distance(string source1, string source2, bool isCaseSensitive = true) => DamerauLevenshtein.Distance(source1, source2, isCaseSensitive);
+    }
     public class DamerauLevenshtein
     {
         /// <summary>
@@ -49,6 +54,11 @@ namespace FuzzyPlusCSharp.DistanceMethods
                 }
             }
             return matrix[source1Length, source2Length];
+        }
+        public static double Percentage(string source1, string source2, bool isCaseSensitive = true)
+        {
+            double d = (double)Distance(source1, source2, isCaseSensitive);
+            return 1.0f - (d / Math.Max(source1.Length, source2.Length));
         }
     }
 }

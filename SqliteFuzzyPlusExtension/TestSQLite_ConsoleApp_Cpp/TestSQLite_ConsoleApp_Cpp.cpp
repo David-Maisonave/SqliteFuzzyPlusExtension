@@ -10,7 +10,7 @@ int main()
     std::cout << "Hello World!\n";
     const char* str1 = "Hello World";
     const char* str2 = "Hellx sorld";
-    int x = DamerauLevenshteinDistance(str1, str2);
+    double x = DamerauLevenshteinDistance(str1, str2);
     std::cout << "x = " << x << std::endl;
 
     bool b0 = SameFirstLastName("David E. Maisonave", "Maisonave, David E.");
@@ -28,7 +28,7 @@ int main()
     const char* sound1 = "been";
     const char* sound2 = "being";
     int x1 = EnPhoneticDistance(sound1, sound2);
-    int x2 = DamerauLevenshteinDistance(sound1, sound2);
+    double x2 = DamerauLevenshteinDistance(sound1, sound2);
     int x3 = Soundex2(sound1, sound2);
     int x4 = EnPhoneticDistance(sound1, sound1);
     int x5 = EnPhoneticDistance(sound2, sound2);

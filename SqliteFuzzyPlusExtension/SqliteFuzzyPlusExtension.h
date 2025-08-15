@@ -20,8 +20,8 @@
 
 #ifdef SQLITEFUZZYPLUSEXTENSION_INCLUDE_FUNCTION_MACROS_FOR_C
 #define SAMESOUND(word1, word2) SameSound(word1, word2, 0, 0, 1)
-#define SAMESOUND_NM(word1, word2, methodName) SameSound(word1, word2, GetSameSoundMethodID(methodName), GetDistanceMethodID("SameSound_StrCmp"), 1)
-#define SAMESOUND_ID(word1, word2, methodID) SameSound(word1, word2, methodID, GetDistanceMethodID("SameSound_StrCmp"), 1)
+#define SAMESOUND_NM(word1, word2, methodName) SameSound(word1, word2, GetSameSoundMethodID(methodName), GetDistanceMethodID("ExactMatch"), 1)
+#define SAMESOUND_ID(word1, word2, methodID) SameSound(word1, word2, methodID, GetDistanceMethodID("ExactMatch"), 1)
 #endif // SQLITEFUZZYPLUSEXTENSION_INCLUDE_FUNCTION_MACROS_FOR_C
 
 
@@ -104,7 +104,7 @@ namespace SqliteFuzzyPlusExtension {
         Fuzzy_Osadist,
         Fuzzy_Editdist,
         Fuzzy_Jaro,
-        SameSound_StrCmp,
+        ExactMatch,
         // Other C++ (external) only functions. (NOT part of Sqlean)
         C_ENUM_NAMING_CONVENTION__(EdlibDistance),
         // ------------------------------------------------------------
@@ -202,10 +202,10 @@ extern "C" {
     /////////////////////////////////////////////////////////////////////////////////
     // Distance Functions
 #ifndef SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
-    int DamerauLevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive = true);
-    int DamerauLevenshtein(const char* str1, const char* str2, bool isCaseSensitive = true); // This is an alias for DamerauLevenshteinDistance
-    int LevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive = true);
-    int Levenshtein(const char* str1, const char* str2, bool isCaseSensitive = true);  // This is an alias for LevenshteinDistance
+    double DamerauLevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive = true);
+    double DamerauLevenshtein(const char* str1, const char* str2, bool isCaseSensitive = true); // This is an alias for DamerauLevenshteinDistance
+    double LevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive = true);
+    double Levenshtein(const char* str1, const char* str2, bool isCaseSensitive = true);  // This is an alias for LevenshteinDistance
     double HammingDistance(const char* str1, const char* str2, bool isCaseSensitive = true);
     double Hamming(const char* str1, const char* str2, bool isCaseSensitive = true);  // This is an alias for HammingDistance
     double JaccardDistance(const char* str1, const char* str2, bool isCaseSensitive = true);
@@ -238,7 +238,7 @@ extern "C" {
     double PhraseTokenize(const char* source1, const char* source2, bool isCaseSensitive = true);
     double SimplePhraseTokenize(const char* source1, const char* source2, bool isCaseSensitive = true);
 #endif // !SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
-    int PhraseSimplifiedDiff(const char* str1, const char* str2);
+    double PhraseSimplifiedDiff(const char* str1, const char* str2);
     // SQLean fuzzy Distance Functions
     unsigned fuzzy_damlev(const char* source1, const char* source2);
     int fuzzy_editdist(const char* source1, const char* source2);
@@ -328,10 +328,10 @@ extern "C" {
 #else  // !SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
     /////////////////////////////////////////////////////////////////////////////////
     // Distance Functions
-    int DamerauLevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive);
-    int DamerauLevenshtein(const char* str1, const char* str2, bool isCaseSensitive); // This is an alias for DamerauLevenshteinDistance
-    int LevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive);
-    int Levenshtein(const char* str1, const char* str2, bool isCaseSensitive);  // This is an alias for LevenshteinDistance
+    double DamerauLevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive);
+    double DamerauLevenshtein(const char* str1, const char* str2, bool isCaseSensitive); // This is an alias for DamerauLevenshteinDistance
+    double LevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive);
+    double Levenshtein(const char* str1, const char* str2, bool isCaseSensitive);  // This is an alias for LevenshteinDistance
     double HammingDistance(const char* str1, const char* str2, bool isCaseSensitive);
     double Hamming(const char* str1, const char* str2, bool isCaseSensitive);  // This is an alias for HammingDistance
     double JaccardDistance(const char* str1, const char* str2, bool isCaseSensitive);

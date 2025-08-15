@@ -70,28 +70,28 @@ extern "C"
     /////////////////////////////////////////////////////////////////////////////////
     // Export Distance Functions
     __declspec(dllexport)
-        int DamerauLevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive) {
+        double DamerauLevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        int distance = FuzzyPlusCSharp::Fuzzy::DamerauLevenshteinDistance(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::DamerauLevenshteinDistance(source1, source2, isCaseSensitive);
         return distance;
     }
 
     __declspec(dllexport)
-        int DamerauLevenshtein(const char* str1, const char* str2, bool isCaseSensitive) { // This is an alias for DamerauLevenshteinDistance
+        double DamerauLevenshtein(const char* str1, const char* str2, bool isCaseSensitive) { // This is an alias for DamerauLevenshteinDistance
         return DamerauLevenshteinDistance(str1, str2, isCaseSensitive);
     }
 
     __declspec(dllexport)
-        int LevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive) {
+        double LevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        int distance = FuzzyPlusCSharp::Fuzzy::LevenshteinDistance(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::LevenshteinDistance(source1, source2, isCaseSensitive);
         return distance;
     }
 
     __declspec(dllexport)
-        int Levenshtein(const char* str1, const char* str2, bool isCaseSensitive) { // This is an alias for LevenshteinDistance
+        double Levenshtein(const char* str1, const char* str2, bool isCaseSensitive) { // This is an alias for LevenshteinDistance
         return LevenshteinDistance(str1, str2, isCaseSensitive);
     }
 
@@ -179,10 +179,10 @@ extern "C"
     }
 
     __declspec(dllexport)
-        int PhraseSimplifiedDiff(const char* str1, const char* str2) {
+        double PhraseSimplifiedDiff(const char* str1, const char* str2) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        int distance = FuzzyPlusCSharp::Fuzzy::PhraseSimplifiedDiff(source1, source2);
+        double distance = FuzzyPlusCSharp::Fuzzy::PhraseSimplifiedDiff(source1, source2);
         return distance;
     }
 
@@ -531,7 +531,7 @@ extern "C"
         bool MatchRatingApproach(const char* str1, const char* str2) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        bool distance = FuzzyPlusCSharp::Fuzzy::MatchRatingApproach(source1, source2);
+        bool distance = FuzzyPlusCSharp::Fuzzy::MatchRatingApproach(source1, source2, true);
         return distance;
     }
 
@@ -799,7 +799,7 @@ bool SameSound(const char* source1, const char* source2, const char* SameSoundMe
 __declspec(dllexport)
 std::string NormalizeFirstLastName(const char* name) {
     String^ nameStr = gcnew String(name);
-    CString results = FuzzyPlusCSharp::Fuzzy::NormalizeFirstLastName(nameStr);
+    CString results = FuzzyPlusCSharp::Misc::Normalize::FirstLastName(nameStr);
     CT2CA pszConvertedAnsiString(results);
     std::string returnValue = pszConvertedAnsiString;
     return returnValue;

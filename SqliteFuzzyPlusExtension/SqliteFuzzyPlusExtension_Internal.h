@@ -111,6 +111,20 @@ unsigned distance = FuzzyPlusCSharp::Fuzzy::FuncName(sourc1, sourc2); \
 sqlite3_result_int(context, distance); \
 }
 
+#define CREATE_FUNCTION2_FLOAT(FuncName) static void FuncName(sqlite3_context* context, int argc, sqlite3_value** argv) { \
+assert(argc == 2); \
+const char* str1 = (const char*)sqlite3_value_text(argv[0]); \
+const char* str2 = (const char*)sqlite3_value_text(argv[1]); \
+if (str1 == 0 || str2 == 0) { \
+    sqlite3_result_error(context, "arguments should not be NULL", -1); \
+    return; \
+} \
+String^ sourc1 = gcnew String(str1); \
+String^ sourc2 = gcnew String(str2); \
+double distance = FuzzyPlusCSharp::Fuzzy::FuncName(sourc1, sourc2); \
+sqlite3_result_double(context, distance); \
+}
+
 //#define CREATE_EXPORT_FUNCTION2(FuzzyName) __declspec(dllexport) \
 //int FuzzyName(const char* str1, const char* str2) { \
 //    String^ source1 = gcnew String(str1); \

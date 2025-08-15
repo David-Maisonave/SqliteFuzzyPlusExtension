@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.DistanceMethods
 {
+    public class IJaro : FuzzyPlusCSharp.DistanceMethods.IDistance
+    {
+        public double Percentage(string source1, string source2, bool isCaseSensitive = true) => Jaro.Percentage(source1, source2, isCaseSensitive);
+        public double Distance(string source1, string source2, bool isCaseSensitive = true) => Jaro.Distance(source1, source2, isCaseSensitive);
+    }
     public static class Jaro
     {
         public static double Distance(this string source1, string source2, bool isCaseSensitive = true)
@@ -24,6 +29,10 @@ namespace FuzzyPlusCSharp.DistanceMethods
                 targetSourceIntersectAsString += character;
             double t = Levenshtein.Distance(sourceTargetIntersectAsString, targetSourceIntersectAsString, isCaseSensitive) / 2;
             return (double)((m / source1.Length) + (m / source2.Length) + ((m - t) / m)) / 3;
+        }
+        public static double Percentage(string source1, string source2, bool isCaseSensitive = true)
+        {
+            return 1.0f - (double)Distance(source1, source2, isCaseSensitive);
         }
     }
 }

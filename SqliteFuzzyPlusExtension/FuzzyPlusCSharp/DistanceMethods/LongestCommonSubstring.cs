@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.DistanceMethods
 {
+    public class ILongestCommonSubstring : FuzzyPlusCSharp.DistanceMethods.IDistance
+    {
+        public double Percentage(string source1, string source2, bool isCaseSensitive = true) => LongestCommonSubstring.Percentage(source1, source2, isCaseSensitive);
+        public double Distance(string source1, string source2, bool isCaseSensitive = true) => LongestCommonSubstring.Distance(source1, source2, isCaseSensitive);
+    }
     public static class LongestCommonSubstring
     {
         public static double Distance(this string source1, string source2, bool isCaseSensitive = true)

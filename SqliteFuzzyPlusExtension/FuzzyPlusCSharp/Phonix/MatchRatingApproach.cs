@@ -11,7 +11,7 @@ namespace Phonix
     /// It performs well with names containing the letter "y"
     /// MRA does not perform well with encoded names that differ in length by more than 2
     /// </summary>
-    public sealed class MatchRatingApproach:PhoneticEncoder, ISimilarity, ISimilarity3Types, INotSimilar, IHowSimilar
+    public sealed class MatchRatingApproach:PhoneticEncoder, ISimilarity, FuzzyPlusCSharp.DistanceMethods.ISimilarity3Types, FuzzyPlusCSharp.DistanceMethods.INotSimilar, FuzzyPlusCSharp.DistanceMethods.IHowSimilar
     {
         public static bool GenerateMatchRating(string name, out string key)
         {

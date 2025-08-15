@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.DistanceMethods
 {
+    public class ILongestCommonSequence : FuzzyPlusCSharp.DistanceMethods.IDistance
+    {
+        public double Percentage(string source1, string source2, bool isCaseSensitive = true) => LongestCommonSequence.Percentage(source1, source2, isCaseSensitive);
+        public double Distance(string source1, string source2, bool isCaseSensitive = true) => LongestCommonSequence.Distance(source1, source2, isCaseSensitive);
+    }
     public class LongestCommonSequence
     {
         /// <summary>
@@ -42,6 +47,15 @@ namespace FuzzyPlusCSharp.DistanceMethods
             int lcsLength = lcsRow[source2.Length];
             return lcsLength;
         }
-        public static double CalculateSimilarity(string source1, string source2, bool isCaseSensitive) => (double)Difference(source1, source2, isCaseSensitive) / Math.Max(source1.Length, source2.Length);
+        public static int Distance(string source1, string source2, bool isCaseSensitive)
+        {
+            Fuzzy.FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            if (source1 == source2)
+                return 0;
+            int[] lcsRow = CalculateSimilarityArray(source1, source2);
+            int lcsLength = lcsRow[source2.Length];
+            return lcsLength;
+        }
+        public static double CalculateSimilarity(string source1, string source2, bool isCaseSensitive) => 1.0f - ((double)Difference(source1, source2, isCaseSensitive) / Math.Max(source1.Length, source2.Length));
     }
 }

@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.DistanceMethods
 {
+    public class IPhraseTokenize : FuzzyPlusCSharp.DistanceMethods.IDistance
+    {
+        public double Percentage(string source1, string source2, bool isCaseSensitive = true) => PhraseTokenize.Percentage(source1, source2, isCaseSensitive);
+        public double Distance(string source1, string source2, bool isCaseSensitive = true) => PhraseTokenize.Distance(source1, source2, isCaseSensitive);
+    }
     public static class PhraseTokenize
     {
         /// <summary>
@@ -18,7 +23,7 @@ namespace FuzzyPlusCSharp.DistanceMethods
         /// <returns>
         ///     Returns the number of key words not in each others phrase
         /// </returns>
-        public static int Distance(string source1, string source2, bool isCaseSensitive = true, bool simplify = false, bool insertSpacesBetweenCapitalLetters = true)
+        public static double Distance(string source1, string source2, bool isCaseSensitive = true, bool simplify = false, bool insertSpacesBetweenCapitalLetters = true, bool getDistance = true)
         {
             Fuzzy.FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             string[] list1 = Fuzzy.GetKeywordList(ref source1, simplify, insertSpacesBetweenCapitalLetters);
@@ -30,11 +35,19 @@ namespace FuzzyPlusCSharp.DistanceMethods
             foreach (string s in list2)
                 if (!list1.Contains(s))
                     ++misMatchCount;
-            return misMatchCount;
+            return getDistance ? misMatchCount : (double)misMatchCount / Math.Max(list1.Length, list2.Length);
         }
+        public static double Percentage(string source1, string source2, bool isCaseSensitive = true, bool simplify = false, bool insertSpacesBetweenCapitalLetters = true)=>
+            Distance(source1, source2, isCaseSensitive, simplify, insertSpacesBetweenCapitalLetters, false);
+    }
+    public class ISimplePhraseTokenize : FuzzyPlusCSharp.DistanceMethods.IDistance
+    {
+        public double Percentage(string source1, string source2, bool isCaseSensitive = true) => SimplePhraseTokenize.Percentage(source1, source2, isCaseSensitive);
+        public double Distance(string source1, string source2, bool isCaseSensitive = true) => SimplePhraseTokenize.Distance(source1, source2, isCaseSensitive);
     }
     public static class SimplePhraseTokenize
     {
-        public static int Distance(string source1, string source2, bool isCaseSensitive = true) => PhraseTokenize.Distance(source1, source2, isCaseSensitive, true);
+        public static double Distance(string source1, string source2, bool isCaseSensitive = true) => PhraseTokenize.Distance(source1, source2, isCaseSensitive, true,true, true);
+        public static double Percentage(string source1, string source2, bool isCaseSensitive = true) => PhraseTokenize.Distance(source1, source2, isCaseSensitive, true, true, false);
     }
 }
