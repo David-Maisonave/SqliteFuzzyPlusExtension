@@ -6,17 +6,17 @@
 #define C_ENUM_NAMING_CONVENTION__(name) name
 #define NAMESPACE_SQLITEFUZZYPLUSEXTENSION  SqliteFuzzyPlusExtension::
 #else
-#define SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
+#define COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
 #endif // __cplusplus
 
-#ifdef SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
+#ifdef COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
 #define EXCLUDE_NAMESPACE_SQLITEFUZZYPLUSEXTENSION
 #include "stdbool.h"
 #define C_ENUM_NAMING_CONVENTION__(name) enum_##name
 #ifndef SQLITEFUZZYPLUSEXTENSION_EXCLUDE_FUNCTION_MACROS_FOR_C
 #define SQLITEFUZZYPLUSEXTENSION_INCLUDE_FUNCTION_MACROS_FOR_C
 #endif // !SQLITEFUZZYPLUSEXTENSION_EXCLUDE_FUNCTION_MACROS_FOR_C
-#endif // SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
+#endif // COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
 
 #ifdef SQLITEFUZZYPLUSEXTENSION_INCLUDE_FUNCTION_MACROS_FOR_C
 #define SAMESOUND(word1, word2) SameSound(word1, word2, 0, 0, 1)
@@ -34,121 +34,143 @@
 #ifndef EXCLUDE_NAMESPACE_SQLITEFUZZYPLUSEXTENSION
 namespace SqliteFuzzyPlusExtension {
 #endif //!EXCLUDE_NAMESPACE_SQLITEFUZZYPLUSEXTENSION
-#ifdef SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
-#define CASE_INSENSITIVE 256
-#define CPP_ONLY_FUZZY 128
+#ifdef COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
+#define SEQUENCE_ALIGNMENT_METHODS 32
 #define MICROSOFT_PHONETIC_METHODS 64
 #define TOKEN_METHODS 64
 #define PHRASE_METHODS TOKEN_METHODS + 32
-#define METHODS_UP_FOR_DELETION PHRASE_METHODS + 16
-#else // SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
-    const int CASE_INSENSITIVE = 256;
-    const int CPP_ONLY_FUZZY = 128;
+#define CPP_ONLY_FUZZY 128
+#define CASE_INSENSITIVE 256
+#define BAD_METHODS CPP_ONLY_FUZZY + 96
+#define METHODS_UP_FOR_DELETION BAD_METHODS + 10
+#else // COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
+    const int SEQUENCE_ALIGNMENT_METHODS = 32;
     const int MICROSOFT_PHONETIC_METHODS = 64;
     const int TOKEN_METHODS = 64;
     const int PHRASE_METHODS = TOKEN_METHODS + 32;
-    const int METHODS_UP_FOR_DELETION = PHRASE_METHODS + 16;
-#endif // SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
+    const int CPP_ONLY_FUZZY = 128;
+    const int CASE_INSENSITIVE = 256;
+    const int BAD_METHODS = CPP_ONLY_FUZZY + 96;
+    const int METHODS_UP_FOR_DELETION = BAD_METHODS + 10;
+#endif // COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
     // Note: In C language, the enums can not use the same name as a function, so macro C_ENUM_NAMING_CONVENTION__ has been added for C-Only code where all the enums with this macro have an "enum_" prefixed to the name.
     //       The C++ code will still reference all the enums by the original name.
     enum DistanceMethod_ID
     {
         UseDefaultDistanceMethod = 0,
+        // Edit Distance Based Methods
         C_ENUM_NAMING_CONVENTION__(Levenshtein),
         C_ENUM_NAMING_CONVENTION__(DamerauLevenshtein),
         C_ENUM_NAMING_CONVENTION__(JaroWinkler),
-        C_ENUM_NAMING_CONVENTION__(LongestCommonSequence),
-        C_ENUM_NAMING_CONVENTION__(JaccardIndex),
-        C_ENUM_NAMING_CONVENTION__(OverlapCoefficient),
-        C_ENUM_NAMING_CONVENTION__(NeedlemanWunsch),
-        C_ENUM_NAMING_CONVENTION__(SorensenDiceDistance),
-        C_ENUM_NAMING_CONVENTION__(RatcliffObershelpSimilarityDistance),
         C_ENUM_NAMING_CONVENTION__(HammingDistance),
-        C_ENUM_NAMING_CONVENTION__(LongestCommonSubstringDistance),
-        C_ENUM_NAMING_CONVENTION__(LongestCommonSubsequenceDistance),
         C_ENUM_NAMING_CONVENTION__(JaroDistance),
         C_ENUM_NAMING_CONVENTION__(NormalizedLevenshteinDistance),
         C_ENUM_NAMING_CONVENTION__(Levenshtein2Distance),
-        C_ENUM_NAMING_CONVENTION__(TanimotoCoefficientDistance),
-        // Distance method from SimMetricsCore
-        C_ENUM_NAMING_CONVENTION__(BlockDistance),
         C_ENUM_NAMING_CONVENTION__(ChapmanLengthDeviation),
-        C_ENUM_NAMING_CONVENTION__(ChapmanMeanLength),
         C_ENUM_NAMING_CONVENTION__(EuclideanDistance),
-        C_ENUM_NAMING_CONVENTION__(MatchingCoefficient),
-        C_ENUM_NAMING_CONVENTION__(MongeElkan),
-        C_ENUM_NAMING_CONVENTION__(QGramsDistance),
+
+        // Sequence Alignment Based Methods
+        C_ENUM_NAMING_CONVENTION__(LongestCommonSequence) = SEQUENCE_ALIGNMENT_METHODS,
+        C_ENUM_NAMING_CONVENTION__(NeedlemanWunsch),
+        C_ENUM_NAMING_CONVENTION__(RatcliffObershelpSimilarityDistance),
+        C_ENUM_NAMING_CONVENTION__(LongestCommonSubstringDistance),
+        C_ENUM_NAMING_CONVENTION__(LongestCommonSubsequenceDistance),
         C_ENUM_NAMING_CONVENTION__(SmithWaterman),
         C_ENUM_NAMING_CONVENTION__(SmithWatermanGotoh),
         C_ENUM_NAMING_CONVENTION__(SmithWatermanGotohWindowedAffine),
-        C_ENUM_NAMING_CONVENTION__(DiceSimilarity),
 
-        //Token methods
+        // Token Based Methods
         C_ENUM_NAMING_CONVENTION__(CosineSimilarity) = TOKEN_METHODS,
-        C_ENUM_NAMING_CONVENTION__(JaccardSimilarity),
+        C_ENUM_NAMING_CONVENTION__(JaccardSimilarity), // ToDo: JaccardSimilarity, JaccardIndex, and TanimotoCoefficientDistance are most likely the same logic.  Remove the duplicates
+        C_ENUM_NAMING_CONVENTION__(JaccardIndex),
+        C_ENUM_NAMING_CONVENTION__(TanimotoCoefficientDistance),
+        C_ENUM_NAMING_CONVENTION__(OverlapCoefficient),
+        C_ENUM_NAMING_CONVENTION__(SorensenDiceDistance),
+        C_ENUM_NAMING_CONVENTION__(DiceSimilarity),       
+        C_ENUM_NAMING_CONVENTION__(BlockDistance),
+        C_ENUM_NAMING_CONVENTION__(MatchingCoefficient),
+        C_ENUM_NAMING_CONVENTION__(QGramsDistance),
+
+        // Hybrid Algorithms
+        C_ENUM_NAMING_CONVENTION__(MongeElkan),
 
         // Phrase token methods which are all case insensitive only
         C_ENUM_NAMING_CONVENTION__(PhraseTokenize) = PHRASE_METHODS,
         C_ENUM_NAMING_CONVENTION__(SimplePhraseTokenize),
 
-        // EditDistance may get removed, replaced, or logic change 
-        C_ENUM_NAMING_CONVENTION__(EditDistance) = METHODS_UP_FOR_DELETION,
-
         // ------------------------------------------------------------
         // These functions are NOT supported by CSharp Fuzzy class code, and are only here for C++ SqliteFuzzyPlusExtension usage.
         // Sqlean Fuzzy external functions. 
-        Fuzzy_Damlev = CPP_ONLY_FUZZY,
-        Fuzzy_Hamming,
-        Fuzzy_Jarowin,
-        Fuzzy_Leven,
+        Fuzzy_Damlev = CPP_ONLY_FUZZY, // Edit Distance Based
+        Fuzzy_Hamming, // Edit Distance Based
+        Fuzzy_Jarowin, // Edit Distance Based
+        Fuzzy_Leven, // Edit Distance Based
         Fuzzy_Osadist,
-        Fuzzy_Editdist,
-        Fuzzy_Jaro,
-        ExactMatch,
+        Fuzzy_Editdist, // Edit Distance Based
+        Fuzzy_Jaro, // Edit Distance Based
         // Other C++ (external) only functions. (NOT part of Sqlean)
         C_ENUM_NAMING_CONVENTION__(EdlibDistance),
         // ------------------------------------------------------------
 
+        // Bad distance methods (C# and C++)
+        // These method(s) are only here for comparisons and testing purposes
+        C_ENUM_NAMING_CONVENTION__(ChapmanMeanLength) = BAD_METHODS, // Distance method from SimMetricsCore
+
+        // EditDistance may get removed, replaced, or logic change 
+        C_ENUM_NAMING_CONVENTION__(EditDistance) = METHODS_UP_FOR_DELETION,
+
+        //This is NOT a fuzzy method. It's for functions that accepts a comparison argument.
+        ExactMatch = CASE_INSENSITIVE - 1,
+
+        ////////////////////////////////////////////////////////////////////////////
+        // ToDo: Sort below case insensitive enums in the same order as above
         // Case INSENSITIVE versions
         iLevenshtein = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(Levenshtein),
         iDamerauLevenshtein,
         iJaroWinkler,
-        iLongestCommonSequence,
-        iJaccardIndex,
-        iOverlapCoefficient,
-        iNeedlemanWunsch,
-        iSorensenDiceDistance,
-        iRatcliffObershelpSimilarityDistance,
         iHammingDistance,
-        iLongestCommonSubstringDistance,
-        iLongestCommonSubsequenceDistance,
         iJaroDistance,
         iNormalizedLevenshteinDistance,
         iLevenshtein2Distance,
-        iTanimotoCoefficientDistance,
-        iEditDistance,
-
-        //Token methods
-        iCosineSimilarity,
-        iJaccardSimilarity,
-
-        // Distance method from SimMetricsCore
-        iBlockDistance,
         iChapmanLengthDeviation,
-        iChapmanMeanLength,
         iEuclideanDistance,
-        iMatchingCoefficient,
-        iMongeElkan,
-        iQGramsDistance,
+
+        // Sequence Alignment Based Methods
+        iLongestCommonSequence = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(LongestCommonSequence),
+        iNeedlemanWunsch,
+        iRatcliffObershelpSimilarityDistance,
+        iLongestCommonSubstringDistance,
+        iLongestCommonSubsequenceDistance,
         iSmithWaterman,
         iSmithWatermanGotoh,
         iSmithWatermanGotohWindowedAffine,
+
+        // Token Based Methods
+        iCosineSimilarity = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(CosineSimilarity),
+        iJaccardSimilarity, // ToDo: JaccardSimilarity, JaccardIndex, and TanimotoCoefficientDistance are most likely the same logic.  Remove the duplicates
+        iJaccardIndex,
+        iTanimotoCoefficientDistance,
+        iOverlapCoefficient,
+        iSorensenDiceDistance,
         iDiceSimilarity,
+        iBlockDistance,
+        iMatchingCoefficient,
+        iQGramsDistance,
+
+        // Hybrid Algorithms
+        iMongeElkan,
 
         // ------------------------------------------------------------
         // These functions are NOT supported by CSharp Fuzzy class code, and are only here for C++ SqliteFuzzyPlusExtension usage.
-        C_ENUM_NAMING_CONVENTION__(iEdlibDistance) = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(EdlibDistance)
+        C_ENUM_NAMING_CONVENTION__(iEdlibDistance) = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(EdlibDistance),
         // ------------------------------------------------------------
+
+        // Bad distance methods (C# and C++)
+        // These method(s) are only here for comparisons and testing purposes
+        iChapmanMeanLength = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(ChapmanMeanLength),
+
+        // METHODS UP FOR DELETION
+        iEditDistance = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(EditDistance)
     };
     enum SameSoundMethod
     {
@@ -180,9 +202,9 @@ namespace SqliteFuzzyPlusExtension {
 #endif // SQLITEFUZZYPLUSEXTENSION_LIB
 /////////////////////////////////////////////////////////////////////////////////
 // Function compiled with extern "C"
-#ifndef SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
+#ifndef COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
 extern "C" {
-#endif // !SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
+#endif // !COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
     double HowSimilar(const char* source1, const char* source2, int DistanceMethod_Id);
     double HowSimilarById(const char* source1, const char* source2, int DistanceMethod_Id);
     double HowSimilarByName(const char* source1, const char* source2, const char* DistanceMethod_Name);
@@ -201,7 +223,7 @@ extern "C" {
     bool SameSound(const char* source1, const char* source2, int SameSoundMethod_Id, int DistanceMethod_Id, bool isVerySimilar);
     /////////////////////////////////////////////////////////////////////////////////
     // Distance Functions
-#ifndef SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
+#ifndef COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
     double DamerauLevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive = true);
     double DamerauLevenshtein(const char* str1, const char* str2, bool isCaseSensitive = true); // This is an alias for DamerauLevenshteinDistance
     double LevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive = true);
@@ -237,7 +259,7 @@ extern "C" {
     double DiceSimilarity(const char* source1, const char* source2, bool isCaseSensitive = true);
     double PhraseTokenize(const char* source1, const char* source2, bool isCaseSensitive = true);
     double SimplePhraseTokenize(const char* source1, const char* source2, bool isCaseSensitive = true);
-#endif // !SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
+#endif // !COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
     double PhraseSimplifiedDiff(const char* str1, const char* str2);
     // SQLean fuzzy Distance Functions
     unsigned fuzzy_damlev(const char* source1, const char* source2);
@@ -301,7 +323,7 @@ extern "C" {
     int MaxLength(const char* str1, const char* str2);
     int MinLength(const char* str1, const char* str2);
     unsigned __int64 NormalizeNum(const char* source);
-#ifndef SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
+#ifndef COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
 }
     double HowSimilar(const char* source1, const char* source2, const char* DistanceMethod_Name);
     double Distance(const char* source1, const char* source2, const char* DistanceMethod_Name);
@@ -325,7 +347,7 @@ extern "C" {
     // Miscellaneous Functions
     std::string HasCharInSameOrder(const char* str);
     std::string NormalizeFirstLastName(const char* name);
-#else  // !SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
+#else  // !COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
     /////////////////////////////////////////////////////////////////////////////////
     // Distance Functions
     double DamerauLevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive);
@@ -363,7 +385,7 @@ extern "C" {
     double DiceSimilarity(const char* source1, const char* source2, bool isCaseSensitive);
     double PhraseTokenize(const char* source1, const char* source2, bool isCaseSensitive);
     double SimplePhraseTokenize(const char* source1, const char* source2, bool isCaseSensitive);
-#endif // !SQLITEFUZZYPLUSEXTENSION_COMPILE_TO_C_LANGUAGE__
+#endif // !COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
 
 #endif //SQLITEFUZZYPLUSEXTENSION_EXCLUDE_FUNC
 #endif //SQLITEFUZZYPLUSEXTENSION_H

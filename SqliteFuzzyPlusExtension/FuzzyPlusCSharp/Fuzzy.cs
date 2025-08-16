@@ -45,12 +45,15 @@ namespace FuzzyPlusCSharp
         public const double ISSOMEWHATSIMILAR = 0.5f;
         public const double ISSLIGHTLYSIMILAR = 0.3f;
         public const double ISHARDLYSIMILAR = 0.1f;
-        public const int CASE_INSENSITIVE = 256;
-        public const int CPP_ONLY_FUZZY = 128;
-        public const int TOKEN_METHODS = 64;
+
+        public const int SEQUENCE_ALIGNMENT_METHODS = 32;
         public const int MICROSOFT_PHONETIC_METHODS = 64;
+        public const int TOKEN_METHODS = 64;
         public const int PHRASE_METHODS = TOKEN_METHODS + 32;
-        public const int METHODS_UP_FOR_DELETION = PHRASE_METHODS + 16;
+        public const int CPP_ONLY_FUZZY = 128;
+        public const int CASE_INSENSITIVE = 256;
+        public const int BAD_METHODS = CPP_ONLY_FUZZY + 96;
+        public const int METHODS_UP_FOR_DELETION = BAD_METHODS + 10;
         #endregion Constants
         #region Distance and Phonetic class members
         // Distance classes
@@ -72,104 +75,121 @@ namespace FuzzyPlusCSharp
         public static DoubleMetaphone doubleMetaphone = new DoubleMetaphone();
         #endregion Distance classes members
         #region DistanceMethod definitions
-        public enum DistanceMethod
+        public enum DistanceMethod // StringMatchingAlgorithm
         {
             UseDefaultDistanceMethod = 0,
+            // Edit Distance Based Methods
             Levenshtein,
             DamerauLevenshtein,
             JaroWinkler,
-            LongestCommonSequence,
-            JaccardIndex,
-            OverlapCoefficient,
-            NeedlemanWunsch,
-            SorensenDiceDistance,
-            RatcliffObershelpSimilarityDistance,
             HammingDistance,
-            LongestCommonSubstringDistance,
-            LongestCommonSubsequenceDistance,
             JaroDistance,
             NormalizedLevenshteinDistance,
             Levenshtein2Distance,
-            TanimotoCoefficientDistance,
-            // Distance method from SimMetricsCore
-            BlockDistance,
             ChapmanLengthDeviation,
-            ChapmanMeanLength,
             EuclideanDistance,
-            MatchingCoefficient,
-            MongeElkan,
-            QGramsDistance,
-            SmithWaterman,
-            SmithWatermanGotoh,
-            SmithWatermanGotohWindowedAffine,
-            DiceSimilarity,
 
-            //Token methods
+            // Sequence Alignment Based Methods
+            LongestCommonSequence = SEQUENCE_ALIGNMENT_METHODS,
+            NeedlemanWunsch, 
+            RatcliffObershelpSimilarityDistance, 
+            LongestCommonSubstringDistance, 
+            LongestCommonSubsequenceDistance, 
+            SmithWaterman, 
+            SmithWatermanGotoh, 
+            SmithWatermanGotohWindowedAffine, 
+
+            // Token Based Methods
             CosineSimilarity = TOKEN_METHODS,
-            JaccardSimilarity,
+            JaccardSimilarity, // ToDo: JaccardSimilarity, JaccardIndex, and TanimotoCoefficientDistance are most likely the same logic.  Remove the duplicates
+            JaccardIndex,
+            TanimotoCoefficientDistance,
+            OverlapCoefficient,
+            SorensenDiceDistance,
+            DiceSimilarity, 
+            BlockDistance,
+            MatchingCoefficient,
+            QGramsDistance,
+
+            MongeElkan, // Hybrid Algorithms
             
             // Phrase token methods which are all case insensitive only
             PhraseTokenize = PHRASE_METHODS,
             SimplePhraseTokenize,
 
-            // EditDistance may get removed, replaced, or logic change 
-            EditDistance = METHODS_UP_FOR_DELETION,
-
             // ------------------------------------------------------------
             // These functions are NOT supported by CSharp Fuzzy class code, and are only here for C++ SqliteFuzzyPlusExtension usage.
             // Sqlean Fuzzy external functions. 
-            Fuzzy_Damlev = CPP_ONLY_FUZZY,
-            Fuzzy_Hamming,
-            Fuzzy_Jarowin,
-            Fuzzy_Leven,
+            Fuzzy_Damlev = CPP_ONLY_FUZZY, // Edit Distance Based
+            Fuzzy_Hamming,// Edit Distance Based
+            Fuzzy_Jarowin, // Edit Distance Based
+            Fuzzy_Leven, // Edit Distance Based
             Fuzzy_Osadist,
-            Fuzzy_Editdist,
-            Fuzzy_Jaro,
-            ExactMatch,
+            Fuzzy_Editdist, // Edit Distance Based
+            Fuzzy_Jaro,// Edit Distance Based
             // Other C++ (external) only functions. (NOT part of Sqlean)
-            EdlibDistance,
+            EdlibDistance,// Edit Distance Based
             // ------------------------------------------------------------
 
+            // Bad distance methods (C# and C++)
+            // These method(s) are only here for comparisons and testing purposes
+            ChapmanMeanLength = BAD_METHODS, // Edit Distance Based // Distance method from SimMetricsCore
+            
+            // EditDistance may get removed, replaced, or logic change 
+            EditDistance = METHODS_UP_FOR_DELETION,
+
+            //This is NOT a fuzzy method. It's for functions that accepts a comparison argument.
+            ExactMatch = CASE_INSENSITIVE -1,
+
+            ////////////////////////////////////////////////////////////////////////////
+            // ToDo: Sort below case insensitive enums in the same order as above
             // Case INSENSITIVE versions
             iLevenshtein = CASE_INSENSITIVE + Levenshtein,
             iDamerauLevenshtein,
             iJaroWinkler,
-            iLongestCommonSequence,
-            iJaccardIndex,
-            iOverlapCoefficient,
-            iNeedlemanWunsch,
-            iSorensenDiceDistance,
-            iRatcliffObershelpSimilarityDistance,
             iHammingDistance,
-            iLongestCommonSubstringDistance,
-            iLongestCommonSubsequenceDistance,
             iJaroDistance,
             iNormalizedLevenshteinDistance,
             iLevenshtein2Distance,
-            iTanimotoCoefficientDistance,
-            iEditDistance,
-
-            //Token methods
-            iCosineSimilarity,
-            iJaccardSimilarity,
-
-            // Distance method from SimMetricsCore
-            iBlockDistance,
             iChapmanLengthDeviation,
-            iChapmanMeanLength,
             iEuclideanDistance,
-            iMatchingCoefficient,
-            iMongeElkan,
-            iQGramsDistance,
+
+            // Sequence Alignment Based Methods
+            iLongestCommonSequence = CASE_INSENSITIVE + LongestCommonSequence,
+            iNeedlemanWunsch,
+            iRatcliffObershelpSimilarityDistance,
+            iLongestCommonSubstringDistance,
+            iLongestCommonSubsequenceDistance,
             iSmithWaterman,
             iSmithWatermanGotoh,
             iSmithWatermanGotohWindowedAffine,
+
+            // Token Based Methods
+            iCosineSimilarity = CASE_INSENSITIVE + CosineSimilarity,
+            iJaccardSimilarity, // ToDo: JaccardSimilarity, JaccardIndex, and TanimotoCoefficientDistance are most likely the same logic.  Remove the duplicates
+            iJaccardIndex,
+            iTanimotoCoefficientDistance,
+            iOverlapCoefficient,
+            iSorensenDiceDistance,
             iDiceSimilarity,
+            iBlockDistance,
+            iMatchingCoefficient,
+            iQGramsDistance,
+
+            // Hybrid Algorithms
+            iMongeElkan,
 
             // ------------------------------------------------------------
             // These functions are NOT supported by CSharp Fuzzy class code, and are only here for C++ SqliteFuzzyPlusExtension usage.
             iEdlibDistance = CASE_INSENSITIVE + EdlibDistance,
             // ------------------------------------------------------------
+
+            // Bad distance methods (C# and C++)
+            // These method(s) are only here for comparisons and testing purposes
+            iChapmanMeanLength = CASE_INSENSITIVE + ChapmanMeanLength,
+
+            // METHODS UP FOR DELETION
+            iEditDistance = CASE_INSENSITIVE + EditDistance,
         }
         public static DistanceMethod DefaultDistanceMethod { get; private set; } = DistanceMethod.iDamerauLevenshtein;
 

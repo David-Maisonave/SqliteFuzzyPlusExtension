@@ -9,6 +9,7 @@ namespace FuzzyPlusCSharp.Misc
 {
     public static class Normalize
     {
+        // All Normalize functions returns a string, because if distance method usage is required, a string is needed.
         public static string FirstLastName(string name)
         {
             name = Regex.Replace(name, "[\\s][A-Za-z]\\.", "");
@@ -29,6 +30,7 @@ namespace FuzzyPlusCSharp.Misc
         public static string Date(string name) => throw new NotImplementedException();
         public static string Time(string name) => throw new NotImplementedException();
         public static string FileName(string name) => throw new NotImplementedException();
+        // Number function returns a string instead of a number, because if distance method usage is required, a string is required
         public static string Number(string name) => throw new NotImplementedException();
         public static string Title(string name) => throw new NotImplementedException();
         public static string Fraction(string name) => throw new NotImplementedException();

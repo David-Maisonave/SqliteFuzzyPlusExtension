@@ -11,7 +11,7 @@ namespace TestFuzzy_ConsoleApp_DotNetFrameworkCSharp
     {
         public class D
         {
-            public static float f; // Created this class and variable to remove compiler message about unrequired assignment variable
+            public static double f; // Created this class and variable to remove compiler message about unrequired assignment variable
             public static string s;
             public static Fuzzy.DistanceMethod d;
         }
@@ -40,13 +40,6 @@ namespace TestFuzzy_ConsoleApp_DotNetFrameworkCSharp
             D.f = Fuzzy.NormalizedLevenshteinDistance("David", "Davie");
             D.f = Fuzzy.Levenshtein2Distance("David", "Davie");
             D.f = Fuzzy.TanimotoCoefficientDistance("David", "Davie");
-            D.f = JaccardSimilarity.Percentage("David", "Davie");
-            D.f = JaccardSimilarity.Percentage("David", "David");
-            D.f = JaccardSimilarity.Percentage("David", "david");
-            D.f = JaccardSimilarity.Percentage("David", "12345");
-            D.f = JaccardSimilarity.Percentage("David", "daxyz");
-            D.f = JaccardSimilarity.Percentage("This is a test", "This is another test");
-            D.f = JaccardSimilarity.Percentage("This is a test", "This is test");
             D.f = Fuzzy.HowSimilar("This is a test", "This is another test", "CosineSimilarity");
             D.f = Fuzzy.HowSimilar("This is a test", "This is test", "CosineSimilarity");
 

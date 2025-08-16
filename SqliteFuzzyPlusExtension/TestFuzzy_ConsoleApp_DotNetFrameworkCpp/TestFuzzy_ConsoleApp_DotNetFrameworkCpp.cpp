@@ -5,6 +5,7 @@
 #include <windows.h>
 #include <atlstr.h>
 #include <stdio.h>
+#include <assert.h>
 using namespace std;
 using namespace System;
 #define SQLITEFUZZYPLUSEXTENSION_INCLUDE_FUNCTION_MACROS_FOR_C
@@ -251,8 +252,23 @@ static void TestDistanceIsZeroForMatches()
     double d__ = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iSmithWatermanGotohWindowedAffine);
 }
 
+static void DoAssertions() {
+    // First make sure C# enums match the C/C++ enums. Since the enums are not the same code, need to make sure that any change made to C# code is made to the C/C++ header.
+    assert(SqliteFuzzyPlusExtension::Levenshtein == GetDistanceMethodID("Levenshtein"));
+    assert(SqliteFuzzyPlusExtension::TanimotoCoefficientDistance == GetDistanceMethodID("TanimotoCoefficientDistance"));
+    assert(SqliteFuzzyPlusExtension::DiceSimilarity == GetDistanceMethodID("DiceSimilarity"));
+    assert(SqliteFuzzyPlusExtension::JaccardSimilarity == GetDistanceMethodID("JaccardSimilarity"));
+    assert(SqliteFuzzyPlusExtension::SimplePhraseTokenize == GetDistanceMethodID("SimplePhraseTokenize"));
+    assert(SqliteFuzzyPlusExtension::EditDistance == GetDistanceMethodID("EditDistance"));
+    assert(SqliteFuzzyPlusExtension::Fuzzy_Jaro == GetDistanceMethodID("Fuzzy_Jaro"));
+    assert(SqliteFuzzyPlusExtension::EdlibDistance == GetDistanceMethodID("EdlibDistance"));
+    assert(SqliteFuzzyPlusExtension::ChapmanMeanLength == GetDistanceMethodID("ChapmanMeanLength"));
+    assert(SqliteFuzzyPlusExtension::iEdlibDistance == GetDistanceMethodID("iEdlibDistance"));
+}
+
 int main() //array<System::String ^> ^args)
 {
+    DoAssertions();
     TestDistanceIsZeroForMatches();
     CreateUnitTestSqlFiles();
     TestPhonetics(NULL);

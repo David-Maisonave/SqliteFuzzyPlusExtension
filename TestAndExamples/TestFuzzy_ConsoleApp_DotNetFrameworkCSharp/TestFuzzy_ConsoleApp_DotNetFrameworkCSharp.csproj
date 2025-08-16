@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Fuzzy.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\Fuzzy.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

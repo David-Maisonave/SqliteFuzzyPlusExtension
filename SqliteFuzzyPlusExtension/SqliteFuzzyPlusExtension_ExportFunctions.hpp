@@ -337,6 +337,20 @@ extern "C"
     }
 
     __declspec(dllexport)
+        bool IsVerySimilarFirstLastName(const char* str1, const char* str2) {
+        String^ source1 = gcnew String(str1);
+        String^ source2 = gcnew String(str2);
+        return FuzzyPlusCSharp::Misc::Sameness::SameFirstLastName(source1, source2, false, FuzzyPlusCSharp::Fuzzy::DefaultDistanceMethod, FuzzyPlusCSharp::Fuzzy::ISVERYSIMILAR);
+    }
+
+    __declspec(dllexport)
+        bool IsSimilarFirstLastName(const char* str1, const char* str2) {
+        String^ source1 = gcnew String(str1);
+        String^ source2 = gcnew String(str2);
+        return FuzzyPlusCSharp::Misc::Sameness::SameFirstLastName(source1, source2, false, FuzzyPlusCSharp::Fuzzy::DefaultDistanceMethod, FuzzyPlusCSharp::Fuzzy::ISSIMILAR);
+    }
+
+    __declspec(dllexport)
         bool SamePhone(const char* str1, const char* str2) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
