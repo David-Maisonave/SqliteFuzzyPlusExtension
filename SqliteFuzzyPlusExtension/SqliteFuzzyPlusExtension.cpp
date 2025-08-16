@@ -66,18 +66,18 @@ static void HasCharInSameOrder(sqlite3_context* context, int argc, sqlite3_value
     sqlite3_result_text16(context, result, -1, NULL);
 }
 
-static void SetDefaultDistanceMethodByName(sqlite3_context* context, int argc, sqlite3_value** argv) {
+static void SetDefaultStringMatchingAlgorithmByName(sqlite3_context* context, int argc, sqlite3_value** argv) {
 	assert(argc == 1);
     const char* source = (char*)sqlite3_value_text(argv[0]);
     if (source == 0) {
         return;
     }
     String^ source1 = gcnew String(source);
-    FuzzyPlusCSharp::Fuzzy::SetDefaultDistanceMethod(source1);
+    FuzzyPlusCSharp::Fuzzy::SetDefaultStringMatchingAlgorithm(source1);
     sqlite3_result_text(context, source, -1, NULL);
 }
 
-static void SetDefaultDistanceMethod(sqlite3_context* context, int argc, sqlite3_value** argv) {
+static void SetDefaultStringMatchingAlgorithm(sqlite3_context* context, int argc, sqlite3_value** argv) {
     assert(argc == 1);
     const unsigned char* ustr = sqlite3_value_text(argv[0]);
     CString result;
@@ -88,85 +88,85 @@ static void SetDefaultDistanceMethod(sqlite3_context* context, int argc, sqlite3
             return;
         }
         String^ source1 = gcnew String(source);
-        FuzzyPlusCSharp::Fuzzy::SetDefaultDistanceMethod(source1);
+        FuzzyPlusCSharp::Fuzzy::SetDefaultStringMatchingAlgorithm(source1);
         result = source1;
     }
     else 
     {
         int nIn = sqlite3_value_int(argv[0]);
-        FuzzyPlusCSharp::Fuzzy::SetDefaultDistanceMethod(nIn);
-        result = FuzzyPlusCSharp::Fuzzy::GetDistanceMethodName(nIn);
+        FuzzyPlusCSharp::Fuzzy::SetDefaultStringMatchingAlgorithm(nIn);
+        result = FuzzyPlusCSharp::Fuzzy::GetStringMatchingAlgorithmName(nIn);
     }
     sqlite3_result_text16(context, result, -1, NULL);
 }
 
-static void SetDefaultDistanceMethodByID(sqlite3_context* context, int argc, sqlite3_value** argv) {
+static void SetDefaultStringMatchingAlgorithmByID(sqlite3_context* context, int argc, sqlite3_value** argv) {
     assert(argc == 1);
     int nIn = sqlite3_value_int(argv[0]);
-    FuzzyPlusCSharp::Fuzzy::SetDefaultDistanceMethod(nIn);
-    CString result = FuzzyPlusCSharp::Fuzzy::GetDistanceMethodName(nIn);
+    FuzzyPlusCSharp::Fuzzy::SetDefaultStringMatchingAlgorithm(nIn);
+    CString result = FuzzyPlusCSharp::Fuzzy::GetStringMatchingAlgorithmName(nIn);
     sqlite3_result_text16(context, result, -1, NULL);
 }
 
-static FuzzyPlusCSharp::Fuzzy::DistanceMethod GetDistanceMethod(std::string str_DistanceMethod)
+static FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID GetStringMatchingAlgorithm(std::string str_StringMatchingAlgorithm)
 {
-    String^ strDistanceMethod = gcnew String(str_DistanceMethod.c_str());
-    FuzzyPlusCSharp::Fuzzy::DistanceMethod distanceMethod = FuzzyPlusCSharp::Fuzzy::GetDistanceMethod(strDistanceMethod);
-    return distanceMethod;
+    String^ strStringMatchingAlgorithm = gcnew String(str_StringMatchingAlgorithm.c_str());
+    FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID stringMatchingAlgorithm = FuzzyPlusCSharp::Fuzzy::GetStringMatchingAlgorithm(strStringMatchingAlgorithm);
+    return stringMatchingAlgorithm;
 }
 
-static FuzzyPlusCSharp::Fuzzy::DistanceMethod GetDistanceMethod(int iDistanceMethod)
+static FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID GetStringMatchingAlgorithm(int iStringMatchingAlgorithm)
 {
-    FuzzyPlusCSharp::Fuzzy::DistanceMethod distanceMethod = FuzzyPlusCSharp::Fuzzy::GetDistanceMethod(iDistanceMethod);
-    return distanceMethod;
+    FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID stringMatchingAlgorithm = FuzzyPlusCSharp::Fuzzy::GetStringMatchingAlgorithm(iStringMatchingAlgorithm);
+    return stringMatchingAlgorithm;
 }
 
-static double HowSimilar(std::string source1, std::string source2, FuzzyPlusCSharp::Fuzzy::DistanceMethod distanceMethod = FuzzyPlusCSharp::Fuzzy::DistanceMethod::UseDefaultDistanceMethod)
+static double HowSimilar(std::string source1, std::string source2, FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID stringMatchingAlgorithm = FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::UseDefaultStringMatchingAlgorithm)
 {
     double length = (double)max(source1.length(), source2.length());
-    switch (distanceMethod) 
+    switch (stringMatchingAlgorithm) 
     {
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::Fuzzy_Damlev:
+    case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Damlev:
     default:
         return GetPercentage((double)damerau_levenshtein(source1.c_str(), source2.c_str()), length);
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::Fuzzy_Hamming:
+    case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Hamming:
         return GetPercentage((double)hamming(source1.c_str(), source2.c_str()), length);
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::Fuzzy_Jarowin:
+    case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Jarowin:
         return jaro_winkler(source1.c_str(), source2.c_str());
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::Fuzzy_Leven:
+    case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Leven:
         return GetPercentage((double)levenshtein(source1.c_str(), source2.c_str()), length);
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::Fuzzy_Osadist:
+    case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Osadist:
         return GetPercentage((double)optimal_string_alignment(source1.c_str(), source2.c_str()), length);
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::Fuzzy_Editdist:
+    case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Editdist:
         return edit_distance(source1.c_str(), source2.c_str(), 0);
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::Fuzzy_Jaro:
+    case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Jaro:
         return jaro_distance(source1.c_str(), source2.c_str());
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::EdlibDistance:
+    case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::EdlibDistance:
         return GetPercentage(Edlib_Distance(source1.c_str(), source2.c_str(), true), length);
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::iEdlibDistance:
+    case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::iEdlibDistance:
         return GetPercentage(Edlib_Distance(source1.c_str(), source2.c_str(), false), length);
     }
     return 1.0f;
 }
 
-static double HowSimilar(std::string source1, std::string source2, std::string str_DistanceMethod){
-    return HowSimilar(source1, source2, GetDistanceMethod(str_DistanceMethod));
+static double HowSimilar(std::string source1, std::string source2, std::string str_StringMatchingAlgorithm){
+    return HowSimilar(source1, source2, GetStringMatchingAlgorithm(str_StringMatchingAlgorithm));
 }
 
-static double HowSimilar(std::string source1, std::string source2, int iDistanceMethod){
-    return HowSimilar(source1, source2, GetDistanceMethod(iDistanceMethod));
+static double HowSimilar(std::string source1, std::string source2, int iStringMatchingAlgorithm){
+    return HowSimilar(source1, source2, GetStringMatchingAlgorithm(iStringMatchingAlgorithm));
 }
 
-static bool GetIsCSharpFuzzy(FuzzyPlusCSharp::Fuzzy::DistanceMethod distanceMethod) {
-    return ((int)distanceMethod < FuzzyPlusCSharp::Fuzzy::CPP_ONLY_FUZZY || (int)distanceMethod > FuzzyPlusCSharp::Fuzzy::CASE_INSENSITIVE);
+static bool GetIsCSharpFuzzy(FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID stringMatchingAlgorithm) {
+    return ((int)stringMatchingAlgorithm < FuzzyPlusCSharp::Fuzzy::CPP_ONLY_FUZZY || (int)stringMatchingAlgorithm > FuzzyPlusCSharp::Fuzzy::CASE_INSENSITIVE);
 }
 
-static bool GetIsCSharpFuzzy(std::string str_DistanceMethod) {
-    return GetIsCSharpFuzzy(GetDistanceMethod(str_DistanceMethod));
+static bool GetIsCSharpFuzzy(std::string str_StringMatchingAlgorithm) {
+    return GetIsCSharpFuzzy(GetStringMatchingAlgorithm(str_StringMatchingAlgorithm));
 }
 
-static bool GetIsCSharpFuzzy(int iDistanceMethod) {
-    return GetIsCSharpFuzzy(GetDistanceMethod(iDistanceMethod));
+static bool GetIsCSharpFuzzy(int iStringMatchingAlgorithm) {
+    return GetIsCSharpFuzzy(GetStringMatchingAlgorithm(iStringMatchingAlgorithm));
 }
 
 static void HowSimilar(sqlite3_context* context, int argc, sqlite3_value** argv)
@@ -194,8 +194,8 @@ static void HowSimilar(sqlite3_context* context, int argc, sqlite3_value** argv)
     }
     else
     {
-        bool isCSharpFuzzy = GetIsCSharpFuzzy(FuzzyPlusCSharp::Fuzzy::DefaultDistanceMethod);
-        distance = isCSharpFuzzy ? FuzzyPlusCSharp::Fuzzy::HowSimilar(source1, source2, 0) : HowSimilar(str1, str2, FuzzyPlusCSharp::Fuzzy::DistanceMethod::UseDefaultDistanceMethod);
+        bool isCSharpFuzzy = GetIsCSharpFuzzy(FuzzyPlusCSharp::Fuzzy::DefaultStringMatchingAlgorithm);
+        distance = isCSharpFuzzy ? FuzzyPlusCSharp::Fuzzy::HowSimilar(source1, source2, 0) : HowSimilar(str1, str2, FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::UseDefaultStringMatchingAlgorithm);
     }
     sqlite3_result_double(context, distance);
 }
@@ -249,13 +249,13 @@ char* refined_soundex(const char* str);
 unsigned char* transliterate(const unsigned char* zIn, int nIn);
 int script_code(const unsigned char* zIn, int nIn);
 
-static bool Compare(const char* source1, const char* source2, FuzzyPlusCSharp::Fuzzy::DistanceMethod CompareMethod, bool isVerySimilar = true)
+static bool Compare(const char* source1, const char* source2, FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID CompareMethod, bool isVerySimilar = true)
 {
     String^ s1;
     String^ s2;
     switch (CompareMethod)
     {
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::ExactMatch:
+    case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::ExactMatch:
         return strcmp(source1, source2) == 0;
     default:
         s1 = gcnew String(source1);
@@ -266,7 +266,7 @@ static bool Compare(const char* source1, const char* source2, FuzzyPlusCSharp::F
 
 static bool SameSound(std::string source1, std::string source2, 
     FuzzyPlusCSharp::Fuzzy::SameSoundMethod sameSoundMethod = FuzzyPlusCSharp::Fuzzy::SameSoundMethod::UseDefaultSameSoundMethod,
-    FuzzyPlusCSharp::Fuzzy::DistanceMethod distanceMethod = FuzzyPlusCSharp::Fuzzy::DistanceMethod::ExactMatch, 
+    FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID stringMatchingAlgorithm = FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::ExactMatch, 
     bool isVerySimilar = true)
 {
     double length = (double)max(source1.length(), source2.length());
@@ -278,27 +278,27 @@ static bool SameSound(std::string source1, std::string source2,
     case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::fuzzy_caver:
         s1 = caverphone((const char*)source1.c_str());
         s2 = caverphone((const char*)source2.c_str());
-        results = Compare(s1, s2, distanceMethod, isVerySimilar);
+        results = Compare(s1, s2, stringMatchingAlgorithm, isVerySimilar);
         break;
     case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::fuzzy_phonetic:
         s1 = (char*)phonetic_hash((const unsigned char*)source1.c_str(), (int)source1.length());
         s2 = (char*)phonetic_hash((const unsigned char*)source2.c_str(), (int)source2.length());
-        results = Compare(s1, s2, distanceMethod, isVerySimilar);
+        results = Compare(s1, s2, stringMatchingAlgorithm, isVerySimilar);
         break;
     case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::fuzzy_soundex:
         s1 = soundex((const char*)source1.c_str());
         s2 = soundex((const char*)source2.c_str());
-        results = Compare(s1, s2, distanceMethod, isVerySimilar);
+        results = Compare(s1, s2, stringMatchingAlgorithm, isVerySimilar);
         break;
     case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::fuzzy_rsoundex:
         s1 = refined_soundex((const char*)source1.c_str());
         s2 = refined_soundex((const char*)source2.c_str());
-        results = Compare(s1, s2, distanceMethod, isVerySimilar);
+        results = Compare(s1, s2, stringMatchingAlgorithm, isVerySimilar);
         break;
     case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::fuzzy_translit:
         s1 = (char*)transliterate((const unsigned char*)source1.c_str(), (int)source1.length());
         s2 = (char*)transliterate((const unsigned char*)source2.c_str(), (int)source2.length());
-        results = Compare(s1, s2, distanceMethod, isVerySimilar);
+        results = Compare(s1, s2, stringMatchingAlgorithm, isVerySimilar);
         break;
     case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::Caverphone2:
     case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::Soundex2:
@@ -306,7 +306,7 @@ static bool SameSound(std::string source1, std::string source2,
         default:
         String^ s1 = gcnew String(source1.c_str());
         String^ s2 = gcnew String(source2.c_str());
-        return FuzzyPlusCSharp::Fuzzy::SameSound(s1, s2, sameSoundMethod, distanceMethod, isVerySimilar);
+        return FuzzyPlusCSharp::Fuzzy::SameSound(s1, s2, sameSoundMethod, stringMatchingAlgorithm, isVerySimilar);
     }
     free(s1);
     free(s2);
@@ -321,17 +321,17 @@ static void SameSound(sqlite3_context* context, int argc, sqlite3_value** argv)
     bool isSameSound = false;
     if (argc > 2)
     {
-        FuzzyPlusCSharp::Fuzzy::DistanceMethod distanceMethod = FuzzyPlusCSharp::Fuzzy::DistanceMethod::ExactMatch;
+        FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID stringMatchingAlgorithm = FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::ExactMatch;
         bool isVerySimilar = true;
         if (argc > 3) 
         {
             const unsigned char* ustr4 = sqlite3_value_text(argv[3]);
             if (isascii(ustr4[0]))
-                distanceMethod = GetDistanceMethod((const char*)ustr4);
+                stringMatchingAlgorithm = GetStringMatchingAlgorithm((const char*)ustr4);
             else
             {
                 int nIn = sqlite3_value_int(argv[3]);
-                distanceMethod = GetDistanceMethod(nIn);
+                stringMatchingAlgorithm = GetStringMatchingAlgorithm(nIn);
             }
             if (argc > 4)
             {
@@ -341,11 +341,11 @@ static void SameSound(sqlite3_context* context, int argc, sqlite3_value** argv)
         }
         const unsigned char* ustr3 = sqlite3_value_text(argv[2]);
         if (isascii(ustr3[0]))
-            isSameSound = SameSound(source1, source2, GetSameSoundMethod((const char*)ustr3), distanceMethod, isVerySimilar);
+            isSameSound = SameSound(source1, source2, GetSameSoundMethod((const char*)ustr3), stringMatchingAlgorithm, isVerySimilar);
         else
         {
             int nIn = sqlite3_value_int(argv[2]);
-            isSameSound = SameSound(source1, source2, GetSameSoundMethod(nIn), distanceMethod, isVerySimilar);
+            isSameSound = SameSound(source1, source2, GetSameSoundMethod(nIn), stringMatchingAlgorithm, isVerySimilar);
         }
     }
     else
@@ -353,42 +353,42 @@ static void SameSound(sqlite3_context* context, int argc, sqlite3_value** argv)
     sqlite3_result_int(context, isSameSound);
 }
 
-static double Distance(std::string source1, std::string source2, FuzzyPlusCSharp::Fuzzy::DistanceMethod distanceMethod = FuzzyPlusCSharp::Fuzzy::DistanceMethod::UseDefaultDistanceMethod)
+static double Distance(std::string source1, std::string source2, FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID stringMatchingAlgorithm = FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::UseDefaultStringMatchingAlgorithm)
 {
     String^ s1 = gcnew String(source1.c_str());
     String^ s2 = gcnew String(source2.c_str());
-    switch (distanceMethod)
+    switch (stringMatchingAlgorithm)
     {
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::Fuzzy_Damlev:
+    case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Damlev:
         return (double)damerau_levenshtein(source1.c_str(), source2.c_str());
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::Fuzzy_Hamming:
+    case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Hamming:
         return (double)hamming(source1.c_str(), source2.c_str());
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::Fuzzy_Jarowin:
+    case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Jarowin:
         return jaro_winkler(source1.c_str(), source2.c_str());
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::Fuzzy_Leven:
+    case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Leven:
         return (double)levenshtein(source1.c_str(), source2.c_str());
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::Fuzzy_Osadist:
+    case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Osadist:
         return (double)optimal_string_alignment(source1.c_str(), source2.c_str());
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::Fuzzy_Editdist:
+    case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Editdist:
         return edit_distance(source1.c_str(), source2.c_str(), 0);
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::Fuzzy_Jaro:
+    case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Jaro:
         return jaro_distance(source1.c_str(), source2.c_str());
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::EdlibDistance:
+    case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::EdlibDistance:
         return Edlib_Distance(source1.c_str(), source2.c_str(), true);
-    case FuzzyPlusCSharp::Fuzzy::DistanceMethod::iEdlibDistance:
+    case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::iEdlibDistance:
         return Edlib_Distance(source1.c_str(), source2.c_str(), false);
     default:
-        return FuzzyPlusCSharp::Fuzzy::Distance(s1, s2, distanceMethod);
+        return FuzzyPlusCSharp::Fuzzy::Distance(s1, s2, stringMatchingAlgorithm);
     }
     return 0.0f;
 }
 
-static double Distance(std::string source1, std::string source2, std::string str_DistanceMethod) {
-    return Distance(source1, source2, GetDistanceMethod(str_DistanceMethod));
+static double Distance(std::string source1, std::string source2, std::string str_StringMatchingAlgorithm) {
+    return Distance(source1, source2, GetStringMatchingAlgorithm(str_StringMatchingAlgorithm));
 }
 
-static double Distance(std::string source1, std::string source2, int iDistanceMethod) {
-    return Distance(source1, source2, GetDistanceMethod(iDistanceMethod));
+static double Distance(std::string source1, std::string source2, int iStringMatchingAlgorithm) {
+    return Distance(source1, source2, GetStringMatchingAlgorithm(iStringMatchingAlgorithm));
 }
 static void Distance(sqlite3_context* context, int argc, sqlite3_value** argv)
 {
@@ -416,8 +416,8 @@ static void Distance(sqlite3_context* context, int argc, sqlite3_value** argv)
     else
     {
         assert(argc == 2);
-        bool isCSharpFuzzy = GetIsCSharpFuzzy(FuzzyPlusCSharp::Fuzzy::DefaultDistanceMethod);
-        distance = isCSharpFuzzy ? FuzzyPlusCSharp::Fuzzy::Distance(source1, source2, 0) : Distance(str1, str2, FuzzyPlusCSharp::Fuzzy::DistanceMethod::UseDefaultDistanceMethod);
+        bool isCSharpFuzzy = GetIsCSharpFuzzy(FuzzyPlusCSharp::Fuzzy::DefaultStringMatchingAlgorithm);
+        distance = isCSharpFuzzy ? FuzzyPlusCSharp::Fuzzy::Distance(source1, source2, 0) : Distance(str1, str2, FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::UseDefaultStringMatchingAlgorithm);
     }
     sqlite3_result_double(context, distance);
 }
@@ -536,7 +536,7 @@ static void Caverphone2(sqlite3_context* context, int argc, sqlite3_value** argv
     {
         const char* str2 = (const char*)sqlite3_value_text(argv[1]);
         String^ source2 = gcnew String(str2);
-        int results = FuzzyPlusCSharp::Fuzzy::Caverphone2(source1, source2, FuzzyPlusCSharp::Fuzzy::DistanceMethod::ExactMatch, true);
+        int results = FuzzyPlusCSharp::Fuzzy::Caverphone2(source1, source2, FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::ExactMatch, true);
         sqlite3_result_int(context, results);
         return;
     }
@@ -557,7 +557,7 @@ static void Soundex2(sqlite3_context* context, int argc, sqlite3_value** argv) {
     {
         const char* str2 = (const char*)sqlite3_value_text(argv[1]);
         String^ source2 = gcnew String(str2);
-        int results = FuzzyPlusCSharp::Fuzzy::Soundex2(source1, source2, FuzzyPlusCSharp::Fuzzy::DistanceMethod::ExactMatch, true);
+        int results = FuzzyPlusCSharp::Fuzzy::Soundex2(source1, source2, FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::ExactMatch, true);
         sqlite3_result_int(context, results);
         return;
     }
@@ -616,11 +616,11 @@ namespace SqliteFuzzyPlusExtension {
         static double DamLev(std::string source1, std::string source2) {
             return DamLev(source1, source2, TRUE);
         }
-        static double HowSimilar(std::string source1, std::string source2, int iDistanceMethod) {
-            return ::HowSimilar(source1, source2, GetDistanceMethod(iDistanceMethod));
+        static double HowSimilar(std::string source1, std::string source2, int iStringMatchingAlgorithm) {
+            return ::HowSimilar(source1, source2, GetStringMatchingAlgorithm(iStringMatchingAlgorithm));
         }
-        static double Distance(std::string source1, std::string source2, int iDistanceMethod) {
-            return ::Distance(source1, source2, GetDistanceMethod(iDistanceMethod));
+        static double Distance(std::string source1, std::string source2, int iStringMatchingAlgorithm) {
+            return ::Distance(source1, source2, GetStringMatchingAlgorithm(iStringMatchingAlgorithm));
         }
     };
 }
@@ -635,7 +635,7 @@ extern "C"
         const sqlite3_api_routines* sqlite_api) {
         sqlite3_api = sqlite_api;
         static const int flags = SQLITE_UTF8 | SQLITE_INNOCUOUS | SQLITE_DETERMINISTIC;
-        //FuzzyPlusCSharp::Fuzzy::DistanceMethod d = FuzzyPlusCSharp::Fuzzy::DistanceMethod::UseDefaultDistanceMethod;
+        //FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID d = FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::UseDefaultStringMatchingAlgorithm;
 
         // Original long distance names
         SQLITE3_CREATE_FUNCTION2(LevenshteinDistance);
@@ -662,9 +662,9 @@ extern "C"
         SQLITE3_CREATE_FUNCTION1(Soundex2);
 
         // Methods to set default distance functions either by name (string) or by ID (integer)
-        SQLITE3_CREATE_FUNCTION1(SetDefaultDistanceMethod);
-        SQLITE3_CREATE_FUNCTION1(SetDefaultDistanceMethodByName);
-        SQLITE3_CREATE_FUNCTION1(SetDefaultDistanceMethodByID);
+        SQLITE3_CREATE_FUNCTION1(SetDefaultStringMatchingAlgorithm);
+        SQLITE3_CREATE_FUNCTION1(SetDefaultStringMatchingAlgorithmByName);
+        SQLITE3_CREATE_FUNCTION1(SetDefaultStringMatchingAlgorithmByID);
 
         // Similarity functions which use default distance function
         SQLITE3_CREATE_FUNCTION2(IsNotSimilar);

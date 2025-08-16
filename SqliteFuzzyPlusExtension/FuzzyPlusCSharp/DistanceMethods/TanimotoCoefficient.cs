@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FuzzyPlusCSharp.DistanceMethods
+namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
-    public class ITanimotoCoefficient : FuzzyPlusCSharp.DistanceMethods.IDistance
+    public class ITanimotoCoefficient : FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {
         public double Percentage(string source1, string source2, bool isCaseSensitive = true) => TanimotoCoefficient.Percentage(source1, source2, isCaseSensitive);
         public double Distance(string source1, string source2, bool isCaseSensitive = true) => TanimotoCoefficient.Distance(source1, source2, isCaseSensitive);

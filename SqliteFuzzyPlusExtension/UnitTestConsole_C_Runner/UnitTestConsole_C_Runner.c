@@ -12,16 +12,16 @@ static void TestPhonetics(const char* defaultSoundMethod)
     }
     else
         printf("Using sound method '%i' as default sound method.\n", GetDefaultSoundMethod());
-    bool s1 = SameSound("to", "to", enum_Soundex2, GetDistanceMethodID("ExactMatch"), 1);
-    bool s2 = SameSound("to", "two", enum_Soundex2, GetDistanceMethodID("ExactMatch"), 1);
-    bool s3 = SameSound("to", "too", GetSameSoundMethodID("Soundex2"), GetDistanceMethodID("ExactMatch"), 1);
-    bool s4 = SameSound("to", "if", GetSameSoundMethodID("Soundex2"), GetDistanceMethodID("ExactMatch"), 1);
-    bool s5 = SameSound("to", "no", enum_Soundex2, GetDistanceMethodID("ExactMatch"), 1);
-    bool s6 = SameSound("to", "to", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("ExactMatch"), 1);
-    bool s7 = SameSound("to", "two", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("ExactMatch"), 1);
-    bool s8 = SameSound("to", "too", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("ExactMatch"), 1);
-    bool s9 = SameSound("to", "if", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("ExactMatch"), 1);
-    bool s0 = SameSound("to", "no", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("ExactMatch"), 1);
+    bool s1 = SameSound("to", "to", enum_Soundex2, GetStringMatchingAlgorithmID("ExactMatch"), 1);
+    bool s2 = SameSound("to", "two", enum_Soundex2, GetStringMatchingAlgorithmID("ExactMatch"), 1);
+    bool s3 = SameSound("to", "too", GetSameSoundMethodID("Soundex2"), GetStringMatchingAlgorithmID("ExactMatch"), 1);
+    bool s4 = SameSound("to", "if", GetSameSoundMethodID("Soundex2"), GetStringMatchingAlgorithmID("ExactMatch"), 1);
+    bool s5 = SameSound("to", "no", enum_Soundex2, GetStringMatchingAlgorithmID("ExactMatch"), 1);
+    bool s6 = SameSound("to", "to", GetSameSoundMethodID("fuzzy_soundex"), GetStringMatchingAlgorithmID("ExactMatch"), 1);
+    bool s7 = SameSound("to", "two", GetSameSoundMethodID("fuzzy_soundex"), GetStringMatchingAlgorithmID("ExactMatch"), 1);
+    bool s8 = SameSound("to", "too", GetSameSoundMethodID("fuzzy_soundex"), GetStringMatchingAlgorithmID("ExactMatch"), 1);
+    bool s9 = SameSound("to", "if", GetSameSoundMethodID("fuzzy_soundex"), GetStringMatchingAlgorithmID("ExactMatch"), 1);
+    bool s0 = SameSound("to", "no", GetSameSoundMethodID("fuzzy_soundex"), GetStringMatchingAlgorithmID("ExactMatch"), 1);
     printf("(to) s1=%i, s2=%i, s3=%i, s4=%i, s5=%i, s6=%i, s7=%i, s8=%i, s9=%i, s0=%i\n", s1, s2, s3, s4, s5, s6, s7, s8, s9, s0);
     s1 = SAMESOUND("there", "there");
     s2 = SAMESOUND("there", "their");

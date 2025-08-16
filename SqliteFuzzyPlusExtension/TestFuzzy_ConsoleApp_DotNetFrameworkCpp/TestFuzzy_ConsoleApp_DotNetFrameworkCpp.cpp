@@ -16,9 +16,9 @@ static void CreateScriptSimilarWords(string rootDir, string fieldName, string ta
     string fileName = byName ? "_ByName_" : "_ByNumber_";
     ofstream f(rootDir + FunctionName + fileName + table + ".sql");
     f << "select " << fieldName << endl;
-    for (int i = 0; i < (int)FuzzyPlusCSharp::Fuzzy::DistanceMethod::iEdlibDistance; ++i)
+    for (int i = 0; i < (int)FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::iEdlibDistance; ++i)
     {
-        CString d = FuzzyPlusCSharp::Fuzzy::GetDistanceMethodName(i);
+        CString d = FuzzyPlusCSharp::Fuzzy::GetStringMatchingAlgorithmName(i);
         string distanceName = CW2A(d);
         if (std::isdigit(distanceName[0]))
             continue;
@@ -124,16 +124,16 @@ static void TestPhonetics(const char* defaultSoundMethod)
     }
     else
         printf("Using sound method '%i' as default sound method.\n", GetDefaultSoundMethod());
-    bool s1 = SameSound("to", "to", SqliteFuzzyPlusExtension::Soundex2, GetDistanceMethodID("ExactMatch"), 1);
-    bool s2 = SameSound("to", "two", SqliteFuzzyPlusExtension::Soundex2, GetDistanceMethodID("ExactMatch"), 1);
-    bool s3 = SameSound("to", "too", GetSameSoundMethodID("Soundex2"), GetDistanceMethodID("ExactMatch"), 1);
-    bool s4 = SameSound("to", "if", GetSameSoundMethodID("Soundex2"), GetDistanceMethodID("ExactMatch"), 1);
-    bool s5 = SameSound("to", "no", SqliteFuzzyPlusExtension::Soundex2, GetDistanceMethodID("ExactMatch"), 1);
-    bool s6 = SameSound("to", "to", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("ExactMatch"), 1);
-    bool s7 = SameSound("to", "two", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("ExactMatch"), 1);
-    bool s8 = SameSound("to", "too", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("ExactMatch"), 1);
-    bool s9 = SameSound("to", "if", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("ExactMatch"), 1);
-    bool s0 = SameSound("to", "no", GetSameSoundMethodID("fuzzy_soundex"), GetDistanceMethodID("ExactMatch"), 1);
+    bool s1 = SameSound("to", "to", SqliteFuzzyPlusExtension::Soundex2, GetStringMatchingAlgorithmID("ExactMatch"), 1);
+    bool s2 = SameSound("to", "two", SqliteFuzzyPlusExtension::Soundex2, GetStringMatchingAlgorithmID("ExactMatch"), 1);
+    bool s3 = SameSound("to", "too", GetSameSoundMethodID("Soundex2"), GetStringMatchingAlgorithmID("ExactMatch"), 1);
+    bool s4 = SameSound("to", "if", GetSameSoundMethodID("Soundex2"), GetStringMatchingAlgorithmID("ExactMatch"), 1);
+    bool s5 = SameSound("to", "no", SqliteFuzzyPlusExtension::Soundex2, GetStringMatchingAlgorithmID("ExactMatch"), 1);
+    bool s6 = SameSound("to", "to", GetSameSoundMethodID("fuzzy_soundex"), GetStringMatchingAlgorithmID("ExactMatch"), 1);
+    bool s7 = SameSound("to", "two", GetSameSoundMethodID("fuzzy_soundex"), GetStringMatchingAlgorithmID("ExactMatch"), 1);
+    bool s8 = SameSound("to", "too", GetSameSoundMethodID("fuzzy_soundex"), GetStringMatchingAlgorithmID("ExactMatch"), 1);
+    bool s9 = SameSound("to", "if", GetSameSoundMethodID("fuzzy_soundex"), GetStringMatchingAlgorithmID("ExactMatch"), 1);
+    bool s0 = SameSound("to", "no", GetSameSoundMethodID("fuzzy_soundex"), GetStringMatchingAlgorithmID("ExactMatch"), 1);
     printf("(to) s1=%i, s2=%i, s3=%i, s4=%i, s5=%i, s6=%i, s7=%i, s8=%i, s9=%i, s0=%i\n", s1, s2, s3, s4, s5, s6, s7, s8, s9, s0);
     s1 = SAMESOUND("there", "there");
     s2 = SAMESOUND("there", "their");
@@ -254,16 +254,16 @@ static void TestDistanceIsZeroForMatches()
 
 static void DoAssertions() {
     // First make sure C# enums match the C/C++ enums. Since the enums are not the same code, need to make sure that any change made to C# code is made to the C/C++ header.
-    assert(SqliteFuzzyPlusExtension::Levenshtein == GetDistanceMethodID("Levenshtein"));
-    assert(SqliteFuzzyPlusExtension::TanimotoCoefficientDistance == GetDistanceMethodID("TanimotoCoefficientDistance"));
-    assert(SqliteFuzzyPlusExtension::DiceSimilarity == GetDistanceMethodID("DiceSimilarity"));
-    assert(SqliteFuzzyPlusExtension::JaccardSimilarity == GetDistanceMethodID("JaccardSimilarity"));
-    assert(SqliteFuzzyPlusExtension::SimplePhraseTokenize == GetDistanceMethodID("SimplePhraseTokenize"));
-    assert(SqliteFuzzyPlusExtension::EditDistance == GetDistanceMethodID("EditDistance"));
-    assert(SqliteFuzzyPlusExtension::Fuzzy_Jaro == GetDistanceMethodID("Fuzzy_Jaro"));
-    assert(SqliteFuzzyPlusExtension::EdlibDistance == GetDistanceMethodID("EdlibDistance"));
-    assert(SqliteFuzzyPlusExtension::ChapmanMeanLength == GetDistanceMethodID("ChapmanMeanLength"));
-    assert(SqliteFuzzyPlusExtension::iEdlibDistance == GetDistanceMethodID("iEdlibDistance"));
+    assert(SqliteFuzzyPlusExtension::Levenshtein == GetStringMatchingAlgorithmID("Levenshtein"));
+    assert(SqliteFuzzyPlusExtension::TanimotoCoefficientDistance == GetStringMatchingAlgorithmID("TanimotoCoefficientDistance"));
+    assert(SqliteFuzzyPlusExtension::DiceSimilarity == GetStringMatchingAlgorithmID("DiceSimilarity"));
+    assert(SqliteFuzzyPlusExtension::JaccardSimilarity == GetStringMatchingAlgorithmID("JaccardSimilarity"));
+    assert(SqliteFuzzyPlusExtension::SimplePhraseTokenize == GetStringMatchingAlgorithmID("SimplePhraseTokenize"));
+    assert(SqliteFuzzyPlusExtension::EditDistance == GetStringMatchingAlgorithmID("EditDistance"));
+    assert(SqliteFuzzyPlusExtension::Fuzzy_Jaro == GetStringMatchingAlgorithmID("Fuzzy_Jaro"));
+    assert(SqliteFuzzyPlusExtension::EdlibDistance == GetStringMatchingAlgorithmID("EdlibDistance"));
+    assert(SqliteFuzzyPlusExtension::ChapmanMeanLength == GetStringMatchingAlgorithmID("ChapmanMeanLength"));
+    assert(SqliteFuzzyPlusExtension::iEdlibDistance == GetStringMatchingAlgorithmID("iEdlibDistance"));
 }
 
 int main() //array<System::String ^> ^args)
@@ -322,7 +322,7 @@ int main() //array<System::String ^> ^args)
     double example7 = Distance("David", "david", SqliteFuzzyPlusExtension::iLevenshtein);
     double example8 = Distance("David", "davdi", SqliteFuzzyPlusExtension::iLevenshtein);
 
-    double similar00 = HowSimilar("David", "David", SqliteFuzzyPlusExtension::UseDefaultDistanceMethod);
+    double similar00 = HowSimilar("David", "David", SqliteFuzzyPlusExtension::UseDefaultStringMatchingAlgorithm);
     double similar01 = HowSimilar("David", "David", SqliteFuzzyPlusExtension::Levenshtein);
     double similar02 = HowSimilar("David", "Davix", SqliteFuzzyPlusExtension::LongestCommonSequence);
     double similar03 = HowSimilar("David", "Davxx", SqliteFuzzyPlusExtension::JaccardIndex);

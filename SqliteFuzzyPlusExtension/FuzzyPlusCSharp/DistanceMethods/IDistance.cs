@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FuzzyPlusCSharp.DistanceMethods
+namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
     // At minimum, all FuzzyPlusCSharp distance classes must support IDistance.
     public interface IDistance

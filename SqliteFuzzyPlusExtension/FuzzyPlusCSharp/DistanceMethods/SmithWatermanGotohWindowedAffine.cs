@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FuzzyPlusCSharp.DistanceMethods
+namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
-    public class SmithWatermanGotohWindowedAffine : AbstractStringMetric, FuzzyPlusCSharp.DistanceMethods.IDistance
+    public class SmithWatermanGotohWindowedAffine : AbstractStringMetric, FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {
         public double Percentage(string source1, string source2, bool isCaseSensitive = true)
         {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FuzzyPlusCSharp.DistanceMethods
+namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
-    public class ILongestCommonSubstring : FuzzyPlusCSharp.DistanceMethods.IDistance
+    public class ILongestCommonSubstring : FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {
         public double Percentage(string source1, string source2, bool isCaseSensitive = true) => LongestCommonSubstring.Percentage(source1, source2, isCaseSensitive);
         public double Distance(string source1, string source2, bool isCaseSensitive = true) => LongestCommonSubstring.Distance(source1, source2, isCaseSensitive);

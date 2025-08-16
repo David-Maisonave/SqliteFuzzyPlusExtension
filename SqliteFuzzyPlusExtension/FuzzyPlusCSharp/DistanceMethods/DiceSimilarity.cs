@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FuzzyPlusCSharp.DistanceMethods
+namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
-    public sealed class DiceSimilarity : AbstractStringMetric, FuzzyPlusCSharp.DistanceMethods.IDistance
+    public sealed class DiceSimilarity : AbstractStringMetric, FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {
         public double Percentage(string source1, string source2, bool isCaseSensitive = true)
         {

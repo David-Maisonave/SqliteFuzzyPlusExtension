@@ -1,4 +1,4 @@
-﻿using FuzzyPlusCSharp.DistanceMethods;
+﻿using FuzzyPlusCSharp.StringMatchingAlgorithms;
 
 using Phonix;
 
@@ -20,19 +20,19 @@ namespace FuzzyPlusCSharp
     #region Non-Static version
     public class FuzzyInst
     {
-        private readonly Fuzzy.DistanceMethod distanceMethod = Fuzzy.DistanceMethod.iDamerauLevenshtein;
-        public FuzzyInst(Fuzzy.DistanceMethod distanceMethod)
+        private readonly Fuzzy.StringMatchingAlgorithm_ID stringMatchingAlgorithm = Fuzzy.StringMatchingAlgorithm_ID.iDamerauLevenshtein;
+        public FuzzyInst(Fuzzy.StringMatchingAlgorithm_ID stringMatchingAlgorithm)
         {
-            this.distanceMethod = distanceMethod;
+            this.stringMatchingAlgorithm = stringMatchingAlgorithm;
         }
-        public bool IsVerySimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, Fuzzy.ISVERYSIMILAR, distanceMethod); // Is 90% similar
-        public bool IsSimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, Fuzzy.ISSIMILAR, distanceMethod); // Is 75% similar
-        public bool IsSomeWhatSimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, Fuzzy.ISSOMEWHATSIMILAR, distanceMethod); // Is 50% similar
-        public bool IsSlightlySimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, Fuzzy.ISSLIGHTLYSIMILAR, distanceMethod); // Is 30% similar
-        public bool IsHardlySimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, Fuzzy.ISHARDLYSIMILAR, distanceMethod); // Is 10% similar
-        public bool IsMatch(string source1, string source2, double desiredSimilarity) => Fuzzy.HowSimilar(source1, source2, distanceMethod) >= desiredSimilarity;
-        public double HowSimilar(string source1, string source2) => Fuzzy.HowSimilar(source1, source2, distanceMethod);
-        public bool IsNotSimilar(string source1, string source2) => Fuzzy.IsNotSimilar(source1, source2, distanceMethod);
+        public bool IsVerySimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, Fuzzy.ISVERYSIMILAR, stringMatchingAlgorithm); // Is 90% similar
+        public bool IsSimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, Fuzzy.ISSIMILAR, stringMatchingAlgorithm); // Is 75% similar
+        public bool IsSomeWhatSimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, Fuzzy.ISSOMEWHATSIMILAR, stringMatchingAlgorithm); // Is 50% similar
+        public bool IsSlightlySimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, Fuzzy.ISSLIGHTLYSIMILAR, stringMatchingAlgorithm); // Is 30% similar
+        public bool IsHardlySimilar(string source1, string source2) => Fuzzy.IsMatch(source1, source2, Fuzzy.ISHARDLYSIMILAR, stringMatchingAlgorithm); // Is 10% similar
+        public bool IsMatch(string source1, string source2, double desiredSimilarity) => Fuzzy.HowSimilar(source1, source2, stringMatchingAlgorithm) >= desiredSimilarity;
+        public double HowSimilar(string source1, string source2) => Fuzzy.HowSimilar(source1, source2, stringMatchingAlgorithm);
+        public bool IsNotSimilar(string source1, string source2) => Fuzzy.IsNotSimilar(source1, source2, stringMatchingAlgorithm);
     }
     #endregion Non-Static version
     //////////////////////////////////////////////////////////////////////
@@ -57,27 +57,27 @@ namespace FuzzyPlusCSharp
         #endregion Constants
         #region Distance and Phonetic class members
         // Distance classes
-        public static DistanceMethods.BlockDistance blockDistance = new DistanceMethods.BlockDistance();
-        public static DistanceMethods.ChapmanLengthDeviation chapmanLengthDeviation = new DistanceMethods.ChapmanLengthDeviation();
-        public static DistanceMethods.ChapmanMeanLength chapmanMeanLength = new DistanceMethods.ChapmanMeanLength();
-        public static DistanceMethods.EuclideanDistance euclideanDistance = new DistanceMethods.EuclideanDistance();
-        public static DistanceMethods.MatchingCoefficient matchingCoefficient = new DistanceMethods.MatchingCoefficient();
-        public static DistanceMethods.MongeElkan mongeElkan = new DistanceMethods.MongeElkan();
-        public static DistanceMethods.QGramsDistance qGramsDistance = new DistanceMethods.QGramsDistance();
-        public static DistanceMethods.SmithWaterman smithWaterman = new DistanceMethods.SmithWaterman();
-        public static DistanceMethods.SmithWatermanGotoh smithWatermanGotoh = new DistanceMethods.SmithWatermanGotoh();
-        public static DistanceMethods.SmithWatermanGotohWindowedAffine smithWatermanGotohWindowedAffine = new DistanceMethods.SmithWatermanGotohWindowedAffine();
-        public static DistanceMethods.DiceSimilarity diceSimilarity = new DistanceMethods.DiceSimilarity();
+        public static StringMatchingAlgorithms.BlockDistance blockDistance = new StringMatchingAlgorithms.BlockDistance();
+        public static StringMatchingAlgorithms.ChapmanLengthDeviation chapmanLengthDeviation = new StringMatchingAlgorithms.ChapmanLengthDeviation();
+        public static StringMatchingAlgorithms.ChapmanMeanLength chapmanMeanLength = new StringMatchingAlgorithms.ChapmanMeanLength();
+        public static StringMatchingAlgorithms.EuclideanDistance euclideanDistance = new StringMatchingAlgorithms.EuclideanDistance();
+        public static StringMatchingAlgorithms.MatchingCoefficient matchingCoefficient = new StringMatchingAlgorithms.MatchingCoefficient();
+        public static StringMatchingAlgorithms.MongeElkan mongeElkan = new StringMatchingAlgorithms.MongeElkan();
+        public static StringMatchingAlgorithms.QGramsDistance qGramsDistance = new StringMatchingAlgorithms.QGramsDistance();
+        public static StringMatchingAlgorithms.SmithWaterman smithWaterman = new StringMatchingAlgorithms.SmithWaterman();
+        public static StringMatchingAlgorithms.SmithWatermanGotoh smithWatermanGotoh = new StringMatchingAlgorithms.SmithWatermanGotoh();
+        public static StringMatchingAlgorithms.SmithWatermanGotohWindowedAffine smithWatermanGotohWindowedAffine = new StringMatchingAlgorithms.SmithWatermanGotohWindowedAffine();
+        public static StringMatchingAlgorithms.DiceSimilarity diceSimilarity = new StringMatchingAlgorithms.DiceSimilarity();
         // Phonetic classes
         public static MatchRatingApproach matchRatingApproach = new MatchRatingApproach();
         public static Metaphone metaphone = new Metaphone();
         public static CaverPhone caverPhonePhonix = new CaverPhone();
         public static DoubleMetaphone doubleMetaphone = new DoubleMetaphone();
         #endregion Distance classes members
-        #region DistanceMethod definitions
-        public enum DistanceMethod // StringMatchingAlgorithm
+        #region StringMatchingAlgorithm_ID definitions
+        public enum StringMatchingAlgorithm_ID
         {
-            UseDefaultDistanceMethod = 0,
+            UseDefaultStringMatchingAlgorithm = 0,
             // Edit Distance Based Methods
             Levenshtein,
             DamerauLevenshtein,
@@ -191,43 +191,43 @@ namespace FuzzyPlusCSharp
             // METHODS UP FOR DELETION
             iEditDistance = CASE_INSENSITIVE + EditDistance,
         }
-        public static DistanceMethod DefaultDistanceMethod { get; private set; } = DistanceMethod.iDamerauLevenshtein;
+        public static StringMatchingAlgorithm_ID DefaultStringMatchingAlgorithm { get; private set; } = StringMatchingAlgorithm_ID.iDamerauLevenshtein;
 
-        public static void SetDefaultDistanceMethod(DistanceMethod distanceMethod) => DefaultDistanceMethod = distanceMethod;
-        public static DistanceMethod GetDistanceMethod(int distanceMethod_ID) => (DistanceMethod)distanceMethod_ID;
-        public static DistanceMethod GetDistanceMethod(string distanceMethod_Name)
+        public static void SetDefaultStringMatchingAlgorithm(StringMatchingAlgorithm_ID stringMatchingAlgorithm) => DefaultStringMatchingAlgorithm = stringMatchingAlgorithm;
+        public static StringMatchingAlgorithm_ID GetStringMatchingAlgorithm(int stringMatchingAlgorithm_ID) => (StringMatchingAlgorithm_ID)stringMatchingAlgorithm_ID;
+        public static StringMatchingAlgorithm_ID GetStringMatchingAlgorithm(string stringMatchingAlgorithm_Name)
         { // This function is for SQLite extension purposes, and should only be called once!!!
-            DistanceMethod distanceMethod = DefaultDistanceMethod;
-            if (distanceMethod_Name != null && !distanceMethod_Name.Equals("UseDefaultDistanceMethod", StringComparison.OrdinalIgnoreCase))
+            StringMatchingAlgorithm_ID stringMatchingAlgorithm = DefaultStringMatchingAlgorithm;
+            if (stringMatchingAlgorithm_Name != null && !stringMatchingAlgorithm_Name.Equals("UseDefaultStringMatchingAlgorithm", StringComparison.OrdinalIgnoreCase))
             {
                 try
                 {
-                    distanceMethod = (DistanceMethod)Enum.Parse(typeof(DistanceMethod), distanceMethod_Name, true);
+                    stringMatchingAlgorithm = (StringMatchingAlgorithm_ID)Enum.Parse(typeof(StringMatchingAlgorithm_ID), stringMatchingAlgorithm_Name, true);
                 }
                 catch
                 {
                     // ToDo: add error console logging here.
                 }
             }
-            return distanceMethod;
+            return stringMatchingAlgorithm;
         }
-        public static bool SetDefaultDistanceMethod(int distanceMethod_ID) // This function is to let SQL access setting default method
+        public static bool SetDefaultStringMatchingAlgorithm(int stringMatchingAlgorithm_ID) // This function is to let SQL access setting default method
         {
-            DefaultDistanceMethod = (DistanceMethod)distanceMethod_ID;
+            DefaultStringMatchingAlgorithm = (StringMatchingAlgorithm_ID)stringMatchingAlgorithm_ID;
             return true;
         }
-        public static bool SetDefaultDistanceMethod(string distanceMethod_Name)
+        public static bool SetDefaultStringMatchingAlgorithm(string stringMatchingAlgorithm_Name)
         { // This function is to let SQL access setting default method by using the distance method name explicitly.
             //But this should only be called once. If repetitive calls are required, use ID method instead.
-            DefaultDistanceMethod = GetDistanceMethod(distanceMethod_Name);
+            DefaultStringMatchingAlgorithm = GetStringMatchingAlgorithm(stringMatchingAlgorithm_Name);
             return true;
         }
-        public static string GetDistanceMethodName(int distanceMethod_ID)
+        public static string GetStringMatchingAlgorithmName(int stringMatchingAlgorithm_ID)
         {
-            DistanceMethod distanceMethod = GetDistanceMethod(distanceMethod_ID);
-            return distanceMethod.ToString();
+            StringMatchingAlgorithm_ID stringMatchingAlgorithm = GetStringMatchingAlgorithm(stringMatchingAlgorithm_ID);
+            return stringMatchingAlgorithm.ToString();
         }
-        #endregion DistanceMethod definitions
+        #endregion StringMatchingAlgorithm_ID definitions
         #region SameSoundMethod
         public enum SameSoundMethod
         {
@@ -286,9 +286,9 @@ namespace FuzzyPlusCSharp
         }
         #endregion SameSoundMethod
         #region Similarity functions
-        public static bool IsMatch(string source1, string source2, double desiredSimilarity, DistanceMethod distanceMethod = DistanceMethod.UseDefaultDistanceMethod) => HowSimilar(source1, source2, distanceMethod) >= desiredSimilarity;
+        public static bool IsMatch(string source1, string source2, double desiredSimilarity, StringMatchingAlgorithm_ID stringMatchingAlgorithm = StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm) => HowSimilar(source1, source2, stringMatchingAlgorithm) >= desiredSimilarity;
         // The following HowSimilar method is to let SQLite access to HowSimilar
-        public static bool IsCaseSensitive(DistanceMethod distanceMethod) => (int)distanceMethod < CASE_INSENSITIVE;
+        public static bool IsCaseSensitive(StringMatchingAlgorithm_ID stringMatchingAlgorithm) => (int)stringMatchingAlgorithm < CASE_INSENSITIVE;
         public static void FixIfIsCaseSensitive(ref string source1, ref string source2, bool isCaseSensitive)
         {
             if (!isCaseSensitive)
@@ -297,448 +297,448 @@ namespace FuzzyPlusCSharp
                 source2 = source2.ToLower();
             }
         }
-        public static double HowSimilar(string source1, string source2, int distanceMethod) => HowSimilar(source1, source2, GetDistanceMethod(distanceMethod));
-        public static double HowSimilar(string source1, string source2, string distanceMethod) => HowSimilar(source1, source2, GetDistanceMethod(distanceMethod));
-        public static double HowSimilar(string source1, string source2, DistanceMethod distanceMethod = DistanceMethod.UseDefaultDistanceMethod)
+        public static double HowSimilar(string source1, string source2, int stringMatchingAlgorithm) => HowSimilar(source1, source2, GetStringMatchingAlgorithm(stringMatchingAlgorithm));
+        public static double HowSimilar(string source1, string source2, string stringMatchingAlgorithm) => HowSimilar(source1, source2, GetStringMatchingAlgorithm(stringMatchingAlgorithm));
+        public static double HowSimilar(string source1, string source2, StringMatchingAlgorithm_ID stringMatchingAlgorithm = StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm)
         {
-            if (distanceMethod == DistanceMethod.UseDefaultDistanceMethod)
-                distanceMethod = DefaultDistanceMethod;
-            bool isCaseSensitive = IsCaseSensitive(distanceMethod);
+            if (stringMatchingAlgorithm == StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm)
+                stringMatchingAlgorithm = DefaultStringMatchingAlgorithm;
+            bool isCaseSensitive = IsCaseSensitive(stringMatchingAlgorithm);
             double sourceLength = Math.Max(source1.Length, source2.Length);
             double diff;
-            switch (distanceMethod) 
+            switch (stringMatchingAlgorithm) 
             {
-                case DistanceMethod.Levenshtein:
-                case DistanceMethod.iLevenshtein:
-                    diff = DistanceMethods.Levenshtein.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.Levenshtein:
+                case StringMatchingAlgorithm_ID.iLevenshtein:
+                    diff = StringMatchingAlgorithms.Levenshtein.Distance(source1, source2, isCaseSensitive);
                     break;
-                case DistanceMethod.JaroWinkler:
-                case DistanceMethod.iJaroWinkler:
-                    diff = DistanceMethods.JaroWinkler.Percentage(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.JaroWinkler:
+                case StringMatchingAlgorithm_ID.iJaroWinkler:
+                    diff = StringMatchingAlgorithms.JaroWinkler.Percentage(source1, source2, isCaseSensitive);
                     break;
-                case DistanceMethod.CosineSimilarity:
-                case DistanceMethod.iCosineSimilarity:
-                    return DistanceMethods.CosineSimilarity.Percentage(source1, source2, isCaseSensitive);
-                case DistanceMethod.LongestCommonSequence:
-                case DistanceMethod.iLongestCommonSequence:
-                    return DistanceMethods.LongestCommonSequence.Percentage(source1, source2, isCaseSensitive);
-                case DistanceMethod.JaccardSimilarity:
-                case DistanceMethod.iJaccardSimilarity:
-                    return DistanceMethods.JaccardSimilarity.Percentage(source1, source2, isCaseSensitive);
-                case DistanceMethod.JaccardIndex:
-                case DistanceMethod.iJaccardIndex:
-                    return DistanceMethods.JaccardIndex.Percentage(source1, source2, isCaseSensitive);
-                case DistanceMethod.OverlapCoefficient:
-                case DistanceMethod.iOverlapCoefficient:
-                    diff = DistanceMethods.OverlapCoefficient.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.CosineSimilarity:
+                case StringMatchingAlgorithm_ID.iCosineSimilarity:
+                    return StringMatchingAlgorithms.CosineSimilarity.Percentage(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.LongestCommonSequence:
+                case StringMatchingAlgorithm_ID.iLongestCommonSequence:
+                    return StringMatchingAlgorithms.LongestCommonSequence.Percentage(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.JaccardSimilarity:
+                case StringMatchingAlgorithm_ID.iJaccardSimilarity:
+                    return StringMatchingAlgorithms.JaccardSimilarity.Percentage(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.JaccardIndex:
+                case StringMatchingAlgorithm_ID.iJaccardIndex:
+                    return StringMatchingAlgorithms.JaccardIndex.Percentage(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.OverlapCoefficient:
+                case StringMatchingAlgorithm_ID.iOverlapCoefficient:
+                    diff = StringMatchingAlgorithms.OverlapCoefficient.Distance(source1, source2, isCaseSensitive);
                     break;
-                case DistanceMethod.NeedlemanWunsch:
-                case DistanceMethod.iNeedlemanWunsch:
-                    return DistanceMethods.NeedlemanWunsch.Percentage(source1, source2, isCaseSensitive);
-                case DistanceMethod.SorensenDiceDistance:
-                case DistanceMethod.iSorensenDiceDistance:
-                    return DistanceMethods.SorensenDice.Percentage(source1, source2, isCaseSensitive);
-                case DistanceMethod.RatcliffObershelpSimilarityDistance:
-                case DistanceMethod.iRatcliffObershelpSimilarityDistance:
-                    return DistanceMethods.RatcliffObershelpSimilarity.Percentage(source1, source2, isCaseSensitive);
-                case DistanceMethod.HammingDistance:
-                case DistanceMethod.iHammingDistance:
-                    return DistanceMethods.Hamming.Percentage(source1, source2, isCaseSensitive);
-                case DistanceMethod.LongestCommonSubstringDistance:
-                case DistanceMethod.iLongestCommonSubstringDistance:
-                    diff = DistanceMethods.LongestCommonSubstring.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.NeedlemanWunsch:
+                case StringMatchingAlgorithm_ID.iNeedlemanWunsch:
+                    return StringMatchingAlgorithms.NeedlemanWunsch.Percentage(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.SorensenDiceDistance:
+                case StringMatchingAlgorithm_ID.iSorensenDiceDistance:
+                    return StringMatchingAlgorithms.SorensenDice.Percentage(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.RatcliffObershelpSimilarityDistance:
+                case StringMatchingAlgorithm_ID.iRatcliffObershelpSimilarityDistance:
+                    return StringMatchingAlgorithms.RatcliffObershelpSimilarity.Percentage(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.HammingDistance:
+                case StringMatchingAlgorithm_ID.iHammingDistance:
+                    return StringMatchingAlgorithms.Hamming.Percentage(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.LongestCommonSubstringDistance:
+                case StringMatchingAlgorithm_ID.iLongestCommonSubstringDistance:
+                    diff = StringMatchingAlgorithms.LongestCommonSubstring.Distance(source1, source2, isCaseSensitive);
                     sourceLength = Math.Min(source1.Length, source2.Length);
                     break;
-                case DistanceMethod.LongestCommonSubsequenceDistance:
-                case DistanceMethod.iLongestCommonSubsequenceDistance:
-                    diff = DistanceMethods.LongestCommonSubsequence.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.LongestCommonSubsequenceDistance:
+                case StringMatchingAlgorithm_ID.iLongestCommonSubsequenceDistance:
+                    diff = StringMatchingAlgorithms.LongestCommonSubsequence.Distance(source1, source2, isCaseSensitive);
                     sourceLength = Math.Min(source1.Length, source2.Length);
                     break;
-                case DistanceMethod.JaroDistance:
-                case DistanceMethod.iJaroDistance:
-                    diff = DistanceMethods.Jaro.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.JaroDistance:
+                case StringMatchingAlgorithm_ID.iJaroDistance:
+                    diff = StringMatchingAlgorithms.Jaro.Distance(source1, source2, isCaseSensitive);
                     break;
-                case DistanceMethod.NormalizedLevenshteinDistance:
-                case DistanceMethod.iNormalizedLevenshteinDistance:
-                    return DistanceMethods.NormalizedLevenshtein.Percentage(source1, source2, isCaseSensitive);
-                case DistanceMethod.Levenshtein2Distance:
-                case DistanceMethod.iLevenshtein2Distance:
-                    return DistanceMethods.Levenshtein2.Percentage(source1, source2, isCaseSensitive);
-                case DistanceMethod.TanimotoCoefficientDistance:
-                case DistanceMethod.iTanimotoCoefficientDistance:
-                    return DistanceMethods.TanimotoCoefficient.Percentage(source1, source2, isCaseSensitive);
-                case DistanceMethod.EditDistance:
-                case DistanceMethod.iEditDistance:
-                    return DistanceMethods.EditDistanceWithWildCard.Percentage(source1, source2, isCaseSensitive);
-                case DistanceMethod.BlockDistance:
-                case DistanceMethod.iBlockDistance:
+                case StringMatchingAlgorithm_ID.NormalizedLevenshteinDistance:
+                case StringMatchingAlgorithm_ID.iNormalizedLevenshteinDistance:
+                    return StringMatchingAlgorithms.NormalizedLevenshtein.Percentage(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.Levenshtein2Distance:
+                case StringMatchingAlgorithm_ID.iLevenshtein2Distance:
+                    return StringMatchingAlgorithms.Levenshtein2.Percentage(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.TanimotoCoefficientDistance:
+                case StringMatchingAlgorithm_ID.iTanimotoCoefficientDistance:
+                    return StringMatchingAlgorithms.TanimotoCoefficient.Percentage(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.EditDistance:
+                case StringMatchingAlgorithm_ID.iEditDistance:
+                    return StringMatchingAlgorithms.EditDistanceWithWildCard.Percentage(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.BlockDistance:
+                case StringMatchingAlgorithm_ID.iBlockDistance:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     diff = blockDistance.GetSimilarity(source1, source2);
                     break;
-                case DistanceMethod.ChapmanLengthDeviation:
-                case DistanceMethod.iChapmanLengthDeviation:
+                case StringMatchingAlgorithm_ID.ChapmanLengthDeviation:
+                case StringMatchingAlgorithm_ID.iChapmanLengthDeviation:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     diff = chapmanLengthDeviation.GetSimilarity(source1, source2);
                     break;
-                case DistanceMethod.ChapmanMeanLength:
-                case DistanceMethod.iChapmanMeanLength:
+                case StringMatchingAlgorithm_ID.ChapmanMeanLength:
+                case StringMatchingAlgorithm_ID.iChapmanMeanLength:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     diff = chapmanMeanLength.GetSimilarity(source1, source2);
                     break;
-                case DistanceMethod.EuclideanDistance:
-                case DistanceMethod.iEuclideanDistance:
+                case StringMatchingAlgorithm_ID.EuclideanDistance:
+                case StringMatchingAlgorithm_ID.iEuclideanDistance:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     diff = euclideanDistance.GetSimilarity(source1, source2);
                     break;
-                case DistanceMethod.MatchingCoefficient:
-                case DistanceMethod.iMatchingCoefficient:
+                case StringMatchingAlgorithm_ID.MatchingCoefficient:
+                case StringMatchingAlgorithm_ID.iMatchingCoefficient:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     diff = matchingCoefficient.GetSimilarity(source1, source2);
                     break;
-                case DistanceMethod.MongeElkan:
-                case DistanceMethod.iMongeElkan:
+                case StringMatchingAlgorithm_ID.MongeElkan:
+                case StringMatchingAlgorithm_ID.iMongeElkan:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     diff = mongeElkan.GetSimilarity(source1, source2);
                     break;
-                case DistanceMethod.QGramsDistance:
-                case DistanceMethod.iQGramsDistance:
+                case StringMatchingAlgorithm_ID.QGramsDistance:
+                case StringMatchingAlgorithm_ID.iQGramsDistance:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     diff = qGramsDistance.GetSimilarity(source1, source2);
                     break;
-                case DistanceMethod.SmithWaterman:
-                case DistanceMethod.iSmithWaterman:
+                case StringMatchingAlgorithm_ID.SmithWaterman:
+                case StringMatchingAlgorithm_ID.iSmithWaterman:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     diff = smithWaterman.GetSimilarity(source1, source2);
                     break;
-                case DistanceMethod.SmithWatermanGotoh:
-                case DistanceMethod.iSmithWatermanGotoh:
+                case StringMatchingAlgorithm_ID.SmithWatermanGotoh:
+                case StringMatchingAlgorithm_ID.iSmithWatermanGotoh:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     diff = smithWatermanGotoh.GetSimilarity(source1, source2);
                     break;
-                case DistanceMethod.SmithWatermanGotohWindowedAffine:
-                case DistanceMethod.iSmithWatermanGotohWindowedAffine:
+                case StringMatchingAlgorithm_ID.SmithWatermanGotohWindowedAffine:
+                case StringMatchingAlgorithm_ID.iSmithWatermanGotohWindowedAffine:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     diff = smithWatermanGotohWindowedAffine.GetSimilarity(source1, source2);
                     break;
-                case DistanceMethod.DiceSimilarity:
-                case DistanceMethod.iDiceSimilarity:
+                case StringMatchingAlgorithm_ID.DiceSimilarity:
+                case StringMatchingAlgorithm_ID.iDiceSimilarity:
                     diff = DiceSimilarity(source1, source2, isCaseSensitive);
                     break;
-                case DistanceMethod.PhraseTokenize:
-                    diff = DistanceMethods.PhraseTokenize.Distance(source1, source2);
+                case StringMatchingAlgorithm_ID.PhraseTokenize:
+                    diff = StringMatchingAlgorithms.PhraseTokenize.Distance(source1, source2);
                     sourceLength = Math.Max(GetKeywordList(ref source1).Length, GetKeywordList(ref source2).Length);
                     break;
-                case DistanceMethod.SimplePhraseTokenize:
-                    diff = DistanceMethods.SimplePhraseTokenize.Distance(source1, source2);
+                case StringMatchingAlgorithm_ID.SimplePhraseTokenize:
+                    diff = StringMatchingAlgorithms.SimplePhraseTokenize.Distance(source1, source2);
                     sourceLength = Math.Max(GetKeywordList(ref source1).Length, GetKeywordList(ref source2).Length);
                     break;
-                case DistanceMethod.DamerauLevenshtein:
-                case DistanceMethod.iDamerauLevenshtein:
+                case StringMatchingAlgorithm_ID.DamerauLevenshtein:
+                case StringMatchingAlgorithm_ID.iDamerauLevenshtein:
                 default:
-                    diff = DistanceMethods.DamerauLevenshtein.Distance(source1, source2, isCaseSensitive);
+                    diff = StringMatchingAlgorithms.DamerauLevenshtein.Distance(source1, source2, isCaseSensitive);
                     break;
             }
             return diff == 0 ? 1.0f : (sourceLength - diff) / sourceLength;
         }
-        public static double Distance(string source1, string source2, DistanceMethod distanceMethod = DistanceMethod.UseDefaultDistanceMethod)
+        public static double Distance(string source1, string source2, StringMatchingAlgorithm_ID stringMatchingAlgorithm = StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm)
         {
-            if (distanceMethod == DistanceMethod.UseDefaultDistanceMethod)
-                distanceMethod = DefaultDistanceMethod;
-            bool isCaseSensitive = IsCaseSensitive(distanceMethod);
-            IDistance i = GetIDistance(distanceMethod);
+            if (stringMatchingAlgorithm == StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm)
+                stringMatchingAlgorithm = DefaultStringMatchingAlgorithm;
+            bool isCaseSensitive = IsCaseSensitive(stringMatchingAlgorithm);
+            IDistance i = GetIDistance(stringMatchingAlgorithm);
             if (i != null)
                 return i.Distance(source1, source2, isCaseSensitive);
-            switch (distanceMethod) 
+            switch (stringMatchingAlgorithm) 
             {
-                case DistanceMethod.Levenshtein:
-                case DistanceMethod.iLevenshtein:
-                    return DistanceMethods.Levenshtein.Distance(source1, source2, isCaseSensitive);
-                case DistanceMethod.JaroWinkler:
-                case DistanceMethod.iJaroWinkler:
-                    return DistanceMethods.JaroWinkler.Distance(source1, source2, isCaseSensitive);
-                case DistanceMethod.CosineSimilarity:
-                case DistanceMethod.iCosineSimilarity:
-                    return DistanceMethods.CosineSimilarity.Distance(source1, source2, isCaseSensitive);
-                case DistanceMethod.LongestCommonSequence:
-                case DistanceMethod.iLongestCommonSequence:
-                    return DistanceMethods.LongestCommonSequence.Distance(source1, source2, isCaseSensitive);
-                case DistanceMethod.JaccardSimilarity:
-                case DistanceMethod.iJaccardSimilarity:
-                    return DistanceMethods.JaccardSimilarity.Distance(source1, source2, isCaseSensitive);
-                case DistanceMethod.JaccardIndex:
-                case DistanceMethod.iJaccardIndex:
-                    return DistanceMethods.JaccardIndex.Distance(source1, source2, isCaseSensitive);
-                case DistanceMethod.OverlapCoefficient:
-                case DistanceMethod.iOverlapCoefficient:
-                    return DistanceMethods.OverlapCoefficient.Distance(source1, source2, isCaseSensitive);
-                case DistanceMethod.NeedlemanWunsch:
-                case DistanceMethod.iNeedlemanWunsch:
-                    return DistanceMethods.NeedlemanWunsch.Distance(source1, source2, isCaseSensitive);
-                case DistanceMethod.SorensenDiceDistance:
-                case DistanceMethod.iSorensenDiceDistance:
-                    return DistanceMethods.SorensenDice.Distance(source1, source2, isCaseSensitive);
-                case DistanceMethod.RatcliffObershelpSimilarityDistance:
-                case DistanceMethod.iRatcliffObershelpSimilarityDistance:
-                    return DistanceMethods.RatcliffObershelpSimilarity.Distance(source1, source2, isCaseSensitive);
-                case DistanceMethod.HammingDistance:
-                case DistanceMethod.iHammingDistance:
-                    return (double)DistanceMethods.Hamming.Distance(source1, source2, isCaseSensitive);
-                case DistanceMethod.LongestCommonSubstringDistance:
-                case DistanceMethod.iLongestCommonSubstringDistance:
-                    return DistanceMethods.LongestCommonSubstring.Distance(source1, source2, isCaseSensitive);
-                case DistanceMethod.LongestCommonSubsequenceDistance:
-                case DistanceMethod.iLongestCommonSubsequenceDistance:
-                    return DistanceMethods.LongestCommonSubsequence.Distance(source1, source2, isCaseSensitive);
-                case DistanceMethod.JaroDistance:
-                case DistanceMethod.iJaroDistance:
-                    return DistanceMethods.Jaro.Distance(source1, source2, isCaseSensitive);
-                case DistanceMethod.NormalizedLevenshteinDistance:
-                case DistanceMethod.iNormalizedLevenshteinDistance:
-                    return DistanceMethods.NormalizedLevenshtein.Distance(source1, source2, isCaseSensitive);
-                case DistanceMethod.Levenshtein2Distance:
-                case DistanceMethod.iLevenshtein2Distance:
-                    return DistanceMethods.Levenshtein2.Distance(source1, source2, isCaseSensitive);
-                case DistanceMethod.TanimotoCoefficientDistance:
-                case DistanceMethod.iTanimotoCoefficientDistance:
-                    return DistanceMethods.TanimotoCoefficient.Distance(source1, source2, isCaseSensitive);
-                case DistanceMethod.EditDistance:
-                case DistanceMethod.iEditDistance:
-                    return DistanceMethods.EditDistanceWithWildCard.Distance(source1, source2, isCaseSensitive);
-                case DistanceMethod.BlockDistance:
-                case DistanceMethod.iBlockDistance:
+                case StringMatchingAlgorithm_ID.Levenshtein:
+                case StringMatchingAlgorithm_ID.iLevenshtein:
+                    return StringMatchingAlgorithms.Levenshtein.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.JaroWinkler:
+                case StringMatchingAlgorithm_ID.iJaroWinkler:
+                    return StringMatchingAlgorithms.JaroWinkler.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.CosineSimilarity:
+                case StringMatchingAlgorithm_ID.iCosineSimilarity:
+                    return StringMatchingAlgorithms.CosineSimilarity.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.LongestCommonSequence:
+                case StringMatchingAlgorithm_ID.iLongestCommonSequence:
+                    return StringMatchingAlgorithms.LongestCommonSequence.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.JaccardSimilarity:
+                case StringMatchingAlgorithm_ID.iJaccardSimilarity:
+                    return StringMatchingAlgorithms.JaccardSimilarity.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.JaccardIndex:
+                case StringMatchingAlgorithm_ID.iJaccardIndex:
+                    return StringMatchingAlgorithms.JaccardIndex.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.OverlapCoefficient:
+                case StringMatchingAlgorithm_ID.iOverlapCoefficient:
+                    return StringMatchingAlgorithms.OverlapCoefficient.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.NeedlemanWunsch:
+                case StringMatchingAlgorithm_ID.iNeedlemanWunsch:
+                    return StringMatchingAlgorithms.NeedlemanWunsch.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.SorensenDiceDistance:
+                case StringMatchingAlgorithm_ID.iSorensenDiceDistance:
+                    return StringMatchingAlgorithms.SorensenDice.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.RatcliffObershelpSimilarityDistance:
+                case StringMatchingAlgorithm_ID.iRatcliffObershelpSimilarityDistance:
+                    return StringMatchingAlgorithms.RatcliffObershelpSimilarity.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.HammingDistance:
+                case StringMatchingAlgorithm_ID.iHammingDistance:
+                    return (double)StringMatchingAlgorithms.Hamming.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.LongestCommonSubstringDistance:
+                case StringMatchingAlgorithm_ID.iLongestCommonSubstringDistance:
+                    return StringMatchingAlgorithms.LongestCommonSubstring.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.LongestCommonSubsequenceDistance:
+                case StringMatchingAlgorithm_ID.iLongestCommonSubsequenceDistance:
+                    return StringMatchingAlgorithms.LongestCommonSubsequence.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.JaroDistance:
+                case StringMatchingAlgorithm_ID.iJaroDistance:
+                    return StringMatchingAlgorithms.Jaro.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.NormalizedLevenshteinDistance:
+                case StringMatchingAlgorithm_ID.iNormalizedLevenshteinDistance:
+                    return StringMatchingAlgorithms.NormalizedLevenshtein.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.Levenshtein2Distance:
+                case StringMatchingAlgorithm_ID.iLevenshtein2Distance:
+                    return StringMatchingAlgorithms.Levenshtein2.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.TanimotoCoefficientDistance:
+                case StringMatchingAlgorithm_ID.iTanimotoCoefficientDistance:
+                    return StringMatchingAlgorithms.TanimotoCoefficient.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.EditDistance:
+                case StringMatchingAlgorithm_ID.iEditDistance:
+                    return StringMatchingAlgorithms.EditDistanceWithWildCard.Distance(source1, source2, isCaseSensitive);
+                case StringMatchingAlgorithm_ID.BlockDistance:
+                case StringMatchingAlgorithm_ID.iBlockDistance:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     return blockDistance.GetSimilarity(source1, source2);
-                case DistanceMethod.ChapmanLengthDeviation:
-                case DistanceMethod.iChapmanLengthDeviation:
+                case StringMatchingAlgorithm_ID.ChapmanLengthDeviation:
+                case StringMatchingAlgorithm_ID.iChapmanLengthDeviation:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     return chapmanLengthDeviation.GetSimilarity(source1, source2);
-                case DistanceMethod.ChapmanMeanLength:
-                case DistanceMethod.iChapmanMeanLength:
+                case StringMatchingAlgorithm_ID.ChapmanMeanLength:
+                case StringMatchingAlgorithm_ID.iChapmanMeanLength:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     return chapmanMeanLength.GetSimilarity(source1, source2);
-                case DistanceMethod.EuclideanDistance:
-                case DistanceMethod.iEuclideanDistance:
+                case StringMatchingAlgorithm_ID.EuclideanDistance:
+                case StringMatchingAlgorithm_ID.iEuclideanDistance:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     return euclideanDistance.GetSimilarity(source1, source2);
-                case DistanceMethod.MatchingCoefficient:
-                case DistanceMethod.iMatchingCoefficient:
+                case StringMatchingAlgorithm_ID.MatchingCoefficient:
+                case StringMatchingAlgorithm_ID.iMatchingCoefficient:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     return matchingCoefficient.GetSimilarity(source1, source2);
-                case DistanceMethod.MongeElkan:
-                case DistanceMethod.iMongeElkan:
+                case StringMatchingAlgorithm_ID.MongeElkan:
+                case StringMatchingAlgorithm_ID.iMongeElkan:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     return mongeElkan.GetSimilarity(source1, source2);
-                case DistanceMethod.QGramsDistance:
-                case DistanceMethod.iQGramsDistance:
+                case StringMatchingAlgorithm_ID.QGramsDistance:
+                case StringMatchingAlgorithm_ID.iQGramsDistance:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     return qGramsDistance.GetSimilarity(source1, source2);
-                case DistanceMethod.SmithWaterman:
-                case DistanceMethod.iSmithWaterman:
+                case StringMatchingAlgorithm_ID.SmithWaterman:
+                case StringMatchingAlgorithm_ID.iSmithWaterman:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     return smithWaterman.GetSimilarity(source1, source2);
-                case DistanceMethod.SmithWatermanGotoh:
-                case DistanceMethod.iSmithWatermanGotoh:
+                case StringMatchingAlgorithm_ID.SmithWatermanGotoh:
+                case StringMatchingAlgorithm_ID.iSmithWatermanGotoh:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     return smithWatermanGotoh.GetSimilarity(source1, source2);
-                case DistanceMethod.SmithWatermanGotohWindowedAffine:
-                case DistanceMethod.iSmithWatermanGotohWindowedAffine:
+                case StringMatchingAlgorithm_ID.SmithWatermanGotohWindowedAffine:
+                case StringMatchingAlgorithm_ID.iSmithWatermanGotohWindowedAffine:
                     return smithWatermanGotohWindowedAffine.Distance(source1, source2, isCaseSensitive);
-                case DistanceMethod.DiceSimilarity:
-                case DistanceMethod.iDiceSimilarity:
+                case StringMatchingAlgorithm_ID.DiceSimilarity:
+                case StringMatchingAlgorithm_ID.iDiceSimilarity:
                     return DiceSimilarity(source1, source2, isCaseSensitive);
-                case DistanceMethod.PhraseTokenize:
-                    return DistanceMethods.PhraseTokenize.Distance(source1, source2);
-                case DistanceMethod.SimplePhraseTokenize:
-                    return DistanceMethods.SimplePhraseTokenize.Distance(source1, source2);
-                case DistanceMethod.DamerauLevenshtein:
-                case DistanceMethod.iDamerauLevenshtein:
+                case StringMatchingAlgorithm_ID.PhraseTokenize:
+                    return StringMatchingAlgorithms.PhraseTokenize.Distance(source1, source2);
+                case StringMatchingAlgorithm_ID.SimplePhraseTokenize:
+                    return StringMatchingAlgorithms.SimplePhraseTokenize.Distance(source1, source2);
+                case StringMatchingAlgorithm_ID.DamerauLevenshtein:
+                case StringMatchingAlgorithm_ID.iDamerauLevenshtein:
                 default:
-                    return DistanceMethods.DamerauLevenshtein.Distance(source1, source2, isCaseSensitive);
+                    return StringMatchingAlgorithms.DamerauLevenshtein.Distance(source1, source2, isCaseSensitive);
             }
         }
-        public static double Distance(string source1, string source2, int distanceMethod) => Distance(source1, source2, GetDistanceMethod(distanceMethod));
-        public static double Distance(string source1, string source2, string distanceMethod) => Distance(source1, source2, GetDistanceMethod(distanceMethod));
-        public static bool IsNotSimilar(string source1, string source2) => IsNotSimilar(source1, source2, DistanceMethod.UseDefaultDistanceMethod);
-        public static bool IsNotSimilar(string source1, string source2, DistanceMethod distanceMethod)
+        public static double Distance(string source1, string source2, int stringMatchingAlgorithm) => Distance(source1, source2, GetStringMatchingAlgorithm(stringMatchingAlgorithm));
+        public static double Distance(string source1, string source2, string stringMatchingAlgorithm) => Distance(source1, source2, GetStringMatchingAlgorithm(stringMatchingAlgorithm));
+        public static bool IsNotSimilar(string source1, string source2) => IsNotSimilar(source1, source2, StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm);
+        public static bool IsNotSimilar(string source1, string source2, StringMatchingAlgorithm_ID stringMatchingAlgorithm)
         {
-            if (distanceMethod == DistanceMethod.UseDefaultDistanceMethod)
-                distanceMethod = DefaultDistanceMethod;
-            bool isCaseSensitive = IsCaseSensitive(distanceMethod);
-            switch (distanceMethod)
+            if (stringMatchingAlgorithm == StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm)
+                stringMatchingAlgorithm = DefaultStringMatchingAlgorithm;
+            bool isCaseSensitive = IsCaseSensitive(stringMatchingAlgorithm);
+            switch (stringMatchingAlgorithm)
             {
-                case DistanceMethod.Levenshtein:
-                case DistanceMethod.iLevenshtein:
-                    return DistanceMethods.Levenshtein.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
-                case DistanceMethod.JaroWinkler:
-                case DistanceMethod.iJaroWinkler:
-                    return DistanceMethods.JaroWinkler.Percentage(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
-                case DistanceMethod.CosineSimilarity:
-                case DistanceMethod.iCosineSimilarity:
-                    return DistanceMethods.CosineSimilarity.Percentage(source1, source2, isCaseSensitive) == 0;
-                case DistanceMethod.JaccardSimilarity:
-                case DistanceMethod.iJaccardSimilarity:
-                    return DistanceMethods.JaccardSimilarity.Percentage(source1, source2, isCaseSensitive) == 0;
-                case DistanceMethod.JaccardIndex:
-                case DistanceMethod.iJaccardIndex:
-                    return DistanceMethods.JaccardIndex.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
-                case DistanceMethod.OverlapCoefficient:
-                case DistanceMethod.iOverlapCoefficient:
-                    return DistanceMethods.OverlapCoefficient.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
-                case DistanceMethod.NeedlemanWunsch:
-                case DistanceMethod.iNeedlemanWunsch:
-                    return DistanceMethods.NeedlemanWunsch.Percentage(source1, source2, isCaseSensitive) == 0;
-                case DistanceMethod.LongestCommonSequence:
-                case DistanceMethod.iLongestCommonSequence:
-                    return DistanceMethods.LongestCommonSequence.Difference(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
-                case DistanceMethod.SorensenDiceDistance:
-                case DistanceMethod.iSorensenDiceDistance:
-                    return DistanceMethods.SorensenDice.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
-                case DistanceMethod.RatcliffObershelpSimilarityDistance:
-                case DistanceMethod.iRatcliffObershelpSimilarityDistance:
-                    return DistanceMethods.RatcliffObershelpSimilarity.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
-                case DistanceMethod.HammingDistance:
-                case DistanceMethod.iHammingDistance:
-                    return DistanceMethods.Hamming.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
-                case DistanceMethod.LongestCommonSubstringDistance:
-                case DistanceMethod.iLongestCommonSubstringDistance:
-                    return DistanceMethods.LongestCommonSubstring.Distance(source1, source2, isCaseSensitive) == Math.Min(source1.Length, source2.Length);
-                case DistanceMethod.LongestCommonSubsequenceDistance:
-                case DistanceMethod.iLongestCommonSubsequenceDistance:
-                    return DistanceMethods.LongestCommonSubsequence.Distance(source1, source2, isCaseSensitive) == Math.Min(source1.Length, source2.Length);
-                case DistanceMethod.JaroDistance:
-                case DistanceMethod.iJaroDistance:
-                    return DistanceMethods.Jaro.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
-                case DistanceMethod.NormalizedLevenshteinDistance:
-                case DistanceMethod.iNormalizedLevenshteinDistance:
-                    return DistanceMethods.NormalizedLevenshtein.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
-                case DistanceMethod.Levenshtein2Distance:
-                case DistanceMethod.iLevenshtein2Distance:
-                    return DistanceMethods.Levenshtein2.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
-                case DistanceMethod.TanimotoCoefficientDistance:
-                case DistanceMethod.iTanimotoCoefficientDistance:
-                    return DistanceMethods.TanimotoCoefficient.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
-                case DistanceMethod.PhraseTokenize:
-                    return DistanceMethods.PhraseTokenize.Distance(source1, source2) == Math.Max(GetKeywordList(ref source1).Length, GetKeywordList(ref source2).Length);
-                case DistanceMethod.SimplePhraseTokenize:
-                    return DistanceMethods.SimplePhraseTokenize.Distance(source1, source2) == Math.Max(GetKeywordList(ref source1).Length, GetKeywordList(ref source2).Length);
-                case DistanceMethod.DamerauLevenshtein:
-                case DistanceMethod.iDamerauLevenshtein:
+                case StringMatchingAlgorithm_ID.Levenshtein:
+                case StringMatchingAlgorithm_ID.iLevenshtein:
+                    return StringMatchingAlgorithms.Levenshtein.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
+                case StringMatchingAlgorithm_ID.JaroWinkler:
+                case StringMatchingAlgorithm_ID.iJaroWinkler:
+                    return StringMatchingAlgorithms.JaroWinkler.Percentage(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
+                case StringMatchingAlgorithm_ID.CosineSimilarity:
+                case StringMatchingAlgorithm_ID.iCosineSimilarity:
+                    return StringMatchingAlgorithms.CosineSimilarity.Percentage(source1, source2, isCaseSensitive) == 0;
+                case StringMatchingAlgorithm_ID.JaccardSimilarity:
+                case StringMatchingAlgorithm_ID.iJaccardSimilarity:
+                    return StringMatchingAlgorithms.JaccardSimilarity.Percentage(source1, source2, isCaseSensitive) == 0;
+                case StringMatchingAlgorithm_ID.JaccardIndex:
+                case StringMatchingAlgorithm_ID.iJaccardIndex:
+                    return StringMatchingAlgorithms.JaccardIndex.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
+                case StringMatchingAlgorithm_ID.OverlapCoefficient:
+                case StringMatchingAlgorithm_ID.iOverlapCoefficient:
+                    return StringMatchingAlgorithms.OverlapCoefficient.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
+                case StringMatchingAlgorithm_ID.NeedlemanWunsch:
+                case StringMatchingAlgorithm_ID.iNeedlemanWunsch:
+                    return StringMatchingAlgorithms.NeedlemanWunsch.Percentage(source1, source2, isCaseSensitive) == 0;
+                case StringMatchingAlgorithm_ID.LongestCommonSequence:
+                case StringMatchingAlgorithm_ID.iLongestCommonSequence:
+                    return StringMatchingAlgorithms.LongestCommonSequence.Difference(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
+                case StringMatchingAlgorithm_ID.SorensenDiceDistance:
+                case StringMatchingAlgorithm_ID.iSorensenDiceDistance:
+                    return StringMatchingAlgorithms.SorensenDice.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
+                case StringMatchingAlgorithm_ID.RatcliffObershelpSimilarityDistance:
+                case StringMatchingAlgorithm_ID.iRatcliffObershelpSimilarityDistance:
+                    return StringMatchingAlgorithms.RatcliffObershelpSimilarity.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
+                case StringMatchingAlgorithm_ID.HammingDistance:
+                case StringMatchingAlgorithm_ID.iHammingDistance:
+                    return StringMatchingAlgorithms.Hamming.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
+                case StringMatchingAlgorithm_ID.LongestCommonSubstringDistance:
+                case StringMatchingAlgorithm_ID.iLongestCommonSubstringDistance:
+                    return StringMatchingAlgorithms.LongestCommonSubstring.Distance(source1, source2, isCaseSensitive) == Math.Min(source1.Length, source2.Length);
+                case StringMatchingAlgorithm_ID.LongestCommonSubsequenceDistance:
+                case StringMatchingAlgorithm_ID.iLongestCommonSubsequenceDistance:
+                    return StringMatchingAlgorithms.LongestCommonSubsequence.Distance(source1, source2, isCaseSensitive) == Math.Min(source1.Length, source2.Length);
+                case StringMatchingAlgorithm_ID.JaroDistance:
+                case StringMatchingAlgorithm_ID.iJaroDistance:
+                    return StringMatchingAlgorithms.Jaro.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
+                case StringMatchingAlgorithm_ID.NormalizedLevenshteinDistance:
+                case StringMatchingAlgorithm_ID.iNormalizedLevenshteinDistance:
+                    return StringMatchingAlgorithms.NormalizedLevenshtein.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
+                case StringMatchingAlgorithm_ID.Levenshtein2Distance:
+                case StringMatchingAlgorithm_ID.iLevenshtein2Distance:
+                    return StringMatchingAlgorithms.Levenshtein2.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
+                case StringMatchingAlgorithm_ID.TanimotoCoefficientDistance:
+                case StringMatchingAlgorithm_ID.iTanimotoCoefficientDistance:
+                    return StringMatchingAlgorithms.TanimotoCoefficient.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
+                case StringMatchingAlgorithm_ID.PhraseTokenize:
+                    return StringMatchingAlgorithms.PhraseTokenize.Distance(source1, source2) == Math.Max(GetKeywordList(ref source1).Length, GetKeywordList(ref source2).Length);
+                case StringMatchingAlgorithm_ID.SimplePhraseTokenize:
+                    return StringMatchingAlgorithms.SimplePhraseTokenize.Distance(source1, source2) == Math.Max(GetKeywordList(ref source1).Length, GetKeywordList(ref source2).Length);
+                case StringMatchingAlgorithm_ID.DamerauLevenshtein:
+                case StringMatchingAlgorithm_ID.iDamerauLevenshtein:
                 default:
-                    return DistanceMethods.DamerauLevenshtein.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
+                    return StringMatchingAlgorithms.DamerauLevenshtein.Distance(source1, source2, isCaseSensitive) == Math.Max(source1.Length, source2.Length);
             }
         }
-        public static bool IsVerySimilar(string source1, string source2) => IsVerySimilar(source1, source2, DistanceMethod.UseDefaultDistanceMethod);
-        public static bool IsVerySimilar(string source1, string source2, DistanceMethod distanceMethod) => IsMatch(source1, source2, Fuzzy.ISVERYSIMILAR, distanceMethod); // Is 90% similar
-        public static bool IsSimilar(string source1, string source2) => IsSimilar(source1, source2, DistanceMethod.UseDefaultDistanceMethod);
-        public static bool IsSimilar(string source1, string source2, DistanceMethod distanceMethod) => IsMatch(source1, source2, Fuzzy.ISSIMILAR, distanceMethod); // Is 75% similar
-        public static bool IsSomeWhatSimilar(string source1, string source2) => IsSomeWhatSimilar(source1, source2, DistanceMethod.UseDefaultDistanceMethod);
-        public static bool IsSomeWhatSimilar(string source1, string source2, DistanceMethod distanceMethod) => IsMatch(source1, source2, Fuzzy.ISSOMEWHATSIMILAR, distanceMethod); // Is 50% similar
-        public static bool IsSlightlySimilar(string source1, string source2) => IsSlightlySimilar(source1, source2, DistanceMethod.UseDefaultDistanceMethod);
-        public static bool IsSlightlySimilar(string source1, string source2, DistanceMethod distanceMethod) => IsMatch(source1, source2, Fuzzy.ISSLIGHTLYSIMILAR, distanceMethod); // Is 30% similar
-        public static bool IsHardlySimilar(string source1, string source2) => IsHardlySimilar(source1, source2, DistanceMethod.UseDefaultDistanceMethod);
-        public static bool IsHardlySimilar(string source1, string source2, DistanceMethod distanceMethod) => IsMatch(source1, source2, Fuzzy.ISHARDLYSIMILAR, distanceMethod); // Is 10% similar
+        public static bool IsVerySimilar(string source1, string source2) => IsVerySimilar(source1, source2, StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm);
+        public static bool IsVerySimilar(string source1, string source2, StringMatchingAlgorithm_ID stringMatchingAlgorithm) => IsMatch(source1, source2, Fuzzy.ISVERYSIMILAR, stringMatchingAlgorithm); // Is 90% similar
+        public static bool IsSimilar(string source1, string source2) => IsSimilar(source1, source2, StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm);
+        public static bool IsSimilar(string source1, string source2, StringMatchingAlgorithm_ID stringMatchingAlgorithm) => IsMatch(source1, source2, Fuzzy.ISSIMILAR, stringMatchingAlgorithm); // Is 75% similar
+        public static bool IsSomeWhatSimilar(string source1, string source2) => IsSomeWhatSimilar(source1, source2, StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm);
+        public static bool IsSomeWhatSimilar(string source1, string source2, StringMatchingAlgorithm_ID stringMatchingAlgorithm) => IsMatch(source1, source2, Fuzzy.ISSOMEWHATSIMILAR, stringMatchingAlgorithm); // Is 50% similar
+        public static bool IsSlightlySimilar(string source1, string source2) => IsSlightlySimilar(source1, source2, StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm);
+        public static bool IsSlightlySimilar(string source1, string source2, StringMatchingAlgorithm_ID stringMatchingAlgorithm) => IsMatch(source1, source2, Fuzzy.ISSLIGHTLYSIMILAR, stringMatchingAlgorithm); // Is 30% similar
+        public static bool IsHardlySimilar(string source1, string source2) => IsHardlySimilar(source1, source2, StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm);
+        public static bool IsHardlySimilar(string source1, string source2, StringMatchingAlgorithm_ID stringMatchingAlgorithm) => IsMatch(source1, source2, Fuzzy.ISHARDLYSIMILAR, stringMatchingAlgorithm); // Is 10% similar
         // GetIDistance should NOT be used until all associated classes have implementation for Percentage and Distance methods.
         // Classes that do NOT begin with an I, are classes which need work on these methods.
-        public static IDistance GetIDistance(DistanceMethod distanceMethod)
+        public static IDistance GetIDistance(StringMatchingAlgorithm_ID stringMatchingAlgorithm)
         {
-            if (distanceMethod == DistanceMethod.UseDefaultDistanceMethod)
-                distanceMethod = DefaultDistanceMethod;
-            switch (distanceMethod)
+            if (stringMatchingAlgorithm == StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm)
+                stringMatchingAlgorithm = DefaultStringMatchingAlgorithm;
+            switch (stringMatchingAlgorithm)
             {
-                case DistanceMethod.Levenshtein:
-                case DistanceMethod.iLevenshtein:
-                    return new DistanceMethods.ILevenshtein();
-                case DistanceMethod.JaroWinkler:
-                case DistanceMethod.iJaroWinkler:
-                    return new DistanceMethods.IJaroWinkler();
-                case DistanceMethod.CosineSimilarity:
-                case DistanceMethod.iCosineSimilarity:
-                    return new DistanceMethods.ICosineSimilarity();
-                case DistanceMethod.LongestCommonSequence:
-                case DistanceMethod.iLongestCommonSequence:
-                    return new DistanceMethods.ILongestCommonSequence();
-                case DistanceMethod.JaccardSimilarity:
-                case DistanceMethod.iJaccardSimilarity:
-                    return new DistanceMethods.IJaccardSimilarity();
-                case DistanceMethod.JaccardIndex:
-                case DistanceMethod.iJaccardIndex:
-                    return new DistanceMethods.IJaccardIndex();
-                case DistanceMethod.OverlapCoefficient:
-                case DistanceMethod.iOverlapCoefficient:
-                    return new DistanceMethods.IOverlapCoefficient();
-                case DistanceMethod.NeedlemanWunsch:
-                case DistanceMethod.iNeedlemanWunsch:
-                    return new DistanceMethods.INeedlemanWunsch();
-                case DistanceMethod.SorensenDiceDistance:
-                case DistanceMethod.iSorensenDiceDistance:
-                    return new DistanceMethods.ISorensenDice();
-                case DistanceMethod.RatcliffObershelpSimilarityDistance:
-                case DistanceMethod.iRatcliffObershelpSimilarityDistance:
-                    return new DistanceMethods.IRatcliffObershelpSimilarity();
-                case DistanceMethod.HammingDistance:
-                case DistanceMethod.iHammingDistance:
-                    return new DistanceMethods.IHamming();
-                case DistanceMethod.LongestCommonSubstringDistance:
-                case DistanceMethod.iLongestCommonSubstringDistance:
-                    return new DistanceMethods.ILongestCommonSubstring();
-                case DistanceMethod.LongestCommonSubsequenceDistance:
-                case DistanceMethod.iLongestCommonSubsequenceDistance:
-                    return new DistanceMethods.ILongestCommonSubsequence();
-                case DistanceMethod.JaroDistance:
-                case DistanceMethod.iJaroDistance:
-                    return new DistanceMethods.IJaro();
-                case DistanceMethod.NormalizedLevenshteinDistance:
-                case DistanceMethod.iNormalizedLevenshteinDistance:
-                    return new DistanceMethods.INormalizedLevenshtein();
-                case DistanceMethod.Levenshtein2Distance:
-                case DistanceMethod.iLevenshtein2Distance:
-                    return new DistanceMethods.ILevenshtein2();
-                case DistanceMethod.TanimotoCoefficientDistance:
-                case DistanceMethod.iTanimotoCoefficientDistance:
-                    return new DistanceMethods.ITanimotoCoefficient();
-                case DistanceMethod.EditDistance:
-                case DistanceMethod.iEditDistance:
-                    return new DistanceMethods.IEditDistanceWithWildCard();
-                case DistanceMethod.BlockDistance:
-                case DistanceMethod.iBlockDistance:
-                    return new DistanceMethods.BlockDistance();
-                case DistanceMethod.ChapmanLengthDeviation:
-                case DistanceMethod.iChapmanLengthDeviation:
-                    return new DistanceMethods.ChapmanLengthDeviation();
-                case DistanceMethod.ChapmanMeanLength:
-                case DistanceMethod.iChapmanMeanLength:
-                    return new DistanceMethods.ChapmanMeanLength();
-                case DistanceMethod.EuclideanDistance:
-                case DistanceMethod.iEuclideanDistance:
-                    return new DistanceMethods.EuclideanDistance();
-                case DistanceMethod.MatchingCoefficient:
-                case DistanceMethod.iMatchingCoefficient:
-                    return new DistanceMethods.MatchingCoefficient();
-                case DistanceMethod.MongeElkan:
-                case DistanceMethod.iMongeElkan:
-                    return new DistanceMethods.MongeElkan();
-                case DistanceMethod.QGramsDistance:
-                case DistanceMethod.iQGramsDistance:
-                    return new DistanceMethods.QGramsDistance();
-                case DistanceMethod.SmithWaterman:
-                case DistanceMethod.iSmithWaterman:
-                    return new DistanceMethods.SmithWaterman();
-                case DistanceMethod.SmithWatermanGotoh:
-                case DistanceMethod.iSmithWatermanGotoh:
-                    return new DistanceMethods.SmithWatermanGotoh();
-                case DistanceMethod.SmithWatermanGotohWindowedAffine:
-                case DistanceMethod.iSmithWatermanGotohWindowedAffine:
-                    return new DistanceMethods.SmithWatermanGotohWindowedAffine();
-                case DistanceMethod.DiceSimilarity:
-                case DistanceMethod.iDiceSimilarity:
-                    return new DistanceMethods.DiceSimilarity();
-                case DistanceMethod.PhraseTokenize:
-                    return new DistanceMethods.IPhraseTokenize();
-                case DistanceMethod.SimplePhraseTokenize:
-                    return new DistanceMethods.ISimplePhraseTokenize();
-                case DistanceMethod.DamerauLevenshtein:
-                case DistanceMethod.iDamerauLevenshtein:
-                    return new DistanceMethods.IDamerauLevenshtein();
+                case StringMatchingAlgorithm_ID.Levenshtein:
+                case StringMatchingAlgorithm_ID.iLevenshtein:
+                    return new StringMatchingAlgorithms.ILevenshtein();
+                case StringMatchingAlgorithm_ID.JaroWinkler:
+                case StringMatchingAlgorithm_ID.iJaroWinkler:
+                    return new StringMatchingAlgorithms.IJaroWinkler();
+                case StringMatchingAlgorithm_ID.CosineSimilarity:
+                case StringMatchingAlgorithm_ID.iCosineSimilarity:
+                    return new StringMatchingAlgorithms.ICosineSimilarity();
+                case StringMatchingAlgorithm_ID.LongestCommonSequence:
+                case StringMatchingAlgorithm_ID.iLongestCommonSequence:
+                    return new StringMatchingAlgorithms.ILongestCommonSequence();
+                case StringMatchingAlgorithm_ID.JaccardSimilarity:
+                case StringMatchingAlgorithm_ID.iJaccardSimilarity:
+                    return new StringMatchingAlgorithms.IJaccardSimilarity();
+                case StringMatchingAlgorithm_ID.JaccardIndex:
+                case StringMatchingAlgorithm_ID.iJaccardIndex:
+                    return new StringMatchingAlgorithms.IJaccardIndex();
+                case StringMatchingAlgorithm_ID.OverlapCoefficient:
+                case StringMatchingAlgorithm_ID.iOverlapCoefficient:
+                    return new StringMatchingAlgorithms.IOverlapCoefficient();
+                case StringMatchingAlgorithm_ID.NeedlemanWunsch:
+                case StringMatchingAlgorithm_ID.iNeedlemanWunsch:
+                    return new StringMatchingAlgorithms.INeedlemanWunsch();
+                case StringMatchingAlgorithm_ID.SorensenDiceDistance:
+                case StringMatchingAlgorithm_ID.iSorensenDiceDistance:
+                    return new StringMatchingAlgorithms.ISorensenDice();
+                case StringMatchingAlgorithm_ID.RatcliffObershelpSimilarityDistance:
+                case StringMatchingAlgorithm_ID.iRatcliffObershelpSimilarityDistance:
+                    return new StringMatchingAlgorithms.IRatcliffObershelpSimilarity();
+                case StringMatchingAlgorithm_ID.HammingDistance:
+                case StringMatchingAlgorithm_ID.iHammingDistance:
+                    return new StringMatchingAlgorithms.IHamming();
+                case StringMatchingAlgorithm_ID.LongestCommonSubstringDistance:
+                case StringMatchingAlgorithm_ID.iLongestCommonSubstringDistance:
+                    return new StringMatchingAlgorithms.ILongestCommonSubstring();
+                case StringMatchingAlgorithm_ID.LongestCommonSubsequenceDistance:
+                case StringMatchingAlgorithm_ID.iLongestCommonSubsequenceDistance:
+                    return new StringMatchingAlgorithms.ILongestCommonSubsequence();
+                case StringMatchingAlgorithm_ID.JaroDistance:
+                case StringMatchingAlgorithm_ID.iJaroDistance:
+                    return new StringMatchingAlgorithms.IJaro();
+                case StringMatchingAlgorithm_ID.NormalizedLevenshteinDistance:
+                case StringMatchingAlgorithm_ID.iNormalizedLevenshteinDistance:
+                    return new StringMatchingAlgorithms.INormalizedLevenshtein();
+                case StringMatchingAlgorithm_ID.Levenshtein2Distance:
+                case StringMatchingAlgorithm_ID.iLevenshtein2Distance:
+                    return new StringMatchingAlgorithms.ILevenshtein2();
+                case StringMatchingAlgorithm_ID.TanimotoCoefficientDistance:
+                case StringMatchingAlgorithm_ID.iTanimotoCoefficientDistance:
+                    return new StringMatchingAlgorithms.ITanimotoCoefficient();
+                case StringMatchingAlgorithm_ID.EditDistance:
+                case StringMatchingAlgorithm_ID.iEditDistance:
+                    return new StringMatchingAlgorithms.IEditDistanceWithWildCard();
+                case StringMatchingAlgorithm_ID.BlockDistance:
+                case StringMatchingAlgorithm_ID.iBlockDistance:
+                    return new StringMatchingAlgorithms.BlockDistance();
+                case StringMatchingAlgorithm_ID.ChapmanLengthDeviation:
+                case StringMatchingAlgorithm_ID.iChapmanLengthDeviation:
+                    return new StringMatchingAlgorithms.ChapmanLengthDeviation();
+                case StringMatchingAlgorithm_ID.ChapmanMeanLength:
+                case StringMatchingAlgorithm_ID.iChapmanMeanLength:
+                    return new StringMatchingAlgorithms.ChapmanMeanLength();
+                case StringMatchingAlgorithm_ID.EuclideanDistance:
+                case StringMatchingAlgorithm_ID.iEuclideanDistance:
+                    return new StringMatchingAlgorithms.EuclideanDistance();
+                case StringMatchingAlgorithm_ID.MatchingCoefficient:
+                case StringMatchingAlgorithm_ID.iMatchingCoefficient:
+                    return new StringMatchingAlgorithms.MatchingCoefficient();
+                case StringMatchingAlgorithm_ID.MongeElkan:
+                case StringMatchingAlgorithm_ID.iMongeElkan:
+                    return new StringMatchingAlgorithms.MongeElkan();
+                case StringMatchingAlgorithm_ID.QGramsDistance:
+                case StringMatchingAlgorithm_ID.iQGramsDistance:
+                    return new StringMatchingAlgorithms.QGramsDistance();
+                case StringMatchingAlgorithm_ID.SmithWaterman:
+                case StringMatchingAlgorithm_ID.iSmithWaterman:
+                    return new StringMatchingAlgorithms.SmithWaterman();
+                case StringMatchingAlgorithm_ID.SmithWatermanGotoh:
+                case StringMatchingAlgorithm_ID.iSmithWatermanGotoh:
+                    return new StringMatchingAlgorithms.SmithWatermanGotoh();
+                case StringMatchingAlgorithm_ID.SmithWatermanGotohWindowedAffine:
+                case StringMatchingAlgorithm_ID.iSmithWatermanGotohWindowedAffine:
+                    return new StringMatchingAlgorithms.SmithWatermanGotohWindowedAffine();
+                case StringMatchingAlgorithm_ID.DiceSimilarity:
+                case StringMatchingAlgorithm_ID.iDiceSimilarity:
+                    return new StringMatchingAlgorithms.DiceSimilarity();
+                case StringMatchingAlgorithm_ID.PhraseTokenize:
+                    return new StringMatchingAlgorithms.IPhraseTokenize();
+                case StringMatchingAlgorithm_ID.SimplePhraseTokenize:
+                    return new StringMatchingAlgorithms.ISimplePhraseTokenize();
+                case StringMatchingAlgorithm_ID.DamerauLevenshtein:
+                case StringMatchingAlgorithm_ID.iDamerauLevenshtein:
+                    return new StringMatchingAlgorithms.IDamerauLevenshtein();
                 default:
                     return null;
             }
@@ -746,7 +746,7 @@ namespace FuzzyPlusCSharp
 
         #endregion Similarity functions
         #region Distance functions
-        public static double EditDistance(string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.EditDistanceWithWildCard.Distance(source1, source2, isCaseSensitive);
+        public static double EditDistance(string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.EditDistanceWithWildCard.Distance(source1, source2, isCaseSensitive);
         public static double BlockDistance(this string source1, string source2, bool isCaseSensitive = true)
         {
             FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
@@ -802,28 +802,28 @@ namespace FuzzyPlusCSharp
             FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             return diceSimilarity.GetSimilarity(source1, source2);
         }
-        public static double NeedlemanWunsch(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.NeedlemanWunsch.Percentage(source1, source2, isCaseSensitive);
-        public static double CosineSimilarity(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.CosineSimilarity.Percentage(source1, source2, isCaseSensitive);
-        public static double JaccardSimilarity(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.JaccardSimilarity.Percentage(source1, source2, isCaseSensitive);
-        public static double LongestCommonSequence(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.LongestCommonSequence.Percentage(source1, source2, isCaseSensitive);
-        public static double PhraseTokenize(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.PhraseTokenize.Distance(source1, source2, isCaseSensitive);
-        public static double SimplePhraseTokenize(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.SimplePhraseTokenize.Distance(source1, source2, isCaseSensitive);
-        public static double LevenshteinDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.Levenshtein.Distance(source1, source2, isCaseSensitive);
-        public static double DamerauLevenshteinDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.DamerauLevenshtein.Distance(source1, source2, isCaseSensitive);
-        public static double JaroWinklerDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.JaroWinkler.Distance(source1, source2, isCaseSensitive);
-        public static double OverlapCoefficientDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.OverlapCoefficient.Distance(source1, source2, isCaseSensitive);
-        public static double JaccardDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.JaccardIndex.Distance(source1, source2, isCaseSensitive);
-        public static double JaccardIndex(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.JaccardIndex.Distance(source1, source2, isCaseSensitive);
-        public static double SorensenDiceDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.SorensenDice.Distance(source1, source2, isCaseSensitive);
-        public static double RatcliffObershelpSimilarityDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.RatcliffObershelpSimilarity.Distance(source1, source2, isCaseSensitive);
-        public static double HammingDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.Hamming.Distance(source1, source2, isCaseSensitive);
-        public static double LongestCommonSubstringDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.LongestCommonSubstring.Distance(source1, source2, isCaseSensitive);
-        public static double LongestCommonSubsequenceDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.LongestCommonSubsequence.Distance(source1, source2, isCaseSensitive);
-        public static double JaroDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.Jaro.Distance(source1, source2, isCaseSensitive);
-        public static double NormalizedLevenshteinDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.NormalizedLevenshtein.Distance(source1, source2, isCaseSensitive);
-        public static double Levenshtein2Distance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.Levenshtein2.Distance(source1, source2, isCaseSensitive);
-        public static double TanimotoCoefficientDistance(this string source1, string source2, bool isCaseSensitive = true) => DistanceMethods.TanimotoCoefficient.Distance(source1, source2, isCaseSensitive);
-        public static double PhraseSimplifiedDiff(this string source1, string source2) => DistanceMethods.SimplePhraseTokenize.Distance(source1, source2, false);
+        public static double NeedlemanWunsch(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.NeedlemanWunsch.Percentage(source1, source2, isCaseSensitive);
+        public static double CosineSimilarity(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.CosineSimilarity.Percentage(source1, source2, isCaseSensitive);
+        public static double JaccardSimilarity(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.JaccardSimilarity.Percentage(source1, source2, isCaseSensitive);
+        public static double LongestCommonSequence(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.LongestCommonSequence.Percentage(source1, source2, isCaseSensitive);
+        public static double PhraseTokenize(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.PhraseTokenize.Distance(source1, source2, isCaseSensitive);
+        public static double SimplePhraseTokenize(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.SimplePhraseTokenize.Distance(source1, source2, isCaseSensitive);
+        public static double LevenshteinDistance(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.Levenshtein.Distance(source1, source2, isCaseSensitive);
+        public static double DamerauLevenshteinDistance(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.DamerauLevenshtein.Distance(source1, source2, isCaseSensitive);
+        public static double JaroWinklerDistance(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.JaroWinkler.Distance(source1, source2, isCaseSensitive);
+        public static double OverlapCoefficientDistance(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.OverlapCoefficient.Distance(source1, source2, isCaseSensitive);
+        public static double JaccardDistance(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.JaccardIndex.Distance(source1, source2, isCaseSensitive);
+        public static double JaccardIndex(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.JaccardIndex.Distance(source1, source2, isCaseSensitive);
+        public static double SorensenDiceDistance(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.SorensenDice.Distance(source1, source2, isCaseSensitive);
+        public static double RatcliffObershelpSimilarityDistance(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.RatcliffObershelpSimilarity.Distance(source1, source2, isCaseSensitive);
+        public static double HammingDistance(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.Hamming.Distance(source1, source2, isCaseSensitive);
+        public static double LongestCommonSubstringDistance(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.LongestCommonSubstring.Distance(source1, source2, isCaseSensitive);
+        public static double LongestCommonSubsequenceDistance(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.LongestCommonSubsequence.Distance(source1, source2, isCaseSensitive);
+        public static double JaroDistance(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.Jaro.Distance(source1, source2, isCaseSensitive);
+        public static double NormalizedLevenshteinDistance(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.NormalizedLevenshtein.Distance(source1, source2, isCaseSensitive);
+        public static double Levenshtein2Distance(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.Levenshtein2.Distance(source1, source2, isCaseSensitive);
+        public static double TanimotoCoefficientDistance(this string source1, string source2, bool isCaseSensitive = true) => StringMatchingAlgorithms.TanimotoCoefficient.Distance(source1, source2, isCaseSensitive);
+        public static double PhraseSimplifiedDiff(this string source1, string source2) => StringMatchingAlgorithms.SimplePhraseTokenize.Distance(source1, source2, false);
         #endregion Distance functions
         #region SameFunc functions
         public static bool SameFirstLastName(string source1, string source2, bool isCaseSensitive = false) => Misc.Sameness.SameFirstLastName(source1, source2, isCaseSensitive);
@@ -862,27 +862,27 @@ namespace FuzzyPlusCSharp
             return s1 == s2;
         }
         public static bool Caverphone2(this string source1, string source2,
-            DistanceMethod distanceMethod,
+            StringMatchingAlgorithm_ID stringMatchingAlgorithm,
             bool isVerySimilar = true)
         {
             string s1 = PhoneticMethods.Caverphone.BuildKey(source1);
             string s2 = PhoneticMethods.Caverphone.BuildKey(source2);
-            return Compare(s1, s2, distanceMethod, isVerySimilar);
+            return Compare(s1, s2, stringMatchingAlgorithm, isVerySimilar);
         }
-        public static bool Caverphone2(this string source1, string source2) => Caverphone2(source1, source2, DistanceMethod.ExactMatch);
+        public static bool Caverphone2(this string source1, string source2) => Caverphone2(source1, source2, StringMatchingAlgorithm_ID.ExactMatch);
         public static string Caverphone2(string source1)
         {
             return PhoneticMethods.Caverphone.BuildKey(source1);
         }
         public static bool Soundex2(this string source1, string source2,
-            DistanceMethod distanceMethod,
+            StringMatchingAlgorithm_ID stringMatchingAlgorithm,
             bool isVerySimilar)
         {
             string s1 = PhoneticMethods.Soundex.Generate(source1);
             string s2 = PhoneticMethods.Soundex.Generate(source2);
-            return Compare(s1, s2, distanceMethod, isVerySimilar);
+            return Compare(s1, s2, stringMatchingAlgorithm, isVerySimilar);
         }
-        public static bool Soundex2(this string source1, string source2) => Soundex2(source1, source2, DistanceMethod.ExactMatch, true);
+        public static bool Soundex2(this string source1, string source2) => Soundex2(source1, source2, StringMatchingAlgorithm_ID.ExactMatch, true);
         public static string Soundex2(string source1)
         {
             return PhoneticMethods.Soundex.Generate(source1);
@@ -890,7 +890,7 @@ namespace FuzzyPlusCSharp
         public static bool EnPhoneticDistance_IsSupported() => FuzzyPhoneticMatching.EnPhoneticDistance_Supported;
         public static bool EnPhoneticDistance(this string source1, string source2, bool isVerySimilar = true)
         {
-            return FuzzyPhoneticMatching.EnPhoneticDistance_Supported ? FuzzyPhoneticMatching.EnPhoneticDistance(source1, source2, isVerySimilar) : Soundex2(source1, source2, DistanceMethod.ExactMatch, isVerySimilar);
+            return FuzzyPhoneticMatching.EnPhoneticDistance_Supported ? FuzzyPhoneticMatching.EnPhoneticDistance(source1, source2, isVerySimilar) : Soundex2(source1, source2, StringMatchingAlgorithm_ID.ExactMatch, isVerySimilar);
         }
         public static string GetSoundCode(string source1, SameSoundMethod sameSoundMethod = SameSoundMethod.UseDefaultSameSoundMethod)
         {
@@ -907,7 +907,7 @@ namespace FuzzyPlusCSharp
         }
         public static bool SameSound(this string source1, string source2,
             SameSoundMethod sameSoundMethod = SameSoundMethod.UseDefaultSameSoundMethod,
-            DistanceMethod distanceMethod = DistanceMethod.ExactMatch,
+            StringMatchingAlgorithm_ID stringMatchingAlgorithm = StringMatchingAlgorithm_ID.ExactMatch,
             bool isVerySimilar = true)
         {
             if (sameSoundMethod == SameSoundMethod.UseDefaultSameSoundMethod)
@@ -917,7 +917,7 @@ namespace FuzzyPlusCSharp
                 case SameSoundMethod.EnPhoneticDistance:
                     return EnPhoneticDistance(source1, source2, isVerySimilar);
                 case SameSoundMethod.Caverphone2:
-                    return Caverphone2(source1, source2, distanceMethod, isVerySimilar);
+                    return Caverphone2(source1, source2, stringMatchingAlgorithm, isVerySimilar);
                 case SameSoundMethod.MatchRatingApproach:
                     return MatchRatingApproach(source1, source2);
                 case SameSoundMethod.Metaphone:
@@ -930,14 +930,14 @@ namespace FuzzyPlusCSharp
                     return ColognePhonetics(source1, source2);
                 case SameSoundMethod.Soundex2:
                 default:
-                    return Soundex2(source1, source2, distanceMethod, isVerySimilar);
+                    return Soundex2(source1, source2, stringMatchingAlgorithm, isVerySimilar);
             }
         }
-        public static bool Compare(string source1, string source2, DistanceMethod CompareMethod, bool isVerySimilar)
+        public static bool Compare(string source1, string source2, StringMatchingAlgorithm_ID CompareMethod, bool isVerySimilar)
         {
             switch (CompareMethod)
             {
-                case DistanceMethod.ExactMatch:
+                case StringMatchingAlgorithm_ID.ExactMatch:
                     return source1 == source2;
                 default:
                     return isVerySimilar ? IsVerySimilar(source1, source2, CompareMethod) : IsSimilar(source1, source2, CompareMethod);
@@ -993,7 +993,7 @@ namespace FuzzyPlusCSharp
             string[] list1 = GetKeywordList(ref source1, false, true);
             string[] list2 = GetKeywordList(ref source2, false, true);
             double sourceLength = Math.Max(list1.Length, list2.Length);
-            double diff = DistanceMethods.PhraseTokenize.Distance(source1, source2,false, true);
+            double diff = StringMatchingAlgorithms.PhraseTokenize.Distance(source1, source2,false, true);
             return diff == 0 ? 1.0f : (sourceLength - diff) / sourceLength;
         }
         public static bool IsPhraseSimilar(string source1, string source2, double desiredSimilarity) => PhraseHowSimilar(source1, source2) >= desiredSimilarity;

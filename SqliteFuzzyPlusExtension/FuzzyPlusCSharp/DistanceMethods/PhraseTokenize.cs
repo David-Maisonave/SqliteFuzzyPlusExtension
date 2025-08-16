@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FuzzyPlusCSharp.DistanceMethods
+namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
-    public class IPhraseTokenize : FuzzyPlusCSharp.DistanceMethods.IDistance
+    public class IPhraseTokenize : FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {
         public double Percentage(string source1, string source2, bool isCaseSensitive = true) => PhraseTokenize.Percentage(source1, source2, isCaseSensitive);
         public double Distance(string source1, string source2, bool isCaseSensitive = true) => PhraseTokenize.Distance(source1, source2, isCaseSensitive);
@@ -40,7 +40,7 @@ namespace FuzzyPlusCSharp.DistanceMethods
         public static double Percentage(string source1, string source2, bool isCaseSensitive = true, bool simplify = false, bool insertSpacesBetweenCapitalLetters = true)=>
             Distance(source1, source2, isCaseSensitive, simplify, insertSpacesBetweenCapitalLetters, false);
     }
-    public class ISimplePhraseTokenize : FuzzyPlusCSharp.DistanceMethods.IDistance
+    public class ISimplePhraseTokenize : FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {
         public double Percentage(string source1, string source2, bool isCaseSensitive = true) => SimplePhraseTokenize.Percentage(source1, source2, isCaseSensitive);
         public double Distance(string source1, string source2, bool isCaseSensitive = true) => SimplePhraseTokenize.Distance(source1, source2, isCaseSensitive);

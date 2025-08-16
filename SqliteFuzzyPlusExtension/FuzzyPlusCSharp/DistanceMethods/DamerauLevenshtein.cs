@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FuzzyPlusCSharp.DistanceMethods
+namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
-    public class IDamerauLevenshtein : FuzzyPlusCSharp.DistanceMethods.IDistance
+    public class IDamerauLevenshtein : FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {
         public double Percentage(string source1, string source2, bool isCaseSensitive = true) => DamerauLevenshtein.Percentage(source1, source2, isCaseSensitive);
         public double Distance(string source1, string source2, bool isCaseSensitive = true) => DamerauLevenshtein.Distance(source1, source2, isCaseSensitive);

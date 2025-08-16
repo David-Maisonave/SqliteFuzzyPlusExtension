@@ -340,14 +340,14 @@ extern "C"
         bool IsVerySimilarFirstLastName(const char* str1, const char* str2) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Misc::Sameness::SameFirstLastName(source1, source2, false, FuzzyPlusCSharp::Fuzzy::DefaultDistanceMethod, FuzzyPlusCSharp::Fuzzy::ISVERYSIMILAR);
+        return FuzzyPlusCSharp::Misc::Sameness::SameFirstLastName(source1, source2, false, FuzzyPlusCSharp::Fuzzy::DefaultStringMatchingAlgorithm, FuzzyPlusCSharp::Fuzzy::ISVERYSIMILAR);
     }
 
     __declspec(dllexport)
         bool IsSimilarFirstLastName(const char* str1, const char* str2) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Misc::Sameness::SameFirstLastName(source1, source2, false, FuzzyPlusCSharp::Fuzzy::DefaultDistanceMethod, FuzzyPlusCSharp::Fuzzy::ISSIMILAR);
+        return FuzzyPlusCSharp::Misc::Sameness::SameFirstLastName(source1, source2, false, FuzzyPlusCSharp::Fuzzy::DefaultStringMatchingAlgorithm, FuzzyPlusCSharp::Fuzzy::ISSIMILAR);
     }
 
     __declspec(dllexport)
@@ -445,16 +445,16 @@ extern "C"
     /////////////////////////////////////////////////////////////////////////////////
     // Export Wrapper Distance Functions
     __declspec(dllexport)
-        int SetDefaultDistanceMethodByName(const char* DistanceMethod_Name) {
-        String^ source1 = gcnew String(DistanceMethod_Name);
-        FuzzyPlusCSharp::Fuzzy::SetDefaultDistanceMethod(source1);
-        return (int)FuzzyPlusCSharp::Fuzzy::DefaultDistanceMethod;
+        int SetDefaultStringMatchingAlgorithmByName(const char* StringMatchingAlgorithm_Name) {
+        String^ source1 = gcnew String(StringMatchingAlgorithm_Name);
+        FuzzyPlusCSharp::Fuzzy::SetDefaultStringMatchingAlgorithm(source1);
+        return (int)FuzzyPlusCSharp::Fuzzy::DefaultStringMatchingAlgorithm;
     }
 
     __declspec(dllexport)
-        int SetDefaultDistanceMethodByID(int DistanceMethod_Id) {
-        FuzzyPlusCSharp::Fuzzy::SetDefaultDistanceMethod(DistanceMethod_Id);
-        return (int)FuzzyPlusCSharp::Fuzzy::DefaultDistanceMethod;
+        int SetDefaultStringMatchingAlgorithmByID(int StringMatchingAlgorithm_Id) {
+        FuzzyPlusCSharp::Fuzzy::SetDefaultStringMatchingAlgorithm(StringMatchingAlgorithm_Id);
+        return (int)FuzzyPlusCSharp::Fuzzy::DefaultStringMatchingAlgorithm;
     }
 
     __declspec(dllexport)
@@ -471,13 +471,13 @@ extern "C"
     }
 
     __declspec(dllexport)
-        int GetDistanceMethodID(const char* DistanceMethod_Name) {
-        return (int)GetDistanceMethod(DistanceMethod_Name);
+        int GetStringMatchingAlgorithmID(const char* StringMatchingAlgorithm_Name) {
+        return (int)GetStringMatchingAlgorithm(StringMatchingAlgorithm_Name);
     }
 
     __declspec(dllexport)
-        int GetDefaultDistanceMethod() {
-        return (int)FuzzyPlusCSharp::Fuzzy::DefaultDistanceMethod;
+        int GetDefaultStringMatchingAlgorithm() {
+        return (int)FuzzyPlusCSharp::Fuzzy::DefaultStringMatchingAlgorithm;
     }
 
     __declspec(dllexport)
@@ -486,28 +486,28 @@ extern "C"
     }
 
     __declspec(dllexport)
-        double Distance(const char* source1, const char* source2, int DistanceMethod_Id) {
-        return Distance(source1, source2, GetDistanceMethod(DistanceMethod_Id));
+        double Distance(const char* source1, const char* source2, int StringMatchingAlgorithm_Id) {
+        return Distance(source1, source2, GetStringMatchingAlgorithm(StringMatchingAlgorithm_Id));
     }
 
     __declspec(dllexport)
-        double DistanceByName(const char* source1, const char* source2, const char* DistanceMethod_Name) {
-        return Distance(source1, source2, GetDistanceMethod(DistanceMethod_Name));
+        double DistanceByName(const char* source1, const char* source2, const char* StringMatchingAlgorithm_Name) {
+        return Distance(source1, source2, GetStringMatchingAlgorithm(StringMatchingAlgorithm_Name));
     }
 
     __declspec(dllexport)
-        double HowSimilar(const char* source1, const char* source2, int DistanceMethod_Id) {
-        return HowSimilar(source1, source2, GetDistanceMethod(DistanceMethod_Id));
+        double HowSimilar(const char* source1, const char* source2, int StringMatchingAlgorithm_Id) {
+        return HowSimilar(source1, source2, GetStringMatchingAlgorithm(StringMatchingAlgorithm_Id));
     }
 
     __declspec(dllexport)
-        double HowSimilarById(const char* source1, const char* source2, int DistanceMethod_Id) {
-        return HowSimilar(source1, source2, GetDistanceMethod(DistanceMethod_Id));
+        double HowSimilarById(const char* source1, const char* source2, int StringMatchingAlgorithm_Id) {
+        return HowSimilar(source1, source2, GetStringMatchingAlgorithm(StringMatchingAlgorithm_Id));
     }
 
     __declspec(dllexport)
-        double HowSimilarByName(const char* source1, const char* source2, const char* DistanceMethod_Name) {
-        return HowSimilar(source1, source2, GetDistanceMethod(DistanceMethod_Name));
+        double HowSimilarByName(const char* source1, const char* source2, const char* StringMatchingAlgorithm_Name) {
+        return HowSimilar(source1, source2, GetStringMatchingAlgorithm(StringMatchingAlgorithm_Name));
     }
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -684,8 +684,8 @@ extern "C"
     }
 
     __declspec(dllexport)
-        bool SameSound(const char* source1, const char* source2, int SameSoundMethod_Id, int DistanceMethod_Id, bool isVerySimilar) {
-        return SameSound(source1, source2, GetSameSoundMethod(SameSoundMethod_Id), GetDistanceMethod(DistanceMethod_Id), isVerySimilar);
+        bool SameSound(const char* source1, const char* source2, int SameSoundMethod_Id, int StringMatchingAlgorithm_Id, bool isVerySimilar) {
+        return SameSound(source1, source2, GetSameSoundMethod(SameSoundMethod_Id), GetStringMatchingAlgorithm(StringMatchingAlgorithm_Id), isVerySimilar);
     }
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -765,47 +765,47 @@ extern "C"
 /////////////////////////////////////////////////////////////////////////////////
 // Export Wrapper Distance Functions
 __declspec(dllexport)
-SqliteFuzzyPlusExtension::DistanceMethod_ID SetDefaultDistanceMethod(const char* DistanceMethod_Name) {
-    String^ source1 = gcnew String(DistanceMethod_Name);
-    FuzzyPlusCSharp::Fuzzy::SetDefaultDistanceMethod(source1);
-    return (SqliteFuzzyPlusExtension::DistanceMethod_ID)FuzzyPlusCSharp::Fuzzy::DefaultDistanceMethod;
+SqliteFuzzyPlusExtension::StringMatchingAlgorithm_ID SetDefaultStringMatchingAlgorithm(const char* StringMatchingAlgorithm_Name) {
+    String^ source1 = gcnew String(StringMatchingAlgorithm_Name);
+    FuzzyPlusCSharp::Fuzzy::SetDefaultStringMatchingAlgorithm(source1);
+    return (SqliteFuzzyPlusExtension::StringMatchingAlgorithm_ID)FuzzyPlusCSharp::Fuzzy::DefaultStringMatchingAlgorithm;
 }
 
 __declspec(dllexport)
-SqliteFuzzyPlusExtension::DistanceMethod_ID SetDefaultDistanceMethod(int DistanceMethod_Id) {
-    FuzzyPlusCSharp::Fuzzy::SetDefaultDistanceMethod(DistanceMethod_Id);
-    return (SqliteFuzzyPlusExtension::DistanceMethod_ID)FuzzyPlusCSharp::Fuzzy::DefaultDistanceMethod;
+SqliteFuzzyPlusExtension::StringMatchingAlgorithm_ID SetDefaultStringMatchingAlgorithm(int StringMatchingAlgorithm_Id) {
+    FuzzyPlusCSharp::Fuzzy::SetDefaultStringMatchingAlgorithm(StringMatchingAlgorithm_Id);
+    return (SqliteFuzzyPlusExtension::StringMatchingAlgorithm_ID)FuzzyPlusCSharp::Fuzzy::DefaultStringMatchingAlgorithm;
 }
 
 __declspec(dllexport)
-double Distance(const char* source1, const char* source2, const char* DistanceMethod_Name) {
-    return Distance(source1, source2, GetDistanceMethod(DistanceMethod_Name));
+double Distance(const char* source1, const char* source2, const char* StringMatchingAlgorithm_Name) {
+    return Distance(source1, source2, GetStringMatchingAlgorithm(StringMatchingAlgorithm_Name));
 }
 
 __declspec(dllexport)
-double HowSimilar(const char* source1, const char* source2, const char* DistanceMethod_Name) {
-    return HowSimilar(source1, source2, GetDistanceMethod(DistanceMethod_Name));
+double HowSimilar(const char* source1, const char* source2, const char* StringMatchingAlgorithm_Name) {
+    return HowSimilar(source1, source2, GetStringMatchingAlgorithm(StringMatchingAlgorithm_Name));
 }
 
 /////////////////////////////////////////////////////////////////////////////////
 // Export Phonetic Functions
 __declspec(dllexport)
-bool SameSound(const char* source1, const char* source2, const char* SameSoundMethod_Name, const char* DistanceMethod_Name, bool isVerySimilar) {
+bool SameSound(const char* source1, const char* source2, const char* SameSoundMethod_Name, const char* StringMatchingAlgorithm_Name, bool isVerySimilar) {
     if (SameSoundMethod_Name == NULL)
         return SameSound(source1, source2, 0, 0, true);
-    if (DistanceMethod_Name == NULL)
-        return SameSound(source1, source2, GetSameSoundMethod(SameSoundMethod_Name), GetDistanceMethod(0), true);
-    return SameSound(source1, source2, GetSameSoundMethod(SameSoundMethod_Name), GetDistanceMethod(DistanceMethod_Name), isVerySimilar);
+    if (StringMatchingAlgorithm_Name == NULL)
+        return SameSound(source1, source2, GetSameSoundMethod(SameSoundMethod_Name), GetStringMatchingAlgorithm(0), true);
+    return SameSound(source1, source2, GetSameSoundMethod(SameSoundMethod_Name), GetStringMatchingAlgorithm(StringMatchingAlgorithm_Name), isVerySimilar);
 }
 
 __declspec(dllexport)
-bool SameSound(const char* source1, const char* source2, int SameSoundMethod_Id, int DistanceMethod_Id) {
-    return SameSound(source1, source2, GetSameSoundMethod(SameSoundMethod_Id), GetDistanceMethod(DistanceMethod_Id), true);
+bool SameSound(const char* source1, const char* source2, int SameSoundMethod_Id, int StringMatchingAlgorithm_Id) {
+    return SameSound(source1, source2, GetSameSoundMethod(SameSoundMethod_Id), GetStringMatchingAlgorithm(StringMatchingAlgorithm_Id), true);
 }
 
 __declspec(dllexport)
-bool SameSound(const char* source1, const char* source2, const char* SameSoundMethod_Name, const char* DistanceMethod_Name) {
-    return SameSound(source1, source2, GetSameSoundMethod(SameSoundMethod_Name), GetDistanceMethod(DistanceMethod_Name), true);
+bool SameSound(const char* source1, const char* source2, const char* SameSoundMethod_Name, const char* StringMatchingAlgorithm_Name) {
+    return SameSound(source1, source2, GetSameSoundMethod(SameSoundMethod_Name), GetStringMatchingAlgorithm(StringMatchingAlgorithm_Name), true);
 }
 
 /////////////////////////////////////////////////////////////////////////////////

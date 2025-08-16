@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FuzzyPlusCSharp.DistanceMethods
+namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
-    public class INeedlemanWunsch : FuzzyPlusCSharp.DistanceMethods.IDistance
+    public class INeedlemanWunsch : FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {
         public double Percentage(string source1, string source2, bool isCaseSensitive = true) => NeedlemanWunsch.Percentage(source1, source2, isCaseSensitive);
         public double Distance(string source1, string source2, bool isCaseSensitive = true) => NeedlemanWunsch.Distance(source1, source2, isCaseSensitive);

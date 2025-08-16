@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FuzzyPlusCSharp.DistanceMethods
+namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
-    public class ILevenshtein2 : FuzzyPlusCSharp.DistanceMethods.IDistance
+    public class ILevenshtein2 : FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {
         public double Percentage(string source1, string source2, bool isCaseSensitive = true) => Levenshtein2.Percentage(source1, source2, isCaseSensitive);
         public double Distance(string source1, string source2, bool isCaseSensitive = true) => Levenshtein2.Distance(source1, source2, isCaseSensitive);
@@ -57,7 +57,7 @@ namespace FuzzyPlusCSharp.DistanceMethods
         /// <returns>The Levenshtein distance, normalized so that the lower bound is always zero, rather than the difference in length between the two strings</returns>
         public static int NormalizedLevenshteinDistance(this string source1, string source2) => source1.LevenshteinDistance2(source2) - source1.LevenshteinDistanceLowerBounds(source2);
         ///  <returns>The upper bounds is either the length of the longer string, or the Hamming distance.</returns>
-        public static int LevenshteinDistanceUpperBounds(this string source1, string source2) => source1.Length == source2.Length ? DistanceMethods.Hamming.Distance(source1, source2) : Math.Max(source1.Length, source2.Length);
+        public static int LevenshteinDistanceUpperBounds(this string source1, string source2) => source1.Length == source2.Length ? StringMatchingAlgorithms.Hamming.Distance(source1, source2) : Math.Max(source1.Length, source2.Length);
         ///  <returns>The lower bounds is the difference in length between the two strings</returns>
         public static int LevenshteinDistanceLowerBounds(this string source1, string source2) => Math.Abs(source1.Length - source2.Length);
     }

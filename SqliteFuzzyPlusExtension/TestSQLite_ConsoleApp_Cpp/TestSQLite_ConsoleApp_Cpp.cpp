@@ -54,7 +54,7 @@ int main()
     double example7 = Distance("David", "david", SqliteFuzzyPlusExtension::iLevenshtein);
     double example8 = Distance("David", "davdi", SqliteFuzzyPlusExtension::iLevenshtein);
 
-    double similar00 = HowSimilar("David", "David", SqliteFuzzyPlusExtension::UseDefaultDistanceMethod);
+    double similar00 = HowSimilar("David", "David", SqliteFuzzyPlusExtension::UseDefaultStringMatchingAlgorithm);
     double similar01 = HowSimilar("David", "David", SqliteFuzzyPlusExtension::Levenshtein);
     double similar02 = HowSimilar("David", "Davix", SqliteFuzzyPlusExtension::LongestCommonSequence);
     double similar03 = HowSimilar("David", "Davxx", SqliteFuzzyPlusExtension::JaccardIndex);

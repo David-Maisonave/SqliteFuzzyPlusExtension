@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FuzzyPlusCSharp.DistanceMethods
+namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
     // IEditDistanceWithWildCard is a place holder class, and doesn't have implementation for a wildcard yet.
-    public class IEditDistanceWithWildCard : FuzzyPlusCSharp.DistanceMethods.IDistance
+    public class IEditDistanceWithWildCard : FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {
         public double Percentage(string source1, string source2, bool isCaseSensitive = true) => EditDistanceWithWildCard.Percentage(source1, source2, isCaseSensitive);
         public double Distance(string source1, string source2, bool isCaseSensitive = true) => EditDistanceWithWildCard.Distance(source1, source2, isCaseSensitive);

@@ -79,7 +79,7 @@ sqlite3_result_double(context, distance); \
 
 #define CREATE_FUNCTION_DISTANCE(FuncName) static void FuncName(sqlite3_context* context, int argc, sqlite3_value** argv) { \
 assert(argc == 2 || argc == 3); \
-FuzzyPlusCSharp::Fuzzy::DistanceMethod d = FuzzyPlusCSharp::Fuzzy::DistanceMethod::UseDefaultDistanceMethod; \
+FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID d = FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::UseDefaultStringMatchingAlgorithm; \
 const char* str1 = (const char*)sqlite3_value_text(argv[0]); \
 const char* str2 = (const char*)sqlite3_value_text(argv[1]); \
 if (str1 == 0 || str2 == 0) { \
@@ -89,7 +89,7 @@ if (str1 == 0 || str2 == 0) { \
 if (argc == 3) \
 { \
     int nIn = sqlite3_value_bytes(argv[2]); \
-    d = FuzzyPlusCSharp::Fuzzy::GetDistanceMethod(nIn); \
+    d = FuzzyPlusCSharp::Fuzzy::GetStringMatchingAlgorithm(nIn); \
 } \
 String^ sourc1 = gcnew String(str1); \
 String^ sourc2 = gcnew String(str2); \

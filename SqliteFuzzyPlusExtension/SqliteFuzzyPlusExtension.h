@@ -20,8 +20,8 @@
 
 #ifdef SQLITEFUZZYPLUSEXTENSION_INCLUDE_FUNCTION_MACROS_FOR_C
 #define SAMESOUND(word1, word2) SameSound(word1, word2, 0, 0, 1)
-#define SAMESOUND_NM(word1, word2, methodName) SameSound(word1, word2, GetSameSoundMethodID(methodName), GetDistanceMethodID("ExactMatch"), 1)
-#define SAMESOUND_ID(word1, word2, methodID) SameSound(word1, word2, methodID, GetDistanceMethodID("ExactMatch"), 1)
+#define SAMESOUND_NM(word1, word2, methodName) SameSound(word1, word2, GetSameSoundMethodID(methodName), GetStringMatchingAlgorithmID("ExactMatch"), 1)
+#define SAMESOUND_ID(word1, word2, methodID) SameSound(word1, word2, methodID, GetStringMatchingAlgorithmID("ExactMatch"), 1)
 #endif // SQLITEFUZZYPLUSEXTENSION_INCLUDE_FUNCTION_MACROS_FOR_C
 
 
@@ -55,9 +55,9 @@ namespace SqliteFuzzyPlusExtension {
 #endif // COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
     // Note: In C language, the enums can not use the same name as a function, so macro C_ENUM_NAMING_CONVENTION__ has been added for C-Only code where all the enums with this macro have an "enum_" prefixed to the name.
     //       The C++ code will still reference all the enums by the original name.
-    enum DistanceMethod_ID
+    enum StringMatchingAlgorithm_ID
     {
-        UseDefaultDistanceMethod = 0,
+        UseDefaultStringMatchingAlgorithm = 0,
         // Edit Distance Based Methods
         C_ENUM_NAMING_CONVENTION__(Levenshtein),
         C_ENUM_NAMING_CONVENTION__(DamerauLevenshtein),
@@ -205,22 +205,22 @@ namespace SqliteFuzzyPlusExtension {
 #ifndef COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
 extern "C" {
 #endif // !COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
-    double HowSimilar(const char* source1, const char* source2, int DistanceMethod_Id);
-    double HowSimilarById(const char* source1, const char* source2, int DistanceMethod_Id);
-    double HowSimilarByName(const char* source1, const char* source2, const char* DistanceMethod_Name);
-    double Distance(const char* source1, const char* source2, int DistanceMethod_Id);
-    double DistanceByName(const char* source1, const char* source2, const char* DistanceMethod_Name);
-    int GetDistanceMethodID(const char* DistanceMethod_Name);
+    double HowSimilar(const char* source1, const char* source2, int StringMatchingAlgorithm_Id);
+    double HowSimilarById(const char* source1, const char* source2, int StringMatchingAlgorithm_Id);
+    double HowSimilarByName(const char* source1, const char* source2, const char* StringMatchingAlgorithm_Name);
+    double Distance(const char* source1, const char* source2, int StringMatchingAlgorithm_Id);
+    double DistanceByName(const char* source1, const char* source2, const char* StringMatchingAlgorithm_Name);
+    int GetStringMatchingAlgorithmID(const char* StringMatchingAlgorithm_Name);
     int GetSameSoundMethodID(const char* SameSoundMethod_Name);
-    int SetDefaultDistanceMethodByName(const char* DistanceMethod_Name);
-    int SetDefaultDistanceMethodByID(int DistanceMethod_Id);
-    int GetDefaultDistanceMethod();
+    int SetDefaultStringMatchingAlgorithmByName(const char* StringMatchingAlgorithm_Name);
+    int SetDefaultStringMatchingAlgorithmByID(int StringMatchingAlgorithm_Id);
+    int GetDefaultStringMatchingAlgorithm();
     int SetDefaultSameSoundMethod(int sameSoundMethod_ID);
     int SetDefaultSameSoundMethodByName(const char* sameSoundMethod_Name);
     int GetDefaultSoundMethod();
-    // C language code can simulate overloaded SameSound functions by using GetSameSoundMethodID and GetDistanceMethodID
-    // Example: SameSound("been", "being", GetSameSoundMethodID("Soundex2"), GetDistanceMethodID("Levenshtein"), 1);
-    bool SameSound(const char* source1, const char* source2, int SameSoundMethod_Id, int DistanceMethod_Id, bool isVerySimilar);
+    // C language code can simulate overloaded SameSound functions by using GetSameSoundMethodID and GetStringMatchingAlgorithmID
+    // Example: SameSound("been", "being", GetSameSoundMethodID("Soundex2"), GetStringMatchingAlgorithmID("Levenshtein"), 1);
+    bool SameSound(const char* source1, const char* source2, int SameSoundMethod_Id, int StringMatchingAlgorithm_Id, bool isVerySimilar);
     /////////////////////////////////////////////////////////////////////////////////
     // Distance Functions
 #ifndef COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
@@ -325,13 +325,13 @@ extern "C" {
     unsigned __int64 NormalizeNum(const char* source);
 #ifndef COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
 }
-    double HowSimilar(const char* source1, const char* source2, const char* DistanceMethod_Name);
-    double Distance(const char* source1, const char* source2, const char* DistanceMethod_Name);
-    NAMESPACE_SQLITEFUZZYPLUSEXTENSION DistanceMethod_ID SetDefaultDistanceMethod(const char* DistanceMethod_Name);
-    NAMESPACE_SQLITEFUZZYPLUSEXTENSION DistanceMethod_ID SetDefaultDistanceMethod(int DistanceMethod_Id);
-    bool SameSound(const char* source1, const char* source2, const char* SameSoundMethod_Name = NULL, const char* DistanceMethod_Name = NULL, bool isVerySimilar = true);
-    bool SameSound(const char* source1, const char* source2, int SameSoundMethod_Id, int DistanceMethod_Id);
-    bool SameSound(const char* source1, const char* source2, const char* SameSoundMethod_Name, const char* DistanceMethod_Name);
+    double HowSimilar(const char* source1, const char* source2, const char* StringMatchingAlgorithm_Name);
+    double Distance(const char* source1, const char* source2, const char* StringMatchingAlgorithm_Name);
+    NAMESPACE_SQLITEFUZZYPLUSEXTENSION StringMatchingAlgorithm_ID SetDefaultStringMatchingAlgorithm(const char* StringMatchingAlgorithm_Name);
+    NAMESPACE_SQLITEFUZZYPLUSEXTENSION StringMatchingAlgorithm_ID SetDefaultStringMatchingAlgorithm(int StringMatchingAlgorithm_Id);
+    bool SameSound(const char* source1, const char* source2, const char* SameSoundMethod_Name = NULL, const char* StringMatchingAlgorithm_Name = NULL, bool isVerySimilar = true);
+    bool SameSound(const char* source1, const char* source2, int SameSoundMethod_Id, int StringMatchingAlgorithm_Id);
+    bool SameSound(const char* source1, const char* source2, const char* SameSoundMethod_Name, const char* StringMatchingAlgorithm_Name);
     /////////////////////////////////////////////////////////////////////////////////
     // Phonetic Functions
     std::string fuzzy_caver(const char* source);

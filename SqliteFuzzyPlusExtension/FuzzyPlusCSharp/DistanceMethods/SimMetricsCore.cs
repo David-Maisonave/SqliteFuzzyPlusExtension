@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using static FuzzyPlusCSharp.DistanceMethods.SmithWatermanGotohWindowedAffine;
+using static FuzzyPlusCSharp.StringMatchingAlgorithms.SmithWatermanGotohWindowedAffine;
 
-namespace FuzzyPlusCSharp.DistanceMethods
+namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
     public interface IStringMetric
     {

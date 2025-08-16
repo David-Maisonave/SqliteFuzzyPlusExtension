@@ -13,12 +13,12 @@ namespace TestFuzzy_ConsoleApp_DotNetFrameworkCSharp
         {
             public static double f; // Created this class and variable to remove compiler message about unrequired assignment variable
             public static string s;
-            public static Fuzzy.DistanceMethod d;
+            public static Fuzzy.StringMatchingAlgorithm_ID d;
         }
         static void Main()//string[] args)
         {
-            D.d = Fuzzy.GetDistanceMethod("Fuzzy_Jaro");
-            D.d = Fuzzy.GetDistanceMethod("BadString");
+            D.d = Fuzzy.GetStringMatchingAlgorithm("Fuzzy_Jaro");
+            D.d = Fuzzy.GetStringMatchingAlgorithm("BadString");
             D.s = Fuzzy.HasWordsInSameOrder("This is a similar phrase test", "Phrases");
             D.s = Fuzzy.HasWordsInSameOrder("This is a similar phrase test", "Phrases");
             D.s = Fuzzy.HasCharInSameOrder("david");
