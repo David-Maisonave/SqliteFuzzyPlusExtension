@@ -27,7 +27,8 @@ select Name
 , Distance(Name, 'David Jorge', 'BlockDistance') as a71 -- BlockDistance (ID# 71)
 , Distance(Name, 'David Jorge', 'MatchingCoefficient') as a72 -- MatchingCoefficient (ID# 72)
 , Distance(Name, 'David Jorge', 'QGramsDistance') as a73 -- QGramsDistance (ID# 73)
-, Distance(Name, 'David Jorge', 'MongeElkan') as a74 -- MongeElkan (ID# 74)
+--, Distance(Name, 'David Jorge', 'NGramsDistance') as a74 -- NGramsDistance (ID# 74)
+, Distance(Name, 'David Jorge', 'MongeElkan') as a75 -- MongeElkan (ID# 75)
 , Distance(Name, 'David Jorge', 'PhraseTokenize') as a96 -- PhraseTokenize (ID# 96)
 , Distance(Name, 'David Jorge', 'SimplePhraseTokenize') as a97 -- SimplePhraseTokenize (ID# 97)
 , Distance(Name, 'David Jorge', 'Fuzzy_Damlev') as a128 -- Fuzzy_Damlev (ID# 128)
@@ -68,7 +69,8 @@ select Name
 , Distance(Name, 'David Jorge', 'iBlockDistance') as a327 -- iBlockDistance (ID# 327)
 , Distance(Name, 'David Jorge', 'iMatchingCoefficient') as a328 -- iMatchingCoefficient (ID# 328)
 , Distance(Name, 'David Jorge', 'iQGramsDistance') as a329 -- iQGramsDistance (ID# 329)
-, Distance(Name, 'David Jorge', 'iMongeElkan') as a330 -- iMongeElkan (ID# 330)
+, Distance(Name, 'David Jorge', 'iNGramsDistance') as a330 -- iNGramsDistance (ID# 330)
+, Distance(Name, 'David Jorge', 'iMongeElkan') as a331 -- iMongeElkan (ID# 331)
 FROM SimilarNames;
 -- Note: Case insensitive functions have an ID number greater than 256
 --       C++ functions have an ID number equal to or greater than  128 and less than 256

@@ -27,7 +27,8 @@ select Phrases
 , IsSlightlySimilar(Phrases, 'This is a similar phrase test', 71) as a71 -- BlockDistance (ID# 71)
 , IsSlightlySimilar(Phrases, 'This is a similar phrase test', 72) as a72 -- MatchingCoefficient (ID# 72)
 , IsSlightlySimilar(Phrases, 'This is a similar phrase test', 73) as a73 -- QGramsDistance (ID# 73)
-, IsSlightlySimilar(Phrases, 'This is a similar phrase test', 74) as a74 -- MongeElkan (ID# 74)
+, IsSlightlySimilar(Phrases, 'This is a similar phrase test', 74) as a74 -- NGramsDistance (ID# 74)
+, IsSlightlySimilar(Phrases, 'This is a similar phrase test', 75) as a75 -- MongeElkan (ID# 75)
 , IsSlightlySimilar(Phrases, 'This is a similar phrase test', 96) as a96 -- PhraseTokenize (ID# 96)
 , IsSlightlySimilar(Phrases, 'This is a similar phrase test', 97) as a97 -- SimplePhraseTokenize (ID# 97)
 , IsSlightlySimilar(Phrases, 'This is a similar phrase test', 128) as a128 -- Fuzzy_Damlev (ID# 128)
@@ -68,7 +69,8 @@ select Phrases
 , IsSlightlySimilar(Phrases, 'This is a similar phrase test', 327) as a327 -- iBlockDistance (ID# 327)
 , IsSlightlySimilar(Phrases, 'This is a similar phrase test', 328) as a328 -- iMatchingCoefficient (ID# 328)
 , IsSlightlySimilar(Phrases, 'This is a similar phrase test', 329) as a329 -- iQGramsDistance (ID# 329)
-, IsSlightlySimilar(Phrases, 'This is a similar phrase test', 330) as a330 -- iMongeElkan (ID# 330)
+, IsSlightlySimilar(Phrases, 'This is a similar phrase test', 330) as a330 -- iNGramsDistance (ID# 330)
+, IsSlightlySimilar(Phrases, 'This is a similar phrase test', 331) as a331 -- iMongeElkan (ID# 331)
 FROM SimilarPhrase;
 -- Note: Case insensitive functions have an ID number greater than 256
 --       C++ functions have an ID number equal to or greater than  128 and less than 256

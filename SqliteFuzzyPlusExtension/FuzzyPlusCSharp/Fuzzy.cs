@@ -68,6 +68,7 @@ namespace FuzzyPlusCSharp
         public static StringMatchingAlgorithms.SmithWatermanGotoh smithWatermanGotoh = new StringMatchingAlgorithms.SmithWatermanGotoh();
         public static StringMatchingAlgorithms.SmithWatermanGotohWindowedAffine smithWatermanGotohWindowedAffine = new StringMatchingAlgorithms.SmithWatermanGotohWindowedAffine();
         public static StringMatchingAlgorithms.DiceSimilarity diceSimilarity = new StringMatchingAlgorithms.DiceSimilarity();
+        public static StringMatchingAlgorithms.NGramsDistance nGramsDistance = new StringMatchingAlgorithms.NGramsDistance();
         // Phonetic classes
         public static MatchRatingApproach matchRatingApproach = new MatchRatingApproach();
         public static Metaphone metaphone = new Metaphone();
@@ -110,9 +111,18 @@ namespace FuzzyPlusCSharp
             BlockDistance,
             MatchingCoefficient,
             QGramsDistance,
-
-            MongeElkan, // Hybrid Algorithms
+            NGramsDistance,
+            // TverskyIndex,
             
+            // Hybrid Algorithms
+            MongeElkan,
+            // SIFT4,
+            // GeneralizedCompressionDistance
+
+            // String Hash Based
+            // SimHash,
+            // MinHash,
+
             // Phrase token methods which are all case insensitive only
             PhraseTokenize = PHRASE_METHODS,
             SimplePhraseTokenize,
@@ -175,6 +185,7 @@ namespace FuzzyPlusCSharp
             iBlockDistance,
             iMatchingCoefficient,
             iQGramsDistance,
+            iNGramsDistance,
 
             // Hybrid Algorithms
             iMongeElkan,
@@ -405,6 +416,10 @@ namespace FuzzyPlusCSharp
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     diff = qGramsDistance.GetSimilarity(source1, source2);
                     break;
+                case StringMatchingAlgorithm_ID.NGramsDistance:
+                case StringMatchingAlgorithm_ID.iNGramsDistance:
+                    diff = nGramsDistance.Percentage(source1, source2, isCaseSensitive);
+                    break;
                 case StringMatchingAlgorithm_ID.SmithWaterman:
                 case StringMatchingAlgorithm_ID.iSmithWaterman:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
@@ -532,6 +547,9 @@ namespace FuzzyPlusCSharp
                 case StringMatchingAlgorithm_ID.iQGramsDistance:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
                     return qGramsDistance.GetSimilarity(source1, source2);
+                case StringMatchingAlgorithm_ID.NGramsDistance:
+                case StringMatchingAlgorithm_ID.iNGramsDistance:
+                    return nGramsDistance.Distance(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.SmithWaterman:
                 case StringMatchingAlgorithm_ID.iSmithWaterman:
                     FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
@@ -720,6 +738,9 @@ namespace FuzzyPlusCSharp
                 case StringMatchingAlgorithm_ID.QGramsDistance:
                 case StringMatchingAlgorithm_ID.iQGramsDistance:
                     return new StringMatchingAlgorithms.QGramsDistance();
+                case StringMatchingAlgorithm_ID.NGramsDistance:
+                case StringMatchingAlgorithm_ID.iNGramsDistance:
+                    return new StringMatchingAlgorithms.NGramsDistance();
                 case StringMatchingAlgorithm_ID.SmithWaterman:
                 case StringMatchingAlgorithm_ID.iSmithWaterman:
                     return new StringMatchingAlgorithms.SmithWaterman();
@@ -781,6 +802,11 @@ namespace FuzzyPlusCSharp
         {
             FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             return qGramsDistance.GetSimilarity(source1, source2);
+        }
+        public static double NGramsDistance(this string source1, string source2, bool isCaseSensitive = true)
+        {
+            FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
+            return nGramsDistance.Distance(source1, source2);
         }
         public static double SmithWaterman(this string source1, string source2, bool isCaseSensitive = true)
         {

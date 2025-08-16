@@ -27,7 +27,8 @@ select Name
 , IsVerySimilar(Name, 'David Jorge', 71) as a71 -- BlockDistance (ID# 71)
 , IsVerySimilar(Name, 'David Jorge', 72) as a72 -- MatchingCoefficient (ID# 72)
 , IsVerySimilar(Name, 'David Jorge', 73) as a73 -- QGramsDistance (ID# 73)
-, IsVerySimilar(Name, 'David Jorge', 74) as a74 -- MongeElkan (ID# 74)
+, IsVerySimilar(Name, 'David Jorge', 74) as a74 -- NGramsDistance (ID# 74)
+, IsVerySimilar(Name, 'David Jorge', 75) as a75 -- MongeElkan (ID# 75)
 , IsVerySimilar(Name, 'David Jorge', 96) as a96 -- PhraseTokenize (ID# 96)
 , IsVerySimilar(Name, 'David Jorge', 97) as a97 -- SimplePhraseTokenize (ID# 97)
 , IsVerySimilar(Name, 'David Jorge', 128) as a128 -- Fuzzy_Damlev (ID# 128)
@@ -68,7 +69,8 @@ select Name
 , IsVerySimilar(Name, 'David Jorge', 327) as a327 -- iBlockDistance (ID# 327)
 , IsVerySimilar(Name, 'David Jorge', 328) as a328 -- iMatchingCoefficient (ID# 328)
 , IsVerySimilar(Name, 'David Jorge', 329) as a329 -- iQGramsDistance (ID# 329)
-, IsVerySimilar(Name, 'David Jorge', 330) as a330 -- iMongeElkan (ID# 330)
+, IsVerySimilar(Name, 'David Jorge', 330) as a330 -- iNGramsDistance (ID# 330)
+, IsVerySimilar(Name, 'David Jorge', 331) as a331 -- iMongeElkan (ID# 331)
 FROM SimilarNames;
 -- Note: Case insensitive functions have an ID number greater than 256
 --       C++ functions have an ID number equal to or greater than  128 and less than 256

@@ -213,6 +213,21 @@ static void TestDistanceIsZeroForMatches()
     double db = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::MatchingCoefficient);
     double dc = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::MongeElkan);
     double dd = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::QGramsDistance);
+    double di = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::NGramsDistance);
+    di = Distance("ThisIsATestToSeeIfLengthChangesDistance", "ThatIsNotTheSameWord", SqliteFuzzyPlusExtension::NGramsDistance);
+    di = Distance("This is a test to see if length changes the distance", "It is not the same words", SqliteFuzzyPlusExtension::NGramsDistance);
+    di = Distance("David", "David", SqliteFuzzyPlusExtension::NGramsDistance);
+    di = Distance("David", "Davix", SqliteFuzzyPlusExtension::NGramsDistance);
+    di = Distance("David", "Davxx", SqliteFuzzyPlusExtension::NGramsDistance);
+    di = Distance("David", "Daxxx", SqliteFuzzyPlusExtension::NGramsDistance);
+    di = Distance("David", "Dxxxx", SqliteFuzzyPlusExtension::NGramsDistance);
+    di = Distance("David", "xxxxx", SqliteFuzzyPlusExtension::NGramsDistance);
+    di = Distance("David", "zzzzz", SqliteFuzzyPlusExtension::NGramsDistance);
+    di = Distance("David", "Jorge", SqliteFuzzyPlusExtension::NGramsDistance);
+    di = HowSimilar("David", "David", SqliteFuzzyPlusExtension::NGramsDistance);
+    di = HowSimilar("David", "Daved", SqliteFuzzyPlusExtension::NGramsDistance);
+    di = HowSimilar("David", "Davdi", SqliteFuzzyPlusExtension::NGramsDistance);
+    di = HowSimilar("David", "zzzzz", SqliteFuzzyPlusExtension::NGramsDistance);
     double de = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::SmithWaterman);
     double df = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::SmithWatermanGotoh);
     double dg = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::SmithWatermanGotohWindowedAffine);
@@ -249,7 +264,7 @@ static void TestDistanceIsZeroForMatches()
     double dy = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iSmithWaterman);
     double dz = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iSmithWatermanGotoh);
     double d_ = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iSmithWatermanGotohWindowedAffine);
-    double d__ = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iSmithWatermanGotohWindowedAffine);
+    d_ = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iSmithWatermanGotohWindowedAffine);
 }
 
 static void DoAssertions() {

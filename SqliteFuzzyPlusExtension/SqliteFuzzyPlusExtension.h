@@ -90,9 +90,18 @@ namespace SqliteFuzzyPlusExtension {
         C_ENUM_NAMING_CONVENTION__(BlockDistance),
         C_ENUM_NAMING_CONVENTION__(MatchingCoefficient),
         C_ENUM_NAMING_CONVENTION__(QGramsDistance),
+        C_ENUM_NAMING_CONVENTION__(NGramsDistance),
+        // NGramsDistance,
+        // TverskyIndex,
 
         // Hybrid Algorithms
         C_ENUM_NAMING_CONVENTION__(MongeElkan),
+        // SIFT4,
+        // GeneralizedCompressionDistance
+
+        // String Hash Based
+        // SimHash,
+        // MinHash,
 
         // Phrase token methods which are all case insensitive only
         C_ENUM_NAMING_CONVENTION__(PhraseTokenize) = PHRASE_METHODS,
