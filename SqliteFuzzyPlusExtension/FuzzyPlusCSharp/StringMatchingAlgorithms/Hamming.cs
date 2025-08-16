@@ -19,6 +19,8 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
         }
         public static int Distance(string source1, string source2, bool isCaseSensitive = true)
         {
+            if (source1.Length != source2.Length)
+                return -1;
             Fuzzy.FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             int distance = 0;
             for (int i = 0; i < source1.Length; i++)

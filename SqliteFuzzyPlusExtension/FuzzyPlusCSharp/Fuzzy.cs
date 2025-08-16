@@ -357,14 +357,14 @@ namespace FuzzyPlusCSharp
                     return StringMatchingAlgorithms.Hamming.Percentage(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.LongestCommonSubstringDistance:
                 case StringMatchingAlgorithm_ID.iLongestCommonSubstringDistance:
-                    diff = StringMatchingAlgorithms.LongestCommonSubstring.Distance(source1, source2, isCaseSensitive);
-                    sourceLength = Math.Min(source1.Length, source2.Length);
-                    break;
+                    return StringMatchingAlgorithms.LongestCommonSubstring.Percentage(source1, source2, isCaseSensitive);
+                    //sourceLength = Math.Min(source1.Length, source2.Length);
+                    //break;
                 case StringMatchingAlgorithm_ID.LongestCommonSubsequenceDistance:
                 case StringMatchingAlgorithm_ID.iLongestCommonSubsequenceDistance:
-                    diff = StringMatchingAlgorithms.LongestCommonSubsequence.Distance(source1, source2, isCaseSensitive);
-                    sourceLength = Math.Min(source1.Length, source2.Length);
-                    break;
+                    return StringMatchingAlgorithms.LongestCommonSubsequence.Percentage(source1, source2, isCaseSensitive);
+                    //sourceLength = Math.Min(source1.Length, source2.Length);
+                    //break;
                 case StringMatchingAlgorithm_ID.JaroDistance:
                 case StringMatchingAlgorithm_ID.iJaroDistance:
                     diff = StringMatchingAlgorithms.Jaro.Distance(source1, source2, isCaseSensitive);

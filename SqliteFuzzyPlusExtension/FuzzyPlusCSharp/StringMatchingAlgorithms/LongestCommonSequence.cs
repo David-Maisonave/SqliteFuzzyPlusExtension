@@ -56,6 +56,6 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
             int lcsLength = lcsRow[source2.Length];
             return lcsLength;
         }
-        public static double CalculateSimilarity(string source1, string source2, bool isCaseSensitive) => 1.0f - ((double)Difference(source1, source2, isCaseSensitive) / Math.Max(source1.Length, source2.Length));
+        public static double CalculateSimilarity(string source1, string source2, bool isCaseSensitive) => (double)Difference(source1, source2, isCaseSensitive) / Math.Max(source1.Length, source2.Length);
     }
 }

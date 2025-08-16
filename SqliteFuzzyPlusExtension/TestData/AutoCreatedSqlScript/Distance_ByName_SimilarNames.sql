@@ -27,7 +27,7 @@ select Name
 , Distance(Name, 'David Jorge', 'BlockDistance') as a71 -- BlockDistance (ID# 71)
 , Distance(Name, 'David Jorge', 'MatchingCoefficient') as a72 -- MatchingCoefficient (ID# 72)
 , Distance(Name, 'David Jorge', 'QGramsDistance') as a73 -- QGramsDistance (ID# 73)
---, Distance(Name, 'David Jorge', 'NGramsDistance') as a74 -- NGramsDistance (ID# 74)
+, Distance(Name, 'David Jorge', 'NGramsDistance') as a74 -- NGramsDistance (ID# 74)
 , Distance(Name, 'David Jorge', 'MongeElkan') as a75 -- MongeElkan (ID# 75)
 , Distance(Name, 'David Jorge', 'PhraseTokenize') as a96 -- PhraseTokenize (ID# 96)
 , Distance(Name, 'David Jorge', 'SimplePhraseTokenize') as a97 -- SimplePhraseTokenize (ID# 97)

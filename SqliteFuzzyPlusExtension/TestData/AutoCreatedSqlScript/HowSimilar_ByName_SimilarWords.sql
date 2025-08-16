@@ -1,4 +1,7 @@
 select Words
+, HowSimilar(Words, 'David', 'LongestCommonSequence') as a32 -- LongestCommonSequence (ID# 32)
+, HowSimilar(Words, 'David', 'LongestCommonSubstringDistance') as a35 -- LongestCommonSubstringDistance (ID# 35)
+, HowSimilar(Words, 'David', 'LongestCommonSubsequenceDistance') as a36 -- LongestCommonSubsequenceDistance (ID# 36)
 , HowSimilar(Words, 'David', 'UseDefaultStringMatchingAlgorithm') as a0 -- UseDefaultStringMatchingAlgorithm (ID# 0)
 , HowSimilar(Words, 'David', 'Levenshtein') as a1 -- Levenshtein (ID# 1)
 , HowSimilar(Words, 'David', 'DamerauLevenshtein') as a2 -- DamerauLevenshtein (ID# 2)
@@ -9,11 +12,8 @@ select Words
 , HowSimilar(Words, 'David', 'Levenshtein2Distance') as a7 -- Levenshtein2Distance (ID# 7)
 , HowSimilar(Words, 'David', 'ChapmanLengthDeviation') as a8 -- ChapmanLengthDeviation (ID# 8)
 , HowSimilar(Words, 'David', 'EuclideanDistance') as a9 -- EuclideanDistance (ID# 9)
-, HowSimilar(Words, 'David', 'LongestCommonSequence') as a32 -- LongestCommonSequence (ID# 32)
 , HowSimilar(Words, 'David', 'NeedlemanWunsch') as a33 -- NeedlemanWunsch (ID# 33)
 , HowSimilar(Words, 'David', 'RatcliffObershelpSimilarityDistance') as a34 -- RatcliffObershelpSimilarityDistance (ID# 34)
-, HowSimilar(Words, 'David', 'LongestCommonSubstringDistance') as a35 -- LongestCommonSubstringDistance (ID# 35)
-, HowSimilar(Words, 'David', 'LongestCommonSubsequenceDistance') as a36 -- LongestCommonSubsequenceDistance (ID# 36)
 , HowSimilar(Words, 'David', 'SmithWaterman') as a37 -- SmithWaterman (ID# 37)
 , HowSimilar(Words, 'David', 'SmithWatermanGotoh') as a38 -- SmithWatermanGotoh (ID# 38)
 , HowSimilar(Words, 'David', 'SmithWatermanGotohWindowedAffine') as a39 -- SmithWatermanGotohWindowedAffine (ID# 39)
@@ -71,7 +71,9 @@ select Words
 , HowSimilar(Words, 'David', 'iQGramsDistance') as a329 -- iQGramsDistance (ID# 329)
 , HowSimilar(Words, 'David', 'iNGramsDistance') as a330 -- iNGramsDistance (ID# 330)
 , HowSimilar(Words, 'David', 'iMongeElkan') as a331 -- iMongeElkan (ID# 331)
-FROM SimilarWords;
+FROM SimilarWords
+--where a32 <> a36
+;
 -- Note: Case insensitive functions have an ID number greater than 256
 --       C++ functions have an ID number equal to or greater than  128 and less than 256
 --       Tokenize functions have an ID number equal to or greater than  64 and less than 96
