@@ -15,7 +15,7 @@
 - Added function EnPhoneticDistance which is functional when downloading SqliteFuzzyPlusExtensionWithMsPhoneticMatching.
 ### 0.1.3
 - Added NGramsDistance
-- Resorted enums in order of types (Edit Distance, Sequence Alignment, Token Based, and Hybrid Algorithms)
+- Resorted enum's in order of types (Edit Distance, Sequence Alignment, Token Based, and Hybrid Algorithms)
 - Made SqliteFuzzyPlusExtension C language compatible. Changed the main header file and added extern "C" to all the C compatible functions.
 - Added C language project (UnitTestConsole_C_Runner) for test purposes.
 - Updated enum's in SqliteFuzzyPlusExtension.h with the enum's in Fuzzy.cs.

@@ -318,8 +318,6 @@ namespace FuzzyPlusCSharp
             IDistance i = GetIDistance(stringMatchingAlgorithm);
             if (i != null)
                 return i.Percentage(source1, source2, isCaseSensitive);
-            double sourceLength = Math.Max(source1.Length, source2.Length);
-            double diff;
             switch (stringMatchingAlgorithm) 
             {
                 case StringMatchingAlgorithm_ID.Levenshtein:
@@ -421,7 +419,6 @@ namespace FuzzyPlusCSharp
                 default:
                     return StringMatchingAlgorithms.DamerauLevenshtein.Percentage(source1, source2, isCaseSensitive);
             }
-            return diff == 0 ? 1.0f : (sourceLength - diff) / sourceLength;
         }
         public static double Distance(string source1, string source2, StringMatchingAlgorithm_ID stringMatchingAlgorithm = StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm)
         {
