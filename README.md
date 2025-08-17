@@ -48,7 +48,7 @@ Both the FuzzyPlusCSharp library and the SqliteFuzzyPlusExtension library can be
 See [UsingFuzzyFunctionsOutsideSQLite.md](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/UsingFuzzyFunctionsOutsideSQLite.md) for more details.
 
 # Function List
-## Fuzzy Distance Functions
+## Fuzzy String Matching Algorithms
 - Edit Distance Based Methods
   - [Levenshtein](https://en.wikipedia.org/wiki/Levenshtein_distance) - (alias = Lev)
   - [Levenshtein2Distance](https://en.wikipedia.org/wiki/Levenshtein_distance) - (alias = Lev2)
