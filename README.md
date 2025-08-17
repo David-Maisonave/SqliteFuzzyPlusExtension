@@ -83,6 +83,7 @@ See [UsingFuzzyFunctionsOutsideSQLite.md](https://github.com/David-Maisonave/Sql
 - [OverlapCoefficientDistance](https://en.wikipedia.org/wiki/Overlap_coefficient) - [more](https://wiki.melissadata.com/index.php?title=Matchcode_Optimization:Overlap_Coefficient) - (alias = OverlapCoef)
 - [PhraseSimplifiedDiff](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#PhraseSimplifiedDiff) - (alias = PhraseDiff)
 - [QGramsDistance](https://tilores.io/q-gram-algorithm-online-tool)
+- [NGramsDistance](https://github.com/Dandraka/FuzzySubstringSearch)
 - [RatcliffObershelpSimilarityDistance](https://distancia.readthedocs.io/en/latest/Ratcliff) - (alias = Ratcliff)
 - [SmithWaterman](https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm)
 - [SmithWatermanGotoh](https://wiki.melissadata.com/index.php?title=Matchcode_Optimization:Smith-Waterman-Gotoh)
