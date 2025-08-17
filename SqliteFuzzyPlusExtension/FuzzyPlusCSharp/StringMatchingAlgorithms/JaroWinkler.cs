@@ -24,7 +24,7 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
         /// </returns>
         public static double Percentage(string source1, string source2, bool isCaseSensitive = true)
         {
-            return 1.0f - Distance(source1, source2, isCaseSensitive);
+            return Distance(source1, source2, isCaseSensitive);
         }
         /// The Winkler modification will not be applied unless the percent match was at or above the JaroWinklerWeightThreshold percent without the modification. Winkler's paper used a default value of 0.7
         private static readonly double JaroWinklerWeightThreshold = 0.7f;

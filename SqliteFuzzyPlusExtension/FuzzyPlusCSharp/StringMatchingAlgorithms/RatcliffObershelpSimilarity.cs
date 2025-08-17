@@ -16,7 +16,8 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
         public static double Percentage(this string source1, string source2, bool isCaseSensitive = true)
         {
             Fuzzy.FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
-            return 1.0f - (double)Distance(source1, source2);
+            return (double)Distance(source1, source2);
+            //return 1.0f - (double)Distance(source1, source2);
         }
         public static double Distance(this string source1, string source2, bool isCaseSensitive)
         {

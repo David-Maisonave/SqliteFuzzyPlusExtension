@@ -123,11 +123,12 @@ static FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID GetStringMatchingAlgor
 
 static double HowSimilar(std::string source1, std::string source2, FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID stringMatchingAlgorithm = FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::UseDefaultStringMatchingAlgorithm)
 {
+    String^ s1;
+    String^ s2;
     double length = (double)max(source1.length(), source2.length());
     switch (stringMatchingAlgorithm) 
     {
     case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Damlev:
-    default:
         return GetPercentage((double)damerau_levenshtein(source1.c_str(), source2.c_str()), length);
     case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Hamming:
         return GetPercentage((double)hamming(source1.c_str(), source2.c_str()), length);
@@ -145,6 +146,10 @@ static double HowSimilar(std::string source1, std::string source2, FuzzyPlusCSha
         return GetPercentage(Edlib_Distance(source1.c_str(), source2.c_str(), true), length);
     case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::iEdlibDistance:
         return GetPercentage(Edlib_Distance(source1.c_str(), source2.c_str(), false), length);
+    default:
+        s1 = gcnew String(source1.c_str());
+        s2 = gcnew String(source2.c_str());
+        return FuzzyPlusCSharp::Fuzzy::HowSimilar(s1, s1, (int)stringMatchingAlgorithm);
     }
     return 1.0f;
 }

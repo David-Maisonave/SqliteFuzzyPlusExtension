@@ -37,8 +37,12 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
                     ++misMatchCount;
             return getDistance ? misMatchCount : (double)misMatchCount / Math.Max(list1.Length, list2.Length);
         }
-        public static double Percentage(string source1, string source2, bool isCaseSensitive = true, bool simplify = false, bool insertSpacesBetweenCapitalLetters = true)=>
-            Distance(source1, source2, isCaseSensitive, simplify, insertSpacesBetweenCapitalLetters, false);
+        public static double Percentage(string source1, string source2, bool isCaseSensitive = true, bool simplify = false, bool insertSpacesBetweenCapitalLetters = true)
+        {
+            double diff = Distance(source1, source2, isCaseSensitive, simplify, insertSpacesBetweenCapitalLetters, false);
+            double sourceLength = Math.Max(Fuzzy.GetKeywordList(ref source1).Length, Fuzzy.GetKeywordList(ref source2).Length);
+            return diff == 0 ? 1.0f : (sourceLength - diff) / sourceLength;
+        }
     }
     public class ISimplePhraseTokenize : FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {
@@ -48,6 +52,6 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
     public static class SimplePhraseTokenize
     {
         public static double Distance(string source1, string source2, bool isCaseSensitive = true) => PhraseTokenize.Distance(source1, source2, isCaseSensitive, true,true, true);
-        public static double Percentage(string source1, string source2, bool isCaseSensitive = true) => PhraseTokenize.Distance(source1, source2, isCaseSensitive, true, true, false);
+        public static double Percentage(string source1, string source2, bool isCaseSensitive = true) => PhraseTokenize.Percentage(source1, source2, isCaseSensitive, true, true);
     }
 }

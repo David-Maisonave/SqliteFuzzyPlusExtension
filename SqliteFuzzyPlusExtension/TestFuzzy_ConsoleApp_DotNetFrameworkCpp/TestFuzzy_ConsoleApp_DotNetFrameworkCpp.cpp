@@ -267,6 +267,85 @@ static void TestDistanceIsZeroForMatches()
     d_ = Distance("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iSmithWatermanGotohWindowedAffine);
 }
 
+static void TestHowSimilar()
+{
+    double d0 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::Levenshtein);
+    double d1 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::LongestCommonSequence);
+    double d2 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::NeedlemanWunsch);
+    double d3 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::HammingDistance);
+    double d4 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::JaroDistance);
+    double d5 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::NormalizedLevenshteinDistance);
+    double d6 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::Levenshtein2Distance);
+    double d7 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::BlockDistance);
+    double d8 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::ChapmanLengthDeviation);
+    double d9 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::ChapmanMeanLength); //(0.164720987904));
+    double da = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::EuclideanDistance);
+    double db = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::MatchingCoefficient);
+    double dc = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::MongeElkan);
+    double dd = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::QGramsDistance);
+    double di = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::NGramsDistance);
+    double de = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::SmithWaterman);
+    double df = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::SmithWatermanGotoh);
+    double dg = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::SmithWatermanGotohWindowedAffine);
+    double dh = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::CosineSimilarity);
+    double dj = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::JaccardSimilarity);
+    double dk = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::Fuzzy_Jaro);
+    double dl = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iLongestCommonSequence);
+    double dm = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iNeedlemanWunsch);
+    double dn = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iHammingDistance);
+    double dO = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iNormalizedLevenshteinDistance);
+    double dp = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iLevenshtein2Distance);
+    double dq = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iCosineSimilarity);
+    double dr = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iJaccardSimilarity);
+    double ds = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iBlockDistance);
+    double dt = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iChapmanLengthDeviation);
+    double du = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iEuclideanDistance);
+    double dv = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iMatchingCoefficient);
+    double dw = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iMongeElkan);
+    double dx = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iQGramsDistance);
+    double dy = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iSmithWaterman);
+    double dz = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iSmithWatermanGotoh);
+    double d_ = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iSmithWatermanGotohWindowedAffine);
+    d_ = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iSmithWatermanGotohWindowedAffine);
+}
+
+static void TestHowSimilar2()
+{
+    double d0 = HowSimilar("David Jorge", "David Jorge", "JaroWinkler");
+    double d1 = HowSimilar("David Jorge", "David Jorge", "JaroDistance");
+    double d2 = HowSimilar("David Jorge", "David Jorge", "RatcliffObershelpSimilarityDistance");
+    double d3 = HowSimilar("David Jorge", "David Jorge", "JaccardIndex");
+    double d4 = HowSimilar("David Jorge", "David Jorge", "TanimotoCoefficientDistance");
+    double d5 = HowSimilar("David Jorge", "David Jorge", "OverlapCoefficient");
+    double d6 = HowSimilar("David Jorge", "David Jorge", "SorensenDiceDistance");
+    double d7 = HowSimilar("David Jorge", "David Jorge", "Fuzzy_Editdist");
+    double d8 = HowSimilar("David Jorge", "David Jorge", "iJaroWinkler");
+    double d9 = HowSimilar("David Jorge", "David Jorge", "iJaroDistance");
+    double da = HowSimilar("David Jorge", "David Jorge", "iRatcliffObershelpSimilarityDistance");
+    double db = HowSimilar("David Jorge", "David Jorge", "iJaccardIndex");
+    double dc = HowSimilar("David Jorge", "David Jorge", "iTanimotoCoefficientDistance");
+    double d_ = HowSimilar("David Jorge", "David Jorge", "iSmithWatermanGotohWindowedAffine");
+}
+
+
+static void TestHowSimilar3()
+{
+    double d0 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::JaroWinkler);
+    double d1 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::JaroDistance);
+    double d2 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::RatcliffObershelpSimilarityDistance);
+    double d3 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::JaccardIndex);
+    double d4 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::TanimotoCoefficientDistance);
+    double d5 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::OverlapCoefficient);
+    double d6 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::SorensenDiceDistance);
+    double d7 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::Fuzzy_Editdist);
+    double d8 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iJaroWinkler);
+    double d9 = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iJaroDistance);
+    double da = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iRatcliffObershelpSimilarityDistance);
+    double db = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iJaccardIndex);
+    double dc = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iTanimotoCoefficientDistance);
+    double d_ = HowSimilar("David Jorge", "David Jorge", SqliteFuzzyPlusExtension::iSmithWatermanGotohWindowedAffine);
+}
+
 static void DoAssertions() {
     // First make sure C# enums match the C/C++ enums. Since the enums are not the same code, need to make sure that any change made to C# code is made to the C/C++ header.
     assert(SqliteFuzzyPlusExtension::Levenshtein == GetStringMatchingAlgorithmID("Levenshtein"));
@@ -284,6 +363,9 @@ static void DoAssertions() {
 int main() //array<System::String ^> ^args)
 {
     DoAssertions();
+    TestHowSimilar2();
+    TestHowSimilar3();
+    TestHowSimilar();
     TestDistanceIsZeroForMatches();
     CreateUnitTestSqlFiles();
     TestPhonetics(NULL);

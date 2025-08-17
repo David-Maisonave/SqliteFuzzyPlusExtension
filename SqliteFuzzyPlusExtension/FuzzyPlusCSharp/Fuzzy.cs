@@ -315,18 +315,19 @@ namespace FuzzyPlusCSharp
             if (stringMatchingAlgorithm == StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm)
                 stringMatchingAlgorithm = DefaultStringMatchingAlgorithm;
             bool isCaseSensitive = IsCaseSensitive(stringMatchingAlgorithm);
+            IDistance i = GetIDistance(stringMatchingAlgorithm);
+            if (i != null)
+                return i.Percentage(source1, source2, isCaseSensitive);
             double sourceLength = Math.Max(source1.Length, source2.Length);
             double diff;
             switch (stringMatchingAlgorithm) 
             {
                 case StringMatchingAlgorithm_ID.Levenshtein:
                 case StringMatchingAlgorithm_ID.iLevenshtein:
-                    diff = StringMatchingAlgorithms.Levenshtein.Distance(source1, source2, isCaseSensitive);
-                    break;
+                    return StringMatchingAlgorithms.Levenshtein.Percentage(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.JaroWinkler:
                 case StringMatchingAlgorithm_ID.iJaroWinkler:
-                    diff = StringMatchingAlgorithms.JaroWinkler.Percentage(source1, source2, isCaseSensitive);
-                    break;
+                    return StringMatchingAlgorithms.JaroWinkler.Percentage(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.CosineSimilarity:
                 case StringMatchingAlgorithm_ID.iCosineSimilarity:
                     return StringMatchingAlgorithms.CosineSimilarity.Percentage(source1, source2, isCaseSensitive);
@@ -341,8 +342,7 @@ namespace FuzzyPlusCSharp
                     return StringMatchingAlgorithms.JaccardIndex.Percentage(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.OverlapCoefficient:
                 case StringMatchingAlgorithm_ID.iOverlapCoefficient:
-                    diff = StringMatchingAlgorithms.OverlapCoefficient.Distance(source1, source2, isCaseSensitive);
-                    break;
+                    return StringMatchingAlgorithms.OverlapCoefficient.Percentage(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.NeedlemanWunsch:
                 case StringMatchingAlgorithm_ID.iNeedlemanWunsch:
                     return StringMatchingAlgorithms.NeedlemanWunsch.Percentage(source1, source2, isCaseSensitive);
@@ -358,17 +358,12 @@ namespace FuzzyPlusCSharp
                 case StringMatchingAlgorithm_ID.LongestCommonSubstringDistance:
                 case StringMatchingAlgorithm_ID.iLongestCommonSubstringDistance:
                     return StringMatchingAlgorithms.LongestCommonSubstring.Percentage(source1, source2, isCaseSensitive);
-                    //sourceLength = Math.Min(source1.Length, source2.Length);
-                    //break;
                 case StringMatchingAlgorithm_ID.LongestCommonSubsequenceDistance:
                 case StringMatchingAlgorithm_ID.iLongestCommonSubsequenceDistance:
                     return StringMatchingAlgorithms.LongestCommonSubsequence.Percentage(source1, source2, isCaseSensitive);
-                    //sourceLength = Math.Min(source1.Length, source2.Length);
-                    //break;
                 case StringMatchingAlgorithm_ID.JaroDistance:
                 case StringMatchingAlgorithm_ID.iJaroDistance:
-                    diff = StringMatchingAlgorithms.Jaro.Distance(source1, source2, isCaseSensitive);
-                    break;
+                    return StringMatchingAlgorithms.Jaro.Percentage(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.NormalizedLevenshteinDistance:
                 case StringMatchingAlgorithm_ID.iNormalizedLevenshteinDistance:
                     return StringMatchingAlgorithms.NormalizedLevenshtein.Percentage(source1, source2, isCaseSensitive);
@@ -383,75 +378,48 @@ namespace FuzzyPlusCSharp
                     return StringMatchingAlgorithms.EditDistanceWithWildCard.Percentage(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.BlockDistance:
                 case StringMatchingAlgorithm_ID.iBlockDistance:
-                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
-                    diff = blockDistance.GetSimilarity(source1, source2);
-                    break;
+                    return blockDistance.Percentage(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.ChapmanLengthDeviation:
                 case StringMatchingAlgorithm_ID.iChapmanLengthDeviation:
-                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
-                    diff = chapmanLengthDeviation.GetSimilarity(source1, source2);
-                    break;
+                    return chapmanLengthDeviation.Percentage(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.ChapmanMeanLength:
                 case StringMatchingAlgorithm_ID.iChapmanMeanLength:
-                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
-                    diff = chapmanMeanLength.GetSimilarity(source1, source2);
-                    break;
+                    return chapmanMeanLength.Percentage(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.EuclideanDistance:
                 case StringMatchingAlgorithm_ID.iEuclideanDistance:
-                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
-                    diff = euclideanDistance.GetSimilarity(source1, source2);
-                    break;
+                    return euclideanDistance.Percentage(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.MatchingCoefficient:
                 case StringMatchingAlgorithm_ID.iMatchingCoefficient:
-                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
-                    diff = matchingCoefficient.GetSimilarity(source1, source2);
-                    break;
+                    return matchingCoefficient.Percentage(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.MongeElkan:
                 case StringMatchingAlgorithm_ID.iMongeElkan:
-                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
-                    diff = mongeElkan.GetSimilarity(source1, source2);
-                    break;
+                    return mongeElkan.Percentage(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.QGramsDistance:
                 case StringMatchingAlgorithm_ID.iQGramsDistance:
-                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
-                    diff = qGramsDistance.GetSimilarity(source1, source2);
-                    break;
+                    return qGramsDistance.Percentage(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.NGramsDistance:
                 case StringMatchingAlgorithm_ID.iNGramsDistance:
-                    diff = nGramsDistance.Percentage(source1, source2, isCaseSensitive);
-                    break;
+                    return nGramsDistance.Percentage(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.SmithWaterman:
                 case StringMatchingAlgorithm_ID.iSmithWaterman:
-                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
-                    diff = smithWaterman.GetSimilarity(source1, source2);
-                    break;
+                    return smithWaterman.Percentage(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.SmithWatermanGotoh:
                 case StringMatchingAlgorithm_ID.iSmithWatermanGotoh:
-                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
-                    diff = smithWatermanGotoh.GetSimilarity(source1, source2);
-                    break;
+                    return smithWatermanGotoh.Percentage(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.SmithWatermanGotohWindowedAffine:
                 case StringMatchingAlgorithm_ID.iSmithWatermanGotohWindowedAffine:
-                    FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
-                    diff = smithWatermanGotohWindowedAffine.GetSimilarity(source1, source2);
-                    break;
+                    return smithWatermanGotohWindowedAffine.Percentage(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.DiceSimilarity:
                 case StringMatchingAlgorithm_ID.iDiceSimilarity:
-                    diff = DiceSimilarity(source1, source2, isCaseSensitive);
-                    break;
+                    return diceSimilarity.Percentage(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.PhraseTokenize:
-                    diff = StringMatchingAlgorithms.PhraseTokenize.Distance(source1, source2);
-                    sourceLength = Math.Max(GetKeywordList(ref source1).Length, GetKeywordList(ref source2).Length);
-                    break;
+                    return StringMatchingAlgorithms.PhraseTokenize.Percentage(source1, source2);
                 case StringMatchingAlgorithm_ID.SimplePhraseTokenize:
-                    diff = StringMatchingAlgorithms.SimplePhraseTokenize.Distance(source1, source2);
-                    sourceLength = Math.Max(GetKeywordList(ref source1).Length, GetKeywordList(ref source2).Length);
-                    break;
+                    return StringMatchingAlgorithms.SimplePhraseTokenize.Percentage(source1, source2);
                 case StringMatchingAlgorithm_ID.DamerauLevenshtein:
                 case StringMatchingAlgorithm_ID.iDamerauLevenshtein:
                 default:
-                    diff = StringMatchingAlgorithms.DamerauLevenshtein.Distance(source1, source2, isCaseSensitive);
-                    break;
+                    return StringMatchingAlgorithms.DamerauLevenshtein.Percentage(source1, source2, isCaseSensitive);
             }
             return diff == 0 ? 1.0f : (sourceLength - diff) / sourceLength;
         }
@@ -563,7 +531,7 @@ namespace FuzzyPlusCSharp
                     return smithWatermanGotohWindowedAffine.Distance(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.DiceSimilarity:
                 case StringMatchingAlgorithm_ID.iDiceSimilarity:
-                    return DiceSimilarity(source1, source2, isCaseSensitive);
+                    return diceSimilarity.Distance(source1, source2, isCaseSensitive);
                 case StringMatchingAlgorithm_ID.PhraseTokenize:
                     return StringMatchingAlgorithms.PhraseTokenize.Distance(source1, source2);
                 case StringMatchingAlgorithm_ID.SimplePhraseTokenize:

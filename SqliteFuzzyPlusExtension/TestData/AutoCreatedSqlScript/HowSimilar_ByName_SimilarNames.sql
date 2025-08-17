@@ -1,5 +1,4 @@
 select Name
-, HowSimilar(Name, 'David Jorge', 'LongestCommonSubstringDistance') as a35 -- LongestCommonSubstringDistance (ID# 35)
 , HowSimilar(Name, 'David Jorge', 'UseDefaultStringMatchingAlgorithm') as a0 -- UseDefaultStringMatchingAlgorithm (ID# 0)
 , HowSimilar(Name, 'David Jorge', 'Levenshtein') as a1 -- Levenshtein (ID# 1)
 , HowSimilar(Name, 'David Jorge', 'DamerauLevenshtein') as a2 -- DamerauLevenshtein (ID# 2)
@@ -13,6 +12,7 @@ select Name
 , HowSimilar(Name, 'David Jorge', 'LongestCommonSequence') as a32 -- LongestCommonSequence (ID# 32)
 , HowSimilar(Name, 'David Jorge', 'NeedlemanWunsch') as a33 -- NeedlemanWunsch (ID# 33)
 , HowSimilar(Name, 'David Jorge', 'RatcliffObershelpSimilarityDistance') as a34 -- RatcliffObershelpSimilarityDistance (ID# 34)
+, HowSimilar(Name, 'David Jorge', 'LongestCommonSubstringDistance') as a35 -- LongestCommonSubstringDistance (ID# 35)
 , HowSimilar(Name, 'David Jorge', 'LongestCommonSubsequenceDistance') as a36 -- LongestCommonSubsequenceDistance (ID# 36)
 , HowSimilar(Name, 'David Jorge', 'SmithWaterman') as a37 -- SmithWaterman (ID# 37)
 , HowSimilar(Name, 'David Jorge', 'SmithWatermanGotoh') as a38 -- SmithWatermanGotoh (ID# 38)
