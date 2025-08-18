@@ -59,7 +59,7 @@ See [UsingFuzzyFunctionsOutsideSQLite.md](https://github.com/David-Maisonave/Sql
   - [JaroDistance](https://en.wikipedia.org/wiki/Jaro-Winkler_distance) - [more](https://wiki.melissadata.com/index.php?title=Matchcode_Optimization:Jaro) - (alias = Jaro)
   - [ChapmanLengthDeviation](https://github.com/kwunshing123/chapman-length-deviation)
   - [EuclideanDistance](https://en.wikipedia.org/wiki/Euclidean_distance) - [more](https://pro.arcgis.com/en/pro-app/3.3/tool-reference/spatial-analyst/understanding-euclidean-distance-analysis.htm)
-  - [ChapmanMeanLength](https://www.numberanalytics.com/blog/mastering-mean-length-utterance-language-sampling)
+  - [ChapmanMeanLength](https://www.numberanalytics.com/blog/mastering-mean-length-utterance-language-sampling) - This method does not give expected results, and is only here for testing and comparisons purposes.
   - [EdlibDistance](https://github.com/Martinsos/edlib) - (alias = Edlib)
   - [fuzzy_damlev](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#fuzzy_damlev) - (alias = dlevenshtein)
   - [fuzzy_editdist](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md#fuzzy_editdist) - (alias = edit_distance)
