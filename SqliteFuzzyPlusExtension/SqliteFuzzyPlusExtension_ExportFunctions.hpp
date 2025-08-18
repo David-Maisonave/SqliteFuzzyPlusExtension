@@ -73,7 +73,7 @@ extern "C"
         double DamerauLevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        double distance = FuzzyPlusCSharp::Fuzzy::DamerauLevenshteinDistance(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(FuzzyPlusCSharp::Fuzzy::DamerauLevenshteinDistance(source1, source2, isCaseSensitive));
         return distance;
     }
 
@@ -86,7 +86,7 @@ extern "C"
         double LevenshteinDistance(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        double distance = FuzzyPlusCSharp::Fuzzy::LevenshteinDistance(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(FuzzyPlusCSharp::Fuzzy::LevenshteinDistance(source1, source2, isCaseSensitive));
         return distance;
     }
 
@@ -99,14 +99,14 @@ extern "C"
         double BlockDistance(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Fuzzy::BlockDistance(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(FuzzyPlusCSharp::Fuzzy::BlockDistance(source1, source2, isCaseSensitive));
     }
     __declspec(dllexport)
         double HammingDistance(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
         double distance = FuzzyPlusCSharp::Fuzzy::HammingDistance(source1, source2, isCaseSensitive);
-        return distance;
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
@@ -119,7 +119,7 @@ extern "C"
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
         double distance = FuzzyPlusCSharp::Fuzzy::JaccardDistance(source1, source2, isCaseSensitive);
-        return distance;
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
@@ -127,7 +127,7 @@ extern "C"
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
         double distance = FuzzyPlusCSharp::Fuzzy::JaroDistance(source1, source2, isCaseSensitive);
-        return distance;
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
@@ -135,7 +135,7 @@ extern "C"
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
         double distance = FuzzyPlusCSharp::Fuzzy::JaroWinklerDistance(source1, source2, isCaseSensitive);
-        return distance;
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
@@ -143,7 +143,7 @@ extern "C"
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
         double distance = FuzzyPlusCSharp::Fuzzy::Levenshtein2Distance(source1, source2, isCaseSensitive);
-        return distance;
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
@@ -151,7 +151,7 @@ extern "C"
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
         double distance = FuzzyPlusCSharp::Fuzzy::LongestCommonSubsequenceDistance(source1, source2, isCaseSensitive);
-        return distance;
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
@@ -159,7 +159,7 @@ extern "C"
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
         double distance = FuzzyPlusCSharp::Fuzzy::LongestCommonSubstringDistance(source1, source2, isCaseSensitive);
-        return distance;
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
@@ -167,7 +167,7 @@ extern "C"
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
         double distance = FuzzyPlusCSharp::Fuzzy::NormalizedLevenshteinDistance(source1, source2, isCaseSensitive);
-        return distance;
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
@@ -175,7 +175,7 @@ extern "C"
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
         double distance = FuzzyPlusCSharp::Fuzzy::OverlapCoefficientDistance(source1, source2, isCaseSensitive);
-        return distance;
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
@@ -183,7 +183,7 @@ extern "C"
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
         double distance = FuzzyPlusCSharp::Fuzzy::PhraseSimplifiedDiff(source1, source2);
-        return distance;
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
@@ -191,7 +191,7 @@ extern "C"
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
         double distance = FuzzyPlusCSharp::Fuzzy::RatcliffObershelpSimilarityDistance(source1, source2, isCaseSensitive);
-        return distance;
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
@@ -199,7 +199,7 @@ extern "C"
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
         double distance = FuzzyPlusCSharp::Fuzzy::SorensenDiceDistance(source1, source2, isCaseSensitive);
-        return distance;
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
@@ -207,126 +207,143 @@ extern "C"
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
         double distance = FuzzyPlusCSharp::Fuzzy::TanimotoCoefficientDistance(source1, source2, isCaseSensitive);
-        return distance;
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
         double NeedlemanWunsch(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Fuzzy::NeedlemanWunsch(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::NeedlemanWunsch(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
         double JaccardIndex(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Fuzzy::JaccardIndex(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::JaccardIndex(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
         double ChapmanLengthDeviation(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Fuzzy::ChapmanLengthDeviation(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::ChapmanLengthDeviation(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
         double ChapmanMeanLength(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Fuzzy::ChapmanMeanLength(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::ChapmanMeanLength(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
         double EuclideanDistance(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Fuzzy::EuclideanDistance(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::EuclideanDistance(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
         double MatchingCoefficient(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Fuzzy::MatchingCoefficient(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::MatchingCoefficient(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
         double MongeElkan(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Fuzzy::MongeElkan(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::MongeElkan(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
         double QGramsDistance(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Fuzzy::QGramsDistance(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::QGramsDistance(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
         double SmithWaterman(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Fuzzy::SmithWaterman(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::SmithWaterman(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
         double SmithWatermanGotoh(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Fuzzy::SmithWatermanGotoh(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::SmithWatermanGotoh(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
         double SmithWatermanGotohWindowedAffine(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Fuzzy::SmithWatermanGotohWindowedAffine(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::SmithWatermanGotohWindowedAffine(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
         double CosineSimilarity(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Fuzzy::CosineSimilarity(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::CosineSimilarity(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
         double JaccardSimilarity(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Fuzzy::JaccardSimilarity(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::JaccardSimilarity(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
         double LongestCommonSequence(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Fuzzy::LongestCommonSequence(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::LongestCommonSequence(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
         double DiceSimilarity(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Fuzzy::DiceSimilarity(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::DiceSimilarity(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
         double PhraseTokenize(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Fuzzy::PhraseTokenize(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::PhraseTokenize(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
         double SimplePhraseTokenize(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        return FuzzyPlusCSharp::Fuzzy::SimplePhraseTokenize(source1, source2, isCaseSensitive);
+        double distance = FuzzyPlusCSharp::Fuzzy::SimplePhraseTokenize(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
@@ -422,7 +439,8 @@ extern "C"
 
     __declspec(dllexport)
         double fuzzy_jarowin(const char* source1, const char* source2) {
-        return jaro_winkler(source1, source2);
+        double distance = jaro_winkler(source1, source2);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     }
 
     __declspec(dllexport)
@@ -477,6 +495,12 @@ extern "C"
     __declspec(dllexport)
         int GetDefaultSoundMethod() {
         return (int)FuzzyPlusCSharp::Fuzzy::DefaultSameSoundMethod;
+    }
+
+    __declspec(dllexport)
+        int SetPercentDecimalDigits(int precision) {
+        FuzzyPlusCSharp::Fuzzy::SetPercentDecimalDigits(precision);
+        return (int)FuzzyPlusCSharp::Fuzzy::PercentDecimalDigits;
     }
 
     __declspec(dllexport)

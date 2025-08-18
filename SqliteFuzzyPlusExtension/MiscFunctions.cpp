@@ -166,5 +166,5 @@ void MinLength(sqlite3_context* context, int argc, sqlite3_value** argv) {
 double GetPercentage(double distance, double length, double full)
 {
     double difference = distance / length;
-    return full - difference;
+    return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(full - difference);
 }

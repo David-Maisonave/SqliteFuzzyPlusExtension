@@ -17,15 +17,32 @@ static void CreateScriptSimilarWords(string rootDir, string fieldName, string ta
     for (int i = 0; i < (int)FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::iEdlibDistance; ++i)
     {
         CString d = FuzzyPlusCSharp::Fuzzy::GetStringMatchingAlgorithmName(i);
-        string distanceName = CW2A(d).operator char *();
-        if (std::isdigit(distanceName[0]))
+        string fuzzyFunctionName = CW2A(d).operator char *();
+        if (std::isdigit(fuzzyFunctionName[0]))
             continue;
         f << ", " << FunctionName << "(" << fieldName << ", " << CompareTo << ", ";
         if (byName)
-            f << "'" << distanceName << "'";
+            f << "'" << fuzzyFunctionName << "'";
         else
             f << i;
-        f << ") as a" << i << " -- " << distanceName << " (ID# " << i << ")" << endl;
+        f << ") as a" << i << " -- " << fuzzyFunctionName << " (ID# " << i << ")" << endl;
+    }
+    if ((FunctionName == "IsSimilar" || FunctionName == "IsVerySimilar") &&
+        (table == "SimilarNames" || table == "SimilarWords"))
+    {
+        for (int i = (int)FuzzyPlusCSharp::Fuzzy::SameSoundMethod::SoundexPhonix; i < FuzzyPlusCSharp::Fuzzy::MICROSOFT_PHONETIC_METHODS + 1; ++i)
+        {
+            CString d = FuzzyPlusCSharp::Fuzzy::GetSameSoundMethodName(i);
+            string fuzzyFunctionName = CW2A(d).operator char *();
+            if (std::isdigit(fuzzyFunctionName[0]))
+                continue;
+            f << ", " << FunctionName << "(" << fieldName << ", " << CompareTo << ", ";
+            if (byName)
+                f << "'" << fuzzyFunctionName << "'";
+            else
+                f << i;
+            f << ") as a" << i << " -- " << fuzzyFunctionName << " (ID# " << i << ")" << endl;
+        }
     }
     f << "FROM " << table << ";" << endl;
     f << "-- Note: Case insensitive functions have an ID number greater than " << FuzzyPlusCSharp::Fuzzy::CASE_INSENSITIVE << endl;
@@ -98,6 +115,8 @@ static void CreateUnitTestSqlFiles()
     CreateScriptSimilarWords(rootDir, "Name", "SimilarNames", "IsVerySimilar", "'David Jorge'");
     CreateScriptSimilarWords(rootDir, "Phrases", "SimilarPhrase", "IsVerySimilar", "'This is a similar phrase test'");
     CreateScriptSimilarWords(rootDir, "Words", "SimilarWords", "IsVerySimilar", "'David'");
+    CreateScriptSimilarWords(rootDir, "Name", "SimilarNames", "IsSimilar", "'David Jorge'");
+    CreateScriptSimilarWords(rootDir, "Words", "SimilarWords", "IsSimilar", "'David'");
 
     CreateScriptSimilarWords(rootDir, "Phrases", "SimilarPhrase", "IsSimilar", "'This is a similar phrase test'");
     CreateScriptSimilarWords(rootDir, "Phrases", "SimilarPhrase", "IsSomeWhatSimilar", "'This is a similar phrase test'");
@@ -117,6 +136,13 @@ static void CreateUnitTestSqlFiles()
 int main() //array<System::String ^> ^args)
 {
     CreateUnitTestSqlFiles();
+    int t = (int)FuzzyPlusCSharp::Fuzzy::GetStringMatchingAlgorithm("Levenshtein");
+    t = (int)FuzzyPlusCSharp::Fuzzy::GetStringMatchingAlgorithm("CaverPhonePhonix");
+    t = (int)FuzzyPlusCSharp::Fuzzy::GetStringMatchingAlgorithm("badname");
+
+    FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID s = FuzzyPlusCSharp::Fuzzy::GetStringMatchingAlgorithm("Levenshtein");
+    s = FuzzyPlusCSharp::Fuzzy::GetStringMatchingAlgorithm("CaverPhonePhonix");
+    s = FuzzyPlusCSharp::Fuzzy::GetStringMatchingAlgorithm("badname");
 
     const char* str1 = "Hello World";
     const char* str2 = "Hellx sorld";
@@ -143,6 +169,10 @@ int main() //array<System::String ^> ^args)
     unsigned __int64 i64_3 = NormalizeNum("123.4K");
     unsigned __int64 i64_4 = NormalizeNum("345.9K");
 
+    double exampleA = Distance("David", "David", SqliteFuzzyPlusExtension::EdlibDistance);
+    double exampleB = HowSimilar("David", "David", SqliteFuzzyPlusExtension::EdlibDistance);
+    double exampleC = Distance("David", "xxxxx", SqliteFuzzyPlusExtension::EdlibDistance);
+    double exampleD = HowSimilar("David", "xxxxx", SqliteFuzzyPlusExtension::EdlibDistance);
     double example1 = Distance("David", "David", SqliteFuzzyPlusExtension::Levenshtein);
     double example2 = Distance("David", "Davix", SqliteFuzzyPlusExtension::DamerauLevenshtein);
     double example3 = Distance("David", "Davxx", SqliteFuzzyPlusExtension::JaroWinkler);

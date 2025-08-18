@@ -169,11 +169,6 @@ namespace SqliteFuzzyPlusExtension {
         // Hybrid Algorithms
         iMongeElkan,
 
-        // ------------------------------------------------------------
-        // This function is NOT supported by CSharp Fuzzy class code, and is only here for C++ SqliteFuzzyPlusExtension usage.
-        iEdlibDistance = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(EdlibDistance),
-        // ------------------------------------------------------------
-
         // Bad distance methods (C# and C++)
         // These method(s) are only here for comparisons and testing purposes
         iChapmanMeanLength = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(ChapmanMeanLength),
@@ -229,6 +224,7 @@ extern "C" {
     int SetDefaultSameSoundMethod(int sameSoundMethod_ID);
     int SetDefaultSameSoundMethodByName(const char* sameSoundMethod_Name);
     int GetDefaultSoundMethod();
+    int SetPercentDecimalDigits(int precision);
     // C language code can simulate overloaded SameSound functions by using GetSameSoundMethodID and GetStringMatchingAlgorithmID
     // Example: SameSound("been", "being", GetSameSoundMethodID("SoundexPhonix"), GetStringMatchingAlgorithmID("Levenshtein"), 1);
     bool SameSound(const char* source1, const char* source2, int SameSoundMethod_Id, int StringMatchingAlgorithm_Id, bool isVerySimilar);

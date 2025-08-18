@@ -38,4 +38,12 @@
 - Changed enum SameSoundMethod so that the first enum function ID starts at 8192. This is to prepare the code for future development in which functions taking enum ID StringMatchingAlgorithm_ID can possibly also take the SameSoundMethod ID's without clashing with existing StringMatchingAlgorithm_ID.
 - Change to upper case letters for phonetic SQLean enum's to make them consistent with the SQLean StringMatchingAlgorithm_ID enum's.
 - Removed iEdlibDistance function for the purpose of consistency, since none of the other case insensitive enum's had an associated function.
+- Fixed bug in EdlibDistance which cause both Distance and HowSimilar to return incorrect results.
+- Added PercentDecimalDigits so percentage output has a max number of digits after decimal.
+  - Default percent decimal digits is 2.
+  - PercentDecimalDigits value can be changed by newly added function SetPercentDecimalDigits, which can be called from SQLite.
+- Replace C++ function macros with template functions for debugging purposes.
+- Removed enum iEdlibDistance because it can easily cause crash in C# code.\
+- Fixed bug causing crash when using C++ SQLean and Edlib functions with IsSimilar API's like IsSimilar, IsVerySimilar, IsSomeWhatSimilar, etc....
+### 0.1.5
 - 

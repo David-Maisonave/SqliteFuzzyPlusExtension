@@ -1,7 +1,10 @@
 ﻿using FuzzyPlusCSharp.StringMatchingAlgorithms;
+
 using Phonix;
+
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -48,7 +51,7 @@ namespace FuzzyPlusCSharp
         public const int MICROSOFT_PHONETIC_METHODS = PHONETIC_ALGORITHMS + 64;
         public const int CPP_ONLY_PHONETIC_ALGORITHMS = PHONETIC_ALGORITHMS + CPP_ONLY_FUZZY;
         #endregion Constants
-        #region Distance and Phonetic class members
+        #region Distance, Phonetic class, and misc variable members
         // Distance classes
         public static StringMatchingAlgorithms.BlockDistance blockDistance = new StringMatchingAlgorithms.BlockDistance();
         public static StringMatchingAlgorithms.ChapmanLengthDeviation chapmanLengthDeviation = new StringMatchingAlgorithms.ChapmanLengthDeviation();
@@ -68,7 +71,7 @@ namespace FuzzyPlusCSharp
         public static CaverPhone caverPhonePhonix = new CaverPhone();
         public static Phonix.Soundex soundexPhonix = new Phonix.Soundex();
         public static DoubleMetaphone doubleMetaphone = new DoubleMetaphone();
-        #endregion Distance classes members
+        #endregion Distance, Phonetic class, and misc variable members
         #region StringMatchingAlgorithm_ID definitions
         public enum StringMatchingAlgorithm_ID
         {
@@ -184,11 +187,6 @@ namespace FuzzyPlusCSharp
             // Hybrid Algorithms
             iMongeElkan,
 
-            // ------------------------------------------------------------
-            // These functions are NOT supported by CSharp Fuzzy class code, and are only here for C++ SqliteFuzzyPlusExtension usage.
-            iEdlibDistance = CASE_INSENSITIVE + EdlibDistance,
-            // ------------------------------------------------------------
-
             // Bad distance methods (C# and C++)
             // These method(s) are only here for comparisons and testing purposes
             iChapmanMeanLength = CASE_INSENSITIVE + ChapmanMeanLength,
@@ -211,7 +209,14 @@ namespace FuzzyPlusCSharp
                 }
                 catch
                 {
-                    // ToDo: add error console logging here.
+                    try
+                    {
+                        int soundEnum = (int)Enum.Parse(typeof(SameSoundMethod), stringMatchingAlgorithm_Name, true);
+                        return (StringMatchingAlgorithm_ID)soundEnum;
+                    }
+                    catch
+                    { // ToDo: add error console logging here.
+                    }
                 }
             }
             return stringMatchingAlgorithm;
@@ -290,6 +295,11 @@ namespace FuzzyPlusCSharp
             return sameSoundMethod.ToString();
         }
         #endregion SameSoundMethod
+        #region PercentDecimalDigits
+        public static int PercentDecimalDigits { get; private set; } = 2;
+        public static void SetPercentDecimalDigits(int precision) => PercentDecimalDigits = precision;
+        public static double GetPercentWithFixedDecimalDigits(double value) => PercentDecimalDigits < 0 ? value : Math.Round(value, PercentDecimalDigits);
+        #endregion PercentDecimalDigits
         #region Similarity functions
         public static bool IsMatch(string source1, string source2, double desiredSimilarity, StringMatchingAlgorithm_ID stringMatchingAlgorithm = StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm) => HowSimilar(source1, source2, stringMatchingAlgorithm) >= desiredSimilarity;
         // The following HowSimilar method is to let SQLite access to HowSimilar
@@ -334,6 +344,7 @@ namespace FuzzyPlusCSharp
             Debug.Assert(i != null);
             return i != null && i.Percentage(source1, source2, isCaseSensitive) == 0;
         }
+        public static bool IsNotSimilarByID(string source1, string source2, int id) => IsNotSimilar(source1, source2, (StringMatchingAlgorithm_ID)id);
         public static bool IsVerySimilar(string source1, string source2) => IsVerySimilar(source1, source2, StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm);
         public static bool IsVerySimilar(string source1, string source2, StringMatchingAlgorithm_ID stringMatchingAlgorithm) => IsMatch(source1, source2, Fuzzy.ISVERYSIMILAR, stringMatchingAlgorithm); // Is 90% similar
         public static bool IsSimilar(string source1, string source2) => IsSimilar(source1, source2, StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm);
@@ -350,12 +361,17 @@ namespace FuzzyPlusCSharp
                 ? IsSimilar(source1, source2, GetStringMatchingAlgorithm(id))
                 : IsSimilar(source1, source2, GetSameSoundMethod(id));
         }
+        public static bool IsSimilarByID(string source1, string source2, int id) => IsSimilar(source1, source2, id);
+        public static bool IsSomeWhatSimilarByID(string source1, string source2, int id) => IsSomeWhatSimilar(source1, source2, (StringMatchingAlgorithm_ID)id);
+        public static bool IsSlightlySimilarByID(string source1, string source2, int id) => IsSlightlySimilar(source1, source2, (StringMatchingAlgorithm_ID)id);
+        public static bool IsHardlySimilarByID(string source1, string source2, int id) => IsHardlySimilar(source1, source2, (StringMatchingAlgorithm_ID)id);
         public static bool IsVerySimilar(string source1, string source2, int id)
         {
             return id < PHONETIC_ALGORITHMS
                 ? IsVerySimilar(source1, source2, GetStringMatchingAlgorithm(id))
                 : IsVerySimilar(source1, source2, GetSameSoundMethod(id));
         }
+        public static bool IsVerySimilarByID(string source1, string source2, int id) => IsVerySimilar(source1, source2, id);
         // GetIDistance should NOT be used until all associated classes have implementation for Percentage and Distance methods.
         // Classes that do NOT begin with an I, are classes which need work on these methods.
         public static IDistance GetIDistance(StringMatchingAlgorithm_ID stringMatchingAlgorithm)
