@@ -1,1 +1,0 @@
-select Words, HowSimilar(Words, "David") as lev FROM SimilarWords

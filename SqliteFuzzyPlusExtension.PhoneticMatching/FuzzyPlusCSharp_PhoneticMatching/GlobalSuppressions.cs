@@ -5,4 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Style", "IDE0032:Use auto property", Justification = "<Pending>", Scope = "member", Target = "~F:FuzzyPlusCSharp.TokeniserUtilities`1.allTokens")]
+// [assembly: SuppressMessage("Style", "IDE0032:Use auto property", Justification = "<Pending>", Scope = "member", Target = "~F:FuzzyPlusCSharp.TokeniserUtilities`1.allTokens")]

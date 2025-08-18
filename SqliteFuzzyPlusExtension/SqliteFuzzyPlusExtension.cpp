@@ -280,35 +280,32 @@ static bool SameSound(std::string source1, std::string source2,
     bool results = false;
     switch (sameSoundMethod)
     {
-    case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::fuzzy_caver:
+    case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::Fuzzy_Caver:
         s1 = caverphone((const char*)source1.c_str());
         s2 = caverphone((const char*)source2.c_str());
         results = Compare(s1, s2, stringMatchingAlgorithm, isVerySimilar);
         break;
-    case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::fuzzy_phonetic:
+    case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::Fuzzy_Phonetic:
         s1 = (char*)phonetic_hash((const unsigned char*)source1.c_str(), (int)source1.length());
         s2 = (char*)phonetic_hash((const unsigned char*)source2.c_str(), (int)source2.length());
         results = Compare(s1, s2, stringMatchingAlgorithm, isVerySimilar);
         break;
-    case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::fuzzy_soundex:
+    case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::Fuzzy_Soundex:
         s1 = soundex((const char*)source1.c_str());
         s2 = soundex((const char*)source2.c_str());
         results = Compare(s1, s2, stringMatchingAlgorithm, isVerySimilar);
         break;
-    case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::fuzzy_rsoundex:
+    case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::Fuzzy_Rsoundex:
         s1 = refined_soundex((const char*)source1.c_str());
         s2 = refined_soundex((const char*)source2.c_str());
         results = Compare(s1, s2, stringMatchingAlgorithm, isVerySimilar);
         break;
-    case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::fuzzy_translit:
+    case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::Fuzzy_Translit:
         s1 = (char*)transliterate((const unsigned char*)source1.c_str(), (int)source1.length());
         s2 = (char*)transliterate((const unsigned char*)source2.c_str(), (int)source2.length());
         results = Compare(s1, s2, stringMatchingAlgorithm, isVerySimilar);
         break;
-    case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::Caverphone2:
-    case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::Soundex2:
-    case FuzzyPlusCSharp::Fuzzy::SameSoundMethod::EnPhoneticDistance:
-        default:
+    default:
         String^ s1 = gcnew String(source1.c_str());
         String^ s2 = gcnew String(source2.c_str());
         return FuzzyPlusCSharp::Fuzzy::SameSound(s1, s2, sameSoundMethod, stringMatchingAlgorithm, isVerySimilar);
@@ -528,7 +525,7 @@ static void fuzzy_rsoundex2(sqlite3_context* context, int argc, sqlite3_value** 
     free(s2);
 }
 
-static void Caverphone2(sqlite3_context* context, int argc, sqlite3_value** argv) {
+static void CaverPhonePhonix(sqlite3_context* context, int argc, sqlite3_value** argv) {
     assert(argc == 1 || argc == 2);
     const char* str1 = (const char*)sqlite3_value_text(argv[0]);
     if (str1 == 0) {
@@ -541,15 +538,15 @@ static void Caverphone2(sqlite3_context* context, int argc, sqlite3_value** argv
     {
         const char* str2 = (const char*)sqlite3_value_text(argv[1]);
         String^ source2 = gcnew String(str2);
-        int results = FuzzyPlusCSharp::Fuzzy::Caverphone2(source1, source2, FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::ExactMatch, true);
+        int results = FuzzyPlusCSharp::Fuzzy::CaverPhonePhonix(source1, source2, FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::ExactMatch, true);
         sqlite3_result_int(context, results);
         return;
     }
-    CString result = FuzzyPlusCSharp::Fuzzy::Caverphone2(source1);
+    CString result = FuzzyPlusCSharp::Fuzzy::CaverPhonePhonix(source1);
     sqlite3_result_text16(context, result, -1, NULL);
 }
 
-static void Soundex2(sqlite3_context* context, int argc, sqlite3_value** argv) {
+static void SoundexPhonix(sqlite3_context* context, int argc, sqlite3_value** argv) {
     assert(argc == 1 || argc == 2);
     const char* str1 = (const char*)sqlite3_value_text(argv[0]);
     if (str1 == 0) {
@@ -562,11 +559,11 @@ static void Soundex2(sqlite3_context* context, int argc, sqlite3_value** argv) {
     {
         const char* str2 = (const char*)sqlite3_value_text(argv[1]);
         String^ source2 = gcnew String(str2);
-        int results = FuzzyPlusCSharp::Fuzzy::Soundex2(source1, source2, FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::ExactMatch, true);
+        int results = FuzzyPlusCSharp::Fuzzy::SoundexPhonix(source1, source2, FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::ExactMatch, true);
         sqlite3_result_int(context, results);
         return;
     }
-    CString result = FuzzyPlusCSharp::Fuzzy::Soundex2(source1);
+    CString result = FuzzyPlusCSharp::Fuzzy::SoundexPhonix(source1);
     sqlite3_result_text16(context, result, -1, NULL);
 }
 
@@ -661,10 +658,10 @@ extern "C"
         SQLITE3_CREATE_FUNCTION2(iEdlibDistance);
         SQLITE3_CREATE_FUNCTION2(EditDistance);
         SQLITE3_CREATE_FUNCTION2(SameName);
-        SQLITE3_CREATE_FUNCTION2(Caverphone2);
-        SQLITE3_CREATE_FUNCTION1(Caverphone2);
-        SQLITE3_CREATE_FUNCTION2(Soundex2);
-        SQLITE3_CREATE_FUNCTION1(Soundex2);
+        SQLITE3_CREATE_FUNCTION2(CaverPhonePhonix);
+        SQLITE3_CREATE_FUNCTION1(CaverPhonePhonix);
+        SQLITE3_CREATE_FUNCTION2(SoundexPhonix);
+        SQLITE3_CREATE_FUNCTION1(SoundexPhonix);
 
         // Methods to set default distance functions either by name (string) or by ID (integer)
         SQLITE3_CREATE_FUNCTION1(SetDefaultStringMatchingAlgorithm);

@@ -153,18 +153,12 @@
     <ProjectReference Include="..\FuzzyPlusCSharp_PhoneticMatching\FuzzyPlusCSharp_PhoneticMatching.csproj">
       <Project>{b1de0268-d7e9-4868-bf3c-6298e5905597}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\FuzzyPlusCSharp\FuzzyPlusCSharp.csproj">
-      <Project>{b1de0268-d7e9-4868-bf3c-6298e5905597}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\FuzzyPlusCSharp_PhoneticMatching\FuzzyPlusCSharp_PhoneticMatching.csproj">
-      <Project>{b1de0268-d7e9-4868-bf3c-6298e5905597}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\SqliteFuzzyPlusExtension.vcxproj">
-      <Project>{e50af77f-b0a9-37c2-bee9-e0203eb9712c}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.vcxproj">
       <Project>{e50af77f-b0a9-37c2-bee9-e0203eb9712c}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

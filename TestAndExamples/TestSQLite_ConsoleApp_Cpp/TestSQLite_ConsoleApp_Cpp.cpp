@@ -1,8 +1,9 @@
 // TestSQLite_ConsoleApp_Cpp.cpp : This file contains the 'main' function. Program execution begins and ends there.
 #include <iostream>
-#include "..\sqlite\sqlite3ext.h"
+#include "..\..\SqliteFuzzyPlusExtension\sqlite\sqlite3ext.h"
 SQLITE_EXTENSION_INIT3
-#include "..\SqliteFuzzyPlusExtension.h"
+#define SQLITEFUZZYPLUSEXTENSION_LIB "SQLITEFUZZYPLUSEXTENSION.LIB"
+#include "..\..\SqliteFuzzyPlusExtension\SqliteFuzzyPlusExtension.h"
 
 
 int main()
@@ -10,7 +11,7 @@ int main()
     std::cout << "Hello World!\n";
     const char* str1 = "Hello World";
     const char* str2 = "Hellx sorld";
-    int x = DamerauLevenshteinDistance(str1, str2);
+    double x = DamerauLevenshteinDistance(str1, str2);
     std::cout << "x = " << x << std::endl;
 
     bool b0 = SameFirstLastName("David E. Maisonave", "Maisonave, David E.");
@@ -28,8 +29,8 @@ int main()
     const char* sound1 = "been";
     const char* sound2 = "being";
     int x1 = EnPhoneticDistance(sound1, sound2);
-    int x2 = DamerauLevenshteinDistance(sound1, sound2);
-    int x3 = Soundex2(sound1, sound2);
+    double x2 = DamerauLevenshteinDistance(sound1, sound2);
+    int x3 = SoundexPhonix(sound1, sound2);
     int x4 = EnPhoneticDistance(sound1, sound1);
     int x5 = EnPhoneticDistance(sound2, sound2);
     int x6 = EnPhoneticDistance(sound1, "seen");
@@ -54,7 +55,7 @@ int main()
     double example7 = Distance("David", "david", SqliteFuzzyPlusExtension::iLevenshtein);
     double example8 = Distance("David", "davdi", SqliteFuzzyPlusExtension::iLevenshtein);
 
-    double similar00 = HowSimilar("David", "David", SqliteFuzzyPlusExtension::UseDefaultDistanceMethod);
+    double similar00 = HowSimilar("David", "David", SqliteFuzzyPlusExtension::UseDefaultStringMatchingAlgorithm);
     double similar01 = HowSimilar("David", "David", SqliteFuzzyPlusExtension::Levenshtein);
     double similar02 = HowSimilar("David", "Davix", SqliteFuzzyPlusExtension::LongestCommonSequence);
     double similar03 = HowSimilar("David", "Davxx", SqliteFuzzyPlusExtension::JaccardIndex);

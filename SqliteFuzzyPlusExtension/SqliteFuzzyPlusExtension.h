@@ -1,14 +1,6 @@
 #ifndef SQLITEFUZZYPLUSEXTENSION_H
 #define SQLITEFUZZYPLUSEXTENSION_H
 
-#ifdef __cplusplus
-#include <string>
-#define C_ENUM_NAMING_CONVENTION__(name) name
-#define NAMESPACE_SQLITEFUZZYPLUSEXTENSION  SqliteFuzzyPlusExtension::
-#else
-#define COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
-#endif // __cplusplus
-
 #ifdef COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
 #define EXCLUDE_NAMESPACE_SQLITEFUZZYPLUSEXTENSION
 #include "stdbool.h"
@@ -16,6 +8,10 @@
 #ifndef SQLITEFUZZYPLUSEXTENSION_EXCLUDE_FUNCTION_MACROS_FOR_C
 #define SQLITEFUZZYPLUSEXTENSION_INCLUDE_FUNCTION_MACROS_FOR_C
 #endif // !SQLITEFUZZYPLUSEXTENSION_EXCLUDE_FUNCTION_MACROS_FOR_C
+#else
+#include <string>
+#define C_ENUM_NAMING_CONVENTION__(name) name
+#define NAMESPACE_SQLITEFUZZYPLUSEXTENSION  SqliteFuzzyPlusExtension::
 #endif // COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
 
 #ifdef SQLITEFUZZYPLUSEXTENSION_INCLUDE_FUNCTION_MACROS_FOR_C
@@ -36,22 +32,26 @@ namespace SqliteFuzzyPlusExtension {
 #endif //!EXCLUDE_NAMESPACE_SQLITEFUZZYPLUSEXTENSION
 #ifdef COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
 #define SEQUENCE_ALIGNMENT_METHODS 32
-#define MICROSOFT_PHONETIC_METHODS 64
 #define TOKEN_METHODS 64
 #define PHRASE_METHODS TOKEN_METHODS + 32
 #define CPP_ONLY_FUZZY 128
 #define CASE_INSENSITIVE 256
 #define BAD_METHODS CPP_ONLY_FUZZY + 96
 #define METHODS_UP_FOR_DELETION BAD_METHODS + 10
+#define PHONETIC_ALGORITHMS 16384
+#define MICROSOFT_PHONETIC_METHODS PHONETIC_ALGORITHMS + 64
+#define CPP_ONLY_PHONETIC_ALGORITHMS PHONETIC_ALGORITHMS + CPP_ONLY_FUZZY
 #else // COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
     const int SEQUENCE_ALIGNMENT_METHODS = 32;
-    const int MICROSOFT_PHONETIC_METHODS = 64;
     const int TOKEN_METHODS = 64;
     const int PHRASE_METHODS = TOKEN_METHODS + 32;
     const int CPP_ONLY_FUZZY = 128;
     const int CASE_INSENSITIVE = 256;
     const int BAD_METHODS = CPP_ONLY_FUZZY + 96;
     const int METHODS_UP_FOR_DELETION = BAD_METHODS + 10;
+    const int PHONETIC_ALGORITHMS = 16384;
+    const int MICROSOFT_PHONETIC_METHODS = PHONETIC_ALGORITHMS + 64;
+    const int CPP_ONLY_PHONETIC_ALGORITHMS = PHONETIC_ALGORITHMS + CPP_ONLY_FUZZY;
 #endif // COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
     // Note: In C language, the enums can not use the same name as a function, so macro C_ENUM_NAMING_CONVENTION__ has been added for C-Only code where all the enums with this macro have an "enum_" prefixed to the name.
     //       The C++ code will still reference all the enums by the original name.
@@ -170,8 +170,8 @@ namespace SqliteFuzzyPlusExtension {
         iMongeElkan,
 
         // ------------------------------------------------------------
-        // These functions are NOT supported by CSharp Fuzzy class code, and are only here for C++ SqliteFuzzyPlusExtension usage.
-        C_ENUM_NAMING_CONVENTION__(iEdlibDistance) = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(EdlibDistance),
+        // This function is NOT supported by CSharp Fuzzy class code, and is only here for C++ SqliteFuzzyPlusExtension usage.
+        iEdlibDistance = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(EdlibDistance),
         // ------------------------------------------------------------
 
         // Bad distance methods (C# and C++)
@@ -183,23 +183,23 @@ namespace SqliteFuzzyPlusExtension {
     };
     enum SameSoundMethod
     {
-        UseDefaultSameSoundMethod = 0,
-        C_ENUM_NAMING_CONVENTION__(Soundex2),    // Default SameSound method
-        C_ENUM_NAMING_CONVENTION__(Caverphone2),
+        UseDefaultSameSoundMethod = PHONETIC_ALGORITHMS,
+        C_ENUM_NAMING_CONVENTION__(SoundexPhonix),    // Default SameSound method
+        C_ENUM_NAMING_CONVENTION__(CaverPhonePhonix),
         C_ENUM_NAMING_CONVENTION__(MatchRatingApproach),
         C_ENUM_NAMING_CONVENTION__(Metaphone),
-        C_ENUM_NAMING_CONVENTION__(CaverPhonePhonix),
         C_ENUM_NAMING_CONVENTION__(DoubleMetaphone),
         C_ENUM_NAMING_CONVENTION__(ColognePhonetics),
+        C_ENUM_NAMING_CONVENTION__(SoundexVer2),
         C_ENUM_NAMING_CONVENTION__(EnPhoneticDistance) = MICROSOFT_PHONETIC_METHODS,
         // ------------------------------------------------------------
         // These functions are NOT supported by CSharp Fuzzy class code, and are only here for C++ SqliteFuzzyPlusExtension usage.
         // SQLean phonetic external functions. 
-        C_ENUM_NAMING_CONVENTION__(fuzzy_caver),
-        C_ENUM_NAMING_CONVENTION__(fuzzy_phonetic),
-        C_ENUM_NAMING_CONVENTION__(fuzzy_soundex),
-        C_ENUM_NAMING_CONVENTION__(fuzzy_rsoundex),  //Refined Soundex
-        C_ENUM_NAMING_CONVENTION__(fuzzy_translit) //Transliteration
+        Fuzzy_Soundex = CPP_ONLY_PHONETIC_ALGORITHMS,
+        Fuzzy_Caver,
+        Fuzzy_Rsoundex,  //Refined Soundex
+        Fuzzy_Phonetic,
+        Fuzzy_Translit //Transliteration
     };
 #ifndef EXCLUDE_NAMESPACE_SQLITEFUZZYPLUSEXTENSION
 }
@@ -219,6 +219,8 @@ extern "C" {
     double HowSimilarByName(const char* source1, const char* source2, const char* StringMatchingAlgorithm_Name);
     double Distance(const char* source1, const char* source2, int StringMatchingAlgorithm_Id);
     double DistanceByName(const char* source1, const char* source2, const char* StringMatchingAlgorithm_Name);
+    bool IsSimilar(const char* str1, const char* str2, int StringMatchingAlgorithmID_Or_SameSoundMethod_ID);
+    bool IsVerySimilar(const char* str1, const char* str2, int StringMatchingAlgorithmID_Or_SameSoundMethod_ID);
     int GetStringMatchingAlgorithmID(const char* StringMatchingAlgorithm_Name);
     int GetSameSoundMethodID(const char* SameSoundMethod_Name);
     int SetDefaultStringMatchingAlgorithmByName(const char* StringMatchingAlgorithm_Name);
@@ -228,7 +230,7 @@ extern "C" {
     int SetDefaultSameSoundMethodByName(const char* sameSoundMethod_Name);
     int GetDefaultSoundMethod();
     // C language code can simulate overloaded SameSound functions by using GetSameSoundMethodID and GetStringMatchingAlgorithmID
-    // Example: SameSound("been", "being", GetSameSoundMethodID("Soundex2"), GetStringMatchingAlgorithmID("Levenshtein"), 1);
+    // Example: SameSound("been", "being", GetSameSoundMethodID("SoundexPhonix"), GetStringMatchingAlgorithmID("Levenshtein"), 1);
     bool SameSound(const char* source1, const char* source2, int SameSoundMethod_Id, int StringMatchingAlgorithm_Id, bool isVerySimilar);
     /////////////////////////////////////////////////////////////////////////////////
     // Distance Functions
@@ -278,7 +280,6 @@ extern "C" {
     unsigned fuzzy_leven(const char* source1, const char* source2);
     unsigned fuzzy_osadist(const char* source1, const char* source2);
     // Edlib fuzzy Distance Functions
-    double iEdlibDistance(const char* source1, const char* source2);
     double EdlibDistance(const char* source1, const char* source2);
     bool SameName(const char* name1, const char* name2);
     // -------------------------------------------------------------------------------
@@ -299,8 +300,7 @@ extern "C" {
 // Phonetic Functions
     bool EnPhoneticDistance(const char* str1, const char* str2);
     bool EnPhoneticDistance_IsSupported();
-    bool Soundex2(const char* str1, const char* str2);
-    bool Caverphone2(const char* str1, const char* str2);
+    bool SoundexPhonix(const char* str1, const char* str2);
     bool MatchRatingApproach(const char* str1, const char* str2);
     bool Metaphone(const char* str1, const char* str2);
     bool CaverPhonePhonix(const char* str1, const char* str2);

@@ -27,3 +27,15 @@
   - SorensenDiceDistance, TanimotoCoefficientDistance, BlockDistance, NeedlemanWunsch, JaccardIndex, ChapmanLengthDeviation, ChapmanMeanLength, EuclideanDistance, MatchingCoefficient, MongeElkan, QGramsDistance,
   - SmithWaterman, SmithWatermanGotoh, SmithWatermanGotohWindowedAffine, CosineSimilarity, JaccardSimilarity, LongestCommonSequence, DiceSimilarity, PhraseTokenize, SimplePhraseTokenize
 ### 0.1.4
+- Added IExactMatch class.
+- Added additional phonetic functions to GetSoundCode.
+- Removed PhoneticMethods.CaverPhone because it was almost identical to Phonix.CaverPhone.
+- Made SoundexPhonix (Phonix.Soundex) the default phonetic function instead of PhoneticMethods.Soundex.
+- Renamed PhoneticMethods.Soundex to PhoneticMethods.SoundexVer2. 
+  - Note: SoundexVer2 might be removed in future updates if testing shows no difference from Phonix.Soundex.
+- Created separate solution for testing and example code, and moved all testing and example code out of the primary SqliteFuzzyPlusExtension solution. The SqliteFuzzyPlusExtension solution will now only build the two binaries that get uploaded when creating a new version of SqliteFuzzyPlusExtension.
+- Removed Microsoft.PhoneticMatching out of SqliteFuzzyPlusExtension.PhoneticMatching solution.
+- Changed enum SameSoundMethod so that the first enum function ID starts at 8192. This is to prepare the code for future development in which functions taking enum ID StringMatchingAlgorithm_ID can possibly also take the SameSoundMethod ID's without clashing with existing StringMatchingAlgorithm_ID.
+- Change to upper case letters for phonetic SQLean enum's to make them consistent with the SQLean StringMatchingAlgorithm_ID enum's.
+- Removed iEdlibDistance function for the purpose of consistency, since none of the other case insensitive enum's had an associated function.
+- 

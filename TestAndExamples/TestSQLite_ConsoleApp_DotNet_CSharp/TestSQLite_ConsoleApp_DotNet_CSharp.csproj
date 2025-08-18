@@ -9,4 +9,9 @@
 	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\FuzzyPlusCSharp.csproj" />
+    <ProjectReference Include="..\..\SqliteFuzzyPlusExtension\SqliteFuzzyPlusExtension.vcxproj" />
+  </ItemGroup>
+
 </Project>

@@ -404,12 +404,6 @@ extern "C"
         return Edlib_Distance(source1, source2, true);
     }
 
-    // Export Edlib fuzzy Distance Functions
-    __declspec(dllexport)
-        double iEdlibDistance(const char* source1, const char* source2) {
-        return Edlib_Distance(source1, source2, false);
-    }
-
     // Export SQLean fuzzy Distance Functions
     __declspec(dllexport)
         unsigned fuzzy_damlev(const char* source1, const char* source2) {
@@ -510,6 +504,20 @@ extern "C"
         return HowSimilar(source1, source2, GetStringMatchingAlgorithm(StringMatchingAlgorithm_Name));
     }
 
+    __declspec(dllexport)
+        bool IsSimilar(const char* str1, const char* str2, int StringMatchingAlgorithmID_Or_SameSoundMethod_ID) {
+        String^ source1 = gcnew String(str1);
+        String^ source2 = gcnew String(str2);
+        return FuzzyPlusCSharp::Fuzzy::IsSimilar(source1, source2, StringMatchingAlgorithmID_Or_SameSoundMethod_ID);
+    }
+
+    __declspec(dllexport)
+        bool IsVerySimilar(const char* str1, const char* str2, int StringMatchingAlgorithmID_Or_SameSoundMethod_ID) {
+        String^ source1 = gcnew String(str1);
+        String^ source2 = gcnew String(str2);
+        return FuzzyPlusCSharp::Fuzzy::IsVerySimilar(source1, source2, StringMatchingAlgorithmID_Or_SameSoundMethod_ID);
+    }
+
     /////////////////////////////////////////////////////////////////////////////////
     // Export Phonetic Functions
     __declspec(dllexport)
@@ -526,38 +534,6 @@ extern "C"
     }
 
     __declspec(dllexport)
-        bool Caverphone2(const char* str1, const char* str2) {
-        String^ source1 = gcnew String(str1);
-        String^ source2 = gcnew String(str2);
-        bool distance = FuzzyPlusCSharp::Fuzzy::Caverphone2(source1, source2);
-        return distance;
-    }
-
-    __declspec(dllexport)
-        bool Soundex2(const char* str1, const char* str2) {
-        String^ source1 = gcnew String(str1);
-        String^ source2 = gcnew String(str2);
-        bool distance = FuzzyPlusCSharp::Fuzzy::Soundex2(source1, source2);
-        return distance;
-    }
-
-    __declspec(dllexport)
-        bool MatchRatingApproach(const char* str1, const char* str2) {
-        String^ source1 = gcnew String(str1);
-        String^ source2 = gcnew String(str2);
-        bool distance = FuzzyPlusCSharp::Fuzzy::MatchRatingApproach(source1, source2, true);
-        return distance;
-    }
-
-    __declspec(dllexport)
-        bool Metaphone(const char* str1, const char* str2) {
-        String^ source1 = gcnew String(str1);
-        String^ source2 = gcnew String(str2);
-        bool distance = FuzzyPlusCSharp::Fuzzy::Metaphone(source1, source2);
-        return distance;
-    }
-
-    __declspec(dllexport)
         bool CaverPhonePhonix(const char* str1, const char* str2) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
@@ -566,10 +542,34 @@ extern "C"
     }
 
     __declspec(dllexport)
+        bool SoundexPhonix(const char* str1, const char* str2) {
+        String^ source1 = gcnew String(str1);
+        String^ source2 = gcnew String(str2);
+        bool distance = FuzzyPlusCSharp::Fuzzy::SoundexPhonix(source1, source2);
+        return distance;
+    }
+
+    __declspec(dllexport)
+        bool MatchRatingApproach(const char* str1, const char* str2) {
+        String^ source1 = gcnew String(str1);
+        String^ source2 = gcnew String(str2);
+        bool distance = FuzzyPlusCSharp::Fuzzy::MatchRatingApproach(source1, source2, FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::ExactMatch, true);
+        return distance;
+    }
+
+    __declspec(dllexport)
+        bool Metaphone(const char* str1, const char* str2) {
+        String^ source1 = gcnew String(str1);
+        String^ source2 = gcnew String(str2);
+        bool distance = FuzzyPlusCSharp::Fuzzy::Metaphone(source1, source2, FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::ExactMatch, true);
+        return distance;
+    }
+
+    __declspec(dllexport)
         bool DoubleMetaphone(const char* str1, const char* str2) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        bool distance = FuzzyPlusCSharp::Fuzzy::DoubleMetaphone(source1, source2);
+        bool distance = FuzzyPlusCSharp::Fuzzy::DoubleMetaphone(source1, source2, FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::ExactMatch, true);
         return distance;
     }
 
@@ -577,7 +577,7 @@ extern "C"
         bool ColognePhonetics(const char* str1, const char* str2) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
-        bool distance = FuzzyPlusCSharp::Fuzzy::ColognePhonetics(source1, source2);
+        bool distance = FuzzyPlusCSharp::Fuzzy::ColognePhonetics(source1, source2, FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::ExactMatch, true);
         return distance;
     }
 

@@ -6,17 +6,18 @@
 #include <atlstr.h>
 using namespace std;
 using namespace System;
-#include "..\SqliteFuzzyPlusExtension.h"
+#define SQLITEFUZZYPLUSEXTENSION_LIB "SQLITEFUZZYPLUSEXTENSION.LIB"
+#include "..\..\SqliteFuzzyPlusExtension\SqliteFuzzyPlusExtension.h"
 
 static void CreateScriptSimilarWords(string rootDir, string fieldName, string table, string FunctionName, string CompareTo, bool byName) 
 {
     string fileName = byName ? "_ByName_" : "_ByNumber_";
     ofstream f(rootDir + FunctionName + fileName + table + ".sql");
     f << "select " << fieldName << endl;
-    for (int i = 0; i < (int)FuzzyPlusCSharp::Fuzzy::DistanceMethod::iEdlibDistance; ++i)
+    for (int i = 0; i < (int)FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::iEdlibDistance; ++i)
     {
-        CString d = FuzzyPlusCSharp::Fuzzy::GetDistanceMethodName(i);
-        string distanceName = CW2A(d);
+        CString d = FuzzyPlusCSharp::Fuzzy::GetStringMatchingAlgorithmName(i);
+        string distanceName = CW2A(d).operator char *();
         if (std::isdigit(distanceName[0]))
             continue;
         f << ", " << FunctionName << "(" << fieldName << ", " << CompareTo << ", ";
@@ -58,10 +59,10 @@ static void CreateScriptSimilarSound(string rootDir, string fieldName, string ta
     string Src2 = ltrim(rtrim(CompareTo, "'"), "'");
     ofstream f(rootDir + FunctionName + fileName + table + "_Src2_" + Src2 + ".sql");
     f << "select " << fieldName << " as src1, " << CompareTo << " as src2 " << endl;
-    for (int i = 0; i < (int)FuzzyPlusCSharp::Fuzzy::SameSoundMethod::fuzzy_translit; ++i)
+    for (int i = 0; i < (int)FuzzyPlusCSharp::Fuzzy::SameSoundMethod::Fuzzy_Translit; ++i)
     {
         CString d = FuzzyPlusCSharp::Fuzzy::GetSameSoundMethodName(i);
-        string soundMethodName = CW2A(d);
+        string soundMethodName = CW2A(d).operator char *();
         if (std::isdigit(soundMethodName[0]))
             continue;
         f << ", " << FunctionName << "(" << fieldName << ", " << CompareTo << ", ";
@@ -119,14 +120,14 @@ int main() //array<System::String ^> ^args)
 
     const char* str1 = "Hello World";
     const char* str2 = "Hellx sorld";
-    int x = DamerauLevenshteinDistance(str1, str2);
+    double x = DamerauLevenshteinDistance(str1, str2);
     std::cout << "x = " << x << std::endl;
 
     const char* sound1 = "been";
     const char* sound2 = "being";
     int x1 = EnPhoneticDistance(sound1, sound2);
-    int x2 = DamerauLevenshteinDistance(sound1, sound2);
-    int x3 = Soundex2(sound1, sound2);
+    double x2 = DamerauLevenshteinDistance(sound1, sound2);
+    int x3 = SoundexPhonix(sound1, sound2);
     int x4 = EnPhoneticDistance(sound1, sound1);
     int x5 = EnPhoneticDistance(sound2, sound2);
     int x6 = EnPhoneticDistance(sound1, "seen");
@@ -151,7 +152,7 @@ int main() //array<System::String ^> ^args)
     double example7 = Distance("David", "david", SqliteFuzzyPlusExtension::iLevenshtein);
     double example8 = Distance("David", "davdi", SqliteFuzzyPlusExtension::iLevenshtein);
 
-    double similar00 = HowSimilar("David", "David", SqliteFuzzyPlusExtension::UseDefaultDistanceMethod);
+    double similar00 = HowSimilar("David", "David", SqliteFuzzyPlusExtension::UseDefaultStringMatchingAlgorithm);
     double similar01 = HowSimilar("David", "David", SqliteFuzzyPlusExtension::Levenshtein);
     double similar02 = HowSimilar("David", "Davix", SqliteFuzzyPlusExtension::LongestCommonSequence);
     double similar03 = HowSimilar("David", "Davxx", SqliteFuzzyPlusExtension::JaccardIndex);

@@ -1,1 +1,0 @@
-select Name, SameName(Name, "David") as sn FROM SimilarNames

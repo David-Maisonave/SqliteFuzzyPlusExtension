@@ -54,6 +54,7 @@
     <Compile Include="StringMatchingAlgorithms\Euclidean.cs" />
     <Compile Include="StringMatchingAlgorithms\Hamming.cs" />
     <Compile Include="StringMatchingAlgorithms\IDistance.cs" />
+    <Compile Include="StringMatchingAlgorithms\IExactMatch.cs" />
     <Compile Include="StringMatchingAlgorithms\JaccardIndex.cs" />
     <Compile Include="StringMatchingAlgorithms\JaccardSimilarity.cs" />
     <Compile Include="StringMatchingAlgorithms\Jaro.cs" />
@@ -83,8 +84,7 @@
     <Compile Include="Misc\HasInSameOrder.cs" />
     <Compile Include="Misc\Normalize.cs" />
     <Compile Include="Misc\Sameness.cs" />
-    <Compile Include="PhoneticMethods\Caverphone.cs" />
-    <Compile Include="PhoneticMethods\Soundex.cs" />
+    <Compile Include="PhoneticMethods\SoundexVer2.cs" />
     <Compile Include="Phonix\Caverphone.cs" />
     <Compile Include="Phonix\DoubleMetaphone.cs" />
     <Compile Include="Phonix\ISimilarity.cs" />
