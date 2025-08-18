@@ -71,9 +71,18 @@ select Name
 , IsVerySimilar(Name, 'David Jorge', 329) as a329 -- iQGramsDistance (ID# 329)
 , IsVerySimilar(Name, 'David Jorge', 330) as a330 -- iNGramsDistance (ID# 330)
 , IsVerySimilar(Name, 'David Jorge', 331) as a331 -- iMongeElkan (ID# 331)
+, IsVerySimilar(Name, 'David Jorge', 480) as a480 -- iChapmanMeanLength (ID# 480)
+, IsVerySimilar(Name, 'David Jorge', 16385) as a16385 -- SoundexPhonix (ID# 16385)
+, IsVerySimilar(Name, 'David Jorge', 16386) as a16386 -- CaverPhonePhonix (ID# 16386)
+, IsVerySimilar(Name, 'David Jorge', 16387) as a16387 -- MatchRatingApproach (ID# 16387)
+, IsVerySimilar(Name, 'David Jorge', 16388) as a16388 -- Metaphone (ID# 16388)
+, IsVerySimilar(Name, 'David Jorge', 16389) as a16389 -- DoubleMetaphone (ID# 16389)
+, IsVerySimilar(Name, 'David Jorge', 16390) as a16390 -- ColognePhonetics (ID# 16390)
+, IsVerySimilar(Name, 'David Jorge', 16391) as a16391 -- SoundexVer2 (ID# 16391)
+, IsVerySimilar(Name, 'David Jorge', 16448) as a16448 -- EnPhoneticDistance (ID# 16448)
 FROM SimilarNames;
 -- Note: Case insensitive functions have an ID number greater than 256
---       C++ functions have an ID number equal to or greater than  128 and less than 256
+--       C++ functions have an ID number equal to or greater than  128 and less than 224
 --       Tokenize functions have an ID number equal to or greater than  64 and less than 96
---       Phrase functions have an ID number equal to or greater than  96 and less than 234
---       Functions that are being considered for deletion have an ID number equal to or greater than  234 and less than 128
+--       Phrase functions have an ID number equal to or greater than  96 and less than 128
+--       Functions that are being considered for deletion have an ID number equal to or greater than  234 and less than 256

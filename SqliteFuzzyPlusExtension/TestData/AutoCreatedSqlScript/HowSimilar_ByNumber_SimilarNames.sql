@@ -71,9 +71,10 @@ select Name
 , HowSimilar(Name, 'David Jorge', 329) as a329 -- iQGramsDistance (ID# 329)
 , HowSimilar(Name, 'David Jorge', 330) as a330 -- iNGramsDistance (ID# 330)
 , HowSimilar(Name, 'David Jorge', 331) as a331 -- iMongeElkan (ID# 331)
+, HowSimilar(Name, 'David Jorge', 480) as a480 -- iChapmanMeanLength (ID# 480)
 FROM SimilarNames;
 -- Note: Case insensitive functions have an ID number greater than 256
---       C++ functions have an ID number equal to or greater than  128 and less than 256
+--       C++ functions have an ID number equal to or greater than  128 and less than 224
 --       Tokenize functions have an ID number equal to or greater than  64 and less than 96
---       Phrase functions have an ID number equal to or greater than  96 and less than 234
---       Functions that are being considered for deletion have an ID number equal to or greater than  234 and less than 128
+--       Phrase functions have an ID number equal to or greater than  96 and less than 128
+--       Functions that are being considered for deletion have an ID number equal to or greater than  234 and less than 256

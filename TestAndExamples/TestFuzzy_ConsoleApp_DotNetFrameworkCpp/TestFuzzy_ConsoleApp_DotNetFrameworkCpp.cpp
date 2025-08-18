@@ -12,7 +12,8 @@ using namespace System;
 static void CreateScriptSimilarWords(string rootDir, string fieldName, string table, string FunctionName, string CompareTo, bool byName) 
 {
     string fileName = byName ? "_ByName_" : "_ByNumber_";
-    ofstream f(rootDir + FunctionName + fileName + table + ".sql");
+    string fullFileNmae = rootDir + FunctionName + fileName + table + ".sql";
+    ofstream f(fullFileNmae);
     f << "select " << fieldName << endl;
     for (int i = 0; i <= (int)FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::iChapmanMeanLength; ++i)
     {
@@ -46,10 +47,10 @@ static void CreateScriptSimilarWords(string rootDir, string fieldName, string ta
     }
     f << "FROM " << table << ";" << endl;
     f << "-- Note: Case insensitive functions have an ID number greater than " << FuzzyPlusCSharp::Fuzzy::CASE_INSENSITIVE << endl;
-    f << "--       C++ functions have an ID number equal to or greater than  " << FuzzyPlusCSharp::Fuzzy::CPP_ONLY_FUZZY << " and less than " << FuzzyPlusCSharp::Fuzzy::CASE_INSENSITIVE << endl;
+    f << "--       C++ functions have an ID number equal to or greater than  " << FuzzyPlusCSharp::Fuzzy::CPP_ONLY_FUZZY << " and less than " << FuzzyPlusCSharp::Fuzzy::BAD_METHODS << endl;
     f << "--       Tokenize functions have an ID number equal to or greater than  " << FuzzyPlusCSharp::Fuzzy::TOKEN_METHODS << " and less than " << FuzzyPlusCSharp::Fuzzy::PHRASE_METHODS << endl;
-    f << "--       Phrase functions have an ID number equal to or greater than  " << FuzzyPlusCSharp::Fuzzy::PHRASE_METHODS << " and less than " << FuzzyPlusCSharp::Fuzzy::METHODS_UP_FOR_DELETION << endl;
-    f << "--       Functions that are being considered for deletion have an ID number equal to or greater than  " << FuzzyPlusCSharp::Fuzzy::METHODS_UP_FOR_DELETION << " and less than " << FuzzyPlusCSharp::Fuzzy::CPP_ONLY_FUZZY << endl;
+    f << "--       Phrase functions have an ID number equal to or greater than  " << FuzzyPlusCSharp::Fuzzy::PHRASE_METHODS << " and less than " << FuzzyPlusCSharp::Fuzzy::CPP_ONLY_FUZZY << endl;
+    f << "--       Functions that are being considered for deletion have an ID number equal to or greater than  " << FuzzyPlusCSharp::Fuzzy::METHODS_UP_FOR_DELETION << " and less than " << FuzzyPlusCSharp::Fuzzy::CASE_INSENSITIVE << endl;
     f.close();
 }
 static void CreateScriptSimilarWords(string rootDir, string fieldName, string table, string FunctionName, string CompareTo)
@@ -101,7 +102,7 @@ static void CreateScriptSimilarSound(string rootDir, string fieldName, string ta
 
 static void CreateUnitTestSqlFiles()
 {
-    string rootDir = "..\\TestData\\AutoCreatedSqlScript\\";
+    string rootDir = "..\\..\\SqliteFuzzyPlusExtension\\TestData\\AutoCreatedSqlScript\\";
     CreateScriptSimilarWords(rootDir, "Name", "SimilarNames", "Distance", "'David Jorge'");
     CreateScriptSimilarWords(rootDir, "Phrases", "SimilarPhrase", "Distance", "'This is a similar phrase test'");
     CreateScriptSimilarWords(rootDir, "Words", "SimilarWords", "Distance", "'David'");

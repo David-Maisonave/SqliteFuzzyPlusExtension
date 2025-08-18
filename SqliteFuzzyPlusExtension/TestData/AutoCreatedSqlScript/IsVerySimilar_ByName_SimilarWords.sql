@@ -71,9 +71,18 @@ select Words
 , IsVerySimilar(Words, 'David', 'iQGramsDistance') as a329 -- iQGramsDistance (ID# 329)
 , IsVerySimilar(Words, 'David', 'iNGramsDistance') as a330 -- iNGramsDistance (ID# 330)
 , IsVerySimilar(Words, 'David', 'iMongeElkan') as a331 -- iMongeElkan (ID# 331)
+, IsVerySimilar(Words, 'David', 'iChapmanMeanLength') as a480 -- iChapmanMeanLength (ID# 480)
+, IsVerySimilar(Words, 'David', 'SoundexPhonix') as a16385 -- SoundexPhonix (ID# 16385)
+, IsVerySimilar(Words, 'David', 'CaverPhonePhonix') as a16386 -- CaverPhonePhonix (ID# 16386)
+, IsVerySimilar(Words, 'David', 'MatchRatingApproach') as a16387 -- MatchRatingApproach (ID# 16387)
+, IsVerySimilar(Words, 'David', 'Metaphone') as a16388 -- Metaphone (ID# 16388)
+, IsVerySimilar(Words, 'David', 'DoubleMetaphone') as a16389 -- DoubleMetaphone (ID# 16389)
+, IsVerySimilar(Words, 'David', 'ColognePhonetics') as a16390 -- ColognePhonetics (ID# 16390)
+, IsVerySimilar(Words, 'David', 'SoundexVer2') as a16391 -- SoundexVer2 (ID# 16391)
+, IsVerySimilar(Words, 'David', 'EnPhoneticDistance') as a16448 -- EnPhoneticDistance (ID# 16448)
 FROM SimilarWords;
 -- Note: Case insensitive functions have an ID number greater than 256
---       C++ functions have an ID number equal to or greater than  128 and less than 256
+--       C++ functions have an ID number equal to or greater than  128 and less than 224
 --       Tokenize functions have an ID number equal to or greater than  64 and less than 96
---       Phrase functions have an ID number equal to or greater than  96 and less than 234
---       Functions that are being considered for deletion have an ID number equal to or greater than  234 and less than 128
+--       Phrase functions have an ID number equal to or greater than  96 and less than 128
+--       Functions that are being considered for deletion have an ID number equal to or greater than  234 and less than 256
