@@ -14,7 +14,7 @@ static void CreateScriptSimilarWords(string rootDir, string fieldName, string ta
     string fileName = byName ? "_ByName_" : "_ByNumber_";
     ofstream f(rootDir + FunctionName + fileName + table + ".sql");
     f << "select " << fieldName << endl;
-    for (int i = 0; i < (int)FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::iEdlibDistance; ++i)
+    for (int i = 0; i <= (int)FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::iChapmanMeanLength; ++i)
     {
         CString d = FuzzyPlusCSharp::Fuzzy::GetStringMatchingAlgorithmName(i);
         string fuzzyFunctionName = CW2A(d).operator char *();
