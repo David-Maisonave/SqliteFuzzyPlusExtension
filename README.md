@@ -146,7 +146,6 @@ Here's a list of the non-fuzzy functions.
 
 # ToDo
 - Add additional documentation for each function with examples.
-- Add more phonetic functions to the CSharp code. The C# code should have at least one version of all the SQLean phonetic functions.
-- Create C example project that attaches to the extension.
 - Try to figureout a way to load the extension to [DB Browser for SQLite]() without having to copy the **FuzzyPlusCSharp.dll** to the same folder as the executable.
 - Add an example C# project that uses the C# fuzzy functions with SQLite without having to attach extension.
+- Finish implementing API's SameFirstLastName,  SamePhone, SameSocial, SameZip, SameAddress, SameDate, and SameNumber. And add associated documentation.
