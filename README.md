@@ -90,6 +90,7 @@ See [UsingFuzzyFunctionsOutsideSQLite.md](https://github.com/David-Maisonave/Sql
   - [NGramsDistance](https://github.com/Dandraka/FuzzySubstringSearch) - [more](https://en.wikipedia.org/wiki/N-gram)
 - Hybrid Algorithms 
   - [MongeElkan](https://anhaidgroup.github.io/py_stringmatching/v0.4.x/MongeElkan.html) - [more](https://www.gelbukh.com/CV/Publications/2009/Generalized%20Mongue-Elkan%20Method%20for%20Approximate%20Text%20String.pdf)
+  - [Sift4](https://siderite.dev/blog/super-fast-and-accurate-string-distance.html) Not in build, but in source code. Will be included in next build (0.1.5)
 - Phrase token methods
   - [PhraseTokenize](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#PhraseSimplifiedDiff) - (alias = PhraseDiff)
   - [SimplePhraseTokenize](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs#PhraseSimplifiedDiff)
