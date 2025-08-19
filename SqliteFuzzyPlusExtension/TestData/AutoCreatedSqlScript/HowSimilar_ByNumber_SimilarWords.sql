@@ -29,6 +29,7 @@ select Words
 , HowSimilar(Words, 'David', 73) as a73 -- QGramsDistance (ID# 73)
 , HowSimilar(Words, 'David', 74) as a74 -- NGramsDistance (ID# 74)
 , HowSimilar(Words, 'David', 75) as a75 -- MongeElkan (ID# 75)
+, HowSimilar(Words, 'David', 76) as a76 -- Sift4 (ID# 76)
 , HowSimilar(Words, 'David', 96) as a96 -- PhraseTokenize (ID# 96)
 , HowSimilar(Words, 'David', 97) as a97 -- SimplePhraseTokenize (ID# 97)
 , HowSimilar(Words, 'David', 128) as a128 -- Fuzzy_Damlev (ID# 128)
@@ -71,6 +72,7 @@ select Words
 , HowSimilar(Words, 'David', 329) as a329 -- iQGramsDistance (ID# 329)
 , HowSimilar(Words, 'David', 330) as a330 -- iNGramsDistance (ID# 330)
 , HowSimilar(Words, 'David', 331) as a331 -- iMongeElkan (ID# 331)
+, HowSimilar(Words, 'David', 332) as a332 -- iSift4 (ID# 332)
 , HowSimilar(Words, 'David', 480) as a480 -- iChapmanMeanLength (ID# 480)
 FROM SimilarWords;
 -- Note: Case insensitive functions have an ID number greater than 256

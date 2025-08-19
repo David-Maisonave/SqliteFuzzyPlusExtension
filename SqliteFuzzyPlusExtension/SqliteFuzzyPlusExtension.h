@@ -96,7 +96,7 @@ namespace SqliteFuzzyPlusExtension {
 
         // Hybrid Algorithms
         C_ENUM_NAMING_CONVENTION__(MongeElkan),
-        // SIFT4,
+        C_ENUM_NAMING_CONVENTION__(Sift4),
         // GeneralizedCompressionDistance
 
         // String Hash Based

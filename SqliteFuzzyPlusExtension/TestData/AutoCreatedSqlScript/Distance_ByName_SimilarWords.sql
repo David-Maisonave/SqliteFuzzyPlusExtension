@@ -29,6 +29,7 @@ select Words
 , Distance(Words, 'David', 'QGramsDistance') as a73 -- QGramsDistance (ID# 73)
 , Distance(Words, 'David', 'NGramsDistance') as a74 -- NGramsDistance (ID# 74)
 , Distance(Words, 'David', 'MongeElkan') as a75 -- MongeElkan (ID# 75)
+, Distance(Words, 'David', 'Sift4') as a76 -- Sift4 (ID# 76)
 , Distance(Words, 'David', 'PhraseTokenize') as a96 -- PhraseTokenize (ID# 96)
 , Distance(Words, 'David', 'SimplePhraseTokenize') as a97 -- SimplePhraseTokenize (ID# 97)
 , Distance(Words, 'David', 'Fuzzy_Damlev') as a128 -- Fuzzy_Damlev (ID# 128)
@@ -71,6 +72,7 @@ select Words
 , Distance(Words, 'David', 'iQGramsDistance') as a329 -- iQGramsDistance (ID# 329)
 , Distance(Words, 'David', 'iNGramsDistance') as a330 -- iNGramsDistance (ID# 330)
 , Distance(Words, 'David', 'iMongeElkan') as a331 -- iMongeElkan (ID# 331)
+, Distance(Words, 'David', 'iSift4') as a332 -- iSift4 (ID# 332)
 , Distance(Words, 'David', 'iChapmanMeanLength') as a480 -- iChapmanMeanLength (ID# 480)
 FROM SimilarWords;
 -- Note: Case insensitive functions have an ID number greater than 256

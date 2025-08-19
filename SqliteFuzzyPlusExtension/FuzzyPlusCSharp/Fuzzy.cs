@@ -113,7 +113,7 @@ namespace FuzzyPlusCSharp
             
             // Hybrid Algorithms
             MongeElkan,
-            // SIFT4,
+            Sift4,
             // GeneralizedCompressionDistance
 
             // String Hash Based
@@ -186,6 +186,7 @@ namespace FuzzyPlusCSharp
 
             // Hybrid Algorithms
             iMongeElkan,
+            iSift4,
 
             // Bad distance methods (C# and C++)
             // These method(s) are only here for comparisons and testing purposes
@@ -452,6 +453,9 @@ namespace FuzzyPlusCSharp
                 case StringMatchingAlgorithm_ID.MongeElkan:
                 case StringMatchingAlgorithm_ID.iMongeElkan:
                     return new StringMatchingAlgorithms.MongeElkan();
+                case StringMatchingAlgorithm_ID.Sift4:
+                case StringMatchingAlgorithm_ID.iSift4:
+                    return new StringMatchingAlgorithms.ISift4();
                 case StringMatchingAlgorithm_ID.QGramsDistance:
                 case StringMatchingAlgorithm_ID.iQGramsDistance:
                     return new StringMatchingAlgorithms.QGramsDistance();
@@ -515,6 +519,11 @@ namespace FuzzyPlusCSharp
         {
             FixIfIsCaseSensitive(ref source1, ref source2, isCaseSensitive);
             return mongeElkan.GetSimilarity(source1, source2);
+        }
+        public static double Sift4(this string source1, string source2, bool isCaseSensitive = true)
+        {
+            ISift4 sift4 = new ISift4();
+            return sift4.Distance(source1, source2, isCaseSensitive);
         }
         public static double QGramsDistance(this string source1, string source2, bool isCaseSensitive = true)
         {

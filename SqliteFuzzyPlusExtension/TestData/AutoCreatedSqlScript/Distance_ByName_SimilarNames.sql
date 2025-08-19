@@ -29,6 +29,7 @@ select Name
 , Distance(Name, 'David Jorge', 'QGramsDistance') as a73 -- QGramsDistance (ID# 73)
 , Distance(Name, 'David Jorge', 'NGramsDistance') as a74 -- NGramsDistance (ID# 74)
 , Distance(Name, 'David Jorge', 'MongeElkan') as a75 -- MongeElkan (ID# 75)
+, Distance(Name, 'David Jorge', 'Sift4') as a76 -- Sift4 (ID# 76)
 , Distance(Name, 'David Jorge', 'PhraseTokenize') as a96 -- PhraseTokenize (ID# 96)
 , Distance(Name, 'David Jorge', 'SimplePhraseTokenize') as a97 -- SimplePhraseTokenize (ID# 97)
 , Distance(Name, 'David Jorge', 'Fuzzy_Damlev') as a128 -- Fuzzy_Damlev (ID# 128)
@@ -71,6 +72,7 @@ select Name
 , Distance(Name, 'David Jorge', 'iQGramsDistance') as a329 -- iQGramsDistance (ID# 329)
 , Distance(Name, 'David Jorge', 'iNGramsDistance') as a330 -- iNGramsDistance (ID# 330)
 , Distance(Name, 'David Jorge', 'iMongeElkan') as a331 -- iMongeElkan (ID# 331)
+, Distance(Name, 'David Jorge', 'iSift4') as a332 -- iSift4 (ID# 332)
 , Distance(Name, 'David Jorge', 'iChapmanMeanLength') as a480 -- iChapmanMeanLength (ID# 480)
 FROM SimilarNames;
 -- Note: Case insensitive functions have an ID number greater than 256

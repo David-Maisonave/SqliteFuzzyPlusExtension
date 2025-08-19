@@ -73,6 +73,7 @@
     <Compile Include="StringMatchingAlgorithms\PhraseTokenize.cs" />
     <Compile Include="StringMatchingAlgorithms\QGramsDistance.cs" />
     <Compile Include="StringMatchingAlgorithms\RatcliffObershelpSimilarity.cs" />
+    <Compile Include="StringMatchingAlgorithms\Sift4.cs" />
     <Compile Include="StringMatchingAlgorithms\SimMetricsCore.cs" />
     <Compile Include="StringMatchingAlgorithms\SmithWaterman.cs" />
     <Compile Include="StringMatchingAlgorithms\SmithWatermanGotoh.cs" />

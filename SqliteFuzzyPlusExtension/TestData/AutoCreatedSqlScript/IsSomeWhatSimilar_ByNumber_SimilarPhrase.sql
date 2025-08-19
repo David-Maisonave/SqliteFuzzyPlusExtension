@@ -29,6 +29,7 @@ select Phrases
 , IsSomeWhatSimilar(Phrases, 'This is a similar phrase test', 73) as a73 -- QGramsDistance (ID# 73)
 , IsSomeWhatSimilar(Phrases, 'This is a similar phrase test', 74) as a74 -- NGramsDistance (ID# 74)
 , IsSomeWhatSimilar(Phrases, 'This is a similar phrase test', 75) as a75 -- MongeElkan (ID# 75)
+, IsSomeWhatSimilar(Phrases, 'This is a similar phrase test', 76) as a76 -- Sift4 (ID# 76)
 , IsSomeWhatSimilar(Phrases, 'This is a similar phrase test', 96) as a96 -- PhraseTokenize (ID# 96)
 , IsSomeWhatSimilar(Phrases, 'This is a similar phrase test', 97) as a97 -- SimplePhraseTokenize (ID# 97)
 , IsSomeWhatSimilar(Phrases, 'This is a similar phrase test', 128) as a128 -- Fuzzy_Damlev (ID# 128)
@@ -71,6 +72,7 @@ select Phrases
 , IsSomeWhatSimilar(Phrases, 'This is a similar phrase test', 329) as a329 -- iQGramsDistance (ID# 329)
 , IsSomeWhatSimilar(Phrases, 'This is a similar phrase test', 330) as a330 -- iNGramsDistance (ID# 330)
 , IsSomeWhatSimilar(Phrases, 'This is a similar phrase test', 331) as a331 -- iMongeElkan (ID# 331)
+, IsSomeWhatSimilar(Phrases, 'This is a similar phrase test', 332) as a332 -- iSift4 (ID# 332)
 , IsSomeWhatSimilar(Phrases, 'This is a similar phrase test', 480) as a480 -- iChapmanMeanLength (ID# 480)
 FROM SimilarPhrase;
 -- Note: Case insensitive functions have an ID number greater than 256

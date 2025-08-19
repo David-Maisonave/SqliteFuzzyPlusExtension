@@ -29,6 +29,7 @@ select Phrases
 , IsVerySimilar(Phrases, 'This is a similar phrase test', 'QGramsDistance') as a73 -- QGramsDistance (ID# 73)
 , IsVerySimilar(Phrases, 'This is a similar phrase test', 'NGramsDistance') as a74 -- NGramsDistance (ID# 74)
 , IsVerySimilar(Phrases, 'This is a similar phrase test', 'MongeElkan') as a75 -- MongeElkan (ID# 75)
+, IsVerySimilar(Phrases, 'This is a similar phrase test', 'Sift4') as a76 -- Sift4 (ID# 76)
 , IsVerySimilar(Phrases, 'This is a similar phrase test', 'PhraseTokenize') as a96 -- PhraseTokenize (ID# 96)
 , IsVerySimilar(Phrases, 'This is a similar phrase test', 'SimplePhraseTokenize') as a97 -- SimplePhraseTokenize (ID# 97)
 , IsVerySimilar(Phrases, 'This is a similar phrase test', 'Fuzzy_Damlev') as a128 -- Fuzzy_Damlev (ID# 128)
@@ -71,6 +72,7 @@ select Phrases
 , IsVerySimilar(Phrases, 'This is a similar phrase test', 'iQGramsDistance') as a329 -- iQGramsDistance (ID# 329)
 , IsVerySimilar(Phrases, 'This is a similar phrase test', 'iNGramsDistance') as a330 -- iNGramsDistance (ID# 330)
 , IsVerySimilar(Phrases, 'This is a similar phrase test', 'iMongeElkan') as a331 -- iMongeElkan (ID# 331)
+, IsVerySimilar(Phrases, 'This is a similar phrase test', 'iSift4') as a332 -- iSift4 (ID# 332)
 , IsVerySimilar(Phrases, 'This is a similar phrase test', 'iChapmanMeanLength') as a480 -- iChapmanMeanLength (ID# 480)
 FROM SimilarPhrase;
 -- Note: Case insensitive functions have an ID number greater than 256

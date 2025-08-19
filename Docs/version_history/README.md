@@ -45,5 +45,6 @@
 - Replace C++ function macros with template functions for debugging purposes.
 - Removed enum iEdlibDistance because it can easily cause crash in C# code.\
 - Fixed bug causing crash when using C++ SQLean and Edlib functions with IsSimilar API's like IsSimilar, IsVerySimilar, IsSomeWhatSimilar, etc....
-### 0.1.5
+### 0.1.5 (last projected beta release)
+- Added Sift4 distance string matching algorithm, which came from https://siderite.dev/blog/super-fast-and-accurate-string-distance.html
 - 
