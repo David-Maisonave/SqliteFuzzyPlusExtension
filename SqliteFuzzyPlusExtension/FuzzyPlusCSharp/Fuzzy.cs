@@ -109,16 +109,16 @@ namespace FuzzyPlusCSharp
             MatchingCoefficient,
             QGramsDistance,
             NGramsDistance,
-            // TverskyIndex,
-            
+            TverskyIndex_DO_NOT_USE, //Warning: There is NO implementation for this algorithm.  This is just a placeholder
+
             // Hybrid Algorithms
             MongeElkan,
             Sift4,
-            // GeneralizedCompressionDistance
+            GeneralizedCompressionDistance_DO_NOT_USE, //Warning: There is NO implementation for this algorithm.  This is just a placeholder
 
             // String Hash Based
-            // SimHash,
-            // MinHash,
+            SimHash_DO_NOT_USE, // This algorithm is still in development phase.
+            MinHash_DO_NOT_USE, //Warning: There is NO implementation for this algorithm.  This is just a placeholder
 
             // Phrase token methods which are all case insensitive only
             PhraseTokenize = PHRASE_METHODS,
@@ -183,10 +183,16 @@ namespace FuzzyPlusCSharp
             iMatchingCoefficient,
             iQGramsDistance,
             iNGramsDistance,
+            iTverskyIndex_DO_NOT_USE, //Warning: There is NO implementation for this algorithm.  This is just a placeholder
 
             // Hybrid Algorithms
-            iMongeElkan,
+            iMongeElkan = CASE_INSENSITIVE + MongeElkan,
             iSift4,
+            iGeneralizedCompressionDistance_DO_NOT_USE, //Warning: There is NO implementation for this algorithm.  This is just a placeholder
+
+            // String Hash Based
+            iSimHash_DO_NOT_USE = CASE_INSENSITIVE + SimHash_DO_NOT_USE, // This algorithm is still in development phase.
+            iMinHash_DO_NOT_USE, //Warning: There is NO implementation for this algorithm.  This is just a placeholder
 
             // Bad distance methods (C# and C++)
             // These method(s) are only here for comparisons and testing purposes
@@ -381,6 +387,15 @@ namespace FuzzyPlusCSharp
                 stringMatchingAlgorithm = DefaultStringMatchingAlgorithm;
             switch (stringMatchingAlgorithm)
             {
+                // Handle missing implementation by using Levenshtein method
+                // ---------------------------------------------------------------
+                case StringMatchingAlgorithm_ID.TverskyIndex_DO_NOT_USE:
+                case StringMatchingAlgorithm_ID.iTverskyIndex_DO_NOT_USE:
+                case StringMatchingAlgorithm_ID.GeneralizedCompressionDistance_DO_NOT_USE:
+                case StringMatchingAlgorithm_ID.iGeneralizedCompressionDistance_DO_NOT_USE:
+                case StringMatchingAlgorithm_ID.MinHash_DO_NOT_USE:
+                case StringMatchingAlgorithm_ID.iMinHash_DO_NOT_USE:
+                // ---------------------------------------------------------------
                 case StringMatchingAlgorithm_ID.Levenshtein:
                 case StringMatchingAlgorithm_ID.iLevenshtein:
                     return new StringMatchingAlgorithms.ILevenshtein();
@@ -456,6 +471,9 @@ namespace FuzzyPlusCSharp
                 case StringMatchingAlgorithm_ID.Sift4:
                 case StringMatchingAlgorithm_ID.iSift4:
                     return new StringMatchingAlgorithms.ISift4();
+                case StringMatchingAlgorithm_ID.SimHash_DO_NOT_USE:
+                case StringMatchingAlgorithm_ID.iSimHash_DO_NOT_USE:
+                    return new StringMatchingAlgorithms.ISimHash();
                 case StringMatchingAlgorithm_ID.QGramsDistance:
                 case StringMatchingAlgorithm_ID.iQGramsDistance:
                     return new StringMatchingAlgorithms.QGramsDistance();
@@ -524,6 +542,11 @@ namespace FuzzyPlusCSharp
         {
             ISift4 sift4 = new ISift4();
             return sift4.Distance(source1, source2, isCaseSensitive);
+        }
+        public static double SimHash(this string source1, string source2, bool isCaseSensitive = true)
+        {
+            ISimHash simHash = new ISimHash();
+            return simHash.Distance(source1, source2, isCaseSensitive);
         }
         public static double QGramsDistance(this string source1, string source2, bool isCaseSensitive = true)
         {

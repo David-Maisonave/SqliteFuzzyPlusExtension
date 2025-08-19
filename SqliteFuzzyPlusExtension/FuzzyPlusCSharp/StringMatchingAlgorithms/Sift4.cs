@@ -18,12 +18,14 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
         public ISift4(int maxOffset = 256, int MaxDistance = 1024)
         {
             this.maxOffset = maxOffset;
-            Options options = new Options();
-            options.MaxDistance = MaxDistance;
+            Options options = new Options
+            {
+                MaxDistance = MaxDistance
+            };
             sift4 = new Sift4(options);
         }
-        private Sift4 sift4 = null;
-        private int maxOffset = 256; // maxOffset is the number of characters to search for matching letters
+        private readonly Sift4 sift4 = null;
+        private readonly int maxOffset = 256; // maxOffset is the number of characters to search for matching letters
         public double Percentage(string source1, string source2, bool isCaseSensitive = true)
         {
             double d = Distance(source1, source2, isCaseSensitive);
@@ -37,7 +39,7 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
     }
     public class Sift4
     {
-        private Options _options;
+        private readonly Options _options;
         public Sift4(Options options)
         {
             if (options == null) 
@@ -86,8 +88,10 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
             var l1 = t1.Length;
             var l2 = t2.Length;
 
-            if (l1 == 0) return _options.LocalLengthEvaluator(l2);
-            if (l2 == 0) return _options.LocalLengthEvaluator(l1);
+            if (l1 == 0) 
+                return _options.LocalLengthEvaluator(l2);
+            if (l2 == 0) 
+                return _options.LocalLengthEvaluator(l1);
 
             var c1 = 0;  //cursor for string 1
             var c2 = 0;  //cursor for string 2
@@ -150,7 +154,8 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
                     if (_options.MaxDistance != null)
                     {
                         var temporaryDistance = _options.LocalLengthEvaluator(Math.Max(c1, c2)) - _options.TranspositionsEvaluator(lcss, trans);
-                        if (temporaryDistance > _options.MaxDistance) return Math.Round(temporaryDistance, MidpointRounding.AwayFromZero);
+                        if (temporaryDistance > _options.MaxDistance) 
+                            return Math.Round(temporaryDistance, MidpointRounding.AwayFromZero);
                     }
                     //if matching tokens are found, remove 1 from both cursors (they get incremented at the end of the loop)
                     //so that we can have only one code block handling matches 
@@ -197,8 +202,10 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
             var l1 = s1 == null ? 0 : s1.Length;
             var l2 = s2 == null ? 0 : s2.Length;
 
-            if (l1 == 0) return l2;
-            if (l2 == 0) return l1;
+            if (l1 == 0) 
+                return l2;
+            if (l2 == 0) 
+                return l1;
 
             var c1 = 0;  //cursor for string 1
             var c2 = 0;  //cursor for string 2
@@ -261,7 +268,8 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
                     if (maxDistance > 0)
                     {
                         var temporaryDistance = Math.Max(c1, c2) - (lcss - trans);
-                        if (temporaryDistance > maxDistance) return temporaryDistance;
+                        if (temporaryDistance > maxDistance) 
+                            return temporaryDistance;
                     }
                     //if matching tokens are found, remove 1 from both cursors (they get incremented at the end of the loop)
                     //so that we can have only one code block handling matches 
@@ -307,8 +315,10 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
             var l1 = s1 == null ? 0 : s1.Length;
             var l2 = s2 == null ? 0 : s2.Length;
 
-            if (l1 == 0) return l2;
-            if (l2 == 0) return l1;
+            if (l1 == 0) 
+                return l2;
+            if (l2 == 0) 
+                return l1;
 
             var c1 = 0;  //cursor for string 1
             var c2 = 0;  //cursor for string 2
@@ -331,7 +341,7 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
                     }
                     //if matching tokens are found, remove 1 from both cursors (they get incremented at the end of the loop)
                     //so that we can have only one code block handling matches 
-                    for (var i = 0; i < maxOffset && (c1 + i < l1 && c2 + i < l2); i++)
+                    for (var i = 0; i < maxOffset && c1 + i < l1 && c2 + i < l2; i++)
                     {
                         if ((c1 + i < l1) && s1[c1 + i] == s2[c2])
                         {

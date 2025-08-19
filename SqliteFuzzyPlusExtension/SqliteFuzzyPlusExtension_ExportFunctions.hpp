@@ -267,6 +267,22 @@ extern "C"
     }
 
     __declspec(dllexport)
+        double Sift4(const char* str1, const char* str2, bool isCaseSensitive) {
+        String^ source1 = gcnew String(str1);
+        String^ source2 = gcnew String(str2);
+        double distance = FuzzyPlusCSharp::Fuzzy::Sift4(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
+    }
+
+    __declspec(dllexport)
+        double SimHash(const char* str1, const char* str2, bool isCaseSensitive) {
+        String^ source1 = gcnew String(str1);
+        String^ source2 = gcnew String(str2);
+        double distance = FuzzyPlusCSharp::Fuzzy::SimHash(source1, source2, isCaseSensitive);
+        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
+    }
+
+    __declspec(dllexport)
         double QGramsDistance(const char* str1, const char* str2, bool isCaseSensitive) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);

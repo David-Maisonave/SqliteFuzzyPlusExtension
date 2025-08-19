@@ -91,17 +91,16 @@ namespace SqliteFuzzyPlusExtension {
         C_ENUM_NAMING_CONVENTION__(MatchingCoefficient),
         C_ENUM_NAMING_CONVENTION__(QGramsDistance),
         C_ENUM_NAMING_CONVENTION__(NGramsDistance),
-        // NGramsDistance,
-        // TverskyIndex,
+        C_ENUM_NAMING_CONVENTION__(TverskyIndex_DO_NOT_USE), //Warning: There is NO implementation for this algorithm.  This is just a placeholder
 
         // Hybrid Algorithms
         C_ENUM_NAMING_CONVENTION__(MongeElkan),
         C_ENUM_NAMING_CONVENTION__(Sift4),
-        // GeneralizedCompressionDistance
+        C_ENUM_NAMING_CONVENTION__(GeneralizedCompressionDistance_DO_NOT_USE), //Warning: There is NO implementation for this algorithm.  This is just a placeholder
 
         // String Hash Based
-        // SimHash,
-        // MinHash,
+        C_ENUM_NAMING_CONVENTION__(SimHash_DO_NOT_USE), // This algorithm is still in development phase.
+        C_ENUM_NAMING_CONVENTION__(MinHash_DO_NOT_USE), //Warning: There is NO implementation for this algorithm.  This is just a placeholder
 
         // Phrase token methods which are all case insensitive only
         C_ENUM_NAMING_CONVENTION__(PhraseTokenize) = PHRASE_METHODS,
@@ -165,9 +164,17 @@ namespace SqliteFuzzyPlusExtension {
         iBlockDistance,
         iMatchingCoefficient,
         iQGramsDistance,
+        iNGramsDistance,
+        iTverskyIndex_DO_NOT_USE, //Warning: There is NO implementation for this algorithm.  This is just a placeholder
 
         // Hybrid Algorithms
-        iMongeElkan,
+        iMongeElkan = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(MongeElkan),
+        iSift4,
+        iGeneralizedCompressionDistance_DO_NOT_USE, //Warning: There is NO implementation for this algorithm.  This is just a placeholder
+
+        // String Hash Based
+        iSimHash_DO_NOT_USE = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(SimHash_DO_NOT_USE), // This algorithm is still in development phase.
+        iMinHash_DO_NOT_USE, //Warning: There is NO implementation for this algorithm.  This is just a placeholder
 
         // Bad distance methods (C# and C++)
         // These method(s) are only here for comparisons and testing purposes
@@ -256,6 +263,8 @@ extern "C" {
     double EuclideanDistance(const char* source1, const char* source2, bool isCaseSensitive = true);
     double MatchingCoefficient(const char* source1, const char* source2, bool isCaseSensitive = true);
     double MongeElkan(const char* source1, const char* source2, bool isCaseSensitive = true);
+    double Sift4(const char* source1, const char* source2, bool isCaseSensitive = true);
+    double SimHash(const char* source1, const char* source2, bool isCaseSensitive = true);
     double QGramsDistance(const char* source1, const char* source2, bool isCaseSensitive = true);
     double SmithWaterman(const char* source1, const char* source2, bool isCaseSensitive = true);
     double SmithWatermanGotoh(const char* source1, const char* source2, bool isCaseSensitive = true);
@@ -380,6 +389,8 @@ extern "C" {
     double EuclideanDistance(const char* source1, const char* source2, bool isCaseSensitive);
     double MatchingCoefficient(const char* source1, const char* source2, bool isCaseSensitive);
     double MongeElkan(const char* source1, const char* source2, bool isCaseSensitive);
+    double Sift4(const char* source1, const char* source2, bool isCaseSensitive);
+    double SimHash(const char* source1, const char* source2, bool isCaseSensitive);
     double QGramsDistance(const char* source1, const char* source2, bool isCaseSensitive);
     double SmithWaterman(const char* source1, const char* source2, bool isCaseSensitive);
     double SmithWatermanGotoh(const char* source1, const char* source2, bool isCaseSensitive);
