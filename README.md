@@ -33,7 +33,7 @@ select Name, fuzzy_damlev(Name, "David Jorge") as d FROM SimilarNames where d < 
 For more examples, see [Documentation](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs).
 
 SqliteFuzzyPlusExtension is a SQLite Fuzzy Extension which is build using both C/C++ and CSharp libraries. The Visual Studio solution builds 2 DLL (C++ & C#).
-95% of the source is taken from other fuzzy libraries like [SQLean](https://github.com/nalgeon/sqlean), [Edlib](https://github.com/Martinsos/edlib), [SimMetricsCore](https://github.com/HamedFathi/SimMetricsCore), [SimMetrics.Net](https://github.com/StefH/SimMetrics.Net), [soenneker.utils.string.jaccardsimilarity](https://github.com/soenneker/soenneker.utils.string.jaccardsimilarity), [Phonix](https://github.com/eldersantos/phonix), and [Microsoft PhoneticMatching](https://github.com/microsoft/PhoneticMatching).
+95% of the source is taken from other fuzzy libraries like [SimMetricsCore](https://github.com/HamedFathi/SimMetricsCore), [SQLean](https://github.com/nalgeon/sqlean), [Edlib](https://github.com/Martinsos/edlib), [SimMetrics.Net](https://github.com/StefH/SimMetrics.Net), [soenneker.utils.string.jaccardsimilarity](https://github.com/soenneker/soenneker.utils.string.jaccardsimilarity), [Phonix](https://github.com/eldersantos/phonix), and [Microsoft PhoneticMatching](https://github.com/microsoft/PhoneticMatching).
 
 ## Using SqliteFuzzyPlusExtension
 - As a SQLite extension, the two DLL's are both required (SqliteFuzzyPlusExtension.dll and FuzzyPlusCSharp.dll). 
