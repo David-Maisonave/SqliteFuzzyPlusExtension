@@ -2,7 +2,8 @@
 This SQLite extension is the ultimate library on [fuzzy](https://en.wikipedia.org/wiki/Fuzzy_logic) logic for SQLite.
 ## Content
 - [Using SqliteFuzzyPlusExtension](#Using-SqliteFuzzyPlusExtension)
-  - [Using Fuzzy functions outside of SQLite](#Using-Fuzzy-functions-outside-of-SQLite)
+  - [Using SqliteFuzzyPlusExtension With SQLite](#Using-SqliteFuzzyPlusExtension-With-SQLite)
+  - [Using SqliteFuzzyPlusExtension Without SQLite](#Using-SqliteFuzzyPlusExtension-Without-SQLite)
 - [Function List](#Function-List)
   - [Fuzzy String Matching Algorithms](#Fuzzy-String-Matching-Algorithms)
   - [Phonetic Fuzzy Functions](#Phonetic-Fuzzy-Functions)
@@ -38,7 +39,8 @@ For more examples, see [Documentation](https://github.com/David-Maisonave/Sqlite
 SqliteFuzzyPlusExtension is a SQLite Fuzzy Extension which is build using both C/C++ and CSharp libraries. The Visual Studio solution builds 2 DLL (C++ & C#).
 95% of the source is taken from other fuzzy libraries like [SimMetricsCore](https://github.com/HamedFathi/SimMetricsCore), [SQLean](https://github.com/nalgeon/sqlean), [Edlib](https://github.com/Martinsos/edlib), [SimMetrics.Net](https://github.com/StefH/SimMetrics.Net), [jaccardsimilarity](https://github.com/soenneker/soenneker.utils.string.jaccardsimilarity), [Phonix](https://github.com/eldersantos/phonix), and [Microsoft PhoneticMatching](https://github.com/microsoft/PhoneticMatching).
 
-## Using SqliteFuzzyPlusExtension
+# Using SqliteFuzzyPlusExtension
+## Using SqliteFuzzyPlusExtension With SQLite
 - As a SQLite extension, the two DLL's are both required (SqliteFuzzyPlusExtension.dll and FuzzyPlusCSharp.dll). 
 - When calling the libraries from source code, add SqliteFuzzyPlusExtension.lib to the build and for c++ code, add include **SqliteFuzzyPlusExtension.h**.
 - If building in C, add ``#define EXCLUDE_NAMESPACE_SQLITEFUZZYPLUSEXTENSION``, before including **SqliteFuzzyPlusExtension.h**.
@@ -46,7 +48,8 @@ SqliteFuzzyPlusExtension is a SQLite Fuzzy Extension which is build using both C
 ### Important Note!!!
 When using SqliteFuzzyPlusExtension.dll with an executable like **DB Browser for SQLite**, the FuzzyPlusCSharp.dll file MUST be in the same directory as the executable (**DB Browser for SQLite.exe**). While the SqliteFuzzyPlusExtension.dll can be located anywhere.
 
-## Using Fuzzy functions outside of SQLite
+## Using SqliteFuzzyPlusExtension Without SQLite
+- Using Fuzzy functions outside of SQLite
 Both the FuzzyPlusCSharp library and the SqliteFuzzyPlusExtension library can be used directly without SQLite.
 See [UsingFuzzyFunctionsOutsideSQLite.md](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/UsingFuzzyFunctionsOutsideSQLite.md) for more details.
 
