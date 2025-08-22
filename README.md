@@ -2,6 +2,7 @@
 This SQLite extension is the ultimate library on [fuzzy](https://en.wikipedia.org/wiki/Fuzzy_logic) logic for SQLite.
 ## Content
 - [Using SqliteFuzzyPlusExtension](#Using-SqliteFuzzyPlusExtension)
+  - [Using Fuzzy functions outside of SQLite](#Using-Fuzzy-functions-outside-of-SQLite)
 - [Function List](#Function-List)
   - [Fuzzy String Matching Algorithms](#Fuzzy-String-Matching-Algorithms)
   - [Phonetic Fuzzy Functions](#Phonetic-Fuzzy-Functions)
