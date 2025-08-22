@@ -50,8 +50,8 @@ When using SqliteFuzzyPlusExtension.dll with an executable like **DB Browser for
 
 ### Using SqliteFuzzyPlusExtension Without SQLite
 - Using Fuzzy functions outside of SQLite
-Both the FuzzyPlusCSharp library and the SqliteFuzzyPlusExtension library can be used directly without SQLite.
-See [UsingFuzzyFunctionsOutsideSQLite.md](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/UsingFuzzyFunctionsOutsideSQLite.md) for more details.
+  - Both the FuzzyPlusCSharp library and the SqliteFuzzyPlusExtension library can be used directly without SQLite.
+  - See [UsingFuzzyFunctionsOutsideSQLite.md](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/UsingFuzzyFunctionsOutsideSQLite.md) for more details.
 
 # Function List
 ## Fuzzy String Matching Algorithms
