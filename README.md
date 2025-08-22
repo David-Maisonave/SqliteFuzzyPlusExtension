@@ -1,6 +1,6 @@
 # SqliteFuzzyPlusExtension
 This SQLite extension is the ultimate library on [fuzzy](https://en.wikipedia.org/wiki/Fuzzy_logic) logic for SQLite.
-# Content
+## Content
 - [Using SqliteFuzzyPlusExtension](#Using-SqliteFuzzyPlusExtension)
 - [Function List](#Function-List)
   - [Fuzzy Distance Functions](#Fuzzy-Distance-Functions)
