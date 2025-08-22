@@ -50,7 +50,7 @@ When using SqliteFuzzyPlusExtension.dll with an executable like **DB Browser for
 
 ### Using SqliteFuzzyPlusExtension Without SQLite
 - Fuzzy Functions
-  - Most fuzzy functions in SqliteFuzzyPlusExtension can be called directly without using SQLite at all.
+  - Most fuzzy functions in SqliteFuzzyPlusExtension can be called directly without using SQLite.
   - See [UsingFuzzyFunctionsOutsideSQLite.md](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/blob/main/Docs/UsingFuzzyFunctionsOutsideSQLite.md) for more details.
 
 # Function List
