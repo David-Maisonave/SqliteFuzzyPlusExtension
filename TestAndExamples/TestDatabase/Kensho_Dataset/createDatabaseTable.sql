@@ -1,0 +1,8 @@
+CREATE TABLE "Items" (
+	"Labels"	TEXT NOT NULL,
+	"Description"	TEXT NOT NULL,
+	"MD5"	CHAR(32),
+	"SHA1"	CHAR(40),
+	"SHA256"	CHAR(64),
+	"SHA512"	CHAR(128)
+);

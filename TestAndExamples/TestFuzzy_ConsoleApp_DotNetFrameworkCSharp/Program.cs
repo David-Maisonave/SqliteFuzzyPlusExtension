@@ -133,25 +133,25 @@ namespace TestFuzzy_ConsoleApp_DotNetFrameworkCSharp
             //D.f = Fuzzy.HowSimilar("David", "Davie", 17);
             //D.f = Fuzzy.HowSimilar("David", "Davie", 18);
 
-            //D.f = Fuzzy.HowSimilar("David", "david", Fuzzy.CASE_INSENSITIVE + 1);
-            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE + 1);
-            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE + 2);
-            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE + 3);
-            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE + 4);
-            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE + 5);
-            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE + 6);
-            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE + 7);
-            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE + 8);
-            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE + 9);
-            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE + 10);
-            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE + 11);
-            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE + 12);
-            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE + 13);
-            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE + 14);
-            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE + 15);
-            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE + 16);
-            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE + 17);
-            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE + 18);
+            //D.f = Fuzzy.HowSimilar("David", "david", Fuzzy.CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + 1);
+            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + 1);
+            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + 2);
+            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + 3);
+            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + 4);
+            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + 5);
+            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + 6);
+            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + 7);
+            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + 8);
+            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + 9);
+            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + 10);
+            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + 11);
+            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + 12);
+            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + 13);
+            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + 14);
+            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + 15);
+            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + 16);
+            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + 17);
+            //D.f = Fuzzy.HowSimilar("David", "Davie", Fuzzy.CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + 18);
         }
     }
 }

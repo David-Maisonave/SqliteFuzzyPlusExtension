@@ -370,6 +370,13 @@ extern "C"
     }
 
     __declspec(dllexport)
+        bool SameNames(const char* str1, const char* str2) {
+        String^ source1 = gcnew String(str1);
+        String^ source2 = gcnew String(str2);
+        return FuzzyPlusCSharp::Fuzzy::SameNames(source1, source2, false);
+    }
+
+    __declspec(dllexport)
         bool IsVerySimilarFirstLastName(const char* str1, const char* str2) {
         String^ source1 = gcnew String(str1);
         String^ source2 = gcnew String(str2);
@@ -868,3 +875,30 @@ std::string HasCharInSameOrder(const char* str) {
     return returnValue;
 }
 
+__declspec(dllexport)
+std::string ToHash(const char* str, int hashType) {
+    String^ source = gcnew String(str);
+    CString results = FuzzyPlusCSharp::Fuzzy::ToHash(source, (FuzzyPlusCSharp::Fuzzy::HashType)hashType);
+    CT2CA pszConvertedAnsiString(results);
+    std::string returnValue = pszConvertedAnsiString;
+    return returnValue;
+}
+
+__declspec(dllexport)
+int CopyToHash(const char* str, int hashType, char* dest, int sizeOfDest) {
+    String^ source = gcnew String(str);
+    CString results = FuzzyPlusCSharp::Fuzzy::ToHash(source, (FuzzyPlusCSharp::Fuzzy::HashType)hashType);
+    CT2CA pszConvertedAnsiString(results);
+    std::string returnValue = pszConvertedAnsiString;
+    if (returnValue.length() < sizeOfDest) {
+        strcpy_s(dest, sizeOfDest, returnValue.c_str());
+        return 0;
+    }
+    return (int)returnValue.length();
+}
+
+__declspec(dllexport)
+long long FastHash(const char* str) {
+    String^ source = gcnew String(str);
+    return FuzzyPlusCSharp::Fuzzy::FastHash(source);
+}

@@ -45,50 +45,52 @@ sqlite3_int64 convertToInt64(const std::string& input)
     return static_cast<sqlite3_int64>(number);
 }
 
-__declspec(dllexport)
-bool SameName(const char* name1, const char* name2)
-{
-    size_t name1len = strlen(name1);
-    size_t name2len = strlen(name2);
-    if ((name1len == 0) || (name2len == 0))
-        return 0;
-    int minlen = (name2len < name1len) ? (int)name2len : (int)name1len;
-    char* n = (char*)name1;
-    char* m = (char*)name2;
-    // default to equal
-    int equal = 1;
-    // flag for if we actually did a compare of valid chars
-    // this lets us fix equal if we didn't do any compares
-    // due to all chars being invalid/ignored
-    int compared = 0;
-    // keep track of both positions
-    int n_i = 0;
-    int m_i = 0;
-    while (n_i < name1len && m_i < name2len)
+extern "C" {
+    __declspec(dllexport)
+        bool SameName(const char* name1, const char* name2)
     {
-        if (tolower(*n) < 'a' || tolower(*n) > 'z')
+        size_t name1len = strlen(name1);
+        size_t name2len = strlen(name2);
+        if ((name1len == 0) || (name2len == 0))
+            return 0;
+        int minlen = (name2len < name1len) ? (int)name2len : (int)name1len;
+        char* n = (char*)name1;
+        char* m = (char*)name2;
+        // default to equal
+        int equal = 1;
+        // flag for if we actually did a compare of valid chars
+        // this lets us fix equal if we didn't do any compares
+        // due to all chars being invalid/ignored
+        int compared = 0;
+        // keep track of both positions
+        int n_i = 0;
+        int m_i = 0;
+        while (n_i < name1len && m_i < name2len)
         {
-            n++; n_i++; 
-            continue;
+            if (tolower(*n) < 'a' || tolower(*n) > 'z')
+            {
+                n++; n_i++;
+                continue;
+            }
+            if (tolower(*m) < 'a' || tolower(*m) > 'z')
+            {
+                m++; m_i++;
+                continue;
+            }
+            compared = 1;
+            if (tolower(*n) != tolower(*m))
+            {
+                equal = 0;
+                break;
+            }
+            n++; m++;
+            n_i++; m_i++;
         }
-        if (tolower(*m) < 'a' || tolower(*m) > 'z')
-        {
-            m++; m_i++; 
-            continue;
-        }
-        compared = 1;
-        if (tolower(*n) != tolower(*m))
-        {
+        // all-invalid strings are not equal
+        if (!compared)
             equal = 0;
-            break;
-        }
-        n++; m++;
-        n_i++; m_i++;
+        return equal == 1;
     }
-    // all-invalid strings are not equal
-    if (!compared) 
-        equal = 0;
-    return equal == 1;
 }
 void SameName(sqlite3_context* context, int argc, sqlite3_value** argv)
 {

@@ -1,6 +1,7 @@
 #ifndef SQLITEFUZZYPLUSEXTENSION_H
 #define SQLITEFUZZYPLUSEXTENSION_H
 
+// C language code referencing this header should #define COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__ before including this header
 #ifdef COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
 #define EXCLUDE_NAMESPACE_SQLITEFUZZYPLUSEXTENSION
 #include "stdbool.h"
@@ -31,32 +32,45 @@
 namespace SqliteFuzzyPlusExtension {
 #endif //!EXCLUDE_NAMESPACE_SQLITEFUZZYPLUSEXTENSION
 #ifdef COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
-#define SEQUENCE_ALIGNMENT_METHODS 32
-#define TOKEN_METHODS 64
-#define PHRASE_METHODS TOKEN_METHODS + 32
-#define CPP_ONLY_FUZZY 128
-#define CASE_INSENSITIVE 256
-#define BAD_METHODS CPP_ONLY_FUZZY + 96
-#define METHODS_UP_FOR_DELETION BAD_METHODS + 10
+// Constants for string matching algorithms
+#define QUANTITY_MAX_ALGORITHMS_PER_GROUP 32
+#define SEQUENCE_ALIGNMENT_ALGORITHMS QUANTITY_MAX_ALGORITHMS_PER_GROUP
+#define TOKEN_STRING_MATCHING_ALGORITHMS SEQUENCE_ALIGNMENT_ALGORITHMS + QUANTITY_MAX_ALGORITHMS_PER_GROUP
+#define HYBRID_STRING_MATCHING_ALGORITHMS TOKEN_STRING_MATCHING_ALGORITHMS + QUANTITY_MAX_ALGORITHMS_PER_GROUP
+#define HASH_STRING_MATCHING_ALGORITHMS HYBRID_STRING_MATCHING_ALGORITHMS + QUANTITY_MAX_ALGORITHMS_PER_GROUP
+#define CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS 512
+#define CPP_ONLY_FUZZY_ALGORITHM_IMPLEMENTATION CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS - (QUANTITY_MAX_ALGORITHMS_PER_GROUP * 2)
+#define PHRASE_STRING_MATCHING_ALGORITHMS CPP_ONLY_FUZZY_ALGORITHM_IMPLEMENTATION - QUANTITY_MAX_ALGORITHMS_PER_GROUP
+#define BAD_STRING_MATCHING_ALGORITHMS CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS - QUANTITY_MAX_ALGORITHMS_PER_GROUP
+#define STRING_MATCHING_ALGORITHMS_UP_FOR_DELETION BAD_STRING_MATCHING_ALGORITHMS + (QUANTITY_MAX_ALGORITHMS_PER_GROUP /2)
+// Phonetic associated algorithms constants
 #define PHONETIC_ALGORITHMS 16384
-#define MICROSOFT_PHONETIC_METHODS PHONETIC_ALGORITHMS + 64
-#define CPP_ONLY_PHONETIC_ALGORITHMS PHONETIC_ALGORITHMS + CPP_ONLY_FUZZY
+#define MICROSOFT_PHONETIC_ALGORITHMS PHONETIC_ALGORITHMS + (QUANTITY_MAX_ALGORITHMS_PER_GROUP * 2)
+#define CPP_ONLY_PHONETIC_ALGORITHMS PHONETIC_ALGORITHMS + CPP_ONLY_FUZZY_ALGORITHM_IMPLEMENTATION
+#define HASH_UTF8_ENCODE 32
 #else // COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
-    const int SEQUENCE_ALIGNMENT_METHODS = 32;
-    const int TOKEN_METHODS = 64;
-    const int PHRASE_METHODS = TOKEN_METHODS + 32;
-    const int CPP_ONLY_FUZZY = 128;
-    const int CASE_INSENSITIVE = 256;
-    const int BAD_METHODS = CPP_ONLY_FUZZY + 96;
-    const int METHODS_UP_FOR_DELETION = BAD_METHODS + 10;
+    // Constants for string matching algorithms
+    const int QUANTITY_MAX_ALGORITHMS_PER_GROUP = 32;
+    const int SEQUENCE_ALIGNMENT_ALGORITHMS = QUANTITY_MAX_ALGORITHMS_PER_GROUP;
+    const int TOKEN_STRING_MATCHING_ALGORITHMS = SEQUENCE_ALIGNMENT_ALGORITHMS + QUANTITY_MAX_ALGORITHMS_PER_GROUP;
+    const int HYBRID_STRING_MATCHING_ALGORITHMS = TOKEN_STRING_MATCHING_ALGORITHMS + QUANTITY_MAX_ALGORITHMS_PER_GROUP;
+    const int HASH_STRING_MATCHING_ALGORITHMS = HYBRID_STRING_MATCHING_ALGORITHMS + QUANTITY_MAX_ALGORITHMS_PER_GROUP;
+    const int CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS = 512;
+    const int CPP_ONLY_FUZZY_ALGORITHM_IMPLEMENTATION = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS - (QUANTITY_MAX_ALGORITHMS_PER_GROUP * 2);
+    const int PHRASE_STRING_MATCHING_ALGORITHMS = CPP_ONLY_FUZZY_ALGORITHM_IMPLEMENTATION - QUANTITY_MAX_ALGORITHMS_PER_GROUP;
+    const int BAD_STRING_MATCHING_ALGORITHMS = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS - QUANTITY_MAX_ALGORITHMS_PER_GROUP;
+    const int STRING_MATCHING_ALGORITHMS_UP_FOR_DELETION = BAD_STRING_MATCHING_ALGORITHMS + (QUANTITY_MAX_ALGORITHMS_PER_GROUP /2);
+    // Phonetic associated algorithms constants
     const int PHONETIC_ALGORITHMS = 16384;
-    const int MICROSOFT_PHONETIC_METHODS = PHONETIC_ALGORITHMS + 64;
-    const int CPP_ONLY_PHONETIC_ALGORITHMS = PHONETIC_ALGORITHMS + CPP_ONLY_FUZZY;
+    const int MICROSOFT_PHONETIC_ALGORITHMS = PHONETIC_ALGORITHMS + (QUANTITY_MAX_ALGORITHMS_PER_GROUP * 2);
+    const int CPP_ONLY_PHONETIC_ALGORITHMS = PHONETIC_ALGORITHMS + CPP_ONLY_FUZZY_ALGORITHM_IMPLEMENTATION;
+    const int HASH_UTF8_ENCODE = 32;
 #endif // COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
     // Note: In C language, the enums can not use the same name as a function, so macro C_ENUM_NAMING_CONVENTION__ has been added for C-Only code where all the enums with this macro have an "enum_" prefixed to the name.
     //       The C++ code will still reference all the enums by the original name.
     enum StringMatchingAlgorithm_ID
     {
+        // Each group starts with a constant, so that new algorithms can be added without causing all the enum's to get renumbered.
         UseDefaultStringMatchingAlgorithm = 0,
         // Edit Distance Based Methods
         C_ENUM_NAMING_CONVENTION__(Levenshtein),
@@ -70,7 +84,7 @@ namespace SqliteFuzzyPlusExtension {
         C_ENUM_NAMING_CONVENTION__(EuclideanDistance),
 
         // Sequence Alignment Based Methods
-        C_ENUM_NAMING_CONVENTION__(LongestCommonSequence) = SEQUENCE_ALIGNMENT_METHODS,
+        C_ENUM_NAMING_CONVENTION__(LongestCommonSequence) = SEQUENCE_ALIGNMENT_ALGORITHMS,
         C_ENUM_NAMING_CONVENTION__(NeedlemanWunsch),
         C_ENUM_NAMING_CONVENTION__(RatcliffObershelpSimilarityDistance),
         C_ENUM_NAMING_CONVENTION__(LongestCommonSubstringDistance),
@@ -80,7 +94,7 @@ namespace SqliteFuzzyPlusExtension {
         C_ENUM_NAMING_CONVENTION__(SmithWatermanGotohWindowedAffine),
 
         // Token Based Methods
-        C_ENUM_NAMING_CONVENTION__(CosineSimilarity) = TOKEN_METHODS,
+        C_ENUM_NAMING_CONVENTION__(CosineSimilarity) = TOKEN_STRING_MATCHING_ALGORITHMS,
         C_ENUM_NAMING_CONVENTION__(JaccardSimilarity), // ToDo: JaccardSimilarity, JaccardIndex, and TanimotoCoefficientDistance are most likely the same logic.  Remove the duplicates
         C_ENUM_NAMING_CONVENTION__(JaccardIndex),
         C_ENUM_NAMING_CONVENTION__(TanimotoCoefficientDistance),
@@ -92,24 +106,34 @@ namespace SqliteFuzzyPlusExtension {
         C_ENUM_NAMING_CONVENTION__(QGramsDistance),
         C_ENUM_NAMING_CONVENTION__(NGramsDistance),
         C_ENUM_NAMING_CONVENTION__(TverskyIndex_DO_NOT_USE), //Warning: There is NO implementation for this algorithm.  This is just a placeholder
+        DO_NOT_USE_PlaceHolder1, // This is a place holder for possible future algorithm. Do not use this enum!
+        DO_NOT_USE_PlaceHolder2, // This is a place holder for possible future algorithm. Do not use this enum!
+        DO_NOT_USE_PlaceHolder3, // This is a place holder for possible future algorithm. Do not use this enum!
 
         // Hybrid Algorithms
-        C_ENUM_NAMING_CONVENTION__(MongeElkan),
+        C_ENUM_NAMING_CONVENTION__(MongeElkan) = HYBRID_STRING_MATCHING_ALGORITHMS,
         C_ENUM_NAMING_CONVENTION__(Sift4),
         C_ENUM_NAMING_CONVENTION__(GeneralizedCompressionDistance_DO_NOT_USE), //Warning: There is NO implementation for this algorithm.  This is just a placeholder
+        DO_NOT_USE_PlaceHolder4, // This is a place holder for possible future algorithm. Do not use this enum!
+        DO_NOT_USE_PlaceHolder5, // This is a place holder for possible future algorithm. Do not use this enum!
+        DO_NOT_USE_PlaceHolder6, // This is a place holder for possible future algorithm. Do not use this enum!
 
         // String Hash Based
-        C_ENUM_NAMING_CONVENTION__(SimHash_DO_NOT_USE), // This algorithm is still in development phase.
+        C_ENUM_NAMING_CONVENTION__(SimHash) = HASH_STRING_MATCHING_ALGORITHMS, // This algorithm is still in development phase.
         C_ENUM_NAMING_CONVENTION__(MinHash_DO_NOT_USE), //Warning: There is NO implementation for this algorithm.  This is just a placeholder
+        DO_NOT_USE_PlaceHolder7, // This is a place holder for possible future algorithm. Do not use this enum!
+        DO_NOT_USE_PlaceHolder8, // This is a place holder for possible future algorithm. Do not use this enum!
+        DO_NOT_USE_PlaceHolder9, // This is a place holder for possible future algorithm. Do not use this enum!
+
 
         // Phrase token methods which are all case insensitive only
-        C_ENUM_NAMING_CONVENTION__(PhraseTokenize) = PHRASE_METHODS,
+        C_ENUM_NAMING_CONVENTION__(PhraseTokenize) = PHRASE_STRING_MATCHING_ALGORITHMS,
         C_ENUM_NAMING_CONVENTION__(SimplePhraseTokenize),
 
         // ------------------------------------------------------------
         // These functions are NOT supported by CSharp Fuzzy class code, and are only here for C++ SqliteFuzzyPlusExtension usage.
         // Sqlean Fuzzy external functions. 
-        Fuzzy_Damlev = CPP_ONLY_FUZZY, // Edit Distance Based
+        Fuzzy_Damlev = CPP_ONLY_FUZZY_ALGORITHM_IMPLEMENTATION, // Edit Distance Based
         Fuzzy_Hamming, // Edit Distance Based
         Fuzzy_Jarowin, // Edit Distance Based
         Fuzzy_Leven, // Edit Distance Based
@@ -122,18 +146,18 @@ namespace SqliteFuzzyPlusExtension {
 
         // Bad distance methods (C# and C++)
         // These method(s) are only here for comparisons and testing purposes
-        C_ENUM_NAMING_CONVENTION__(ChapmanMeanLength) = BAD_METHODS, // Distance method from SimMetricsCore
+        C_ENUM_NAMING_CONVENTION__(ChapmanMeanLength) = BAD_STRING_MATCHING_ALGORITHMS, // Distance method from SimMetricsCore
 
         // EditDistance may get removed, replaced, or logic change 
-        C_ENUM_NAMING_CONVENTION__(EditDistance) = METHODS_UP_FOR_DELETION,
+        C_ENUM_NAMING_CONVENTION__(EditDistance) = STRING_MATCHING_ALGORITHMS_UP_FOR_DELETION,
 
         //This is NOT a fuzzy method. It's for functions that accepts a comparison argument.
-        ExactMatch = CASE_INSENSITIVE - 1,
+        ExactMatch = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS - 1,
 
         ////////////////////////////////////////////////////////////////////////////
         // ToDo: Sort below case insensitive enums in the same order as above
         // Case INSENSITIVE versions
-        iLevenshtein = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(Levenshtein),
+        iLevenshtein = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + C_ENUM_NAMING_CONVENTION__(Levenshtein),
         iDamerauLevenshtein,
         iJaroWinkler,
         iHammingDistance,
@@ -144,7 +168,7 @@ namespace SqliteFuzzyPlusExtension {
         iEuclideanDistance,
 
         // Sequence Alignment Based Methods
-        iLongestCommonSequence = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(LongestCommonSequence),
+        iLongestCommonSequence = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + C_ENUM_NAMING_CONVENTION__(LongestCommonSequence),
         iNeedlemanWunsch,
         iRatcliffObershelpSimilarityDistance,
         iLongestCommonSubstringDistance,
@@ -154,7 +178,7 @@ namespace SqliteFuzzyPlusExtension {
         iSmithWatermanGotohWindowedAffine,
 
         // Token Based Methods
-        iCosineSimilarity = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(CosineSimilarity),
+        iCosineSimilarity = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + C_ENUM_NAMING_CONVENTION__(CosineSimilarity),
         iJaccardSimilarity, // ToDo: JaccardSimilarity, JaccardIndex, and TanimotoCoefficientDistance are most likely the same logic.  Remove the duplicates
         iJaccardIndex,
         iTanimotoCoefficientDistance,
@@ -166,22 +190,32 @@ namespace SqliteFuzzyPlusExtension {
         iQGramsDistance,
         iNGramsDistance,
         iTverskyIndex_DO_NOT_USE, //Warning: There is NO implementation for this algorithm.  This is just a placeholder
+        iDO_NOT_USE_PlaceHolder1, // This is a place holder for possible future algorithm. Do not use this enum!
+        iDO_NOT_USE_PlaceHolder2, // This is a place holder for possible future algorithm. Do not use this enum!
+        iDO_NOT_USE_PlaceHolder3, // This is a place holder for possible future algorithm. Do not use this enum!
 
         // Hybrid Algorithms
-        iMongeElkan = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(MongeElkan),
+        iMongeElkan = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + C_ENUM_NAMING_CONVENTION__(MongeElkan),
         iSift4,
         iGeneralizedCompressionDistance_DO_NOT_USE, //Warning: There is NO implementation for this algorithm.  This is just a placeholder
+        iDO_NOT_USE_PlaceHolder4, // This is a place holder for possible future algorithm. Do not use this enum!
+        iDO_NOT_USE_PlaceHolder5, // This is a place holder for possible future algorithm. Do not use this enum!
+        iDO_NOT_USE_PlaceHolder6, // This is a place holder for possible future algorithm. Do not use this enum!
 
         // String Hash Based
-        iSimHash_DO_NOT_USE = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(SimHash_DO_NOT_USE), // This algorithm is still in development phase.
+        iSimHash = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + C_ENUM_NAMING_CONVENTION__(SimHash), // This algorithm is still in development phase.
         iMinHash_DO_NOT_USE, //Warning: There is NO implementation for this algorithm.  This is just a placeholder
+        iDO_NOT_USE_PlaceHolder7, // This is a place holder for possible future algorithm. Do not use this enum!
+        iDO_NOT_USE_PlaceHolder8, // This is a place holder for possible future algorithm. Do not use this enum!
+        iDO_NOT_USE_PlaceHolder9, // This is a place holder for possible future algorithm. Do not use this enum!
+
 
         // Bad distance methods (C# and C++)
         // These method(s) are only here for comparisons and testing purposes
-        iChapmanMeanLength = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(ChapmanMeanLength),
+        iChapmanMeanLength = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + C_ENUM_NAMING_CONVENTION__(ChapmanMeanLength),
 
         // METHODS UP FOR DELETION
-        iEditDistance = CASE_INSENSITIVE + C_ENUM_NAMING_CONVENTION__(EditDistance)
+        iEditDistance = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + C_ENUM_NAMING_CONVENTION__(EditDistance)
     };
     enum SameSoundMethod
     {
@@ -193,7 +227,7 @@ namespace SqliteFuzzyPlusExtension {
         C_ENUM_NAMING_CONVENTION__(DoubleMetaphone),
         C_ENUM_NAMING_CONVENTION__(ColognePhonetics),
         C_ENUM_NAMING_CONVENTION__(SoundexVer2),
-        C_ENUM_NAMING_CONVENTION__(EnPhoneticDistance) = MICROSOFT_PHONETIC_METHODS,
+        C_ENUM_NAMING_CONVENTION__(EnPhoneticDistance) = MICROSOFT_PHONETIC_ALGORITHMS,
         // ------------------------------------------------------------
         // These functions are NOT supported by CSharp Fuzzy class code, and are only here for C++ SqliteFuzzyPlusExtension usage.
         // SQLean phonetic external functions. 
@@ -202,6 +236,22 @@ namespace SqliteFuzzyPlusExtension {
         Fuzzy_Rsoundex,  //Refined Soundex
         Fuzzy_Phonetic,
         Fuzzy_Translit //Transliteration
+    };
+    enum HashType
+    {
+        MD5,                        // MD5          (128 bits)  32 characters as a hexadecimal string
+        RIPEMD160,                  // RIPEMD-160   (160 bits)  40 characters as a hexadecimal string
+        SHA1,                       // SHA-1        (160 bits)  40 characters as a hexadecimal string
+        SHA256,                     // SHA-256      (256 bits)  64 characters as a hexadecimal string
+        SHA384,                     // SHA-384      (384 bits)  96 characters as a hexadecimal string
+        SHA512,                     // SHA-512      (512 bits)  128 characters as a hexadecimal string
+        FastHash,                   // Fast Hash    (64  bits)  16 characters as a hexadecimal string
+        MD5u = HASH_UTF8_ENCODE,    // MD5          UTF8 encoding
+        RIPEMD160u,
+        SHA1u,
+        SHA256u,
+        SHA384u,
+        SHA512u,
     };
 #ifndef EXCLUDE_NAMESPACE_SQLITEFUZZYPLUSEXTENSION
 }
@@ -291,6 +341,7 @@ extern "C" {
     // -------------------------------------------------------------------------------
     // The following functions have NOT been implemented, and will always return false
     bool SameFirstLastName(const char* source1, const char* source2);
+    bool SameNames(const char* source1, const char* source2);
     bool SamePhone(const char* source1, const char* source2);
     bool SameSocial(const char* source1, const char* source2);
     bool SameZip(const char* source1, const char* source2);
@@ -337,6 +388,8 @@ extern "C" {
     int MaxLength(const char* str1, const char* str2);
     int MinLength(const char* str1, const char* str2);
     unsigned __int64 NormalizeNum(const char* source);
+    int CopyToHash(const char* str, int hashType, char* dest, int sizeOfDest);
+    long long FastHash(const char* str);
 #ifndef COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
 }
     double HowSimilar(const char* source1, const char* source2, const char* StringMatchingAlgorithm_Name);
@@ -361,6 +414,7 @@ extern "C" {
     // Miscellaneous Functions
     std::string HasCharInSameOrder(const char* str);
     std::string NormalizeFirstLastName(const char* name);
+    std::string ToHash(const char* str, int hashType);
 #else  // !COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
     /////////////////////////////////////////////////////////////////////////////////
     // Distance Functions

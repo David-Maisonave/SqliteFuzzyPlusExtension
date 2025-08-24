@@ -47,4 +47,8 @@
 - Fixed bug causing crash when using C++ SQLean and Edlib functions with IsSimilar API's like IsSimilar, IsVerySimilar, IsSomeWhatSimilar, etc....
 ### 0.1.5 (last projected beta release)
 - Added Sift4 distance string matching algorithm
+- Fixed bug in Fuzzy_Jarowin when returning distance of string of equal value. It was returning 1 instead of 0.
+- Improved Fuzzy_Editdist and Fuzzy_Jaro results when working with Distance and HowSimilar API's.
+- Added hash function HashIt, which supports MD5, SHA1, SHA256, SHA384, SHA512, and RIPEMD160.
+- Added FastHash function which returns big integer.
 - 

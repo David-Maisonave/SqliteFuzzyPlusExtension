@@ -1,0 +1,2 @@
+-- Look for an Alternate with possible [The Super Mario World] misspelling.
+Select DefaultName, Alternate, Title, HowSimilar(Alternate, "The Super Mario World") as S FROM AlternateNames WHERE S > 0.9 and Alternate NOT like "%Super Mario World%" ORDER BY S;

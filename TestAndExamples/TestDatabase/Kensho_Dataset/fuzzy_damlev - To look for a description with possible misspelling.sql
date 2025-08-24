@@ -1,0 +1,2 @@
+-- Look for a description with possible misspelling.
+Select description, labels, fuzzy_damlev(description, "country in North America") as F FROM items WHERE F < 4 and description NOT like "%country in North America%" ORDER BY F;

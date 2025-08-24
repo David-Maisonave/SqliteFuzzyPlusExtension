@@ -1,0 +1,2 @@
+-- Look for a DefaultName with possible [The Super Mario World] misspelling.
+Select DefaultName, Alternate, Title, Distance(DefaultName, "The Super Mario World") as D FROM AlternateNames WHERE D < 3 and DefaultName NOT like "%Super Mario World%" ORDER BY D;

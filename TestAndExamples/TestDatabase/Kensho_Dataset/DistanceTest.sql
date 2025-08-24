@@ -1,0 +1,1 @@
+select labels, Distance(labels, "nan") as D from items where labels like "%nan%" ORDER by D;

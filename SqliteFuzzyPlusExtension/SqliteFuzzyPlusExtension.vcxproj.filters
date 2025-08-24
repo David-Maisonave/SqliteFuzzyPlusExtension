@@ -42,6 +42,9 @@
     <ClInclude Include="SqliteFuzzyPlusExtension_Internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SqliteFuzzyPlusExtension_ExportFunctions.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SqliteFuzzyPlusExtension.cpp">

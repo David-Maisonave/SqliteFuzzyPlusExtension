@@ -4,6 +4,8 @@ https://www.amazon.com/Text-Mining-Application-Programming/dp/1584504609
 Apache Lucene™ is a high-performance, full-featured search engine library written entirely in Java. 
 https://lucene.apache.org/core/
 
+MinHash vs SimHash
+https://proceedings.mlr.press/v33/shrivastava14.pdf
 
 
 

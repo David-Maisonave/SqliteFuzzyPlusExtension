@@ -34,6 +34,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "History", "History", "{02EA
 		..\Docs\version_history\README.md = ..\Docs\version_history\README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notes", "Notes", "{9FED3E8F-D47F-4106-BF9C-501AA62BE61C}"
+	ProjectSection(SolutionItems) = preProject
+		..\Docs\Notes\DevelopmentNotes.txt = ..\Docs\Notes\DevelopmentNotes.txt
+		..\Docs\Notes\FutureReferenceMaterials.txt = ..\Docs\Notes\FutureReferenceMaterials.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +80,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}
+		{9FED3E8F-D47F-4106-BF9C-501AA62BE61C} = {8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {76813B26-AC26-4E45-9223-DF2DDC17907D}

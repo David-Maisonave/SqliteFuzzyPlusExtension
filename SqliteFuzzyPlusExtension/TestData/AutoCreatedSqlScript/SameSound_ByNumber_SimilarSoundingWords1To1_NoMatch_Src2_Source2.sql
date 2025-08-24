@@ -8,9 +8,9 @@ select Source1 as src1, Source2 as src2
 , SameSound(Source1, Source2, 16390) as a16390 -- ColognePhonetics (ID# 16390)
 , SameSound(Source1, Source2, 16391) as a16391 -- SoundexVer2 (ID# 16391)
 , SameSound(Source1, Source2, 16448) as a16448 -- EnPhoneticDistance (ID# 16448)
-, SameSound(Source1, Source2, 16512) as a16512 -- Fuzzy_Soundex (ID# 16512)
-, SameSound(Source1, Source2, 16513) as a16513 -- Fuzzy_Caver (ID# 16513)
-, SameSound(Source1, Source2, 16514) as a16514 -- Fuzzy_Rsoundex (ID# 16514)
-, SameSound(Source1, Source2, 16515) as a16515 -- Fuzzy_Phonetic (ID# 16515)
+, SameSound(Source1, Source2, 16832) as a16832 -- Fuzzy_Soundex (ID# 16832)
+, SameSound(Source1, Source2, 16833) as a16833 -- Fuzzy_Caver (ID# 16833)
+, SameSound(Source1, Source2, 16834) as a16834 -- Fuzzy_Rsoundex (ID# 16834)
+, SameSound(Source1, Source2, 16835) as a16835 -- Fuzzy_Phonetic (ID# 16835)
 FROM SimilarSoundingWords1To1_NoMatch;
 -- Note: EnPhoneticDistance only works with SqliteFuzzyPlusExtensionWithMsPhoneticMatching.dll

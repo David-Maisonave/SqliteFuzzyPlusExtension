@@ -1,0 +1,60 @@
+Create template for automating creation of documentation of API's.
+Template will be in ReadMe.MD format.
+
+Title: Function-Name
+Sub-Title: Function group type and link to definition. Link to group definition.
+
+Summary Definition:
+Best Use Case:
+SQL Example Code and results using Test-Database.
+
+C# fuzzy function example code and output.
+C# with SQL example code.
+
+C++ fuzzy function example code and output.
+C++ with SQL example code.
+
+C fuzzy function example code and output.
+C with SQL example code.
+
+Python fuzzy function example code and output.
+Python with SQL example code.
+Note: Take python code from an existing python project.
+
+More SQL examples with results. The results are generated programmatically.
+
+Point to a full general example program of associated language, but not necessarily using particular API.
+The example project should have details on how to set it up, and minimum requirements.
+
+
+Sources Details.
+Source Code Source:
+Wiki Source.
+Historical Source.
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Each API should have the following data members:
+WikiLink
+SourceCodeLink
+SummaryText
+GroupTypeEnum
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Languages to support.
+C#
+C++
+C
+Python
+Java
+GoLang
+PHP
+JavaScript
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Add logic to SQLiteFuzzyPlusExtension to use local text file for startup configuration.
+(SQLiteFuzzyPlusExtension.txt)
+File will perform the following:
+Define defaults.
+Define aliases.
+Define excluded SQLite API's.
+Define include only SQLite API's.
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+

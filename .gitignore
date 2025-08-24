@@ -149,3 +149,19 @@ obj/
 /obj/
 obj/*
 
+
+# Ignore large test database
+kensho_dataset.db
+kensho_dataset.sqbpro
+kensho_dataset(6.8millionRows).db
+kensho_dataset(6.8millionRows).sqbpro
+kensho_dataset(1millionRows).db
+kensho_dataset(1millionRows).sqbpro
+kensho_dataset(100KRows).db
+kensho_dataset(100KRows).sqbpro
+GameNames53KRows.db
+GameNames53KRows.sqbpro
+chinook3.5Krows.db
+chinook3.5Krows.sqbpro
+
+

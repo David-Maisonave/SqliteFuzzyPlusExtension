@@ -1,0 +1,1 @@
+SELECT Name, Alternate, Levenshtein(Name, "The Super Mario World") as d FROM AlternateNames WHERE d < 4

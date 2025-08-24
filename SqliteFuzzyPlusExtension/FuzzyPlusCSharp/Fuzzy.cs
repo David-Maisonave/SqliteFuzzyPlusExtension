@@ -7,6 +7,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace FuzzyPlusCSharp
@@ -39,17 +41,22 @@ namespace FuzzyPlusCSharp
         public const double ISSOMEWHATSIMILAR = 0.5f;
         public const double ISSLIGHTLYSIMILAR = 0.3f;
         public const double ISHARDLYSIMILAR = 0.1f;
-
-        public const int SEQUENCE_ALIGNMENT_METHODS = 32;
-        public const int TOKEN_METHODS = 64;
-        public const int PHRASE_METHODS = TOKEN_METHODS + 32;
-        public const int CPP_ONLY_FUZZY = 128;
-        public const int CASE_INSENSITIVE = 256;
-        public const int BAD_METHODS = CPP_ONLY_FUZZY + 96;
-        public const int METHODS_UP_FOR_DELETION = BAD_METHODS + 10;
+        // Constants for string matching algorithms
+        public const int QUANTITY_MAX_ALGORITHMS_PER_GROUP = 32;
+        public const int SEQUENCE_ALIGNMENT_ALGORITHMS = QUANTITY_MAX_ALGORITHMS_PER_GROUP;
+        public const int TOKEN_STRING_MATCHING_ALGORITHMS = SEQUENCE_ALIGNMENT_ALGORITHMS + QUANTITY_MAX_ALGORITHMS_PER_GROUP;
+        public const int HYBRID_STRING_MATCHING_ALGORITHMS = TOKEN_STRING_MATCHING_ALGORITHMS + QUANTITY_MAX_ALGORITHMS_PER_GROUP;
+        public const int HASH_STRING_MATCHING_ALGORITHMS = HYBRID_STRING_MATCHING_ALGORITHMS + QUANTITY_MAX_ALGORITHMS_PER_GROUP;
+        public const int CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS = 512;
+        public const int CPP_ONLY_FUZZY_ALGORITHM_IMPLEMENTATION = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS - (QUANTITY_MAX_ALGORITHMS_PER_GROUP * 2);
+        public const int PHRASE_STRING_MATCHING_ALGORITHMS = CPP_ONLY_FUZZY_ALGORITHM_IMPLEMENTATION - QUANTITY_MAX_ALGORITHMS_PER_GROUP;
+        public const int BAD_STRING_MATCHING_ALGORITHMS = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS - QUANTITY_MAX_ALGORITHMS_PER_GROUP;
+        public const int STRING_MATCHING_ALGORITHMS_UP_FOR_DELETION = BAD_STRING_MATCHING_ALGORITHMS + (QUANTITY_MAX_ALGORITHMS_PER_GROUP / 2);
+        // Phonetic associated algorithms constants
         public const int PHONETIC_ALGORITHMS = 16384;
-        public const int MICROSOFT_PHONETIC_METHODS = PHONETIC_ALGORITHMS + 64;
-        public const int CPP_ONLY_PHONETIC_ALGORITHMS = PHONETIC_ALGORITHMS + CPP_ONLY_FUZZY;
+        public const int MICROSOFT_PHONETIC_ALGORITHMS = PHONETIC_ALGORITHMS + (QUANTITY_MAX_ALGORITHMS_PER_GROUP * 2);
+        public const int CPP_ONLY_PHONETIC_ALGORITHMS = PHONETIC_ALGORITHMS + CPP_ONLY_FUZZY_ALGORITHM_IMPLEMENTATION;
+        public const int HASH_UTF8_ENCODE = 32;
         #endregion Constants
         #region Distance, Phonetic class, and misc variable members
         // Distance classes
@@ -75,6 +82,7 @@ namespace FuzzyPlusCSharp
         #region StringMatchingAlgorithm_ID definitions
         public enum StringMatchingAlgorithm_ID
         {
+            // Each group starts with a constant, so that new algorithms can be added without causing all the enum's to get renumbered.
             UseDefaultStringMatchingAlgorithm = 0,
             // Edit Distance Based Methods
             Levenshtein,
@@ -88,7 +96,7 @@ namespace FuzzyPlusCSharp
             EuclideanDistance,
 
             // Sequence Alignment Based Methods
-            LongestCommonSequence = SEQUENCE_ALIGNMENT_METHODS,
+            LongestCommonSequence = SEQUENCE_ALIGNMENT_ALGORITHMS,
             NeedlemanWunsch, 
             RatcliffObershelpSimilarityDistance, 
             LongestCommonSubstringDistance, 
@@ -98,7 +106,7 @@ namespace FuzzyPlusCSharp
             SmithWatermanGotohWindowedAffine, 
 
             // Token Based Methods
-            CosineSimilarity = TOKEN_METHODS,
+            CosineSimilarity = TOKEN_STRING_MATCHING_ALGORITHMS,
             JaccardSimilarity, // ToDo: JaccardSimilarity, JaccardIndex, and TanimotoCoefficientDistance are most likely the same logic.  Remove the duplicates
             JaccardIndex,
             TanimotoCoefficientDistance,
@@ -110,24 +118,33 @@ namespace FuzzyPlusCSharp
             QGramsDistance,
             NGramsDistance,
             TverskyIndex_DO_NOT_USE, //Warning: There is NO implementation for this algorithm.  This is just a placeholder
+            DO_NOT_USE_PlaceHolder1, // This is a place holder for possible future algorithm. Do not use this enum!
+            DO_NOT_USE_PlaceHolder2, // This is a place holder for possible future algorithm. Do not use this enum!
+            DO_NOT_USE_PlaceHolder3, // This is a place holder for possible future algorithm. Do not use this enum!
 
             // Hybrid Algorithms
-            MongeElkan,
+            MongeElkan = HYBRID_STRING_MATCHING_ALGORITHMS,
             Sift4,
             GeneralizedCompressionDistance_DO_NOT_USE, //Warning: There is NO implementation for this algorithm.  This is just a placeholder
+            DO_NOT_USE_PlaceHolder4, // This is a place holder for possible future algorithm. Do not use this enum!
+            DO_NOT_USE_PlaceHolder5, // This is a place holder for possible future algorithm. Do not use this enum!
+            DO_NOT_USE_PlaceHolder6, // This is a place holder for possible future algorithm. Do not use this enum!
 
             // String Hash Based
-            SimHash_DO_NOT_USE, // This algorithm is still in development phase.
+            SimHash = HASH_STRING_MATCHING_ALGORITHMS, // This algorithm is still in development phase.
             MinHash_DO_NOT_USE, //Warning: There is NO implementation for this algorithm.  This is just a placeholder
+            DO_NOT_USE_PlaceHolder7, // This is a place holder for possible future algorithm. Do not use this enum!
+            DO_NOT_USE_PlaceHolder8, // This is a place holder for possible future algorithm. Do not use this enum!
+            DO_NOT_USE_PlaceHolder9, // This is a place holder for possible future algorithm. Do not use this enum!
 
             // Phrase token methods which are all case insensitive only
-            PhraseTokenize = PHRASE_METHODS,
+            PhraseTokenize = PHRASE_STRING_MATCHING_ALGORITHMS,
             SimplePhraseTokenize,
 
             // ------------------------------------------------------------
             // These functions are NOT supported by CSharp Fuzzy class code, and are only here for C++ SqliteFuzzyPlusExtension usage.
             // Sqlean Fuzzy external functions. 
-            Fuzzy_Damlev = CPP_ONLY_FUZZY, // Edit Distance Based
+            Fuzzy_Damlev = CPP_ONLY_FUZZY_ALGORITHM_IMPLEMENTATION, // Edit Distance Based
             Fuzzy_Hamming,// Edit Distance Based
             Fuzzy_Jarowin, // Edit Distance Based
             Fuzzy_Leven, // Edit Distance Based
@@ -140,18 +157,18 @@ namespace FuzzyPlusCSharp
 
             // Bad distance methods (C# and C++)
             // These method(s) are only here for comparisons and testing purposes
-            ChapmanMeanLength = BAD_METHODS, // Edit Distance Based // Distance method from SimMetricsCore
+            ChapmanMeanLength = BAD_STRING_MATCHING_ALGORITHMS, // Edit Distance Based // Distance method from SimMetricsCore
             
             // EditDistance may get removed, replaced, or logic change 
-            EditDistance = METHODS_UP_FOR_DELETION,
+            EditDistance = STRING_MATCHING_ALGORITHMS_UP_FOR_DELETION,
 
             //This is NOT a fuzzy method. It's for functions that accepts a comparison argument.
-            ExactMatch = CASE_INSENSITIVE -1,
+            ExactMatch = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS -1,
 
             ////////////////////////////////////////////////////////////////////////////
             // ToDo: Sort below case insensitive enums in the same order as above
             // Case INSENSITIVE versions
-            iLevenshtein = CASE_INSENSITIVE + Levenshtein,
+            iLevenshtein = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + Levenshtein,
             iDamerauLevenshtein,
             iJaroWinkler,
             iHammingDistance,
@@ -162,7 +179,7 @@ namespace FuzzyPlusCSharp
             iEuclideanDistance,
 
             // Sequence Alignment Based Methods
-            iLongestCommonSequence = CASE_INSENSITIVE + LongestCommonSequence,
+            iLongestCommonSequence = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + LongestCommonSequence,
             iNeedlemanWunsch,
             iRatcliffObershelpSimilarityDistance,
             iLongestCommonSubstringDistance,
@@ -172,7 +189,7 @@ namespace FuzzyPlusCSharp
             iSmithWatermanGotohWindowedAffine,
 
             // Token Based Methods
-            iCosineSimilarity = CASE_INSENSITIVE + CosineSimilarity,
+            iCosineSimilarity = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + CosineSimilarity,
             iJaccardSimilarity, // ToDo: JaccardSimilarity, JaccardIndex, and TanimotoCoefficientDistance are most likely the same logic.  Remove the duplicates
             iJaccardIndex,
             iTanimotoCoefficientDistance,
@@ -184,22 +201,31 @@ namespace FuzzyPlusCSharp
             iQGramsDistance,
             iNGramsDistance,
             iTverskyIndex_DO_NOT_USE, //Warning: There is NO implementation for this algorithm.  This is just a placeholder
+            iDO_NOT_USE_PlaceHolder1, // This is a place holder for possible future algorithm. Do not use this enum!
+            iDO_NOT_USE_PlaceHolder2, // This is a place holder for possible future algorithm. Do not use this enum!
+            iDO_NOT_USE_PlaceHolder3, // This is a place holder for possible future algorithm. Do not use this enum!
 
             // Hybrid Algorithms
-            iMongeElkan = CASE_INSENSITIVE + MongeElkan,
+            iMongeElkan = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + MongeElkan,
             iSift4,
             iGeneralizedCompressionDistance_DO_NOT_USE, //Warning: There is NO implementation for this algorithm.  This is just a placeholder
+            iDO_NOT_USE_PlaceHolder4, // This is a place holder for possible future algorithm. Do not use this enum!
+            iDO_NOT_USE_PlaceHolder5, // This is a place holder for possible future algorithm. Do not use this enum!
+            iDO_NOT_USE_PlaceHolder6, // This is a place holder for possible future algorithm. Do not use this enum!
 
             // String Hash Based
-            iSimHash_DO_NOT_USE = CASE_INSENSITIVE + SimHash_DO_NOT_USE, // This algorithm is still in development phase.
+            iSimHash = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + SimHash, // This algorithm is still in development phase.
             iMinHash_DO_NOT_USE, //Warning: There is NO implementation for this algorithm.  This is just a placeholder
+            iDO_NOT_USE_PlaceHolder7, // This is a place holder for possible future algorithm. Do not use this enum!
+            iDO_NOT_USE_PlaceHolder8, // This is a place holder for possible future algorithm. Do not use this enum!
+            iDO_NOT_USE_PlaceHolder9, // This is a place holder for possible future algorithm. Do not use this enum!
 
             // Bad distance methods (C# and C++)
             // These method(s) are only here for comparisons and testing purposes
-            iChapmanMeanLength = CASE_INSENSITIVE + ChapmanMeanLength,
+            iChapmanMeanLength = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + ChapmanMeanLength,
 
             // METHODS UP FOR DELETION
-            iEditDistance = CASE_INSENSITIVE + EditDistance,
+            iEditDistance = CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS + EditDistance,
         }
         public static StringMatchingAlgorithm_ID DefaultStringMatchingAlgorithm { get; private set; } = StringMatchingAlgorithm_ID.iDamerauLevenshtein;
 
@@ -244,6 +270,57 @@ namespace FuzzyPlusCSharp
             StringMatchingAlgorithm_ID stringMatchingAlgorithm = GetStringMatchingAlgorithm(stringMatchingAlgorithm_ID);
             return stringMatchingAlgorithm.ToString();
         }
+        public enum IncompleteOrPlaceHolderStringMatchingAlgorithm_ID
+        {
+            None = 0,
+            TverskyIndex_DO_NOT_USE = StringMatchingAlgorithm_ID.TverskyIndex_DO_NOT_USE,
+            GeneralizedCompressionDistance_DO_NOT_USE = StringMatchingAlgorithm_ID.GeneralizedCompressionDistance_DO_NOT_USE,
+            //SimHash_DO_NOT_USE = StringMatchingAlgorithm_ID.SimHash_DO_NOT_USE,
+            MinHash_DO_NOT_USE = StringMatchingAlgorithm_ID.MinHash_DO_NOT_USE,
+            iTverskyIndex_DO_NOT_USE = StringMatchingAlgorithm_ID.iTverskyIndex_DO_NOT_USE,
+            iGeneralizedCompressionDistance_DO_NOT_USE = StringMatchingAlgorithm_ID.iGeneralizedCompressionDistance_DO_NOT_USE,
+            //iSimHash_DO_NOT_USE = StringMatchingAlgorithm_ID.iSimHash_DO_NOT_USE,
+            iMinHash_DO_NOT_USE = StringMatchingAlgorithm_ID.iMinHash_DO_NOT_USE,
+            DO_NOT_USE_PlaceHolder1 = StringMatchingAlgorithm_ID.DO_NOT_USE_PlaceHolder1,
+            DO_NOT_USE_PlaceHolder2 = StringMatchingAlgorithm_ID.DO_NOT_USE_PlaceHolder2,
+            DO_NOT_USE_PlaceHolder3 = StringMatchingAlgorithm_ID.DO_NOT_USE_PlaceHolder3,
+            DO_NOT_USE_PlaceHolder4 = StringMatchingAlgorithm_ID.DO_NOT_USE_PlaceHolder4,
+            DO_NOT_USE_PlaceHolder5 = StringMatchingAlgorithm_ID.DO_NOT_USE_PlaceHolder5,
+            DO_NOT_USE_PlaceHolder6 = StringMatchingAlgorithm_ID.DO_NOT_USE_PlaceHolder6,
+            DO_NOT_USE_PlaceHolder7 = StringMatchingAlgorithm_ID.DO_NOT_USE_PlaceHolder7,
+            DO_NOT_USE_PlaceHolder8 = StringMatchingAlgorithm_ID.DO_NOT_USE_PlaceHolder8,
+            DO_NOT_USE_PlaceHolder9 = StringMatchingAlgorithm_ID.DO_NOT_USE_PlaceHolder9,
+            iDO_NOT_USE_PlaceHolder1 = StringMatchingAlgorithm_ID.iDO_NOT_USE_PlaceHolder1,
+            iDO_NOT_USE_PlaceHolder2 = StringMatchingAlgorithm_ID.iDO_NOT_USE_PlaceHolder2,
+            iDO_NOT_USE_PlaceHolder3 = StringMatchingAlgorithm_ID.iDO_NOT_USE_PlaceHolder3,
+            iDO_NOT_USE_PlaceHolder4 = StringMatchingAlgorithm_ID.iDO_NOT_USE_PlaceHolder4,
+            iDO_NOT_USE_PlaceHolder5 = StringMatchingAlgorithm_ID.iDO_NOT_USE_PlaceHolder5,
+            iDO_NOT_USE_PlaceHolder6 = StringMatchingAlgorithm_ID.iDO_NOT_USE_PlaceHolder6,
+            iDO_NOT_USE_PlaceHolder7 = StringMatchingAlgorithm_ID.iDO_NOT_USE_PlaceHolder7,
+            iDO_NOT_USE_PlaceHolder8 = StringMatchingAlgorithm_ID.iDO_NOT_USE_PlaceHolder8,
+            iDO_NOT_USE_PlaceHolder9 = StringMatchingAlgorithm_ID.iDO_NOT_USE_PlaceHolder9,
+        }
+        public static bool IsInOp_StringMatchingAlgorithm(int stringMatchingAlgorithm_ID)
+        { // This function and associated enum is for the automated unit testing program which creates SQL statements.
+            string stringMatchingAlgorithm_name = GetStringMatchingAlgorithmName(stringMatchingAlgorithm_ID);
+            IncompleteOrPlaceHolderStringMatchingAlgorithm_ID id = GetIncompleteOrPlaceHolderStringMatchingAlgorithm(stringMatchingAlgorithm_name);
+            return id != IncompleteOrPlaceHolderStringMatchingAlgorithm_ID.None;
+        }
+        public static IncompleteOrPlaceHolderStringMatchingAlgorithm_ID GetIncompleteOrPlaceHolderStringMatchingAlgorithm(string stringMatchingAlgorithm_Name)
+        {
+            IncompleteOrPlaceHolderStringMatchingAlgorithm_ID stringMatchingAlgorithm = IncompleteOrPlaceHolderStringMatchingAlgorithm_ID.None;
+            if (stringMatchingAlgorithm_Name != null)
+            {
+                try
+                {
+                    stringMatchingAlgorithm = (IncompleteOrPlaceHolderStringMatchingAlgorithm_ID)Enum.Parse(typeof(IncompleteOrPlaceHolderStringMatchingAlgorithm_ID), stringMatchingAlgorithm_Name, true);
+                }
+                catch
+                {
+                }
+            }
+            return stringMatchingAlgorithm;
+        }
         #endregion StringMatchingAlgorithm_ID definitions
         #region SameSoundMethod
         public enum SameSoundMethod
@@ -256,7 +333,7 @@ namespace FuzzyPlusCSharp
             DoubleMetaphone,
             ColognePhonetics,
             SoundexVer2,
-            EnPhoneticDistance = MICROSOFT_PHONETIC_METHODS,
+            EnPhoneticDistance = MICROSOFT_PHONETIC_ALGORITHMS,
             // ------------------------------------------------------------
             // These functions are NOT supported by CSharp Fuzzy class code, and are only here for C++ SqliteFuzzyPlusExtension usage.
             // SQLean phonetic external functions. 
@@ -310,7 +387,7 @@ namespace FuzzyPlusCSharp
         #region Similarity functions
         public static bool IsMatch(string source1, string source2, double desiredSimilarity, StringMatchingAlgorithm_ID stringMatchingAlgorithm = StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm) => HowSimilar(source1, source2, stringMatchingAlgorithm) >= desiredSimilarity;
         // The following HowSimilar method is to let SQLite access to HowSimilar
-        public static bool IsCaseSensitive(StringMatchingAlgorithm_ID stringMatchingAlgorithm) => (int)stringMatchingAlgorithm < CASE_INSENSITIVE;
+        public static bool IsCaseSensitive(StringMatchingAlgorithm_ID stringMatchingAlgorithm) => (int)stringMatchingAlgorithm < CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS;
         public static void FixIfIsCaseSensitive(ref string source1, ref string source2, bool isCaseSensitive)
         {
             if (!isCaseSensitive)
@@ -387,15 +464,6 @@ namespace FuzzyPlusCSharp
                 stringMatchingAlgorithm = DefaultStringMatchingAlgorithm;
             switch (stringMatchingAlgorithm)
             {
-                // Handle missing implementation by using Levenshtein method
-                // ---------------------------------------------------------------
-                case StringMatchingAlgorithm_ID.TverskyIndex_DO_NOT_USE:
-                case StringMatchingAlgorithm_ID.iTverskyIndex_DO_NOT_USE:
-                case StringMatchingAlgorithm_ID.GeneralizedCompressionDistance_DO_NOT_USE:
-                case StringMatchingAlgorithm_ID.iGeneralizedCompressionDistance_DO_NOT_USE:
-                case StringMatchingAlgorithm_ID.MinHash_DO_NOT_USE:
-                case StringMatchingAlgorithm_ID.iMinHash_DO_NOT_USE:
-                // ---------------------------------------------------------------
                 case StringMatchingAlgorithm_ID.Levenshtein:
                 case StringMatchingAlgorithm_ID.iLevenshtein:
                     return new StringMatchingAlgorithms.ILevenshtein();
@@ -471,8 +539,8 @@ namespace FuzzyPlusCSharp
                 case StringMatchingAlgorithm_ID.Sift4:
                 case StringMatchingAlgorithm_ID.iSift4:
                     return new StringMatchingAlgorithms.ISift4();
-                case StringMatchingAlgorithm_ID.SimHash_DO_NOT_USE:
-                case StringMatchingAlgorithm_ID.iSimHash_DO_NOT_USE:
+                case StringMatchingAlgorithm_ID.SimHash:
+                case StringMatchingAlgorithm_ID.iSimHash:
                     return new StringMatchingAlgorithms.ISimHash();
                 case StringMatchingAlgorithm_ID.QGramsDistance:
                 case StringMatchingAlgorithm_ID.iQGramsDistance:
@@ -501,7 +569,16 @@ namespace FuzzyPlusCSharp
                     return new StringMatchingAlgorithms.IDamerauLevenshtein();
                 case StringMatchingAlgorithm_ID.ExactMatch:
                     return new StringMatchingAlgorithms.IExactMatch();
+                //case StringMatchingAlgorithm_ID.TverskyIndex_DO_NOT_USE:
+                //case StringMatchingAlgorithm_ID.iTverskyIndex_DO_NOT_USE:
+                //case StringMatchingAlgorithm_ID.GeneralizedCompressionDistance_DO_NOT_USE:
+                //case StringMatchingAlgorithm_ID.iGeneralizedCompressionDistance_DO_NOT_USE:
+                //case StringMatchingAlgorithm_ID.MinHash_DO_NOT_USE:
+                //case StringMatchingAlgorithm_ID.iMinHash_DO_NOT_USE:
                 default:
+                    // Handle use of missing algorithms gracefully by using IExactMatch
+                    if (IsInOp_StringMatchingAlgorithm((int)stringMatchingAlgorithm))
+                        return new StringMatchingAlgorithms.IExactMatch();
                     return null;
             }
         }
@@ -603,6 +680,7 @@ namespace FuzzyPlusCSharp
         #endregion Distance functions
         #region SameFunc functions
         public static bool SameFirstLastName(string source1, string source2, bool isCaseSensitive = false) => Misc.Sameness.SameFirstLastName(source1, source2, isCaseSensitive);
+        public static bool SameNames(string source1, string source2, bool isCaseSensitive = false) => Misc.Sameness.SameNames(source1, source2, isCaseSensitive);
         public static bool SamePhone(string source1, string source2, bool isCaseSensitive = false) => Misc.Sameness.SamePhone(source1, source2, isCaseSensitive);
         public static bool SameSocial(string source1, string source2, bool isCaseSensitive = false) => Misc.Sameness.SameSocial(source1, source2, isCaseSensitive);
         public static bool SameZip(string source1, string source2, bool isCaseSensitive = false) => Misc.Sameness.SameZip(source1, source2, isCaseSensitive);
@@ -752,6 +830,91 @@ namespace FuzzyPlusCSharp
         public static bool IsSimilar(string source1, string source2, SameSoundMethod id) => SameSound(source1, source2, id, StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm, false);
         public static bool IsVerySimilar(string source1, string source2, SameSoundMethod id) => SameSound(source1, source2, id, StringMatchingAlgorithm_ID.UseDefaultStringMatchingAlgorithm, true);
         #endregion Phonetic (sound) functions
+        #region Hash Logic
+        public enum HashType
+        {
+            MD5,                        // MD5          (128 bits)  32 characters as a hexadecimal string
+            RIPEMD160,                  // RIPEMD-160   (160 bits)  40 characters as a hexadecimal string
+            SHA1,                       // SHA-1        (160 bits)  40 characters as a hexadecimal string
+            SHA256,                     // SHA-256      (256 bits)  64 characters as a hexadecimal string
+            SHA384,                     // SHA-384      (384 bits)  96 characters as a hexadecimal string
+            SHA512,                     // SHA-512      (512 bits)  128 characters as a hexadecimal string
+            FastHash,                   // Fast Hash    (64  bits)  16 characters as a hexadecimal string
+            MD5u = HASH_UTF8_ENCODE,    // MD5          UTF8 encoding
+            RIPEMD160u,
+            SHA1u,
+            SHA256u,
+            SHA384u,
+            SHA512u,
+        }
+        //MD6,                // MD6          Variable output length                           
+        //CRC32,   // CRC32        (32 bits)   8 characters as a hexadecimal string 
+        //CRC64,   // CRC64        (64 bits)   16 characters as a hexadecimal string
+        //MD4,     // MD4          (128 bits)  32 characters as a hexadecimal string
+        public static HashType GetHashType(string HashType_Name)
+        {
+            HashType stringMatchingAlgorithm = HashType.MD5;
+            if (HashType_Name != null)
+            {
+                try
+                {
+                    stringMatchingAlgorithm = (HashType)Enum.Parse(typeof(HashType), HashType_Name, true);
+                }
+                catch
+                {
+                }
+            }
+            return stringMatchingAlgorithm;
+        }
+        public static string ByteArrayToString(byte[] ba)
+        {
+            StringBuilder hex = new StringBuilder(ba.Length * 2);
+            foreach (byte b in ba)
+                hex.AppendFormat("{0:x2}", b);
+            return hex.ToString();
+        }
+        public static string ToHash(string data, HashType hashType)
+        {
+            HashAlgorithm hash = null;
+            switch (hashType)
+            {
+                case HashType.MD5:
+                case HashType.MD5u:
+                    hash = MD5.Create();
+                    break;
+                case HashType.SHA1:
+                case HashType.SHA1u:
+                    hash = SHA1.Create();
+                    break;
+                case HashType.SHA256:
+                case HashType.SHA256u:
+                    hash = SHA256.Create();
+                    break;
+                case HashType.SHA384:
+                case HashType.SHA384u:
+                    hash = SHA384.Create();
+                    break;
+                case HashType.SHA512:
+                case HashType.SHA512u:
+                    hash = SHA512.Create();
+                    break;
+                case HashType.RIPEMD160:
+                case HashType.RIPEMD160u:
+                    hash = RIPEMD160.Create();
+                    break;
+                case HashType.FastHash:
+                    ulong ul = StringMatchingAlgorithms.SimHash.CalculateHash(data);
+                    byte[] byte_array = BitConverter.GetBytes(ul);
+                    return ByteArrayToString(byte_array);
+            }
+            if (hash == null)
+                return null;
+            byte[] byteArray = (int)hashType >= HASH_UTF8_ENCODE ? hash.ComputeHash(Encoding.UTF8.GetBytes(data)) : hash.ComputeHash(Encoding.ASCII.GetBytes(data));
+            hash.Dispose();
+            return ByteArrayToString(byteArray);
+        }
+        public static ulong FastHash(string data) => StringMatchingAlgorithms.SimHash.CalculateHash(data);
+        #endregion Hash Logic
         #region Miscellaneous functions
         // ToDo: Consider adding the following fuzzy_score, vector search, MD5, UUID, sha256, date parser, JSON, path handler, URL handler, undo-redo
         //      math -> https://github.com/uzbekdev1/SqliteExtension
@@ -759,6 +922,10 @@ namespace FuzzyPlusCSharp
         //      MD5 -> https://github.com/thechampion/sqlite3_extensions (md5, sha1, sha224, sha256, sha384, and sha512)
         public static string HasCharInSameOrder(this string word) => Misc.HasInSameOrder.HasCharInSameOrder(word, "%"); // Needed for CPP code access
         public static string HasCharInSameOrder(this string word, string sep) => Misc.HasInSameOrder.HasCharInSameOrder(word, sep); // SQL function extension
+        public static string HasWordFrom(string words, string fieldToCompare) => Misc.HasInSameOrder.HasWordFrom(words, fieldToCompare); // Needed for CPP code access
+        public static string HasWordFrom(string words, string fieldToCompare, int minimumWordLenForWordInWordMatch) => Misc.HasInSameOrder.HasWordFrom(words, fieldToCompare, minimumWordLenForWordInWordMatch);
+        public static string ValuesList(string words) => Misc.HasInSameOrder.ValuesList(words);
+        public static string ValuesList(string words, int minimumWordLenForWordInWordMatch) => Misc.HasInSameOrder.ValuesList(words, minimumWordLenForWordInWordMatch);
         public static string HasWordsInSameOrder(string words, string fieldToCompare) => Misc.HasInSameOrder.HasWordsInSameOrder(words, fieldToCompare, false); // Needed for CPP code access
         public static string HasWordsInSameOrder(string words, string fieldToCompare, bool doNearWordSearch, int minimumWordLenForWordInWordMatch = 1, bool simplify = false) =>
            Misc.HasInSameOrder.HasWordsInSameOrder(words, fieldToCompare, doNearWordSearch, minimumWordLenForWordInWordMatch, simplify); // SQL function extension

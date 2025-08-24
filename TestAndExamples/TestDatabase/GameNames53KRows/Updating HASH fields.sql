@@ -1,0 +1,1 @@
+UPDATE AlternateNames SET HashAlternate = FastHash(Alternate), HashName = FastHash(Name), HashTitle = FastHash(Title);

@@ -16,6 +16,15 @@ namespace FuzzyPlusCSharp.Misc
             source2 = Normalize.FirstLastName(source2);
             return Results(source1, source2, isCaseSensitive, stringMatchingAlgorithm, minimumDistance);
         }
+        public static bool SameNames(string source1, string source2, bool isCaseSensitive = false, Fuzzy.StringMatchingAlgorithm_ID stringMatchingAlgorithm = Fuzzy.StringMatchingAlgorithm_ID.ExactMatch, double minimumDistance = Fuzzy.ISSIMILAR)
+        {
+            source1 = Normalize.FirstLastName(source1);
+            source2 = Normalize.FirstLastName(source2);
+            if (Results(source1, source2, isCaseSensitive, stringMatchingAlgorithm, minimumDistance))
+                return true;
+            source2 = Normalize.ReverseNames(source2);
+            return Results(source1, source2, isCaseSensitive, stringMatchingAlgorithm, minimumDistance);
+        }
         public static bool SamePhone(string source1, string source2, bool isCaseSensitive = false, Fuzzy.StringMatchingAlgorithm_ID stringMatchingAlgorithm = Fuzzy.StringMatchingAlgorithm_ID.ExactMatch, double minimumDistance = Fuzzy.ISSIMILAR)
         {// Remove non-numeric characters, and remove first number if it starts with a 1
             source1 = Normalize.Phone(source1);
@@ -24,8 +33,8 @@ namespace FuzzyPlusCSharp.Misc
         }
         public static bool SameSocial(string source1, string source2, bool isCaseSensitive = false, Fuzzy.StringMatchingAlgorithm_ID stringMatchingAlgorithm = Fuzzy.StringMatchingAlgorithm_ID.ExactMatch, double minimumDistance = Fuzzy.ISSIMILAR)
         {// Remove non-numeric characters
-            source1 = Normalize.Social(source1);
-            source2 = Normalize.Social(source2);
+            source1 = Normalize.Number(source1);
+            source2 = Normalize.Number(source2);
             return Results(source1, source2, isCaseSensitive, stringMatchingAlgorithm, minimumDistance);
         }
         public static bool SameZip(string source1, string source2, bool isCaseSensitive = false, Fuzzy.StringMatchingAlgorithm_ID stringMatchingAlgorithm = Fuzzy.StringMatchingAlgorithm_ID.ExactMatch, double minimumDistance = Fuzzy.ISSIMILAR)
@@ -64,7 +73,7 @@ namespace FuzzyPlusCSharp.Misc
             StringMatchingAlgorithms.IDistance iDistance = Fuzzy.GetIDistance(stringMatchingAlgorithm);
             if (iDistance == null)
                 return source1 == source2;
-            double distance = iDistance.Distance(source1, source2);
+            double distance = iDistance.Percentage(source1, source2);
             return distance >= minimumDistance;
         }
     }

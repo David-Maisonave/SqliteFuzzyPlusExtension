@@ -1,0 +1,1 @@
+select labels from items where labels IS NULL;

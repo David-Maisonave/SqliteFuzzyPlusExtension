@@ -1,0 +1,1 @@
+UPDATE items SET Hash_Description = FastHash(Description),Hash_Labels = FastHash(labels);

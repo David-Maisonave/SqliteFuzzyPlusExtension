@@ -31,7 +31,7 @@ double jaro_distance(const char* str1, const char* str2) {
         return (str2_len == 0) ? 1.0 : 0.0;
     }
     if (strcmp(str1, str2) == 0)
-        return 1;
+        return 1.0f;
 
     // max distance between two chars to be considered matching
     // floor() is ommitted due to integer division rules

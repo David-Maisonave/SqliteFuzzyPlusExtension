@@ -16,6 +16,36 @@ namespace FuzzyPlusCSharp.Misc
                 returnWord += $"{c}{sep}";
             return $"{sep}{returnWord}";
         }
+        public static string HasWordFrom(string words, string fieldToCompare, int minimumWordLenForWordInWordMatch = 3)
+        {
+            string[] keywords = Fuzzy.KeywordList(words, false);
+            string returnStr = "";
+            for (int i = 0; i < keywords.Length; ++i)
+            {
+                if (keywords[i].Length >= minimumWordLenForWordInWordMatch)
+                {
+                    returnStr += $" {fieldToCompare} LIKE \"%{keywords[i]}%\" ";
+                    if (i + 1 < keywords.Length)
+                        returnStr += " OR ";
+                }
+            }
+            return "(" + returnStr + ")";
+        }
+        public static string ValuesList(string words, int minimumWordLenForWordInWordMatch = 3)
+        { // ( VALUES ('South'), ('North'), ('West'), ('East'))
+            string[] keywords = Fuzzy.KeywordList(words, false);
+            string returnStr = "( VALUES ";
+            for (int i = 0; i < keywords.Length; ++i)
+            {
+                if (keywords[i].Length >= minimumWordLenForWordInWordMatch)
+                {
+                    returnStr += $"('{keywords[i]}')";
+                    if (i + 1 < keywords.Length)
+                        returnStr += ", ";
+                }
+            }
+            return returnStr + ")";
+        }
         public static string HasWordsInSameOrder(string words, string fieldToCompare) => HasWordsInSameOrder(words, fieldToCompare, false); // Needed for CPP code access
         public static string HasWordsInSameOrder(string words, string fieldToCompare, bool doNearWordSearch, int minimumWordLenForWordInWordMatch = 1, bool simplify = false) // SQL function extension
         {

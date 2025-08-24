@@ -8,9 +8,9 @@ select Words as src1, 'being' as src2
 , SameSound(Words, 'being', 16390) as a16390 -- ColognePhonetics (ID# 16390)
 , SameSound(Words, 'being', 16391) as a16391 -- SoundexVer2 (ID# 16391)
 , SameSound(Words, 'being', 16448) as a16448 -- EnPhoneticDistance (ID# 16448)
-, SameSound(Words, 'being', 16512) as a16512 -- Fuzzy_Soundex (ID# 16512)
-, SameSound(Words, 'being', 16513) as a16513 -- Fuzzy_Caver (ID# 16513)
-, SameSound(Words, 'being', 16514) as a16514 -- Fuzzy_Rsoundex (ID# 16514)
-, SameSound(Words, 'being', 16515) as a16515 -- Fuzzy_Phonetic (ID# 16515)
+, SameSound(Words, 'being', 16832) as a16832 -- Fuzzy_Soundex (ID# 16832)
+, SameSound(Words, 'being', 16833) as a16833 -- Fuzzy_Caver (ID# 16833)
+, SameSound(Words, 'being', 16834) as a16834 -- Fuzzy_Rsoundex (ID# 16834)
+, SameSound(Words, 'being', 16835) as a16835 -- Fuzzy_Phonetic (ID# 16835)
 FROM SimilarSoundingWords;
 -- Note: EnPhoneticDistance only works with SqliteFuzzyPlusExtensionWithMsPhoneticMatching.dll

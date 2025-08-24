@@ -1,0 +1,1 @@
+SELECT labels, description from items where HowSimilar(description, "country in North America")  > 0.75 and description NOT like "%country in North America%"

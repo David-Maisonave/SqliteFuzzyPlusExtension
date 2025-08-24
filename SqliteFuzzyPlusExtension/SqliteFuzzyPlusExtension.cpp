@@ -1,6 +1,8 @@
 #include <windows.h>
 #include <cassert>
 #include <string>
+#include <map>
+#include <deque>
 #include <algorithm>
 #include <functional>
 #include <ctype.h>
@@ -10,20 +12,24 @@
 #include "SqliteFuzzyPlusExtension.h"
 #include "edlib\include\edlib.h"
 using namespace System;
-
 // ToDo: Add the following functions:
-//      SameFirstLastName, SamePhone, SameSocial, SameZip, SameAddress, SameDate, SameNumber
 //      SameFileName -> Will use * and ? as wildcard characters which will get converted to SQL wildcard characters (% and _)
-
-// ToDo: Add fuzzy_soundex and fuzzy_rsoundex functions that can optionally handle 3 arguments.
-
-// ToDo: Add MD5 support for both blobs and for files via file names listed in DB.
-//      MakeMD5 -> Function checks if argv[0] is blob or text file name.
-
-// ToDo: Add fuzzy logic to compare blobs that have image or video files.
-// ToDo: Add fuzzy logic to compare files via file names listed in DB.
-
+//      Add fuzzy logic to compare blobs that have image or video files.
+//      Add fuzzy logic to compare files via file names listed in DB.
 const sqlite3_api_routines* sqlite3_api = NULL;
+static int cacheSize = 32;
+static const char* defaultStr = "";
+const char* GetSqliteValueStr(sqlite3_value** argv, int pos = 0)
+{
+    const char* str = (const char*)sqlite3_value_text(argv[pos]);
+    return (str == NULL || str[0] == 0) ? defaultStr : str;
+}
+
+const unsigned char* GetSqliteValueUnsignedStr(sqlite3_value** argv, int pos = 0)
+{
+    const unsigned char* str = sqlite3_value_text(argv[pos]);
+    return (str == NULL) ? (const unsigned char*)defaultStr : str;
+}
 
 static double Edlib_Distance(std::string source1, std::string source2, bool isCaseSensitive = true)
 {
@@ -36,42 +42,145 @@ static double Edlib_Distance(std::string source1, std::string source2, bool isCa
     return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(result.editDistance);
 }
 
-static double iEdlibDistance(std::string source1, std::string source2)
-{
-    return Edlib_Distance(source1, source2, false);
-}
-
 static void EdlibDistance(sqlite3_context* context, int argc, sqlite3_value** argv)
 {
     assert(argc == 2);
-    const char* source1 = (const char*)sqlite3_value_text(argv[0]);
-    const char* source2 = (const char*)sqlite3_value_text(argv[1]);
+    const char* source1 = GetSqliteValueStr(argv);
+    const char* source2 = GetSqliteValueStr(argv, 1);
     double distance = Edlib_Distance(source1, source2, true);
     distance = FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
     sqlite3_result_double(context, distance);
 }
 
-static void iEdlibDistance(sqlite3_context* context, int argc, sqlite3_value** argv)
+template<typename T1, typename T2, typename T3, typename T4>
+void AddToCache(T1& cacheSizeControl, T2& cache, const T3& key, const T4& result)
 {
-    assert(argc == 2);
-    const char* source1 = (const char*)sqlite3_value_text(argv[0]);
-    const char* source2 = (const char*)sqlite3_value_text(argv[1]);
-    double distance = iEdlibDistance(source1, source2);
-    distance = FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(distance);
-    sqlite3_result_double(context, distance);
+    if (cacheSize > 0)
+    {
+        cache[key] = result;
+        cacheSizeControl.push_back(key);
+        if (cacheSizeControl.size() > cacheSize)
+        {
+            cache.erase(cacheSizeControl.front());
+            cacheSizeControl.pop_front();
+        }
+    }
 }
 
-
 static void HasCharInSameOrder(sqlite3_context* context, int argc, sqlite3_value** argv) {
-    assert(argc == 1);
-    String^ source = gcnew String((const char*)sqlite3_value_text(argv[0]));
-    CString result = FuzzyPlusCSharp::Fuzzy::HasCharInSameOrder(source);
+    assert(argc == 1 || argc == 2);
+    static std::map<std::string, CString > cache;
+    static std::deque<std::string> cacheSizeControl;
+    bool rapWithQuotes = false;
+    char rapChar = '\'';
+    const char* str = GetSqliteValueStr(argv);
+    CString result = (cacheSize > 0) ? cache[str] : "";
+    if (result.IsEmpty())
+    {
+        String^ source = gcnew String(str);
+        result = FuzzyPlusCSharp::Fuzzy::HasCharInSameOrder(source);
+        AddToCache(cacheSizeControl, cache, str, result);
+    }
+    if (argc == 2) 
+    {
+        int arg2 = sqlite3_value_int(argv[1]);
+        if (arg2 == 1)
+            rapChar = '\'';
+        else if (arg2 == 2)
+            rapChar = '"';
+        rapWithQuotes = arg2 != 0;
+    }
+    if (rapWithQuotes)
+        result = rapChar + result + rapChar;
     sqlite3_result_text16(context, result, -1, NULL);
+}
+
+static void HasWordFrom(sqlite3_context* context, int argc, sqlite3_value** argv) {
+    assert(argc == 2 || argc == 3);
+    static std::map<std::pair<std::string, std::string>, CString > cache;
+    static std::deque<std::pair<std::string, std::string> > cacheSizeControl;
+    const char* str1 = GetSqliteValueStr(argv);
+    const char* str2 = GetSqliteValueStr(argv, 1);
+    CString result = (cacheSize > 0 && argc != 3 && cache.find(std::make_pair(str1, str2)) != cache.end()) ? cache[std::make_pair(str1, str2)] : "";
+    if (result.IsEmpty() || argc == 3) // Only supporting 2 argument call for cache for now. 
+    {
+        String^ source1 = gcnew String(str1);
+        String^ source2 = gcnew String(str2);
+        int minimumWordLenForWordInWordMatch = 3;
+        if (argc == 3)
+            minimumWordLenForWordInWordMatch = sqlite3_value_int(argv[2]);
+        result = FuzzyPlusCSharp::Fuzzy::HasWordFrom(source1, source2, minimumWordLenForWordInWordMatch);
+        AddToCache(cacheSizeControl, cache, std::make_pair(str1, str2), result);
+    }
+    sqlite3_result_text16(context, result, -1, NULL);
+}
+
+static void ValuesList(sqlite3_context* context, int argc, sqlite3_value** argv) {
+    assert(argc == 1 || argc == 2);
+    static std::map<std::pair<std::string, int>, CString > cache;
+    static std::deque<std::pair<std::string, int> > cacheSizeControl;
+    const char* str = GetSqliteValueStr(argv);
+    int minimumWordLenForWordInWordMatch = 3;
+    if (argc == 2)
+        minimumWordLenForWordInWordMatch = sqlite3_value_int(argv[1]);
+    CString result = (cacheSize > 0 && argc != 3 && cache.find(std::make_pair(str, minimumWordLenForWordInWordMatch)) != cache.end()) ? cache[std::make_pair(str, minimumWordLenForWordInWordMatch)] : "";
+    if (result.IsEmpty()) 
+    {
+        String^ source1 = gcnew String(str);
+        result = FuzzyPlusCSharp::Fuzzy::ValuesList(source1, minimumWordLenForWordInWordMatch);
+        AddToCache(cacheSizeControl, cache, std::make_pair(str, minimumWordLenForWordInWordMatch), result);
+    }
+    sqlite3_result_text16(context, result, -1, NULL);
+}
+
+static void ToHash(sqlite3_context* context, int argc, sqlite3_value** argv) {
+    assert(argc == 1 || argc == 2);
+    const char* str = GetSqliteValueStr(argv);
+    int hashType = 0;
+    if (argc == 2)
+    {
+        const unsigned char* ustr2 = GetSqliteValueUnsignedStr(argv,1);
+        if (isascii(ustr2[0]))
+        {
+            const char* str2 = GetSqliteValueStr(argv, 1);
+            String^ source2 = gcnew String(str2);
+            hashType = (int)FuzzyPlusCSharp::Fuzzy::GetHashType(source2);
+        }
+        else
+            hashType = sqlite3_value_int(argv[1]);
+    }
+    static std::map<std::pair<std::string, int>, CString > cache;
+    static std::deque<std::pair<std::string, int> > cacheSizeControl;
+    CString result = (cacheSize > 0) ? cache[std::make_pair(str, hashType)] : "";
+    if (result.IsEmpty())
+    {
+        String^ source = gcnew String(str);
+        result = FuzzyPlusCSharp::Fuzzy::ToHash(source, (FuzzyPlusCSharp::Fuzzy::HashType)hashType);
+        AddToCache(cacheSizeControl, cache, std::make_pair(str, hashType), result);
+    }
+    sqlite3_result_text16(context, result, -1, NULL);
+}
+
+static void FastHash(sqlite3_context* context, int argc, sqlite3_value** argv) {
+    assert(argc == 1);
+    static std::map<std::string, long long > cache;
+    static std::deque<std::string> cacheSizeControl;
+    const char* str = GetSqliteValueStr(argv);
+    long long result = 0;
+    if (cacheSize == 0 || cache.find(str) == cache.end())
+    {
+        String^ source = gcnew String(GetSqliteValueStr(argv));
+        result = FuzzyPlusCSharp::Fuzzy::FastHash(source);
+        AddToCache(cacheSizeControl, cache, str, result);
+    }
+    else
+        result = cache[str];
+    sqlite3_result_int64(context, result);
 }
 
 static void SetDefaultStringMatchingAlgorithmByName(sqlite3_context* context, int argc, sqlite3_value** argv) {
 	assert(argc == 1);
-    const char* source = (char*)sqlite3_value_text(argv[0]);
+    const char* source = GetSqliteValueStr(argv);
     if (source == 0) {
         return;
     }
@@ -82,11 +191,11 @@ static void SetDefaultStringMatchingAlgorithmByName(sqlite3_context* context, in
 
 static void SetDefaultStringMatchingAlgorithm(sqlite3_context* context, int argc, sqlite3_value** argv) {
     assert(argc == 1);
-    const unsigned char* ustr = sqlite3_value_text(argv[0]);
+    const unsigned char* ustr = GetSqliteValueUnsignedStr(argv);
     CString result;
     if (isascii(ustr[0]))
     {
-        const char* source = (char*)sqlite3_value_text(argv[0]);
+        const char* source = GetSqliteValueStr(argv);
         if (source == 0) {
             return;
         }
@@ -129,6 +238,7 @@ static double HowSimilar(std::string source1, std::string source2, FuzzyPlusCSha
     String^ s1;
     String^ s2;
     double length = (double)max(source1.length(), source2.length());
+    double d = 0;
     switch (stringMatchingAlgorithm) 
     {
     case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Damlev:
@@ -142,15 +252,18 @@ static double HowSimilar(std::string source1, std::string source2, FuzzyPlusCSha
     case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Osadist:
         return GetPercentage((double)optimal_string_alignment(source1.c_str(), source2.c_str()), length);
     case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Editdist:
-        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(edit_distance(source1.c_str(), source2.c_str(), 0));
+        d = edit_distance(source1.c_str(), source2.c_str(), 0);
+        if (d > 200)
+            return 0.0f;
+        return (200 - d) / 200;
     case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Jaro:
-        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(jaro_distance(source1.c_str(), source2.c_str()));
+        return jaro_distance(source1.c_str(), source2.c_str());
     case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::EdlibDistance:
         return GetPercentage(Edlib_Distance(source1.c_str(), source2.c_str(), true), length);
     default:
         s1 = gcnew String(source1.c_str());
         s2 = gcnew String(source2.c_str());
-        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(FuzzyPlusCSharp::Fuzzy::HowSimilar(s1, s1, (int)stringMatchingAlgorithm));
+        return FuzzyPlusCSharp::Fuzzy::HowSimilar(s1, s1, (int)stringMatchingAlgorithm);
     }
     return 1.0f;
 }
@@ -164,7 +277,7 @@ static double HowSimilar(std::string source1, std::string source2, int iStringMa
 }
 
 static bool GetIsCSharpFuzzy(FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID stringMatchingAlgorithm) {
-    return ((int)stringMatchingAlgorithm < FuzzyPlusCSharp::Fuzzy::CPP_ONLY_FUZZY || (int)stringMatchingAlgorithm > FuzzyPlusCSharp::Fuzzy::CASE_INSENSITIVE);
+    return ((int)stringMatchingAlgorithm < FuzzyPlusCSharp::Fuzzy::CPP_ONLY_FUZZY_ALGORITHM_IMPLEMENTATION || (int)stringMatchingAlgorithm > FuzzyPlusCSharp::Fuzzy::CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS);
 }
 
 static bool GetIsCSharpFuzzy(std::string str_StringMatchingAlgorithm) {
@@ -178,17 +291,17 @@ static bool GetIsCSharpFuzzy(int iStringMatchingAlgorithm) {
 static void HowSimilar(sqlite3_context* context, int argc, sqlite3_value** argv)
 {
     assert(argc == 2 || argc == 3);
-    const char* str1 = (const char*)sqlite3_value_text(argv[0]);
-    const char* str2 = (const char*)sqlite3_value_text(argv[1]);
+    const char* str1 = GetSqliteValueStr(argv);
+    const char* str2 = GetSqliteValueStr(argv, 1);
     String^ source1 = gcnew String(str1);
     String^ source2 = gcnew String(str2);
     double distance = 0.0f;
     if (argc == 3) 
     {
-        const unsigned char* ustr3 = sqlite3_value_text(argv[2]);
+        const unsigned char* ustr3 = GetSqliteValueUnsignedStr(argv, 2);
         if (isascii(ustr3[0]))
         {
-            const char* str3 = (const char*)sqlite3_value_text(argv[2]);
+            const char* str3 = GetSqliteValueStr(argv, 2);
             String^ sourc3 = gcnew String(str3);
             distance = GetIsCSharpFuzzy(str3) ? FuzzyPlusCSharp::Fuzzy::HowSimilar(source1, source2, sourc3) : HowSimilar(str1, str2, str3);
         }
@@ -215,11 +328,11 @@ static void HowSimilarByName(sqlite3_context* context, int argc, sqlite3_value**
 
 static void SetDefaultSameSoundMethod(sqlite3_context* context, int argc, sqlite3_value** argv) {
     assert(argc == 1);
-    const unsigned char* ustr = sqlite3_value_text(argv[0]);
+    const unsigned char* ustr = GetSqliteValueUnsignedStr(argv);
     CString result;
     if (isascii(ustr[0]))
     {
-        const char* source = (char*)sqlite3_value_text(argv[0]);
+        const char* source = GetSqliteValueStr(argv);
         if (source == 0) {
             return;
         }
@@ -328,8 +441,8 @@ static bool SameSound(std::string source1, std::string source2,
 static void SameSound(sqlite3_context* context, int argc, sqlite3_value** argv)
 {
     assert(argc > 1 && argc < 6);
-    const char* source1 = (const char*)sqlite3_value_text(argv[0]);
-    const char* source2 = (const char*)sqlite3_value_text(argv[1]);
+    const char* source1 = GetSqliteValueStr(argv);
+    const char* source2 = GetSqliteValueStr(argv, 1);
     bool isSameSound = false;
     if (argc > 2)
     {
@@ -337,7 +450,7 @@ static void SameSound(sqlite3_context* context, int argc, sqlite3_value** argv)
         bool isVerySimilar = true;
         if (argc > 3) 
         {
-            const unsigned char* ustr4 = sqlite3_value_text(argv[3]);
+            const unsigned char* ustr4 = GetSqliteValueUnsignedStr(argv, 3);
             if (isascii(ustr4[0]))
                 stringMatchingAlgorithm = GetStringMatchingAlgorithm((const char*)ustr4);
             else
@@ -351,7 +464,7 @@ static void SameSound(sqlite3_context* context, int argc, sqlite3_value** argv)
                 isVerySimilar = nIn == 1;
             }
         }
-        const unsigned char* ustr3 = sqlite3_value_text(argv[2]);
+        const unsigned char* ustr3 = GetSqliteValueUnsignedStr(argv, 2);
         if (isascii(ustr3[0]))
             isSameSound = SameSound(source1, source2, GetSameSoundMethod((const char*)ustr3), stringMatchingAlgorithm, isVerySimilar);
         else
@@ -376,7 +489,7 @@ static double Distance(std::string source1, std::string source2, FuzzyPlusCSharp
     case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Hamming:
         return (double)hamming(source1.c_str(), source2.c_str());
     case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Jarowin:
-        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(jaro_winkler(source1.c_str(), source2.c_str()));
+        return (1.0f - jaro_winkler(source1.c_str(), source2.c_str())) * 100.0f;
     case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Leven:
         return (double)levenshtein(source1.c_str(), source2.c_str());
     case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Osadist:
@@ -384,11 +497,11 @@ static double Distance(std::string source1, std::string source2, FuzzyPlusCSharp
     case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Editdist:
         return edit_distance(source1.c_str(), source2.c_str(), 0);
     case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::Fuzzy_Jaro:
-        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(jaro_distance(source1.c_str(), source2.c_str()));
+        return (1.0f - jaro_distance(source1.c_str(), source2.c_str())) * 100.0f;
     case FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::EdlibDistance:
         return Edlib_Distance(source1.c_str(), source2.c_str(), true);
     default:
-        return FuzzyPlusCSharp::Fuzzy::GetPercentWithFixedDecimalDigits(FuzzyPlusCSharp::Fuzzy::Distance(s1, s2, stringMatchingAlgorithm));
+        return FuzzyPlusCSharp::Fuzzy::Distance(s1, s2, stringMatchingAlgorithm);
     }
     return 0.0f;
 }
@@ -403,17 +516,17 @@ static double Distance(std::string source1, std::string source2, int iStringMatc
 static void Distance(sqlite3_context* context, int argc, sqlite3_value** argv)
 {
     assert(argc == 2 || argc == 3);
-    const char* str1 = (const char*)sqlite3_value_text(argv[0]);
-    const char* str2 = (const char*)sqlite3_value_text(argv[1]);
+    const char* str1 = GetSqliteValueStr(argv);
+    const char* str2 = GetSqliteValueStr(argv, 1);
     String^ source1 = gcnew String(str1);
     String^ source2 = gcnew String(str2);
     double distance = 0.0f;
     if (argc == 3) 
     {
-        const unsigned char* ustr3 = sqlite3_value_text(argv[2]);
+        const unsigned char* ustr3 = GetSqliteValueUnsignedStr(argv, 2);
         if (isascii(ustr3[0]))
         {
-            const char* str3 = (const char*)sqlite3_value_text(argv[2]);
+            const char* str3 = GetSqliteValueStr(argv, 2);
             String^ sourc3 = gcnew String(str3);
             distance = GetIsCSharpFuzzy(str3) ? FuzzyPlusCSharp::Fuzzy::Distance(source1, source2, sourc3) : Distance(str1, str2, str3);
         }
@@ -435,9 +548,9 @@ static void Distance(sqlite3_context* context, int argc, sqlite3_value** argv)
 
 static void RegexReplace(sqlite3_context* context, int argc, sqlite3_value** argv) {
     assert(argc == 3);
-    String^ source = gcnew String((const char*)sqlite3_value_text(argv[0]));
-    String^ pattern = gcnew String((const char*)sqlite3_value_text(argv[1]));
-    const char* str3 = (const char*)sqlite3_value_text(argv[2]);
+    String^ source = gcnew String(GetSqliteValueStr(argv));
+    String^ pattern = gcnew String(GetSqliteValueStr(argv, 1));
+    const char* str3 = GetSqliteValueStr(argv, 2);
     String^ replacement = gcnew String(str3);
     CString result(FuzzyPlusCSharp::Fuzzy::RegexReplace(source, pattern, replacement));
     sqlite3_result_text16(context, result, -1, NULL);
@@ -445,8 +558,8 @@ static void RegexReplace(sqlite3_context* context, int argc, sqlite3_value** arg
 
 static void RegexSearch(sqlite3_context* context, int argc, sqlite3_value** argv) {
     assert(argc == 2 || argc == 3);
-    String^ source = gcnew String((const char*)sqlite3_value_text(argv[0]));
-    String^ pattern = gcnew String((const char*)sqlite3_value_text(argv[1]));
+    String^ source = gcnew String(GetSqliteValueStr(argv));
+    String^ pattern = gcnew String(GetSqliteValueStr(argv, 1));
     bool returnOriginalStringIfEmpty = false;
     if (argc == 3)
     {
@@ -465,8 +578,8 @@ static void fuzzy_soundex2(sqlite3_context* context, int argc, sqlite3_value** a
     assert(argc == 1 || argc == 2 || argc == 3);
     if (argc == 1)
         return fuzzy_soundex(context, argc, argv);
-    const char* str1 = (const char*)sqlite3_value_text(argv[0]);
-    const char* str2 = (const char*)sqlite3_value_text(argv[1]);
+    const char* str1 = GetSqliteValueStr(argv);
+    const char* str2 = GetSqliteValueStr(argv, 1);
     char* s1 = soundex(str1);
     char* s2 = soundex(str2);
     if (argc == 2)
@@ -478,11 +591,11 @@ static void fuzzy_soundex2(sqlite3_context* context, int argc, sqlite3_value** a
     {
         String^ source1 = gcnew String(s1);
         String^ source2 = gcnew String(s2);
-        const unsigned char* ustr3 = sqlite3_value_text(argv[2]);
+        const unsigned char* ustr3 = GetSqliteValueUnsignedStr(argv, 2);
         double distance = 0.0f;
         if (isascii(ustr3[0]))
         {
-            const char* str3 = (const char*)sqlite3_value_text(argv[2]);
+            const char* str3 = GetSqliteValueStr(argv, 2);
             String^ sourc3 = gcnew String(str3);
             distance = GetIsCSharpFuzzy(str3) ? FuzzyPlusCSharp::Fuzzy::HowSimilar(source1, source2, sourc3) : HowSimilar(str1, str2, str3);
         }
@@ -503,8 +616,8 @@ static void fuzzy_rsoundex2(sqlite3_context* context, int argc, sqlite3_value** 
     assert(argc == 1 || argc == 2 || argc == 3);
     if (argc == 1)
         return fuzzy_rsoundex(context, argc, argv);
-    const char* str1 = (const char*)sqlite3_value_text(argv[0]);
-    const char* str2 = (const char*)sqlite3_value_text(argv[1]);
+    const char* str1 = GetSqliteValueStr(argv);
+    const char* str2 = GetSqliteValueStr(argv, 1);
     char* s1 = refined_soundex(str1);
     char* s2 = refined_soundex(str2);
     if (argc == 2)
@@ -516,11 +629,11 @@ static void fuzzy_rsoundex2(sqlite3_context* context, int argc, sqlite3_value** 
     {
         String^ source1 = gcnew String(s1);
         String^ source2 = gcnew String(s2);
-        const unsigned char* ustr3 = sqlite3_value_text(argv[2]);
+        const unsigned char* ustr3 = GetSqliteValueUnsignedStr(argv, 2);
         double distance = 0.0f;
         if (isascii(ustr3[0]))
         {
-            const char* str3 = (const char*)sqlite3_value_text(argv[2]);
+            const char* str3 = GetSqliteValueStr(argv, 2);
             String^ sourc3 = gcnew String(str3);
             distance = GetIsCSharpFuzzy(str3) ? FuzzyPlusCSharp::Fuzzy::HowSimilar(source1, source2, sourc3) : HowSimilar(str1, str2, str3);
         }
@@ -538,7 +651,7 @@ static void fuzzy_rsoundex2(sqlite3_context* context, int argc, sqlite3_value** 
 
 static void CaverPhonePhonix(sqlite3_context* context, int argc, sqlite3_value** argv) {
     assert(argc == 1 || argc == 2);
-    const char* str1 = (const char*)sqlite3_value_text(argv[0]);
+    const char* str1 = GetSqliteValueStr(argv);
     if (str1 == 0) {
 
         sqlite3_result_error(context, "arguments should not be NULL", -1);
@@ -547,7 +660,7 @@ static void CaverPhonePhonix(sqlite3_context* context, int argc, sqlite3_value**
     String^ source1 = gcnew String(str1);
     if (argc == 2)
     {
-        const char* str2 = (const char*)sqlite3_value_text(argv[1]);
+        const char* str2 = GetSqliteValueStr(argv, 1);
         String^ source2 = gcnew String(str2);
         int results = FuzzyPlusCSharp::Fuzzy::CaverPhonePhonix(source1, source2, FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::ExactMatch, true);
         sqlite3_result_int(context, results);
@@ -559,7 +672,7 @@ static void CaverPhonePhonix(sqlite3_context* context, int argc, sqlite3_value**
 
 static void SoundexPhonix(sqlite3_context* context, int argc, sqlite3_value** argv) {
     assert(argc == 1 || argc == 2);
-    const char* str1 = (const char*)sqlite3_value_text(argv[0]);
+    const char* str1 = GetSqliteValueStr(argv);
     if (str1 == 0) {
 
         sqlite3_result_error(context, "arguments should not be NULL", -1);
@@ -568,7 +681,7 @@ static void SoundexPhonix(sqlite3_context* context, int argc, sqlite3_value** ar
     String^ source1 = gcnew String(str1);
     if (argc == 2)
     {
-        const char* str2 = (const char*)sqlite3_value_text(argv[1]);
+        const char* str2 = GetSqliteValueStr(argv, 1);
         String^ source2 = gcnew String(str2);
         int results = FuzzyPlusCSharp::Fuzzy::SoundexPhonix(source1, source2, FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::ExactMatch, true);
         sqlite3_result_int(context, results);
@@ -583,8 +696,8 @@ static void WrapperSqliteFunctionDistance(Func func, sqlite3_context* context, i
 {
     assert(argc == 2 || argc == 3);
     bool isCaseSensitive = TRUE;
-    const char* str1 = (const char*)sqlite3_value_text(argv[0]);
-    const char* str2 = (const char*)sqlite3_value_text(argv[1]);
+    const char* str1 = GetSqliteValueStr(argv);
+    const char* str2 = GetSqliteValueStr(argv, 1);
     if (str1 == 0 || str2 == 0) {
         sqlite3_result_error(context, "arguments should not be NULL", -1);
         return;
@@ -604,8 +717,8 @@ template <typename Func>
 static void WrapperSqliteFunctionDistance2(Func func, sqlite3_context* context, int argc, sqlite3_value** argv)
 {
     assert(argc == 2);
-    const char* str1 = (const char*)sqlite3_value_text(argv[0]);
-    const char* str2 = (const char*)sqlite3_value_text(argv[1]);
+    const char* str1 = GetSqliteValueStr(argv);
+    const char* str2 = GetSqliteValueStr(argv, 1);
     if (str1 == 0 || str2 == 0) {
         sqlite3_result_error(context, "arguments should not be NULL", -1);
         return;
@@ -620,8 +733,8 @@ template <typename Func>
 static void WrapperSqliteFunction2(Func func, sqlite3_context* context, int argc, sqlite3_value** argv)
 {
     assert(argc == 2);
-    const char* str1 = (const char*)sqlite3_value_text(argv[0]);
-    const char* str2 = (const char*)sqlite3_value_text(argv[1]);
+    const char* str1 = GetSqliteValueStr(argv);
+    const char* str2 = GetSqliteValueStr(argv, 1);
     String^ sourc1 = gcnew String(str1);
     String^ sourc2 = gcnew String(str2);
     unsigned distance = func(sourc1, sourc2);
@@ -700,7 +813,7 @@ template <typename Func>
 static void WrapperSqliteFunctionReturnStr(Func func, sqlite3_context* context, int argc, sqlite3_value** argv)
 {
     assert(argc == 1);
-    const char* source = (char*)sqlite3_value_text(argv[0]);
+    const char* source = GetSqliteValueStr(argv);
     if (source == 0)
         return;
     String^ sourc1 = gcnew String(source);
@@ -728,7 +841,7 @@ template <typename Func>
 static void WrapperSqliteFunctionReturnInt(Func func, sqlite3_context* context, int argc, sqlite3_value** argv)
 {
     assert(argc == 1);
-    const char* source = (char*)sqlite3_value_text(argv[0]);
+    const char* source = GetSqliteValueStr(argv);
     if (source == 0)
         return;
     String^ sourc1 = gcnew String(source);
@@ -748,18 +861,18 @@ static void WrapperSqliteFunctionSimilar(Func func, LocalFunc localFunc, sqlite3
 {
     assert(argc == 2 || argc == 3);
     FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID d = FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::UseDefaultStringMatchingAlgorithm;
-    const char* str1 = (const char*)sqlite3_value_text(argv[0]);
-    const char* str2 = (const char*)sqlite3_value_text(argv[1]);
+    const char* str1 = GetSqliteValueStr(argv);
+    const char* str2 = GetSqliteValueStr(argv, 1);
     if (str1 == 0 || str2 == 0) {
         sqlite3_result_error(context, "arguments should not be NULL", -1);
         return;
     }
     if (argc == 3)
     {
-        const unsigned char* ustr3 = sqlite3_value_text(argv[2]);
+        const unsigned char* ustr3 = GetSqliteValueUnsignedStr(argv, 2);
         if (isascii(ustr3[0]))
         {
-            const char* str3 = (const char*)sqlite3_value_text(argv[2]);
+            const char* str3 = GetSqliteValueStr(argv, 2);
             String^ sourc3 = gcnew String(str3);
             d = FuzzyPlusCSharp::Fuzzy::GetStringMatchingAlgorithm(sourc3);
         }
@@ -876,7 +989,6 @@ extern "C"
         SQLITE3_CREATE_FUNCTION2(Levenshtein2Distance);
         SQLITE3_CREATE_FUNCTION2(TanimotoCoefficientDistance);
         SQLITE3_CREATE_FUNCTION2(EdlibDistance);
-        SQLITE3_CREATE_FUNCTION2(iEdlibDistance);
         SQLITE3_CREATE_FUNCTION2(EditDistance);
         SQLITE3_CREATE_FUNCTION2(SameName);
         SQLITE3_CREATE_FUNCTION2(CaverPhonePhonix);
@@ -939,7 +1051,6 @@ extern "C"
         SQLITE3_CREATE_FUNCTION_ALIAS2(Lev2, Levenshtein2Distance);
         SQLITE3_CREATE_FUNCTION_ALIAS2(Tanimoto, TanimotoCoefficientDistance);
         SQLITE3_CREATE_FUNCTION_ALIAS2(Edlib, EdlibDistance);
-        SQLITE3_CREATE_FUNCTION_ALIAS2(iEdlib, iEdlibDistance);
         SQLITE3_CREATE_FUNCTION_ALIAS2(PhraseDiff, PhraseSimplifiedDiff);
         SQLITE3_CREATE_FUNCTION_ALIAS2(Regex, RegexReplace);
         SQLITE3_CREATE_FUNCTION_ALIAS2(XMatch, RegexMatch);
@@ -951,6 +1062,7 @@ extern "C"
         SQLITE3_CREATE_FUNCTION_ALIAS2(MinLen, MinLength);
         SQLITE3_CREATE_FUNCTION_ALIAS1(GetFileNameWithExtension, GetFileName);
         SQLITE3_CREATE_FUNCTION_ALIAS1(HasChr, HasCharInSameOrder);
+        SQLITE3_CREATE_FUNCTION_ALIAS2(HasChr, HasCharInSameOrder);
         SQLITE3_CREATE_FUNCTION_ALIAS2(Similar, HowSimilar);
         SQLITE3_CREATE_FUNCTION_ALIAS3(Similar, HowSimilar);
         SQLITE3_CREATE_FUNCTION_ALIAS1(FileExist, IsFileExist);
@@ -972,6 +1084,8 @@ extern "C"
         SQLITE3_CREATE_FUNCTION_ALIAS3(fuzzy_rsoundex, fuzzy_rsoundex2);
         SQLITE3_CREATE_FUNCTION_ALIAS3(soundex, fuzzy_soundex2);
         SQLITE3_CREATE_FUNCTION_ALIAS3(rsoundex, fuzzy_rsoundex2);
+        SQLITE3_CREATE_FUNCTION_ALIAS2(IncludesAWordFrom, HasWordFrom);
+        SQLITE3_CREATE_FUNCTION_ALIAS3(IncludesAWordFrom, HasWordFrom);
 
         // Miscellaneous functions
         SQLITE3_CREATE_FUNCTION2(RegexMatch);
@@ -984,6 +1098,14 @@ extern "C"
         SQLITE3_CREATE_FUNCTION2(MinLength);
         SQLITE3_CREATE_FUNCTION1(NormalizeNum);
         SQLITE3_CREATE_FUNCTION1(HasCharInSameOrder);
+        SQLITE3_CREATE_FUNCTION2(HasCharInSameOrder);
+        SQLITE3_CREATE_FUNCTION2(HasWordFrom);
+        SQLITE3_CREATE_FUNCTION3(HasWordFrom);
+        SQLITE3_CREATE_FUNCTION1(ValuesList);
+        SQLITE3_CREATE_FUNCTION2(ValuesList);
+        SQLITE3_CREATE_FUNCTION1(ToHash);
+        SQLITE3_CREATE_FUNCTION2(ToHash);
+        SQLITE3_CREATE_FUNCTION1(FastHash);
 
         // File associated functions
         SQLITE3_CREATE_FUNCTION1(IsFileExist);

@@ -12,8 +12,8 @@ using namespace System;
 static void CreateScriptSimilarWords(string rootDir, string fieldName, string table, string FunctionName, string CompareTo, bool byName) 
 {
     string fileName = byName ? "_ByName_" : "_ByNumber_";
-    string fullFileNmae = rootDir + FunctionName + fileName + table + ".sql";
-    ofstream f(fullFileNmae);
+    string fullFileName = rootDir + FunctionName + fileName + table + ".sql";
+    ofstream f(fullFileName);
     f << "select " << fieldName << endl;
     for (int i = 0; i <= (int)FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::iChapmanMeanLength; ++i)
     {
@@ -21,17 +21,26 @@ static void CreateScriptSimilarWords(string rootDir, string fieldName, string ta
         string fuzzyFunctionName = CW2A(d).operator char *();
         if (std::isdigit(fuzzyFunctionName[0]))
             continue;
+        if (fuzzyFunctionName.find("DO_NOT_USE") != string::npos && fuzzyFunctionName.find("SimHash") == string::npos)
+            continue;
         f << ", " << FunctionName << "(" << fieldName << ", " << CompareTo << ", ";
         if (byName)
             f << "'" << fuzzyFunctionName << "'";
         else
             f << i;
-        f << ") as a" << i << " -- " << fuzzyFunctionName << " (ID# " << i << ")" << endl;
+        string note = "";
+        if (fuzzyFunctionName.find("DO_NOT_USE") != string::npos)
+            note = "   !!! Warning: This is NOT a working algorithm!!!";
+        else if (fuzzyFunctionName.find("ChapmanMeanLength") != string::npos)
+            note = "   !!! Warning: The ChapmanMeanLength algorithm does not work. It does NOT produce expected results!!!";
+        else if (fuzzyFunctionName.find("Hamming") != string::npos)
+            note = "   *** Note: The Hamming algorithm only works with strings having equal length ***";
+        f << ") as a" << i << " -- " << fuzzyFunctionName << " (ID# " << i << ")" << note << endl;
     }
     if ((FunctionName == "IsSimilar" || FunctionName == "IsVerySimilar") &&
         (table == "SimilarNames" || table == "SimilarWords"))
     {
-        for (int i = (int)FuzzyPlusCSharp::Fuzzy::SameSoundMethod::SoundexPhonix; i < FuzzyPlusCSharp::Fuzzy::MICROSOFT_PHONETIC_METHODS + 1; ++i)
+        for (int i = (int)FuzzyPlusCSharp::Fuzzy::SameSoundMethod::SoundexPhonix; i < FuzzyPlusCSharp::Fuzzy::MICROSOFT_PHONETIC_ALGORITHMS + 1; ++i)
         {
             CString d = FuzzyPlusCSharp::Fuzzy::GetSameSoundMethodName(i);
             string fuzzyFunctionName = CW2A(d).operator char *();
@@ -46,13 +55,14 @@ static void CreateScriptSimilarWords(string rootDir, string fieldName, string ta
         }
     }
     f << "FROM " << table << ";" << endl;
-    f << "-- Note: Case insensitive functions have an ID number greater than " << FuzzyPlusCSharp::Fuzzy::CASE_INSENSITIVE << endl;
-    f << "--       C++ functions have an ID number equal to or greater than  " << FuzzyPlusCSharp::Fuzzy::CPP_ONLY_FUZZY << " and less than " << FuzzyPlusCSharp::Fuzzy::BAD_METHODS << endl;
-    f << "--       Tokenize functions have an ID number equal to or greater than  " << FuzzyPlusCSharp::Fuzzy::TOKEN_METHODS << " and less than " << FuzzyPlusCSharp::Fuzzy::PHRASE_METHODS << endl;
-    f << "--       Phrase functions have an ID number equal to or greater than  " << FuzzyPlusCSharp::Fuzzy::PHRASE_METHODS << " and less than " << FuzzyPlusCSharp::Fuzzy::CPP_ONLY_FUZZY << endl;
-    f << "--       Functions that are being considered for deletion have an ID number equal to or greater than  " << FuzzyPlusCSharp::Fuzzy::METHODS_UP_FOR_DELETION << " and less than " << FuzzyPlusCSharp::Fuzzy::CASE_INSENSITIVE << endl;
+    f << "-- Note: Case insensitive functions have an ID number greater than " << FuzzyPlusCSharp::Fuzzy::CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS << endl;
+    f << "--       C++ functions have an ID number equal to or greater than  " << FuzzyPlusCSharp::Fuzzy::CPP_ONLY_FUZZY_ALGORITHM_IMPLEMENTATION << " and less than " << FuzzyPlusCSharp::Fuzzy::BAD_STRING_MATCHING_ALGORITHMS << endl;
+    f << "--       Tokenize functions have an ID number equal to or greater than  " << FuzzyPlusCSharp::Fuzzy::TOKEN_STRING_MATCHING_ALGORITHMS << " and less than " << FuzzyPlusCSharp::Fuzzy::PHRASE_STRING_MATCHING_ALGORITHMS << endl;
+    f << "--       Phrase functions have an ID number equal to or greater than  " << FuzzyPlusCSharp::Fuzzy::PHRASE_STRING_MATCHING_ALGORITHMS << " and less than " << FuzzyPlusCSharp::Fuzzy::CPP_ONLY_FUZZY_ALGORITHM_IMPLEMENTATION << endl;
+    f << "--       Functions that are being considered for deletion have an ID number equal to or greater than  " << FuzzyPlusCSharp::Fuzzy::STRING_MATCHING_ALGORITHMS_UP_FOR_DELETION << " and less than " << FuzzyPlusCSharp::Fuzzy::CASE_INSENSITIVE_STRING_MATCHING_ALGORITHMS << endl;
     f.close();
 }
+
 static void CreateScriptSimilarWords(string rootDir, string fieldName, string table, string FunctionName, string CompareTo)
 {
     CreateScriptSimilarWords(rootDir, fieldName, table, FunctionName, CompareTo, false);
