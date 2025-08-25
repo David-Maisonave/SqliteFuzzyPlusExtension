@@ -16,6 +16,7 @@ using namespace System;
 //      SameFileName -> Will use * and ? as wildcard characters which will get converted to SQL wildcard characters (% and _)
 //      Add fuzzy logic to compare blobs that have image or video files.
 //      Add fuzzy logic to compare files via file names listed in DB.
+//      Add sqlean Define function (E:\_\sqlite-extension\sqlean\src\define)
 const sqlite3_api_routines* sqlite3_api = NULL;
 static int cacheSize = 32;
 static const char* defaultStr = "";
@@ -163,19 +164,31 @@ static void ToHash(sqlite3_context* context, int argc, sqlite3_value** argv) {
 
 static void FastHash(sqlite3_context* context, int argc, sqlite3_value** argv) {
     assert(argc == 1);
-    static std::map<std::string, long long > cache;
+    static std::map<std::string, CString > cache;
     static std::deque<std::string> cacheSizeControl;
     const char* str = GetSqliteValueStr(argv);
-    long long result = 0;
+    CString result;
     if (cacheSize == 0 || cache.find(str) == cache.end())
     {
         String^ source = gcnew String(GetSqliteValueStr(argv));
-        result = FuzzyPlusCSharp::Fuzzy::FastHash(source);
+        unsigned long long ull_result =FuzzyPlusCSharp::Fuzzy::FastHash(source);
+        result.Format(_T("%llu"), ull_result);
         AddToCache(cacheSizeControl, cache, str, result);
     }
     else
         result = cache[str];
-    sqlite3_result_int64(context, result);
+    sqlite3_result_text16(context, result, -1, NULL); // Have to return as a string because SQLite does not support returning UNSIGNED BigInt. It only does BigInt return.
+    //sqlite3_result_int64(context, result);
+}
+
+static void TestFoo(sqlite3_context* context, int argc, sqlite3_value** argv) {
+    assert(argc == 1);
+    const char* str = GetSqliteValueStr(argv);
+    std::string result;
+    for(int i = 0; i < 20; ++i)
+        result += std::string(str) + "_data_record\n";
+    sqlite3_result_text(context, result.c_str(), -1, NULL);
+    //sqlite3_result_value(context, (sqlite3_value*)result.c_str());
 }
 
 static void SetDefaultStringMatchingAlgorithmByName(sqlite3_context* context, int argc, sqlite3_value** argv) {
@@ -186,7 +199,8 @@ static void SetDefaultStringMatchingAlgorithmByName(sqlite3_context* context, in
     }
     String^ source1 = gcnew String(source);
     FuzzyPlusCSharp::Fuzzy::SetDefaultStringMatchingAlgorithm(source1);
-    sqlite3_result_text(context, source, -1, NULL);
+    CString result = FuzzyPlusCSharp::Fuzzy::GetStringMatchingAlgorithmName((int)FuzzyPlusCSharp::Fuzzy::DefaultStringMatchingAlgorithm);
+    sqlite3_result_text16(context, result, -1, NULL);
 }
 
 static void SetDefaultStringMatchingAlgorithm(sqlite3_context* context, int argc, sqlite3_value** argv) {
@@ -329,7 +343,6 @@ static void HowSimilarByName(sqlite3_context* context, int argc, sqlite3_value**
 static void SetDefaultSameSoundMethod(sqlite3_context* context, int argc, sqlite3_value** argv) {
     assert(argc == 1);
     const unsigned char* ustr = GetSqliteValueUnsignedStr(argv);
-    CString result;
     if (isascii(ustr[0]))
     {
         const char* source = GetSqliteValueStr(argv);
@@ -338,14 +351,13 @@ static void SetDefaultSameSoundMethod(sqlite3_context* context, int argc, sqlite
         }
         String^ source1 = gcnew String(source);
         FuzzyPlusCSharp::Fuzzy::SetDefaultSameSoundMethod(source1);
-        result = source1;
     }
     else
     {
         int nIn = sqlite3_value_int(argv[0]);
         FuzzyPlusCSharp::Fuzzy::SetDefaultSameSoundMethod(nIn);
-        result = FuzzyPlusCSharp::Fuzzy::GetSameSoundMethodName(nIn);
     }
+    CString result = FuzzyPlusCSharp::Fuzzy::GetSameSoundMethodName((int)FuzzyPlusCSharp::Fuzzy::DefaultSameSoundMethod);
     sqlite3_result_text16(context, result, -1, NULL);
 }
 
@@ -1106,6 +1118,7 @@ extern "C"
         SQLITE3_CREATE_FUNCTION1(ToHash);
         SQLITE3_CREATE_FUNCTION2(ToHash);
         SQLITE3_CREATE_FUNCTION1(FastHash);
+        SQLITE3_CREATE_FUNCTION1(TestFoo);
 
         // File associated functions
         SQLITE3_CREATE_FUNCTION1(IsFileExist);

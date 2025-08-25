@@ -1,5 +1,6 @@
-Select labels, description,HasCharInSameOrder("country in North America", 2) as h, HowSimilar(description, "country in North America") as S 
+Select labels, Description, HowSimilar(description, "country in North America") as S 
 FROM items WHERE 
-(description like "%country %" or description like "% North %" or description like "% America%") AND  
-description like h AND
-S > 0.90 and description NOT like "%country in North America%" ORDER BY S;
+-- SQLite3_trace() 
+-- (description like "%country %" or description like "% North %" or description like "% America%") AND  
+HasWordFrom("country in North America", 'Description') AND
+S > 0.90  ORDER BY S;
