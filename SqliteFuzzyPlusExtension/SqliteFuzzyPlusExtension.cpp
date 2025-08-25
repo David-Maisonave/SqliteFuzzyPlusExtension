@@ -184,10 +184,9 @@ static void FastHash(sqlite3_context* context, int argc, sqlite3_value** argv) {
 static void TestFoo(sqlite3_context* context, int argc, sqlite3_value** argv) {
     assert(argc == 1);
     const char* str = GetSqliteValueStr(argv);
-    std::string result;
-    for(int i = 0; i < 20; ++i)
-        result += std::string(str) + "_data_record\n";
-    sqlite3_result_text(context, result.c_str(), -1, NULL);
+    CString result;
+    result.Format(_T("{Name:\"%S1\", Value:\"%S_%S1\"}"), str, str, str);
+    sqlite3_result_text16(context, result, -1, NULL);
     //sqlite3_result_value(context, (sqlite3_value*)result.c_str());
 }
 
