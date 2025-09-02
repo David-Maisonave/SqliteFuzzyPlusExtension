@@ -51,4 +51,15 @@
 - Improved Fuzzy_Editdist and Fuzzy_Jaro results when working with Distance and HowSimilar API's.
 - Added hash function HashIt, which supports MD5, SHA1, SHA256, SHA384, SHA512, and RIPEMD160.
 - Added FastHash function which returns unsigned big integer.
+- Added SetParam and GetParam, which can be used for testing purposes.
+- Removed TestFoo, since GetParam can be used for testing purposes.
+- Added SetCacheSize so as to allow setting the cache size and the quantity of supported SetParam values.
+- Added multithreading logic for handling cache variables and other map variables in SqliteFuzzyPlusExtension.cpp
+- Added Modified version of SQLite.cs which got added non-template functions for general purpose queries. 
+- Added C# API's to execute general purpose queries.
+- Added API WordsToJson.
+- Removed API's ValuesList, IncludesAWordFrom, and HasWordFrom as functions exported to SQLite , because these API's did not work as expected. Left HasWordFrom and ValuesList as a general exported functions which can be called from source code directly.
+- Added template code for SQLite3 virtual table.
+- Added file ****TestAndExamples\TestDatabase\DatabaseSources.txt**** which gives details on databases used to test SqliteFuzzyPlusExtension, and associated database sources.
 - 
+

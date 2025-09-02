@@ -158,6 +158,7 @@
     <ClInclude Include="SqliteFuzzyPlusExtension.h" />
     <ClInclude Include="SqliteFuzzyPlusExtension_ExportFunctions.hpp" />
     <ClInclude Include="SqliteFuzzyPlusExtension_Internal.h" />
+    <ClInclude Include="SqliteVirtualTable.h" />
     <ClInclude Include="sqlite\sqlite3.h" />
     <ClInclude Include="sqlite\sqlite3ext.h" />
   </ItemGroup>
@@ -184,6 +185,7 @@
     <ClCompile Include="sqlean_fuzzy\soundex.cpp" />
     <ClCompile Include="sqlean_fuzzy\translit.cpp" />
     <ClCompile Include="SqliteFuzzyPlusExtension.cpp" />
+    <ClCompile Include="SqliteVirtualTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="app.rc" />

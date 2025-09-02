@@ -24,12 +24,30 @@ namespace FuzzyPlusCSharp.Misc
             {
                 if (keywords[i].Length >= minimumWordLenForWordInWordMatch)
                 {
-                    returnStr += $" {fieldToCompare} LIKE \"%{keywords[i]}%\" ";
+                    if (fieldToCompare.Length > 0)
+                        returnStr += $" {fieldToCompare} LIKE \"%{keywords[i]}%\" ";
+                    else
+                        returnStr += $"\"%{keywords[i]}%\" ";
                     if (i + 1 < keywords.Length)
                         returnStr += " OR ";
                 }
             }
-            return "(" + returnStr + ")";
+            return (fieldToCompare.Length > 0) ? "(" + returnStr + ")" : returnStr;
+        }
+        public static string WordsToJson(string words, int minimumWordLenForWordInWordMatch = 3)
+        {
+            string[] keywords = Fuzzy.KeywordList(words, false);
+            string returnStr = "";
+            for (int i = 0; i < keywords.Length; ++i)
+            {
+                if (keywords[i].Length >= minimumWordLenForWordInWordMatch)
+                {
+                    returnStr += $"\"%{keywords[i]}%\"";
+                    if (i + 1 < keywords.Length)
+                        returnStr += ", ";
+                }
+            }
+            return "[" + returnStr + "]";
         }
         public static string ValuesList(string words, int minimumWordLenForWordInWordMatch = 3)
         { // ( VALUES ('South'), ('North'), ('West'), ('East'))

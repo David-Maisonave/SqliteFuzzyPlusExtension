@@ -151,6 +151,7 @@ obj/*
 
 
 # Ignore large test database
+# Source no longer available
 kensho_dataset.db
 kensho_dataset.sqbpro
 kensho_dataset(6.8millionRows).db
@@ -159,10 +160,20 @@ kensho_dataset(1millionRows).db
 kensho_dataset(1millionRows).sqbpro
 kensho_dataset(100KRows).db
 kensho_dataset(100KRows).sqbpro
-GameNames53KRows.db
-GameNames53KRows.sqbpro
-chinook3.5Krows.db
-chinook3.5Krows.sqbpro
 kensho_dataset(5208160Rows).db
 kensho_dataset(5208160Rows).sqbpro
-
+# Source https://github.com/David-Maisonave/GameLauncher/blob/main/GameLauncher/Properties/GamesAlternateName.db
+GameNames53KRows.db
+GameNames53KRows.sqbpro
+# Source https://www.timestored.com/data/sample/sqlite
+chinook3.5Krows.db
+chinook3.5Krows.sqbpro
+# Source https://www.timestored.com/data/sample/sqlite
+sakila.db
+sakila.sqbpro
+# Source https://ftp.ensembl.org/pub/release-114/species_metadata_EnsemblVertebrates.json
+species_metadata_EnsemblVertebrates.db
+species_metadata_EnsemblVertebrates.sqbpro
+# Source https://www.timestored.com/data/sample/sqlite
+northwind_small.db
+northwind_small.sqbpro

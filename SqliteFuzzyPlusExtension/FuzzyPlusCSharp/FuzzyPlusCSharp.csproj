@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColognePhonetics\ColognePhonetics.cs" />
+    <Compile Include="Misc\SQLite.cs" />
     <Compile Include="Misc\USAddress\AddressParser.cs" />
     <Compile Include="Misc\USAddress\AddressParseResult.cs" />
     <Compile Include="Misc\USAddress\Components.cs" />

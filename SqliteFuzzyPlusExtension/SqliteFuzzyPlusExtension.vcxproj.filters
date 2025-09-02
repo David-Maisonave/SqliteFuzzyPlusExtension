@@ -45,6 +45,9 @@
     <ClInclude Include="SqliteFuzzyPlusExtension_ExportFunctions.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SqliteVirtualTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SqliteFuzzyPlusExtension.cpp">
@@ -96,6 +99,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Edlib\src\edlib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SqliteVirtualTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

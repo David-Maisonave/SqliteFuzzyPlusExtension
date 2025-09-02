@@ -885,6 +885,43 @@ std::string ToHash(const char* str, int hashType) {
 }
 
 __declspec(dllexport)
+std::string HasWordFrom(const char* str, const char* fieldToCompare, int minimumWordLenForWordInWordMatch) {
+    String^ source1 = gcnew String(str);
+    String^ source2 = gcnew String(fieldToCompare);
+    CString results = FuzzyPlusCSharp::Fuzzy::HasWordFrom(source1, source2, minimumWordLenForWordInWordMatch);
+    CT2CA pszConvertedAnsiString(results);
+    std::string returnValue = pszConvertedAnsiString;
+    return returnValue;
+}
+
+__declspec(dllexport)
+std::string HasWordFrom(const char* str, int minimumWordLenForWordInWordMatch) {
+    String^ source = gcnew String(str);
+    String^ source2 = gcnew String("");
+    CString results = FuzzyPlusCSharp::Fuzzy::HasWordFrom(source, source2, minimumWordLenForWordInWordMatch);
+    CT2CA pszConvertedAnsiString(results);
+    std::string returnValue = pszConvertedAnsiString;
+    return returnValue;
+}
+
+__declspec(dllexport)
+std::string WordsToJson(const char* str, int minimumWordLenForWordInWordMatch) {
+    String^ source = gcnew String(str);
+    CString results = FuzzyPlusCSharp::Fuzzy::WordsToJson(source, minimumWordLenForWordInWordMatch);
+    CT2CA pszConvertedAnsiString(results);
+    std::string returnValue = pszConvertedAnsiString;
+    return returnValue;
+}
+
+__declspec(dllexport)
+std::string ValuesList(const char* str, int minimumWordLenForWordInWordMatch) {
+    String^ source = gcnew String(str);
+    CString results = FuzzyPlusCSharp::Fuzzy::ValuesList(source, minimumWordLenForWordInWordMatch);
+    CT2CA pszConvertedAnsiString(results);
+    std::string returnValue = pszConvertedAnsiString;
+    return returnValue;
+}
+__declspec(dllexport)
 int CopyToHash(const char* str, int hashType, char* dest, int sizeOfDest) {
     String^ source = gcnew String(str);
     CString results = FuzzyPlusCSharp::Fuzzy::ToHash(source, (FuzzyPlusCSharp::Fuzzy::HashType)hashType);

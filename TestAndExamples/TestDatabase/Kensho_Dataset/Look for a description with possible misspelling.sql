@@ -1,6 +1,4 @@
-Select labels, Description, HowSimilar(description, "country in North America") as S 
-FROM items WHERE 
--- SQLite3_trace() 
--- (description like "%country %" or description like "% North %" or description like "% America%") AND  
-HasWordFrom("country in North America", 'Description') AND
-S > 0.90  ORDER BY S;
+SELECT Labels, Description, HowSimilar(Description, 'country in North America') as h 
+FROM (SELECT DISTINCT Description, Labels FROM Items INNER JOIN json_each(WordsToJson('country in North America'))  ON Description like '%'|| value || '%') 
+WHERE  h  > .85
+-- and Description <> 'country in South America' and Description <> 'country in North America' and Description not like 'country in north Africa'

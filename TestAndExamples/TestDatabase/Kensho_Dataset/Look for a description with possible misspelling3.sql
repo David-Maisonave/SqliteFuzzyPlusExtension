@@ -1,0 +1,2 @@
+SELECT Labels, Description, HowSimilar(Description, 'country in North America') as h 
+FROM Items WHERE  (Description like '%country%' OR Description like '%North%' OR Description like '%America%') AND h  > .85

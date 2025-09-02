@@ -415,6 +415,10 @@ extern "C" {
     std::string HasCharInSameOrder(const char* str);
     std::string NormalizeFirstLastName(const char* name);
     std::string ToHash(const char* str, int hashType);
+    std::string HasWordFrom(const char* str, const char* fieldToCompare, int minimumWordLenForWordInWordMatch = 3);
+    std::string HasWordFrom(const char* str, int minimumWordLenForWordInWordMatch = 3);
+    std::string WordsToJson(const char* str, int minimumWordLenForWordInWordMatch = 3);
+    std::string ValuesList(const char* str, int minimumWordLenForWordInWordMatch = 3);
 #else  // !COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
     /////////////////////////////////////////////////////////////////////////////////
     // Distance Functions

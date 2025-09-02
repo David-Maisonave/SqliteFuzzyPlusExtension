@@ -78,6 +78,8 @@ namespace FuzzyPlusCSharp
         public static CaverPhone caverPhonePhonix = new CaverPhone();
         public static Phonix.Soundex soundexPhonix = new Phonix.Soundex();
         public static DoubleMetaphone doubleMetaphone = new DoubleMetaphone();
+        public static SQLite.SQLiteConnection connection = null;
+        public static SQLite.SQLiteConnection virtualConnection = null;
         #endregion Distance, Phonetic class, and misc variable members
         #region StringMatchingAlgorithm_ID definitions
         public enum StringMatchingAlgorithm_ID
@@ -924,6 +926,7 @@ namespace FuzzyPlusCSharp
         public static string HasCharInSameOrder(this string word, string sep) => Misc.HasInSameOrder.HasCharInSameOrder(word, sep); // SQL function extension
         public static string HasWordFrom(string words, string fieldToCompare) => Misc.HasInSameOrder.HasWordFrom(words, fieldToCompare); // Needed for CPP code access
         public static string HasWordFrom(string words, string fieldToCompare, int minimumWordLenForWordInWordMatch) => Misc.HasInSameOrder.HasWordFrom(words, fieldToCompare, minimumWordLenForWordInWordMatch);
+        public static string WordsToJson(string words, int minimumWordLenForWordInWordMatch) => Misc.HasInSameOrder.WordsToJson(words, minimumWordLenForWordInWordMatch);
         public static string ValuesList(string words) => Misc.HasInSameOrder.ValuesList(words);
         public static string ValuesList(string words, int minimumWordLenForWordInWordMatch) => Misc.HasInSameOrder.ValuesList(words, minimumWordLenForWordInWordMatch);
         public static string HasWordsInSameOrder(string words, string fieldToCompare) => Misc.HasInSameOrder.HasWordsInSameOrder(words, fieldToCompare, false); // Needed for CPP code access
@@ -961,6 +964,26 @@ namespace FuzzyPlusCSharp
         public static string GetExtension(string path) => Path.GetExtension(path);
         public static string GetDirectoryName(string path) => System.IO.Path.GetDirectoryName(path);
         public static string GetFileNameWithoutExtension(string path) => System.IO.Path.GetFileNameWithoutExtension(path);
+        public static SQLite.SQLiteConnection CreateSQLiteConnection(string connectionString)
+        {
+            connection = new SQLite.SQLiteConnection(connectionString);
+            return connection;
+        }
+        public static SQLite.SQLiteConnection CreateSQLiteConnectionViaPtr(System.IntPtr handle)
+        {
+            connection = new SQLite.SQLiteConnection(handle);
+            return connection;
+        }
+        public static SQLite.SQLiteConnection CreateSQLiteVirtualConnection(System.IntPtr handle, string DatabasePath)
+        {
+            virtualConnection = new SQLite.SQLiteConnection(handle, DatabasePath);
+            return virtualConnection;
+        }
+        public static System.Data.DataTable ExecuteQuery(IntPtr _db, string query, params string[] args)
+        {
+            System.Data.DataTable data = SQLite.SQLite3.ExecuteQuery(_db, query, args);
+            return data;
+        }
         #endregion Miscellaneous functions
         #region Case INSENSITIVE phrase comparison associated functions (token ratio)
         public static double PhraseHowSimilar(string source1, string source2)

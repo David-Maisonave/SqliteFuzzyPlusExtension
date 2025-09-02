@@ -5,12 +5,16 @@
 #include <deque>
 #include <algorithm>
 #include <functional>
+#include <mutex>
 #include <ctype.h>
 #include <atlstr.h>
+#include <comutil.h>
+#pragma comment(lib, "comsuppw.lib")
 #include "SqliteFuzzyPlusExtension_Internal.h"
 #define SQLITEFUZZYPLUSEXTENSION_EXCLUDE_FUNC
 #include "SqliteFuzzyPlusExtension.h"
 #include "edlib\include\edlib.h"
+#include "SqliteVirtualTable.h"
 using namespace System;
 // ToDo: Add the following functions:
 //      SameFileName -> Will use * and ? as wildcard characters which will get converted to SQL wildcard characters (% and _)
@@ -18,15 +22,18 @@ using namespace System;
 //      Add fuzzy logic to compare files via file names listed in DB.
 //      Add sqlean Define function (E:\_\sqlite-extension\sqlean\src\define)
 const sqlite3_api_routines* sqlite3_api = NULL;
+static std::string database_filename;
 static int cacheSize = 32;
+const int MAX_CACHE_SIZE = 64000;
 static const char* defaultStr = "";
-const char* GetSqliteValueStr(sqlite3_value** argv, int pos = 0)
+int InitiateVirtualTableModule(sqlite3* db, char** pzErrMsg);
+static const char* GetSqliteValueStr(sqlite3_value** argv, int pos = 0)
 {
     const char* str = (const char*)sqlite3_value_text(argv[pos]);
     return (str == NULL || str[0] == 0) ? defaultStr : str;
 }
 
-const unsigned char* GetSqliteValueUnsignedStr(sqlite3_value** argv, int pos = 0)
+static const unsigned char* GetSqliteValueUnsignedStr(sqlite3_value** argv, int pos = 0)
 {
     const unsigned char* str = sqlite3_value_text(argv[pos]);
     return (str == NULL) ? (const unsigned char*)defaultStr : str;
@@ -53,19 +60,40 @@ static void EdlibDistance(sqlite3_context* context, int argc, sqlite3_value** ar
     sqlite3_result_double(context, distance);
 }
 
+std::mutex cacheMutex;
 template<typename T1, typename T2, typename T3, typename T4>
 void AddToCache(T1& cacheSizeControl, T2& cache, const T3& key, const T4& result)
 {
+    std::lock_guard<std::mutex> lock(cacheMutex);
     if (cacheSize > 0)
     {
         cache[key] = result;
         cacheSizeControl.push_back(key);
-        if (cacheSizeControl.size() > cacheSize)
+        while (cacheSizeControl.size() > cacheSize) // Use while loop in case cache size was reduced by a value greater than 1
         {
             cache.erase(cacheSizeControl.front());
             cacheSizeControl.pop_front();
         }
     }
+    else
+    { // If cacheSize set to zero or negative number, empty out the cache.
+        cache.clear();
+        cacheSizeControl.clear();
+    }
+}
+
+template<typename T1, typename T2>
+std::string GetMapStr(T1& cache, const T2& key)
+{
+    std::lock_guard<std::mutex> lock(cacheMutex);
+    return (cacheSize == 0 || cache.find(key) == cache.end()) ? "" : cache[key];
+}
+
+template<typename T1, typename T2>
+CString GetMapCStr(T1& cache, const T2& key)
+{
+    std::lock_guard<std::mutex> lock(cacheMutex);
+    return (cacheSize == 0 || cache.find(key) == cache.end()) ? _T("") : cache[key];
 }
 
 static void HasCharInSameOrder(sqlite3_context* context, int argc, sqlite3_value** argv) {
@@ -75,7 +103,7 @@ static void HasCharInSameOrder(sqlite3_context* context, int argc, sqlite3_value
     bool rapWithQuotes = false;
     char rapChar = '\'';
     const char* str = GetSqliteValueStr(argv);
-    CString result = (cacheSize > 0) ? cache[str] : "";
+    CString result = GetMapCStr(cache, str);
     if (result.IsEmpty())
     {
         String^ source = gcnew String(str);
@@ -96,42 +124,55 @@ static void HasCharInSameOrder(sqlite3_context* context, int argc, sqlite3_value
     sqlite3_result_text16(context, result, -1, NULL);
 }
 
-static void HasWordFrom(sqlite3_context* context, int argc, sqlite3_value** argv) {
-    assert(argc == 2 || argc == 3);
-    static std::map<std::pair<std::string, std::string>, CString > cache;
-    static std::deque<std::pair<std::string, std::string> > cacheSizeControl;
+static void WordsToJson(sqlite3_context* context, int argc, sqlite3_value** argv) {
+    assert(argc == 1 || argc == 2);
+    static std::map<std::pair<std::string, int>, CString > cache;
+    static std::deque<std::pair<std::string, int> > cacheSizeControl;
     const char* str1 = GetSqliteValueStr(argv);
-    const char* str2 = GetSqliteValueStr(argv, 1);
-    CString result = (cacheSize > 0 && argc != 3 && cache.find(std::make_pair(str1, str2)) != cache.end()) ? cache[std::make_pair(str1, str2)] : "";
-    if (result.IsEmpty() || argc == 3) // Only supporting 2 argument call for cache for now. 
+    int minimumWordLenForWordInWordMatch = 3;
+    if (argc == 2)
+        minimumWordLenForWordInWordMatch = sqlite3_value_int(argv[1]);
+    CString result = GetMapCStr(cache, std::make_pair(str1, minimumWordLenForWordInWordMatch)); // (cacheSize > 0 && cache.find(std::make_pair(str1, minimumWordLenForWordInWordMatch)) != cache.end()) ? cache[std::make_pair(str1, minimumWordLenForWordInWordMatch)] : "";
+    if (result.IsEmpty()) 
     {
         String^ source1 = gcnew String(str1);
-        String^ source2 = gcnew String(str2);
-        int minimumWordLenForWordInWordMatch = 3;
-        if (argc == 3)
-            minimumWordLenForWordInWordMatch = sqlite3_value_int(argv[2]);
-        result = FuzzyPlusCSharp::Fuzzy::HasWordFrom(source1, source2, minimumWordLenForWordInWordMatch);
-        AddToCache(cacheSizeControl, cache, std::make_pair(str1, str2), result);
+        result = FuzzyPlusCSharp::Fuzzy::WordsToJson(source1, minimumWordLenForWordInWordMatch);
+        AddToCache(cacheSizeControl, cache, std::make_pair(str1, minimumWordLenForWordInWordMatch), result);
     }
     sqlite3_result_text16(context, result, -1, NULL);
 }
 
-static void ValuesList(sqlite3_context* context, int argc, sqlite3_value** argv) {
-    assert(argc == 1 || argc == 2);
-    static std::map<std::pair<std::string, int>, CString > cache;
-    static std::deque<std::pair<std::string, int> > cacheSizeControl;
-    const char* str = GetSqliteValueStr(argv);
-    int minimumWordLenForWordInWordMatch = 3;
-    if (argc == 2)
-        minimumWordLenForWordInWordMatch = sqlite3_value_int(argv[1]);
-    CString result = (cacheSize > 0 && argc != 3 && cache.find(std::make_pair(str, minimumWordLenForWordInWordMatch)) != cache.end()) ? cache[std::make_pair(str, minimumWordLenForWordInWordMatch)] : "";
-    if (result.IsEmpty()) 
-    {
-        String^ source1 = gcnew String(str);
-        result = FuzzyPlusCSharp::Fuzzy::ValuesList(source1, minimumWordLenForWordInWordMatch);
-        AddToCache(cacheSizeControl, cache, std::make_pair(str, minimumWordLenForWordInWordMatch), result);
+static std::map<std::string, std::string> ParamSetValues;
+static void SetParam(sqlite3_context* context, int argc, sqlite3_value** argv) {
+    assert(argc == 2);
+    const char* str1 = GetSqliteValueStr(argv);
+    const char* str2 = GetSqliteValueStr(argv, 1);
+    if (str1 == 0 || str2 == 0) {
+        sqlite3_result_error(context, "arguments should not be NULL", -1);
+        return;
     }
-    sqlite3_result_text16(context, result, -1, NULL);
+    static std::deque<std::string> ParamSetValuesSizeControl;
+    AddToCache(ParamSetValuesSizeControl, ParamSetValues, str1, str2);
+    sqlite3_result_text(context, str2, -1, NULL);
+}
+
+static void GetParam(sqlite3_context* context, int argc, sqlite3_value** argv) {
+    assert(argc == 1);
+    const char* str1 = GetSqliteValueStr(argv);
+    if (str1 == 0) {
+        sqlite3_result_error(context, "arguments should not be NULL", -1);
+        return;
+    }
+    sqlite3_result_text(context, GetMapStr(ParamSetValues, str1).c_str(), -1, NULL);
+    //sqlite3_result_text(context, ParamSetValues[str1].c_str(), -1, NULL);
+}
+
+static void SetCacheSize(sqlite3_context* context, int argc, sqlite3_value** argv) {
+    assert(argc == 1);
+    int arg = sqlite3_value_int(argv[0]);
+    if (arg < (MAX_CACHE_SIZE + 1))
+        cacheSize = arg;
+    sqlite3_result_int(context, cacheSize);
 }
 
 static void ToHash(sqlite3_context* context, int argc, sqlite3_value** argv) {
@@ -152,7 +193,7 @@ static void ToHash(sqlite3_context* context, int argc, sqlite3_value** argv) {
     }
     static std::map<std::pair<std::string, int>, CString > cache;
     static std::deque<std::pair<std::string, int> > cacheSizeControl;
-    CString result = (cacheSize > 0) ? cache[std::make_pair(str, hashType)] : "";
+    CString result = GetMapCStr(cache, std::make_pair(str, hashType));  // (cacheSize > 0) ? cache[std::make_pair(str, hashType)] : "";
     if (result.IsEmpty())
     {
         String^ source = gcnew String(str);
@@ -167,27 +208,15 @@ static void FastHash(sqlite3_context* context, int argc, sqlite3_value** argv) {
     static std::map<std::string, CString > cache;
     static std::deque<std::string> cacheSizeControl;
     const char* str = GetSqliteValueStr(argv);
-    CString result;
-    if (cacheSize == 0 || cache.find(str) == cache.end())
+    CString result = GetMapCStr(cache, str);
+    if (result.IsEmpty())
     {
         String^ source = gcnew String(GetSqliteValueStr(argv));
         unsigned long long ull_result =FuzzyPlusCSharp::Fuzzy::FastHash(source);
         result.Format(_T("%llu"), ull_result);
         AddToCache(cacheSizeControl, cache, str, result);
     }
-    else
-        result = cache[str];
     sqlite3_result_text16(context, result, -1, NULL); // Have to return as a string because SQLite does not support returning UNSIGNED BigInt. It only does BigInt return.
-    //sqlite3_result_int64(context, result);
-}
-
-static void TestFoo(sqlite3_context* context, int argc, sqlite3_value** argv) {
-    assert(argc == 1);
-    const char* str = GetSqliteValueStr(argv);
-    CString result;
-    result.Format(_T("{Name:\"%S1\", Value:\"%S_%S1\"}"), str, str, str);
-    sqlite3_result_text16(context, result, -1, NULL);
-    //sqlite3_result_value(context, (sqlite3_value*)result.c_str());
 }
 
 static void SetDefaultStringMatchingAlgorithmByName(sqlite3_context* context, int argc, sqlite3_value** argv) {
@@ -981,8 +1010,12 @@ extern "C"
         char** pzErrMsg,
         const sqlite3_api_routines* sqlite_api) {
         sqlite3_api = sqlite_api;
+        database_filename = sqlite3_db_filename(db, NULL);
+        String^ dbFilename = gcnew String(database_filename.c_str());
+        FuzzyPlusCSharp::Fuzzy::CreateSQLiteConnection(dbFilename);
+        //System::IntPtr intPtr = (System::IntPtr)db;
+        //FuzzyPlusCSharp::Fuzzy::CreateSQLiteConnectionViaPtr(intPtr);
         static const int flags = SQLITE_UTF8 | SQLITE_INNOCUOUS | SQLITE_DETERMINISTIC;
-        //FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID d = FuzzyPlusCSharp::Fuzzy::StringMatchingAlgorithm_ID::UseDefaultStringMatchingAlgorithm;
 
         // Original long distance names
         SQLITE3_CREATE_FUNCTION2(LevenshteinDistance);
@@ -1095,8 +1128,6 @@ extern "C"
         SQLITE3_CREATE_FUNCTION_ALIAS3(fuzzy_rsoundex, fuzzy_rsoundex2);
         SQLITE3_CREATE_FUNCTION_ALIAS3(soundex, fuzzy_soundex2);
         SQLITE3_CREATE_FUNCTION_ALIAS3(rsoundex, fuzzy_rsoundex2);
-        SQLITE3_CREATE_FUNCTION_ALIAS2(IncludesAWordFrom, HasWordFrom);
-        SQLITE3_CREATE_FUNCTION_ALIAS3(IncludesAWordFrom, HasWordFrom);
 
         // Miscellaneous functions
         SQLITE3_CREATE_FUNCTION2(RegexMatch);
@@ -1110,14 +1141,14 @@ extern "C"
         SQLITE3_CREATE_FUNCTION1(NormalizeNum);
         SQLITE3_CREATE_FUNCTION1(HasCharInSameOrder);
         SQLITE3_CREATE_FUNCTION2(HasCharInSameOrder);
-        SQLITE3_CREATE_FUNCTION2(HasWordFrom);
-        SQLITE3_CREATE_FUNCTION3(HasWordFrom);
-        SQLITE3_CREATE_FUNCTION1(ValuesList);
-        SQLITE3_CREATE_FUNCTION2(ValuesList);
+        SQLITE3_CREATE_FUNCTION1(WordsToJson);
+        SQLITE3_CREATE_FUNCTION2(WordsToJson);
         SQLITE3_CREATE_FUNCTION1(ToHash);
         SQLITE3_CREATE_FUNCTION2(ToHash);
         SQLITE3_CREATE_FUNCTION1(FastHash);
-        SQLITE3_CREATE_FUNCTION1(TestFoo);
+        SQLITE3_CREATE_FUNCTION2(SetParam);
+        SQLITE3_CREATE_FUNCTION1(GetParam);
+        SQLITE3_CREATE_FUNCTION1(SetCacheSize);
 
         // File associated functions
         SQLITE3_CREATE_FUNCTION1(IsFileExist);
@@ -1127,8 +1158,12 @@ extern "C"
         SQLITE3_CREATE_FUNCTION1(GetDirectoryName);
         SQLITE3_CREATE_FUNCTION1(GetFileNameWithoutExtension);
 
+        // VirtualTableModule code is incomplete. 
+        // InitiateVirtualTableModule(db, pzErrMsg);
+
         return sqlite_fuzzy_init(db, sqlite_api);
     }
 }
+
 
 #include "SqliteFuzzyPlusExtension_ExportFunctions.hpp"
