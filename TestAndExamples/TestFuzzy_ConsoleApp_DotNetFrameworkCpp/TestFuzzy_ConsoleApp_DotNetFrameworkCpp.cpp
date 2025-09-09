@@ -1,9 +1,9 @@
 #include "pch.h"
-#include <string>
+#include <atlstr.h>
 #include <fstream>
 #include <iostream>
+#include <string>
 #include <windows.h>
-#include <atlstr.h>
 using namespace std;
 using namespace System;
 #define SQLITEFUZZYPLUSEXTENSION_LIB "SQLITEFUZZYPLUSEXTENSION.LIB"

@@ -3,9 +3,12 @@
 #include <stdexcept>
 #include <cassert>
 #include "..\..\SqliteFuzzyPlusExtension\sqlite\sqlite3ext.h"
+const sqlite3_api_routines* sqlite3_api = NULL;
+#include "SQLiteWrapper.h"
 SQLITE_EXTENSION_INIT3
 #define SQLITEFUZZYPLUSEXTENSION_LIB "SQLITEFUZZYPLUSEXTENSION.LIB"
 #include "..\..\SqliteFuzzyPlusExtension\SqliteFuzzyPlusExtension.h"
+// #include "SQLiteDLLConnect.h"
 
 bool b0 =   false;
 bool b1 =   false;
@@ -83,6 +86,10 @@ static void TestSamenessFunctions()
 
 int main()
 {
+
+    static const char db_name[] = "..\\..\\SqliteFuzzyPlusExtension\\TestData\\TestData.db";
+    using db = sqlite::Database<db_name>;
+
     TestSamenessFunctions();
     std::cout << "Hello World!\n";
     const char* str1 = "Hello World";

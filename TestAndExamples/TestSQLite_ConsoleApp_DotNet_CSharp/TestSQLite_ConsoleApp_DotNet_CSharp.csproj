@@ -5,8 +5,9 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <BaseOutputPath>..\</BaseOutputPath>
+    <BaseOutputPath>bin\x64\Debug\</BaseOutputPath>
 	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	<Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>

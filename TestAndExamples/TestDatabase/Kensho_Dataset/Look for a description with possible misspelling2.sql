@@ -1,2 +1,1 @@
-SELECT Labels, Description, HowSimilar(Description, 'country in North America') as h 
-FROM Items WHERE  h  > .85
+SELECT Labels, Description, HowSimilar(Description, 'country in North America') as h FROM Items WHERE  h  > .85

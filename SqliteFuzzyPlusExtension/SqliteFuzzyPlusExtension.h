@@ -239,14 +239,14 @@ namespace SqliteFuzzyPlusExtension {
     };
     enum HashType
     {
-        MD5,                        // MD5          (128 bits)  32 characters as a hexadecimal string
-        RIPEMD160,                  // RIPEMD-160   (160 bits)  40 characters as a hexadecimal string
-        SHA1,                       // SHA-1        (160 bits)  40 characters as a hexadecimal string
-        SHA256,                     // SHA-256      (256 bits)  64 characters as a hexadecimal string
-        SHA384,                     // SHA-384      (384 bits)  96 characters as a hexadecimal string
-        SHA512,                     // SHA-512      (512 bits)  128 characters as a hexadecimal string
-        FastHash,                   // Fast Hash    (64  bits)  16 characters as a hexadecimal string
-        MD5u = HASH_UTF8_ENCODE,    // MD5          UTF8 encoding
+        MD5,                                    // MD5          (128 bits)  32 characters as a hexadecimal string
+        RIPEMD160,                              // RIPEMD-160   (160 bits)  40 characters as a hexadecimal string
+        SHA1,                                   // SHA-1        (160 bits)  40 characters as a hexadecimal string
+        SHA256,                                 // SHA-256      (256 bits)  64 characters as a hexadecimal string
+        SHA384,                                 // SHA-384      (384 bits)  96 characters as a hexadecimal string
+        SHA512,                                 // SHA-512      (512 bits)  128 characters as a hexadecimal string
+        C_ENUM_NAMING_CONVENTION__(FastHash),   // Fast Hash    (64  bits)  16 characters as a hexadecimal string
+        MD5u = HASH_UTF8_ENCODE,                // MD5          UTF8 encoding
         RIPEMD160u,
         SHA1u,
         SHA256u,

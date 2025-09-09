@@ -22,4 +22,9 @@
   <ItemGroup>
     <None Include="cpp.hint" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SQLiteWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
