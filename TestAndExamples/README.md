@@ -26,13 +26,3 @@ Project files that have Fuzzy in the name and do NOT have SQLite in the name are
 ## UnitTestCreator_PostCodeModifier
 
 ## TestSQLite_ConsoleApp_C_Language
-
-
-## 
-
-## 
-
-## 
-
-## 
-
