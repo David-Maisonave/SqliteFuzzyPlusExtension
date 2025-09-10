@@ -3,6 +3,8 @@ Most of the projects have names that are self explanitory. At this stage most of
 
 Project files that have Fuzzy in the name and do NOT have SQLite in the name are projects that don't need SQLite3.DLL.  Most projects that have SQLite in the name require SQLite3.DLL to exist in same folder as executable. They are work in progress, and are expected to be completed by release 1.0.0.
 
+## TestAndExamples
+
 ## TestDatabase
 
 ## TestFuzzy_ConsoleApp_DotNetFrameworkCpp
