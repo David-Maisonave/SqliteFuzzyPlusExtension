@@ -13,6 +13,8 @@ This SQLite extension is the ultimate library on [fuzzy](https://en.wikipedia.or
   - [Miscellaneous Functions](#Miscellaneous-Functions)
 - [Examples](#Examples)
 - [ToDo](#ToDo)
+- [TestAndExamples](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples)
+- [TestDatabase](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/TestDatabase)
 
 ### Example SQLite Usage
 ##### Example#1
