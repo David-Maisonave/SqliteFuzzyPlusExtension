@@ -3,7 +3,7 @@ This SQLite extension is the ultimate library on [fuzzy](https://en.wikipedia.or
 ## Content
 - [Using SqliteFuzzyPlusExtension](#Using-SqliteFuzzyPlusExtension)
   - [Using SqliteFuzzyPlusExtension With SQLite](#Using-SqliteFuzzyPlusExtension-With-SQLite)
-    - [DB Browser for SQLite](#DB_Browser_for_SQLite)
+    - [DB Browser for SQLite](#db-browser-for-sqlite)
   - [Using SqliteFuzzyPlusExtension Without SQLite](#Using-SqliteFuzzyPlusExtension-Without-SQLite)
 - [Function List](#Function-List)
   - [Fuzzy String Matching Algorithms](#Fuzzy-String-Matching-Algorithms)
