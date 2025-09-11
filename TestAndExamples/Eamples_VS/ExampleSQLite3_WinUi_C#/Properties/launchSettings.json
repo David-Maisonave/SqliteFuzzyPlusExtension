@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ExampleSQLite3_WinUi_C# (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "ExampleSQLite3_WinUi_C# (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
