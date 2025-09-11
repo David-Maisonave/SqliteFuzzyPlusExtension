@@ -1,7 +1,7 @@
 # TestAndExamples
 ## Content
-- [Projected completion schedule]()
-- [Test Projects and Example Projects](#test-projects-and-example-projects)
+- [Projected completion schedule](#projected-completion-schedule)
+- [Project Naming Convention](#test-projects-and-example-projects)
 - [Example Projects](#example-projects)
   - [Visual Studio Example Projects](#visual-studio-example-projects)
   - [GCC (MinGw) Example Projects](#gcc-mingw-example-projects)
@@ -20,7 +20,7 @@
   - 1.1.5 for the GCC projects under Example_GCC folder for Ada. (Implementation is not certan at this time)
   - 1.1.7 for the GCC projects under Example_GCC folder for D Language. (Implementation is not certan at this time)
   - 1.1.9 for the GCC projects under Example_GCC folder for languages Fortran and Go. (Implementation is not certan at this time)
-## Test Projects and Example Projects
+## Project Naming Convention
 - Most of the projects have names that are self explanatory. 
 - The following rules apply to test projects and example projects:
   - All the test and example projects require FuzzyPlusCSharp.DLL and most require SqliteFuzzyPlusExtension.DLL.
