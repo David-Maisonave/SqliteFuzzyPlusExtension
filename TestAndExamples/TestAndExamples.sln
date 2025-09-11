@@ -3,12 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36017.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestAndExamples", "TestAndExamples\TestAndExamples.vcxproj", "{25B85F5A-B9E5-460E-AB9D-04DF21772573}"
-	ProjectSection(ProjectDependencies) = postProject
-		{B1DE0268-D7E9-4868-BF3C-6298E5905597} = {B1DE0268-D7E9-4868-BF3C-6298E5905597}
-		{E50AF77F-B0A9-37C2-BEE9-E0203EB9712C} = {E50AF77F-B0A9-37C2-BEE9-E0203EB9712C}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestFuzzy_ConsoleApp_DotNetFrameworkCpp", "TestFuzzy_ConsoleApp_DotNetFrameworkCpp\TestFuzzy_ConsoleApp_DotNetFrameworkCpp.vcxproj", "{E27EDAB2-C3CC-23CF-A1D7-25F674E59D76}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFuzzy_ConsoleApp_DotNetFrameworkCSharp", "TestFuzzy_ConsoleApp_DotNetFrameworkCSharp\TestFuzzy_ConsoleApp_DotNetFrameworkCSharp.csproj", "{2D73B686-FC76-4246-936F-FBAFA64F039F}"
@@ -61,18 +55,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{25B85F5A-B9E5-460E-AB9D-04DF21772573}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{25B85F5A-B9E5-460E-AB9D-04DF21772573}.Debug|Any CPU.Build.0 = Debug|x64
-		{25B85F5A-B9E5-460E-AB9D-04DF21772573}.Debug|x64.ActiveCfg = Debug|x64
-		{25B85F5A-B9E5-460E-AB9D-04DF21772573}.Debug|x64.Build.0 = Debug|x64
-		{25B85F5A-B9E5-460E-AB9D-04DF21772573}.Debug|x86.ActiveCfg = Debug|Win32
-		{25B85F5A-B9E5-460E-AB9D-04DF21772573}.Debug|x86.Build.0 = Debug|Win32
-		{25B85F5A-B9E5-460E-AB9D-04DF21772573}.Release|Any CPU.ActiveCfg = Release|x64
-		{25B85F5A-B9E5-460E-AB9D-04DF21772573}.Release|Any CPU.Build.0 = Release|x64
-		{25B85F5A-B9E5-460E-AB9D-04DF21772573}.Release|x64.ActiveCfg = Release|x64
-		{25B85F5A-B9E5-460E-AB9D-04DF21772573}.Release|x64.Build.0 = Release|x64
-		{25B85F5A-B9E5-460E-AB9D-04DF21772573}.Release|x86.ActiveCfg = Release|Win32
-		{25B85F5A-B9E5-460E-AB9D-04DF21772573}.Release|x86.Build.0 = Release|Win32
 		{E27EDAB2-C3CC-23CF-A1D7-25F674E59D76}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{E27EDAB2-C3CC-23CF-A1D7-25F674E59D76}.Debug|Any CPU.Build.0 = Debug|x64
 		{E27EDAB2-C3CC-23CF-A1D7-25F674E59D76}.Debug|x64.ActiveCfg = Debug|x64
