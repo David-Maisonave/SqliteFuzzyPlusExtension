@@ -28,25 +28,13 @@
   - See the following link to download TestDB.db: [TestDB.db](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/SqliteFuzzyPlusExtension/TestData)
   - The above link also includes SQL scripts used to test fuzzy functions.
 	- All the SQL scripts where run using [DB Browser for SQLite](https://sqlitebrowser.org/dl/) with the SqliteFuzzyPlusExtension loaded as an extension.
+## Test Projects
+- [TestFuzzy_ConsoleApp_DotNetFrameworkCpp](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/edit/main/TestAndExamples/TestFuzzy_ConsoleApp_DotNetFrameworkCpp)
+- [TestFuzzy_ConsoleApp_DotNetFrameworkCSharp](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/edit/main/TestAndExamples/TestFuzzy_ConsoleApp_DotNetFrameworkCSharp)
+- [TestSQLite_ConsoleApp_Cpp](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/edit/main/TestAndExamples/TestSQLite_ConsoleApp_Cpp)
+- [TestSQLite_ConsoleApp_DotNet_CSharp](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/edit/main/TestAndExamples/TestSQLite_ConsoleApp_DotNet_CSharp)
+- [TestSQLite_ConsoleApp_DotNetFrameWork_CSharp](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/edit/main/TestAndExamples/TestSQLite_ConsoleApp_DotNetFrameWork_CSharp)
+- [TestSQLite3_ConsoleApp_DotNetFrameWork_CPP](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/edit/main/TestAndExamplesTestSQLite3_ConsoleApp_DotNetFrameWork_CPP/)
+- [UnitTestConsole_C_Runner](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/edit/main/TestAndExamples/UnitTestConsole_C_Runner)
+- [UnitTestCreator_PostCodeModifier](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/edit/main/TestAndExamples/UnitTestCreator_PostCodeModifier)
 
-## TestFuzzy_ConsoleApp_DotNetFrameworkCpp
-
-## TestFuzzy_ConsoleApp_DotNetFrameworkCSharp
-
-## TestFuzzy_PythonApp
-
-## TestSQLite_ConsoleApp_Cpp
-
-## TestDB.db
-
-## TestSQLite_ConsoleApp_DotNet_CSharp
-
-## TestSQLite_ConsoleApp_DotNetFrameWork_CSharp
-
-## TestSQLite3_ConsoleApp_DotNetFrameWork_CPP
-
-## UnitTestConsole_C_Runner
-
-## UnitTestCreator_PostCodeModifier
-
-## TestSQLite_ConsoleApp_C_Language
