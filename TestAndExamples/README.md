@@ -23,6 +23,31 @@
   - Project files that have Fuzzy in the name and do NOT have SQLite in the name, are projects that don't need SQLite3.DLL.  
   - **Most** projects that have SQLite in the name require SQLite3.DLL to exist in same folder as the executable. The SQLite3.DLL is usually runtime loaded via LoadLibrary function.
 	- The exception to this rule are projects TestSQLite_ConsoleApp_Cpp and ExampleSQLite_CPP which are projects that are built with SQLite3 code included in the project.
+## Example Projects
+### Visual Studio Example Projects
+- All VS example projects where created using Microsoft Visual Studio Community 2022 (64-bit) - Current Version 17.14.14.
+  - Some Visual Studio extensions where used for languages like Python, PHP, and Fortran.
+  - Visual Studio extensison where used for GCC projects listed under Eamples_VS folder.
+- Project Example List:
+  - [ExampleFuzzy_C](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/TestAndExamples/Eamples_VS/ExampleFuzzy_C)
+  - [ExampleFuzzy_CPP](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/TestAndExamples/Eamples_VS/ExampleFuzzy_CPP)
+  - [ExampleFuzzy_DotNet_C#](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/TestAndExamples/Eamples_VS/ExampleFuzzy_DotNet_C#)
+  - [ExampleFuzzy_DotNetFramework_C#](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/TestAndExamples/Eamples_VS/ExampleFuzzy_DotNetFramework_C#)
+  - [ExampleFuzzy_DotNetFramework_CPP](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/TestAndExamples/Eamples_VS/ExampleFuzzy_DotNetFramework_CPP)
+  - [ExampleSQLite3_C](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/TestAndExamples/Eamples_VS/ExampleSQLite3_C)
+  - [ExampleSQLite3_CPP](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/TestAndExamples/Eamples_VS/ExampleSQLite3_CPP)
+  - [ExampleSQLite3_DotNet_C#](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/TestAndExamples/Eamples_VS/ExampleSQLite3_DotNet_C#)
+  - [ExampleSQLite3_DotNetFrameWork_C#](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/TestAndExamples/Eamples_VS/ExampleSQLite3_DotNetFrameWork_C#)
+  - [ExampleSQLite3_DotNetFrameWork_CPP](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/TestAndExamples/Eamples_VS/ExampleSQLite3_DotNetFrameWork_CPP)
+  - [ExampleSQLite3_DotNetFrameWork_F#](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/TestAndExamples/Eamples_VS/ExampleSQLite3_DotNetFrameWork_F#)
+  - [ExampleSQLite3_DotNetFrameWork_VisualBasic](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/TestAndExamples/Eamples_VS/ExampleSQLite3_DotNetFrameWork_VisualBasic)
+  - [ExampleSQLite3_F#](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/TestAndExamples/Eamples_VS/ExampleSQLite3_F#)
+  - [ExampleSQLite3_MakeFileGcc_CPP](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/TestAndExamples/Eamples_VS/ExampleSQLite3_MakeFileGcc_CPP)
+  - [ExampleSQLite3_PHP](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/TestAndExamples/Eamples_VS/ExampleSQLite3_PHP)
+  - [ExampleSQLite3_Python](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/TestAndExamples/Eamples_VS/ExampleSQLite3_Python)
+  - [ExampleSQLite3_VisualBasic](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/TestAndExamples/Eamples_VS/ExampleSQLite3_VisualBasic) 
+### GCC (MinGw) Example Projects
+
 ## TestDatabase
 - The TestDatabase folder contains SQL files used to test **kensho_dataset.db** and **GameNames.db** databases. These databases are too large to post in GitHub. 
 - See the follow link for databases source details: [TestDatabase](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/edit/main/TestAndExamples/TestDatabase)
