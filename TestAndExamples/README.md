@@ -9,13 +9,15 @@
 - [Test Projects](#test-projects)
 ## Projected completion schedule
 - Important!!!! At this stage (**beta release**) most of the test and example projects are incomplete or empty.
+- See following link to get the current latest release version: [https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/releases](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/releases)
 - The following are the test and example project projected completion schedule.
-  - 1.0.0 for all test projects.
+  - 0.1.9 for all test projects.
   - 1.0.0 for the Visual Studio projects under Example_VS folder for languages C, C++, and C#.
-  - 1.0.2 for the Visual Studio projects under Example_VS folder for Python.
-  - 1.0.3 for the Visual Studio projects under Example_VS folder for Visual Basic.
+  - 1.0.2 for the GCC projects under Example_GCC folder for languages C and C++.
+  - 1.0.3 for the Visual Studio projects under Example_VS folder for Python.
+  - 1.0.4 for the Visual Studio projects under Example_VS folder for Visual Basic.
   - 1.0.5 for the Visual Studio projects under Example_VS folder for F#.
-  - 1.0.7 for the GCC projects under Example_GCC folder for languages C and C++.
+  - 1.0.6 for the Visual Studio projects under Example_VS folder for PHP.
   - 1.0.9 for the GCC projects under Example_GCC folder for languages Objective-C and Objective-C++.
   - 1.1.0 for the GCC projects under Example_GCC folder for Rust. (Implementation is not certan at this time)
   - 1.1.5 for the GCC projects under Example_GCC folder for Ada. (Implementation is not certan at this time)
