@@ -50,5 +50,15 @@
     <None Include="App.config" />
     <None Include="README.md" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\FuzzyPlusCSharp.csproj">
+      <Project>{b1de0268-d7e9-4868-bf3c-6298e5905597}</Project>
+      <Name>FuzzyPlusCSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SqliteFuzzyPlusExtension\SqliteFuzzyPlusExtension.vcxproj">
+      <Project>{e50af77f-b0a9-37c2-bee9-e0203eb9712c}</Project>
+      <Name>SqliteFuzzyPlusExtension</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

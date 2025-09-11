@@ -26,6 +26,18 @@
   <ItemGroup>
     <Content Include="README.md" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\FuzzyPlusCSharp.csproj">
+      <Name>FuzzyPlusCSharp</Name>
+      <Project>{b1de0268-d7e9-4868-bf3c-6298e5905597}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SqliteFuzzyPlusExtension\SqliteFuzzyPlusExtension.vcxproj">
+      <Name>SqliteFuzzyPlusExtension</Name>
+      <Project>{e50af77f-b0a9-37c2-bee9-e0203eb9712c}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
        Visual Studio and specify your pre- and post-build commands in

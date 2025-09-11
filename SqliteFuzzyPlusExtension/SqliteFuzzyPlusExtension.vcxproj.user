@@ -7,6 +7,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerDebuggerType>Mixed</LocalDebuggerDebuggerType>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommand>"E:\Program_Files_StandAlone\[_More_]\DB Browser for SQLite\DB Browser for SQLite.exe"</LocalDebuggerCommand>
+    <LocalDebuggerCommand>
+    </LocalDebuggerCommand>
   </PropertyGroup>
 </Project>
