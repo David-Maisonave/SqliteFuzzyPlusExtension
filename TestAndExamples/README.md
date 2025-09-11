@@ -9,17 +9,17 @@
 - [Test Projects](#test-projects)
 ## Projected completion schedule
 - Important!!!! At this stage (**beta release**) most of the projects are incomplete or empty.
-	- 1.0.0 for all test projects.
-	- 1.0.0 for the Visual Studio projects under Example_VS folder for languages C, C++, and C#.
-	- 1.0.2 for the Visual Studio projects under Example_VS folder for Python.
-	- 1.0.3 for the Visual Studio projects under Example_VS folder for Visual Basic.
-	- 1.0.5 for the Visual Studio projects under Example_VS folder for F#.
-	- 1.0.7 for the GCC projects under Example_GCC folder for languages C and C++.
-	- 1.0.9 for the GCC projects under Example_GCC folder for languages Objective-C and Objective-C++.
-	- 1.1.0 for the GCC projects under Example_GCC folder for Rust. (Implementation is not certan at this time)
-	- 1.1.5 for the GCC projects under Example_GCC folder for Ada. (Implementation is not certan at this time)
-	- 1.1.7 for the GCC projects under Example_GCC folder for D Language. (Implementation is not certan at this time)
-	- 1.1.9 for the GCC projects under Example_GCC folder for languages Fortran and Go. (Implementation is not certan at this time)
+  - 1.0.0 for all test projects.
+  - 1.0.0 for the Visual Studio projects under Example_VS folder for languages C, C++, and C#.
+  - 1.0.2 for the Visual Studio projects under Example_VS folder for Python.
+  - 1.0.3 for the Visual Studio projects under Example_VS folder for Visual Basic.
+  - 1.0.5 for the Visual Studio projects under Example_VS folder for F#.
+  - 1.0.7 for the GCC projects under Example_GCC folder for languages C and C++.
+  - 1.0.9 for the GCC projects under Example_GCC folder for languages Objective-C and Objective-C++.
+  - 1.1.0 for the GCC projects under Example_GCC folder for Rust. (Implementation is not certan at this time)
+  - 1.1.5 for the GCC projects under Example_GCC folder for Ada. (Implementation is not certan at this time)
+  - 1.1.7 for the GCC projects under Example_GCC folder for D Language. (Implementation is not certan at this time)
+  - 1.1.9 for the GCC projects under Example_GCC folder for languages Fortran and Go. (Implementation is not certan at this time)
 ## Test Projects and Example Projects
 - Most of the projects have names that are self explanatory. 
 - The following rules apply to test projects and example projects:
