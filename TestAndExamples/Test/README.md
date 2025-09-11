@@ -1,4 +1,7 @@
 # TestAndExamples
+# Under Construction!!!
+- Under Construction!!!
+- This link is scheduled to be complete before the 1.0.0 non-beta release.
 
 ## Test Projects and Example Projects
 Most of the projects have names that are self explanatory. At this stage most of the projects are incomplete or empty.
