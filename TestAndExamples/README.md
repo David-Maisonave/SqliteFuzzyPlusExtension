@@ -1,15 +1,14 @@
 # TestAndExamples
 ## Content
+- [Projected completion schedule]()
 - [Test Projects and Example Projects](#test-projects-and-example-projects)
 - [Example Projects](#example-projects)
   - [Visual Studio Example Projects](#visual-studio-example-projects)
   - [GCC (MinGw) Example Projects](#gcc-mingw-example-projects)
 - [TestDatabase](#TestDatabase)
 - [Test Projects](#test-projects)
-## Test Projects and Example Projects
-- Most of the projects have names that are self explanatory. 
+## Projected completion schedule
 - Important!!!! At this stage (**beta release**) most of the projects are incomplete or empty.
-  - Projected completion schedule:
 	- 1.0.0 for all test projects.
 	- 1.0.0 for the Visual Studio projects under Example_VS folder for languages C, C++, and C#.
 	- 1.0.2 for the Visual Studio projects under Example_VS folder for Python.
@@ -21,6 +20,8 @@
 	- 1.1.5 for the GCC projects under Example_GCC folder for Ada. (Implementation is not certan at this time)
 	- 1.1.7 for the GCC projects under Example_GCC folder for D Language. (Implementation is not certan at this time)
 	- 1.1.9 for the GCC projects under Example_GCC folder for languages Fortran and Go. (Implementation is not certan at this time)
+## Test Projects and Example Projects
+- Most of the projects have names that are self explanatory. 
 - The following rules apply to test projects and example projects:
   - All the test and example projects require FuzzyPlusCSharp.DLL and most require SqliteFuzzyPlusExtension.DLL.
   - Project files that have Fuzzy in the name and do NOT have SQLite in the name, are projects that don't need SQLite3.DLL.  
