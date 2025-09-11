@@ -19,7 +19,7 @@
   - 1.0.4 for the Visual Studio projects under Example_VS folder for Visual Basic.
   - 1.0.5 for the Visual Studio projects under Example_VS folder for F#.
   - 1.0.6 for the Visual Studio projects under Example_VS folder for PHP.
-  - 1.0.7 for the Visual Studio projects under Example_VS folder for WinUi C++ and C# projects.
+  - 1.0.7 for the Visual Studio projects under Example_VS folder for WinUi C# projects.
   - 1.0.9 for the GCC projects under Example_GCC folder for languages Objective-C and Objective-C++.
   - 1.1.0 for the GCC projects under Example_GCC folder for Rust. (Implementation is not certan at this time)
   - 1.1.5 for the GCC projects under Example_GCC folder for Ada. (Implementation is not certan at this time)
