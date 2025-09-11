@@ -52,6 +52,7 @@
   - [ExampleSQLite3_Python](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleSQLite3_Python)
   - [ExampleSQLite3_VisualBasic](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleSQLite3_VisualBasic) 
 ### GCC (MinGw) Example Projects
+- GCC projects where created using MinGw via MSYS2 from [msys2.org](https://www.msys2.org/).
   - [ExampleFuzzy_C](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Example_GCC/ExampleFuzzy_C)
   - [ExampleFuzzy_CPP](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Example_GCC/ExampleFuzzy_CPP)
   - [ExampleSQLite3_Ada](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Example_GCC/ExampleSQLite3_Ada)
