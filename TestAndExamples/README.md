@@ -1,7 +1,7 @@
 # TestAndExamples
 ## Content
 - [Projected completion schedule](#projected-completion-schedule)
-- [Project Naming Convention](#test-projects-and-example-projects)
+- [Project Naming Convention](#project-naming-convention)
 - [Example Projects](#example-projects)
   - [Visual Studio Example Projects](#visual-studio-example-projects)
   - [GCC (MinGw) Example Projects](#gcc-mingw-example-projects)
