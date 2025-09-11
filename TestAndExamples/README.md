@@ -8,13 +8,13 @@
 	- 1.0.0 for the Visual Studio projects under Example_VS folder for languages C, C++, and C#.
 	- 1.0.2 for the Visual Studio projects under Example_VS folder for Python.
 	- 1.0.3 for the Visual Studio projects under Example_VS folder for Visual Basic.
-	- 1.0.5 for the Visual Studio projects under Example_VS folder for languages F#.
+	- 1.0.5 for the Visual Studio projects under Example_VS folder for F#.
 	- 1.0.7 for the GCC projects under Example_GCC folder for languages C and C++.
-	- 1.1.0 for the GCC projects under Example_GCC folder for languages Objective-C and Objective-C++.
-	- 1.1.3 for the GCC projects under Example_GCC folder for Rust.
-	- 1.1.5 for the GCC projects under Example_GCC folder for Ada.
-	- 1.1.7 for the GCC projects under Example_GCC folder for D Language.
-	- 1.2.0 for the GCC projects under Example_GCC folder for languages Fortran and Go.
+	- 1.0.9 for the GCC projects under Example_GCC folder for languages Objective-C and Objective-C++.
+	- 1.1.0 for the GCC projects under Example_GCC folder for Rust. (Implementation is not certan at this time)
+	- 1.1.5 for the GCC projects under Example_GCC folder for Ada. (Implementation is not certan at this time)
+	- 1.1.7 for the GCC projects under Example_GCC folder for D Language. (Implementation is not certan at this time)
+	- 1.1.9 for the GCC projects under Example_GCC folder for languages Fortran and Go. (Implementation is not certan at this time)
 - The following rules apply to test projects and example projects:
   - All the test and example projects require FuzzyPlusCSharp.DLL and most require SqliteFuzzyPlusExtension.DLL.
   - Project files that have Fuzzy in the name and do NOT have SQLite in the name, are projects that don't need SQLite3.DLL.  
