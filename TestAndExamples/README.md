@@ -52,6 +52,17 @@
   - [ExampleSQLite3_Python](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleSQLite3_Python)
   - [ExampleSQLite3_VisualBasic](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleSQLite3_VisualBasic) 
 ### GCC (MinGw) Example Projects
+  - [ExampleFuzzy_C](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Example_GCC/ExampleFuzzy_C)
+  - [ExampleFuzzy_CPP](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Example_GCC/ExampleFuzzy_CPP)
+  - [ExampleSQLite3_Ada](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Example_GCC/ExampleSQLite3_Ada)
+  - [ExampleSQLite3_C](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Example_GCC/ExampleSQLite3_C)
+  - [ExampleSQLite3_CPP](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Example_GCC/ExampleSQLite3_CPP)
+  - [ExampleSQLite3_D](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Example_GCC/ExampleSQLite3_D)
+  - [ExampleSQLite3_Fortran](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Example_GCC/ExampleSQLite3_Fortran)
+  - [ExampleSQLite3_Go](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Example_GCC/ExampleSQLite3_Go)
+  - [ExampleSQLite3_Objective-C](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Example_GCC/ExampleSQLite3_Objective-C)
+  - [ExampleSQLite3_Objective-CPP](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Example_GCC/ExampleSQLite3_Objective-CPP)
+  - [ExampleSQLite3_Rust](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Example_GCC/ExampleSQLite3_Rust)
 
 ## TestDatabase
 - The TestDatabase folder contains SQL files used to test **kensho_dataset.db** and **GameNames.db** databases. These databases are too large to post in GitHub. 
