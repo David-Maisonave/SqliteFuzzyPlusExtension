@@ -1,6 +1,9 @@
 # TestAndExamples
 ## Content
 - [Test Projects and Example Projects](#test-projects-and-example-projects)
+- [Example Projects](#example-projects)
+  - [Visual Studio Example Projects](#visual-studio-example-projects)
+  - [GCC (MinGw) Example Projects](#gcc-mingw-example-projects)
 - [TestDatabase](#TestDatabase)
 - [Test Projects](#test-projects)
 ## Test Projects and Example Projects
