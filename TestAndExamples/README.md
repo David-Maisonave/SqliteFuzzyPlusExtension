@@ -1,15 +1,24 @@
 # TestAndExamples
 
 ## Test Projects and Example Projects
-Most of the projects have names that are self explanatory. At this stage most of the projects are incomplete or empty.
-
-Project files that have Fuzzy in the name and do NOT have SQLite in the name are projects that don't need SQLite3.DLL.  Most projects that have SQLite in the name require SQLite3.DLL to exist in same folder as executable. They are work in progress, and are expected to be completed by release 1.0.0.
+- Most of the projects have names that are self explanatory. 
+- Important!!!! At this stage (**beta release**) most of the projects are incomplete or empty.
+  - Projected completion is release 1.0.0 for all test projects.
+  - Projected completion is release 1.0.0 for all the Visual Studio projects under Example_VS folder.
+  - Projected completion is release 1.0.5 for all the GCC projects under Example_GCC folder.
+- The following rules apply to test projects and example projects:
+  - Project files that have Fuzzy in the name and do NOT have SQLite in the name, are projects that don't need SQLite3.DLL.  
+  - **Most** projects that have SQLite in the name require SQLite3.DLL to exist in same folder as executable. They are usually runtime loaded via LoadLibrary function.
+	- The exception to this rule is project TestSQLite_ConsoleApp_Cpp and ExampleSQLite_CPP which are projects which are built with SQLite3 code included in the project.
 
 ## TestDatabase
-The TestDatabase folder contains SQL files used to test **kensho_dataset.db** and **GameNames.db** databases. These databases are too large to post in GitHub. See follow linke for source DB details: [TestDatabase](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/edit/main/TestAndExamples/TestDatabase)
-
-
-## TestAndExamples
+- The TestDatabase folder contains SQL files used to test **kensho_dataset.db** and **GameNames.db** databases. These databases are too large to post in GitHub. 
+- See the follow link for databases source details: [TestDatabase](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/edit/main/TestAndExamples/TestDatabase)
+- This project does include one database in GitHub:
+  - **TestDB.db** which is a small database used for testing fuzzy functions.
+  - See the following link to download TestDB.db: [TestDB.db](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/SqliteFuzzyPlusExtension/TestData)
+  - The above link also includes SQL scripts used to test fuzzy functions.
+	- All the SQL scripts where run using [DB Browser for SQLite](https://sqlitebrowser.org/dl/) with the SqliteFuzzyPlusExtension loaded as an extension.
 
 ## TestFuzzy_ConsoleApp_DotNetFrameworkCpp
 
@@ -19,7 +28,7 @@ The TestDatabase folder contains SQL files used to test **kensho_dataset.db** an
 
 ## TestSQLite_ConsoleApp_Cpp
 
-## TestSQLite_ConsoleApp_CppNotManaged
+## TestDB.db
 
 ## TestSQLite_ConsoleApp_DotNet_CSharp
 
