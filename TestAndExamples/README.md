@@ -9,6 +9,7 @@
 - [Test Projects](#test-projects)
 ## Projected completion schedule
 - Important!!!! At this stage (**beta release**) most of the test and example projects are incomplete or empty.
+- See following link to get the current latest release version: [https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/releases](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/releases)
 - The following are the test and example project projected completion schedule.
   - 1.0.0 for all test projects.
   - 1.0.0 for the Visual Studio projects under Example_VS folder for languages C, C++, and C#.
