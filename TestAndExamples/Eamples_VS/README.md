@@ -1,6 +1,23 @@
 # Under construction!!!
-
-Under construction!!!
-
-
-
+# Visual Studio Builds
+- All VS example projects where created using Microsoft Visual Studio Community 2022 (64-bit) - Current Version 17.14.14.
+  - Some Visual Studio extensions where used for languages like Python, PHP, and Fortran.
+  - Visual Studio extensison where used for any GCC projects listed under Eamples_VS folder.
+- Project Example List:
+  - [ExampleFuzzy_C](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleFuzzy_C)
+  - [ExampleFuzzy_CPP](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleFuzzy_CPP)
+  - [ExampleFuzzy_DotNet_C#](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleFuzzy_DotNet_C%23)
+  - [ExampleFuzzy_DotNetFramework_C#](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleFuzzy_DotNetFramework_C%23)
+  - [ExampleFuzzy_DotNetFramework_CPP](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleFuzzy_DotNetFramework_CPP)
+  - [ExampleSQLite3_C](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleSQLite3_C)
+  - [ExampleSQLite3_CPP](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleSQLite3_CPP)
+  - [ExampleSQLite3_DotNet_C#](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleSQLite3_DotNet_C%23)
+  - [ExampleSQLite3_DotNetFrameWork_C#](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleSQLite3_DotNetFrameWork_C%23)
+  - [ExampleSQLite3_DotNetFrameWork_CPP](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleSQLite3_DotNetFrameWork_CPP)
+  - [ExampleSQLite3_DotNetFrameWork_F#](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleSQLite3_DotNetFrameWork_F%23)
+  - [ExampleSQLite3_DotNetFrameWork_VisualBasic](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleSQLite3_DotNetFrameWork_VisualBasic)
+  - [ExampleSQLite3_F#](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleSQLite3_F%23)
+  - [ExampleSQLite3_MakeFileGcc_CPP](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleSQLite3_MakeFileGcc_CPP)
+  - [ExampleSQLite3_PHP](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleSQLite3_PHP)
+  - [ExampleSQLite3_Python](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleSQLite3_Python)
+  - [ExampleSQLite3_VisualBasic](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleSQLite3_VisualBasic) 
