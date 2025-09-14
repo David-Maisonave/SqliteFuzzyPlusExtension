@@ -1,5 +1,6 @@
 # Under construction!!!
 ## GCC build via MinGw and MSYS2
+All builds are x64.
 ### MinGw
 - MinGw was downloaded from the following link:
   - [winlibs](https://winlibs.com/)
@@ -23,8 +24,5 @@
 	- Obj-C
 	- Obj-C++
 	- OCaml 
-
-
-
 
 
