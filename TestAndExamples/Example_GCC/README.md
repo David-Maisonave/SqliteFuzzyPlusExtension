@@ -1,6 +1,6 @@
 # Under construction!!!
 ## GCC build using MinGw
-All builds are x64 using MinGW installed on Windows-11. Tested all of the following installation methods.
+Tested x64 builds using **MinGW** installed on Windows-11. Tested the following MinGw installation methods.
 - [WinLibs](#WinLibs)
 - [Sourceforge](#Sourceforge)
 - [Github niXman](#Github-niXman)
