@@ -16,6 +16,11 @@ This SQLite extension is the ultimate library on [fuzzy](https://en.wikipedia.or
   - [Miscellaneous Fuzzy Functions](#Miscellaneous-Fuzzy-Functions)
   - [Miscellaneous Functions](#Miscellaneous-Functions)
 - [Examples](#Examples)
+- [Build](#Build)
+  - [SQLiteFuzyyPlusExtension Builds](#SQLiteFuzyyPlusExtension-Builds)
+  - [VS Example Projects](#VS-Example-Projects)
+  - [GCC Example Projects](#GCC-Example-Projects)
+  - [VS Test Projects](#VS-Test-Projects)
 - [ToDo](#ToDo)
 - [Test Projects and Example Projects](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples#TestAndExamples)
 - [TestDatabase](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/TestDatabase)
@@ -156,6 +161,33 @@ Here's a list of the non-fuzzy functions.
 # Examples
 - SQL examples are listed in the following link: [Examples](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/Docs/Examples).
 - Other examples will be posted before the non-beta version is posted.
+
+# Build
+## SQLiteFuzyyPlusExtension Builds
+SQLiteFuzyyPlusExtension was built using **Visual Studio**.
+- The build was tested on two versions of Visual Studio's
+  - Microsoft Visual Studio Enterprise 2022 (64-bit) - Preview
+    - Version 17.14.13 Preview 1.0
+  - Microsoft Visual Studio Community 2022 (64-bit)
+    - Version 17.14.14
+## VS Example Projects
+- All VS example projects where created using Microsoft Visual Studio Community 2022 (64-bit) - Current Version 17.14.14.
+- See following link for more details: [Visual Studio Example Projects](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples#visual-studio-example-projects)
+## GCC Example Projects
+- GCC projects where built using MinGw.
+- See following link for more details: [GCC (MinGw) Example Projects](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples#gcc-mingw-example-projects)
+## VS Test Projects
+- All VS test projects where created using Microsoft Visual Studio Enterprise 2022 (64-bit) - Preview - Version 17.14.13 Preview 1.0
+- The primary purpose of the test projects, is to verify at compile time that changes don't break supported programming languages and framework.
+- The test projects are also used for the following:
+  - Create SQL scripts using all the fuzzy functions for API Distance, HowSimilar, and IsSimilar.
+  - Create SQL scripts using all the phonetic functions for API SameSound.
+  - Runs a performance test on all the fuzzy functions using SQLite, and it updates database TestData.db with the results, and also creates a **README.md** file showing the results.
+    - The SQL test is performed on 4 databases having the following row size.
+      - 10,000 rows
+      - 100,000 rows
+      - 1, 000, 000 rows
+      - 5, 000, 000 rows
 
 # ToDo
 - Add additional documentation for each function with examples.
