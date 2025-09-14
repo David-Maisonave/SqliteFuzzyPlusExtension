@@ -16,6 +16,7 @@ All builds are x64.
 - Downloaded from the following link:
   - https://www.msys2.org
   - Used default installation instructions.
+  - gcc.exe (Rev8, Built by MSYS2 project) 15.2.0
   - This version is able to compile the following languages:
     - Ada
 	- C
