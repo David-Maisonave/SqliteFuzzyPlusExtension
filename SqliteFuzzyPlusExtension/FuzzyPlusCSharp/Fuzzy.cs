@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -14,10 +15,27 @@ using System.Text.RegularExpressions;
 namespace FuzzyPlusCSharp
 {
     #region Non-Static version
-    public class FuzzyInst
+    [ComVisible(true)]
+    [Guid("03e496b7-1f0c-4699-b7fc-cf32bb949b75")]
+    [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)] // Or InterfaceIsDual, InterfaceIsIDispatch, InterfaceIsIUnknown
+    public interface IQueueFuzzy
+    {
+        bool IsVerySimilar(string source1, string source2); // Is 90% similar
+        bool IsSimilar(string source1, string source2); // Is 75% similar
+        bool IsSomeWhatSimilar(string source1, string source2); // Is 50% similar
+        bool IsSlightlySimilar(string source1, string source2); // Is 30% similar
+        bool IsHardlySimilar(string source1, string source2); // Is 10% similar
+        bool IsMatch(string source1, string source2, double desiredSimilarity);
+        double HowSimilar(string source1, string source2);
+        bool IsNotSimilar(string source1, string source2);
+    }
+    [ComVisible(true)]
+    [Guid("812e2762-82ed-4772-a7b8-443e14ee70a4")]
+    [ClassInterface(ClassInterfaceType.None)]
+    public class FuzzyInst : IQueueFuzzy
     {
         private readonly Fuzzy.StringMatchingAlgorithm_ID stringMatchingAlgorithm = Fuzzy.StringMatchingAlgorithm_ID.iDamerauLevenshtein;
-        public FuzzyInst(Fuzzy.StringMatchingAlgorithm_ID stringMatchingAlgorithm)
+        public FuzzyInst(Fuzzy.StringMatchingAlgorithm_ID stringMatchingAlgorithm = Fuzzy.StringMatchingAlgorithm_ID.iDamerauLevenshtein)
         {
             this.stringMatchingAlgorithm = stringMatchingAlgorithm;
         }
@@ -33,6 +51,9 @@ namespace FuzzyPlusCSharp
     #endregion Non-Static version
     //////////////////////////////////////////////////////////////////////
     /// Static version 
+    [ComVisible(true)]
+    [Guid("9576a745-53b4-4ffa-97c5-a9075a0b5498")]
+    [ClassInterface(ClassInterfaceType.None)]
     public static class Fuzzy
     {
         #region Constants
