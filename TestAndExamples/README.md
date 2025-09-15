@@ -36,7 +36,7 @@
 ### Visual Studio Example Projects
 - All VS example projects where created using Microsoft Visual Studio Community 2022 (64-bit) - Current Version 17.14.14.
   - Some Visual Studio extensions where used for languages like Python, PHP, and Fortran.
-  - Visual Studio extensison where used for GCC projects listed under Eamples_VS folder.
+  - Visual Studio extensison where used for any GCC projects listed under Eamples_VS folder.
 - Project Example List:
   - [ExampleFuzzy_C](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleFuzzy_C)
   - [ExampleFuzzy_CPP](https://github.com/David-Maisonave/SqliteFuzzyPlusExtension/tree/main/TestAndExamples/Eamples_VS/ExampleFuzzy_CPP)
