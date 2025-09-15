@@ -12,6 +12,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
+using static FuzzyPlusCSharp.Fuzzy;
+
 namespace FuzzyPlusCSharp
 {
     #region Non-Static version
@@ -28,6 +30,7 @@ namespace FuzzyPlusCSharp
         bool IsMatch(string source1, string source2, double desiredSimilarity);
         double HowSimilar(string source1, string source2);
         bool IsNotSimilar(string source1, string source2);
+        double Distance(string source1, string source2);
     }
     [ComVisible(true)]
     [Guid("812e2762-82ed-4772-a7b8-443e14ee70a4")]
@@ -47,6 +50,27 @@ namespace FuzzyPlusCSharp
         public bool IsMatch(string source1, string source2, double desiredSimilarity) => Fuzzy.HowSimilar(source1, source2, stringMatchingAlgorithm) >= desiredSimilarity;
         public double HowSimilar(string source1, string source2) => Fuzzy.HowSimilar(source1, source2, stringMatchingAlgorithm);
         public bool IsNotSimilar(string source1, string source2) => Fuzzy.IsNotSimilar(source1, source2, stringMatchingAlgorithm);
+        public double Distance(string source1, string source2) => Fuzzy.Distance(source1, source2, stringMatchingAlgorithm);
+    }
+    [ComVisible(true)]
+    [Guid("af9140d6-1ace-41d1-9be4-770d2c20b1f5")]
+    [InterfaceType(ComInterfaceType.InterfaceIsIDispatch)] // Or InterfaceIsDual, InterfaceIsIDispatch, InterfaceIsIUnknown
+    public interface IQueuePhonetic
+    {
+        bool SameSound(string source1, string source2);
+    }
+    [ComVisible(true)]
+    [Guid("e21e828e-1e0f-4b26-9479-dc6e8ccb715d")]
+    [ClassInterface(ClassInterfaceType.None)]
+    public class PhoneticInst : IQueuePhonetic
+    {
+        private readonly Fuzzy.SameSoundMethod sameSoundMethod = Fuzzy.SameSoundMethod.UseDefaultSameSoundMethod;
+        public PhoneticInst(Fuzzy.SameSoundMethod sameSoundMethod = Fuzzy.SameSoundMethod.UseDefaultSameSoundMethod)
+        {
+            this.sameSoundMethod = sameSoundMethod;
+        }
+        public bool SameSound(string source1, string source2) => Fuzzy.SameSound(source1, source2, sameSoundMethod);
+
     }
     #endregion Non-Static version
     //////////////////////////////////////////////////////////////////////
