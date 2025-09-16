@@ -27,5 +27,11 @@
     <ClInclude Include="SQLiteWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="sqlite3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="sqlite3.lib" />
   </ItemGroup>
 </Project>

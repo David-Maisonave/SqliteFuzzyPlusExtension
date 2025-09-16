@@ -1,4 +1,7 @@
 #include "pch.h"
+#include "sqlite3pp_ez.h"
+// #include "SQL/sql_Master_Header.h"
+
 using namespace System;
 // This program is a unit test creator and a post code modifier for  SqliteFuzzyPlusExtension.
 // It should be run before posting a new version of SqliteFuzzyPlusExtension to GitHub.com
@@ -13,5 +16,18 @@ using namespace System;
 //      4. Create C files for UnitTestConsole_C_Runner.
 int main(array<System::String ^> ^args)
 {
+	const std::string dbFileName = "..\\..\\SqliteFuzzyPlusExtension\\TestData\\TestData.db";
+	sqlite3pp::HeaderOpt headerOpt = sqlite3pp::SQLiteClassBuilder::HeadersCreatedSqlDir; // Get default header option
+	headerOpt.dest_folder = "..\\SQL_TestDataDb\\"; // Change default destination folder
+	headerOpt.header_include = "sqlite3pp_ez.h";
+	sqlite3pp::setGlobalDB(dbFileName);
+	// Create C++ headers for associated database tables
+	sqlite3pp::SQLiteClassBuilder	createMyClasses_A(
+		dbFileName
+		, sqlite3pp::SQLiteClassBuilder::strOpt_std_string	// This option creates a class with string as the default string.
+		, headerOpt
+		, sqlite3pp::SQLiteClassBuilder::MiscOpt_max
+	);
+
     return 0;
 }

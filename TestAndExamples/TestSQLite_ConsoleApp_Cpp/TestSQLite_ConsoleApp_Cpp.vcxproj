@@ -166,7 +166,11 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="sqlite3.h" />
     <ClInclude Include="SQLiteWrapper.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="sqlite3.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
