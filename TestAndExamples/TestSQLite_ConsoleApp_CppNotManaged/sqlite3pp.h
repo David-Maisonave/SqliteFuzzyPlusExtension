@@ -38,7 +38,7 @@
 // - Change some names to avoid spell checker errors.
 // - Changed local include to use "" instead of <>, to avoid compiler error on some systems.
 // - Added functions that take std::string
-// - Added enhance logic to connect to SQLite3.db at runtime.
+// - Added enhance logic to connect to SQLite3.db at runtime when compiling CLR code.
 // - Other miscellaneous changes where I added comments [David Maisonave changes]
 //
 // For example usage see [Wongoo Lee] github link: https://github.com/iwongu/sqlite3pp
