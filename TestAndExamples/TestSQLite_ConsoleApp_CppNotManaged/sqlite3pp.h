@@ -46,7 +46,7 @@
 #ifndef SQLITE3PP_H
 #define SQLITE3PP_H
 
-// [David Maisonave changes] -- commented out the following defines which where not being used, but was producing compiler warnings.
+// [David Maisonave changes] -- commented out the following macros which where not being used, but was producing compiler warnings.
 //#define SQLITE3PP_VERSION "1.0.8"
 //#define SQLITE3PP_VERSION_MAJOR 1
 //#define SQLITE3PP_VERSION_MINOR 0
