@@ -22,30 +22,73 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// David Maisonave -- Nov-2021 Added UNICODE API's
-
+//////////////////////////////////////////////////////////////////////////////////////////
+// Mod Author: David Maisonave - Sep-2025
+// This a modified version of [Wongoo Lee] original sqlite3pp.
+// - Source comes from the following link: https://github.com/iwongu/sqlite3pp
+// This version was originally modified by David Maisonave Nov-2021,
+// and then additional modifications made in Sep-2025.
+// 
+// Most of the 2025 changes are associated with compiling with manage C++ code,
+// using SQLiteDLLConnect.h which has a manage class SQLiteDLLConnect, 
+// and allows run time linking to SQLite3.dll with manage C++ code.
+// 
+// Changes:
+// - Added UNICODE API's.
+// - Change some names to avoid spell checker errors.
+// - Changed local include to use "" instead of <>, to avoid compiler error on some systems.
+// - Added functions that take std::string
+// - Added enhance logic to connect to SQLite3.db at runtime.
+// - Other miscellaneous changes where I added comments [David Maisonave changes]
+//
+// For example usage see [Wongoo Lee] github link: https://github.com/iwongu/sqlite3pp
 
 #ifndef SQLITE3PP_H
 #define SQLITE3PP_H
 
-#define SQLITE3PP_VERSION "1.0.8"
-#define SQLITE3PP_VERSION_MAJOR 1
-#define SQLITE3PP_VERSION_MINOR 0
-#define SQLITE3PP_VERSION_PATCH 8
+// [David Maisonave changes] -- commented out the following defines which where not being used, but was producing compiler warnings.
+//#define SQLITE3PP_VERSION "1.0.8"
+//#define SQLITE3PP_VERSION_MAJOR 1
+//#define SQLITE3PP_VERSION_MINOR 0
+//#define SQLITE3PP_VERSION_PATCH 8
 
 #include <functional>
 #include <iterator>
 #include <stdexcept>
 #include <string>
 #include <tuple>
-#include <vector>
-#include <ctime>
-#include <memory>
+#include <vector> // [David Maisonave changes] -- Required for Blob & Clob types
+#include <memory> // [David Maisonave changes] -- Required for Blob & Clob types
+#include <ctime>  // [David Maisonave changes] -- Required for Date & Datetime types
 
+#ifdef __CLR_VER // [David Maisonave changes] -- Used for run time level connection to SQLite3.dll
+#define SQLITE_MANAGE_CODE
+#endif
+
+#ifdef SQLITE3PP_LOADABLE_EXTENSION
+#include "sqlite3ext.h"
+SQLITE_EXTENSION_INIT1
+#else
 #include "sqlite3.h"
+#endif
+
+#ifdef SQLITE_MANAGE_CODE // [David Maisonave changes] -- Used for run time level connection to SQLite3.dll
+#include "SQLiteDLLConnect.h"
+#define SQLITEDLLCONNECT SQLiteDLLConnect::
+#else
+#define SQLITEDLLCONNECT
+#endif
 
 namespace sqlite3pp
 {
+	class database;
+	namespace ext
+	{
+		class function;
+		class aggregate;
+		database borrow(sqlite3* pdb);
+	}
+
 #if defined(SQLITE3PP_NO_UNICODE) || !defined(_UNICODE)
 	using tstring = std::string;
 #else
@@ -60,16 +103,6 @@ namespace sqlite3pp
 	struct Datetime	{std::tm tm_struct;};
 	using TEXT = tstring;
 #endif //!SQLITE3PP_CONVERT_TO_RESULTING_AFFINITY	
-
-  class database;
-
-  namespace ext
-  {
-	class function;
-	class aggregate;
-	database borrow(sqlite3* pdb);
-  }
-
   template <class T>
   struct convert {
 	using to_int = int;
@@ -91,15 +124,11 @@ namespace sqlite3pp
 	NonCopyable& operator=(NonCopyable const&) = delete;
   };
 
-  //struct sqlite3_api_routines;
-  class db_api_root
+  class database : NonCopyable
   {
-  public:
-	  db_api_root();
-  };
-
-  class database : public db_api_root, private NonCopyable
-  {
+#ifdef SQLITE_MANAGE_CODE
+		SQLite_DLL::RunTimeConnect* runTimeConnect = NULL;// [David Maisonave changes] -- Used for run time level connection to SQLite3.dll
+#endif
 	friend class statement;
 	friend class database_error;
 	friend class ext::function;
@@ -115,10 +144,10 @@ namespace sqlite3pp
 	using backup_handler = std::function<void (int, int, int)>;
 
 	explicit database( char const* dbname = nullptr, int flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, const char* vfs = nullptr );
-
 	database(database&& db);
 	database& operator=(database&& db);
-
+	database(const std::string dbname, int flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, const char* vfs = nullptr);// [David Maisonave changes] -- Add std::string support
+	database(sqlite3* pdb); // [David Maisonave changes] -- Not sure why this was made private, but this constructor can be usefull when mixing classes of similar type.
 	~database();
 	
 #ifndef SQLITE3PP_NO_UNICODE	
@@ -126,7 +155,6 @@ namespace sqlite3pp
 	explicit database( const  wchar_t* dbname, int flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, const wchar_t* vfs = nullptr );
 	int connect( const  wchar_t* dbname, int flags, const wchar_t* vfs = nullptr );
 	int execute( const std::wstring& sql );
-	int execute( const std::string& sql );
 	int attach(const  wchar_t* dbname, const  wchar_t* name);
 	int detach(const  wchar_t* name);
 	int backup(const  wchar_t* dbname, database& destdb, const  wchar_t* destdbname, backup_handler h, int step_page = 5);
@@ -154,8 +182,8 @@ namespace sqlite3pp
 	char const* error_msg() const;
 
 	int execute( char const* sql );
-	int executef(char const* sql, ...);
-
+		// int executef(char const* sql, ...);// [David Maisonave changes] -- Removed this variadic function of executef because could not compile it in manage C++ code.
+		int execute(const std::string& sql);// [David Maisonave changes] -- Adding std::string capabilities
 	int set_busy_timeout(int ms);
 
 	void set_busy_handler(busy_handler h);
@@ -165,8 +193,8 @@ namespace sqlite3pp
 	void set_authorize_handler(authorize_handler h);
 
    private:
-	database(sqlite3* pdb);
-
+		int executef(char const* sql, const char* dbname, const char* name);// [David Maisonave changes] -- Added this to replace associated variadic function which doesn't compile in manage C++ code.
+		int executef(char const* sql, const char* name);// [David Maisonave changes] -- Added this to replace associated variadic function which doesn't compile in manage C++ code.
    private:
 	sqlite3* db_;
 	bool borrowing_;
@@ -182,13 +210,12 @@ namespace sqlite3pp
   {
    public:
 	explicit database_error(char const* msg);
-	explicit database_error(const std::string& msg);
+		explicit database_error(const std::string& msg);// [David Maisonave changes] -- Adding std::string capabilities
 	explicit database_error(database& db);
   };
 
   enum copy_semantic { copy, nocopy };
-
-  class statement : public db_api_root, private NonCopyable
+	class statement : NonCopyable
   {
    public:
 	int prepare(char const* stmt);
@@ -354,9 +381,8 @@ namespace sqlite3pp
 	 private:
 	  sqlite3_stmt* stmt_;
 	};
-
-	class query_iterator
-	  : public std::iterator<std::input_iterator_tag, rows>
+#pragma warning (disable : 4996) // [David Maisonave changes] -- Remove compiler warning for deprecated iterator.
+		class query_iterator : public std::iterator<std::input_iterator_tag, rows>
 	{
 	 public:
 	  query_iterator();
@@ -366,8 +392,7 @@ namespace sqlite3pp
 	  bool operator!=(query_iterator const&) const;
 
 	  query_iterator& operator++();
-	  query::rows operator*() const;
-
+			value_type operator*() const;
 	 private:
 	  query* cmd_;
 	  int rc_;
@@ -388,7 +413,7 @@ namespace sqlite3pp
 	iterator end();
   };
 
-  class transaction : public db_api_root, private NonCopyable
+	class transaction : NonCopyable
   {
    public:
 	explicit transaction(database& db, bool fcommit = false, bool freserve = false);

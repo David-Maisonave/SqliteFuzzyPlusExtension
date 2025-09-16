@@ -22,21 +22,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// David Maisonave -- Nov-2021 Updated (std::string query::rows::get) to gracefully handle NULL string
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// Mod Author: David Maisonave - Sep-2025
+// This a modified version of [Wongoo Lee] original sqlite3pp.
+// - Source comes from the following link: https://github.com/iwongu/sqlite3pp
+// This version was originally modified by David Maisonave Nov-2021,
+// and then additional modifications made in Sep-2025.
+// 
+// Most of the 2025 changes are associated with compiling with manage C++ code,
+// using SQLiteDLLConnect.h which has a manage class SQLiteDLLConnect, 
+// and allows run time linking to SQLite3.dll with manage C++ code.
+// 
+// Changes:
+// - Added UNICODE API's.
+// - Change some names to avoid spell checker errors.
+// - Changed local include to use "" instead of <>, to avoid compiler error on some systems.
+// - Added functions that take std::string
+// - Added enhance logic to connect to SQLite3.db at runtime.
+// - Other miscellaneous changes where I added comments [David Maisonave changes]
 
 #include <cstring>
 #include <memory>
 
-#ifdef SQLITE3PP_LOADABLE_EXTENSION
-#include "sqlite3ext.h"
-SQLITE_EXTENSION_INIT1
-#endif
-
 #include "sqlite3pp.h"
+
 
 namespace sqlite3pp
 {
   null_type ignore;
+  void* NULLPTR = NULL; // [David Maisonave changes] -- Used to replace [nullptr] which did not compile in manage C++ code
 
   namespace
   {
@@ -72,7 +87,11 @@ namespace sqlite3pp
 
   } // namespace
 
-  database::database(char const* dbname, int flags, char const* vfs) : db_(nullptr), borrowing_(false)
+  database::database( char const* dbname, int flags, char const* vfs ) : 
+#ifdef SQLITE_MANAGE_CODE
+	  runTimeConnect(new SQLite_DLL::RunTimeConnect()), 
+#endif
+	  db_( nullptr ), borrowing_( false )
   {
 	  if (dbname) {
 		  auto rc = connect(dbname, flags, vfs);
@@ -81,11 +100,32 @@ namespace sqlite3pp
 	  }
   }
 
-  database::database(sqlite3* pdb) : db_(pdb), borrowing_(true)
+  database::database(const std::string dbname, int flags, char const* vfs ) : 
+#ifdef SQLITE_MANAGE_CODE
+	  runTimeConnect(new SQLite_DLL::RunTimeConnect()),
+#endif
+	  db_( nullptr ), borrowing_( false )
+  {
+	if (dbname.size() > 0) {
+		  auto rc = connect( dbname.c_str(), flags, vfs);
+		  if ( rc != SQLITE_OK )
+			  throw database_error( "can't connect database" );
+	  }
+  }
+
+  database::database(sqlite3* pdb) : 
+#ifdef SQLITE_MANAGE_CODE
+	  runTimeConnect(new SQLite_DLL::RunTimeConnect()),
+#endif
+	  db_(pdb), borrowing_(true)
   {
   }
 
-  database::database(database&& db) : db_(std::move(db.db_)),
+  database::database(database&& db) : 
+#ifdef SQLITE_MANAGE_CODE
+	  runTimeConnect(new SQLite_DLL::RunTimeConnect()),
+#endif
+	  db_(std::move(db.db_)),
 	borrowing_(std::move(db.borrowing_)),
 	bh_(std::move(db.bh_)),
 	ch_(std::move(db.ch_)),
@@ -115,6 +155,9 @@ namespace sqlite3pp
 	if (!borrowing_) {
 	  disconnect();
 	}
+#ifdef SQLITE_MANAGE_CODE
+	delete runTimeConnect;// [David Maisonave changes]
+#endif
   }
 
   int database::connect(char const* dbname, int flags, char const* vfs)
@@ -123,14 +166,14 @@ namespace sqlite3pp
 		  disconnect();
 	  }
 
-	  return sqlite3_open_v2( dbname, &db_, flags, vfs );
+	  return SQLITEDLLCONNECT sqlite3_open_v2( dbname, &db_, flags, vfs );
   }
 
   int database::disconnect()
   {
 	auto rc = SQLITE_OK;
 	if (db_) {
-	  rc = sqlite3_close(db_);
+	  rc = SQLITEDLLCONNECT sqlite3_close(db_);
 	  if (rc == SQLITE_OK) {
 		db_ = nullptr;
 	  }
@@ -156,109 +199,120 @@ namespace sqlite3pp
 
   int database::backup(char const* dbname, database& destdb, char const* destdbname, backup_handler h, int step_page)
   {
-	sqlite3_backup* bkup = sqlite3_backup_init(destdb.db_, destdbname, db_, dbname);
+	sqlite3_backup* bkup = SQLITEDLLCONNECT sqlite3_backup_init(destdb.db_, destdbname, db_, dbname);
 	if (!bkup) {
 	  return error_code();
 	}
 	auto rc = SQLITE_OK;
 	do {
-	  rc = sqlite3_backup_step(bkup, step_page);
+	  rc = SQLITEDLLCONNECT sqlite3_backup_step(bkup, step_page);
 	  if (h) {
-	h(sqlite3_backup_remaining(bkup), sqlite3_backup_pagecount(bkup), rc);
+	h(SQLITEDLLCONNECT sqlite3_backup_remaining(bkup), SQLITEDLLCONNECT sqlite3_backup_pagecount(bkup), rc);
 	  }
 	} while (rc == SQLITE_OK || rc == SQLITE_BUSY || rc == SQLITE_LOCKED);
-	sqlite3_backup_finish(bkup);
+	SQLITEDLLCONNECT sqlite3_backup_finish(bkup);
 	return rc;
   }
 
   void database::set_busy_handler(busy_handler h)
   {
 	bh_ = h;
-	sqlite3_busy_handler(db_, bh_ ? busy_handler_impl : 0, &bh_);
+	SQLITEDLLCONNECT sqlite3_busy_handler(db_, bh_ ? busy_handler_impl : 0, &bh_);
   }
 
   void database::set_commit_handler(commit_handler h)
   {
 	ch_ = h;
-	sqlite3_commit_hook(db_, ch_ ? commit_hook_impl : 0, &ch_);
+	SQLITEDLLCONNECT sqlite3_commit_hook(db_, ch_ ? commit_hook_impl : 0, &ch_);
   }
 
   void database::set_rollback_handler(rollback_handler h)
   {
 	rh_ = h;
-	sqlite3_rollback_hook(db_, rh_ ? rollback_hook_impl : 0, &rh_);
+	SQLITEDLLCONNECT sqlite3_rollback_hook(db_, rh_ ? rollback_hook_impl : 0, &rh_);
   }
 
   void database::set_update_handler(update_handler h)
   {
 	uh_ = h;
-	sqlite3_update_hook(db_, uh_ ? update_hook_impl : 0, &uh_);
+	SQLITEDLLCONNECT sqlite3_update_hook(db_, uh_ ? update_hook_impl : 0, &uh_);
   }
 
   void database::set_authorize_handler(authorize_handler h)
   {
 	ah_ = h;
-	sqlite3_set_authorizer(db_, ah_ ? authorizer_impl : 0, &ah_);
+	SQLITEDLLCONNECT sqlite3_set_authorizer(db_, ah_ ? authorizer_impl : 0, &ah_);
   }
 
   long long int database::last_insert_rowid() const
   {
-	return sqlite3_last_insert_rowid(db_);
+	return SQLITEDLLCONNECT sqlite3_last_insert_rowid(db_);
   }
 
   int database::enable_foreign_keys(bool enable)
   {
-	return sqlite3_db_config(db_, SQLITE_DBCONFIG_ENABLE_FKEY, enable ? 1 : 0, nullptr);
+#ifdef SQLITE_MANAGE_CODE
+	  return runTimeConnect->sqlite3_db_config(db_, SQLITE_DBCONFIG_ENABLE_FKEY, enable ? 1 : 0, NULLPTR);
+#else
+	  return sqlite3_db_config(db_, SQLITE_DBCONFIG_ENABLE_FKEY, enable ? 1 : 0, NULLPTR);
+#endif
   }
 
   int database::enable_triggers(bool enable)
   {
-	return sqlite3_db_config(db_, SQLITE_DBCONFIG_ENABLE_TRIGGER, enable ? 1 : 0, nullptr);
+#ifdef SQLITE_MANAGE_CODE
+	  return runTimeConnect->sqlite3_db_config(db_, SQLITE_DBCONFIG_ENABLE_TRIGGER, enable ? 1 : 0, NULLPTR);
+#else
+	  return sqlite3_db_config(db_, SQLITE_DBCONFIG_ENABLE_FKEY, enable ? 1 : 0, NULLPTR);
+#endif
   }
 
   int database::enable_extended_result_codes(bool enable)
   {
-	return sqlite3_extended_result_codes(db_, enable ? 1 : 0);
+	return SQLITEDLLCONNECT sqlite3_extended_result_codes(db_, enable ? 1 : 0);
   }
 
   int database::changes() const
   {
-	return sqlite3_changes(db_);
+	return SQLITEDLLCONNECT sqlite3_changes(db_);
   }
 
   int database::error_code() const
   {
-	return sqlite3_errcode(db_);
+	return SQLITEDLLCONNECT sqlite3_errcode(db_);
   }
 
   int database::extended_error_code() const
   {
-	return sqlite3_extended_errcode(db_);
+	return SQLITEDLLCONNECT sqlite3_extended_errcode(db_);
   }
 
   char const* database::error_msg() const
   {
-	return sqlite3_errmsg(db_);
+	return SQLITEDLLCONNECT sqlite3_errmsg(db_);
   }
 
   int database::execute(char const* sql)
   {
-	return sqlite3_exec(db_, sql, 0, 0, 0);
+	return SQLITEDLLCONNECT sqlite3_exec(db_, sql, 0, 0, 0);
   }
 
-  int database::executef(char const* sql, ...)
+  int database::executef(char const* sql, const char* dbname, const char* name)
   {
-	va_list ap;
-	va_start(ap, sql);
-	std::shared_ptr<char> msql(sqlite3_vmprintf(sql, ap), sqlite3_free);
-	va_end(ap);
-
+	  char* data = SQLITEDLLCONNECT sqlite3_vmprintf(sql, (char*)dbname);
+	  std::shared_ptr<char> msql(SQLITEDLLCONNECT sqlite3_vmprintf(data, (char*)name), SQLITEDLLCONNECT sqlite3_free);
+	  SQLITEDLLCONNECT sqlite3_free(data);
+	  return execute(msql.get());
+  }
+  int database::executef(char const* sql, const char* name)
+  {
+	  std::shared_ptr<char> msql(SQLITEDLLCONNECT sqlite3_vmprintf(sql, (char*)name), SQLITEDLLCONNECT sqlite3_free);
 	return execute(msql.get());
   }
 
   int database::set_busy_timeout(int ms)
   {
-	return sqlite3_busy_timeout(db_, ms);
+	return SQLITEDLLCONNECT sqlite3_busy_timeout(db_, ms);
   }
 
 
@@ -289,7 +343,7 @@ namespace sqlite3pp
 
   int statement::prepare_impl(char const* stmt)
   {
-	return sqlite3_prepare_v2(db_.db_, stmt, static_cast<int>(std::strlen(stmt)), &stmt_, &tail_);
+	return SQLITEDLLCONNECT sqlite3_prepare_v2(db_.db_, stmt, static_cast<int>(std::strlen(stmt)), &stmt_, &tail_);
   }
 
   int statement::finish()
@@ -306,52 +360,52 @@ namespace sqlite3pp
 
   int statement::finish_impl(sqlite3_stmt* stmt)
   {
-	return sqlite3_finalize(stmt);
+	return SQLITEDLLCONNECT sqlite3_finalize(stmt);
   }
 
   int statement::step()
   {
-	return sqlite3_step(stmt_);
+	return SQLITEDLLCONNECT sqlite3_step(stmt_);
   }
 
   int statement::reset()
   {
-	return sqlite3_reset(stmt_);
+	return SQLITEDLLCONNECT sqlite3_reset(stmt_);
   }
 
   int statement::bind(int idx, int value)
   {
-	return sqlite3_bind_int(stmt_, idx, value);
+	return SQLITEDLLCONNECT sqlite3_bind_int(stmt_, idx, value);
   }
 
   int statement::bind(int idx, double value)
   {
-	return sqlite3_bind_double(stmt_, idx, value);
+	return SQLITEDLLCONNECT sqlite3_bind_double(stmt_, idx, value);
   }
 
   int statement::bind(int idx, long long int value)
   {
-	return sqlite3_bind_int64(stmt_, idx, value);
+	return SQLITEDLLCONNECT sqlite3_bind_int64(stmt_, idx, value);
   }
 
   int statement::bind(int idx, char const* value, copy_semantic fcopy)
   {
-	return sqlite3_bind_text(stmt_, idx, value, static_cast<int>(std::strlen(value)), fcopy == copy ? SQLITE_TRANSIENT : SQLITE_STATIC );
+	return SQLITEDLLCONNECT sqlite3_bind_text(stmt_, idx, value, static_cast<int>(std::strlen(value)), fcopy == copy ? SQLITE_TRANSIENT : SQLITE_STATIC );
   }
 
   int statement::bind(int idx, void const* value, int n, copy_semantic fcopy)
   {
-	return sqlite3_bind_blob(stmt_, idx, value, n, fcopy == copy ? SQLITE_TRANSIENT : SQLITE_STATIC );
+	return SQLITEDLLCONNECT sqlite3_bind_blob(stmt_, idx, value, n, fcopy == copy ? SQLITE_TRANSIENT : SQLITE_STATIC );
   }
 
   int statement::bind(int idx, std::string const& value, copy_semantic fcopy)
   {
-	return sqlite3_bind_text(stmt_, idx, value.c_str(), static_cast<int>(value.size()), fcopy == copy ? SQLITE_TRANSIENT : SQLITE_STATIC );
+	return SQLITEDLLCONNECT sqlite3_bind_text(stmt_, idx, value.c_str(), static_cast<int>(value.size()), fcopy == copy ? SQLITE_TRANSIENT : SQLITE_STATIC );
   }
 
   int statement::bind(int idx)
   {
-	return sqlite3_bind_null(stmt_, idx);
+	return SQLITEDLLCONNECT sqlite3_bind_null(stmt_, idx);
   }
 
   int statement::bind(int idx, null_type)
@@ -361,43 +415,43 @@ namespace sqlite3pp
 
   int statement::bind(char const* name, int value)
   {
-	auto idx = sqlite3_bind_parameter_index(stmt_, name);
+	auto idx = SQLITEDLLCONNECT sqlite3_bind_parameter_index(stmt_, name);
 	return bind(idx, value);
   }
 
   int statement::bind(char const* name, double value)
   {
-	auto idx = sqlite3_bind_parameter_index(stmt_, name);
+	auto idx = SQLITEDLLCONNECT sqlite3_bind_parameter_index(stmt_, name);
 	return bind(idx, value);
   }
 
   int statement::bind(char const* name, long long int value)
   {
-	auto idx = sqlite3_bind_parameter_index(stmt_, name);
+	auto idx = SQLITEDLLCONNECT sqlite3_bind_parameter_index(stmt_, name);
 	return bind(idx, value);
   }
 
   int statement::bind(char const* name, char const* value, copy_semantic fcopy)
   {
-	auto idx = sqlite3_bind_parameter_index(stmt_, name);
+	auto idx = SQLITEDLLCONNECT sqlite3_bind_parameter_index(stmt_, name);
 	return bind(idx, value, fcopy);
   }
 
   int statement::bind(char const* name, void const* value, int n, copy_semantic fcopy)
   {
-	auto idx = sqlite3_bind_parameter_index(stmt_, name);
+	auto idx = SQLITEDLLCONNECT sqlite3_bind_parameter_index(stmt_, name);
 	return bind(idx, value, n, fcopy);
   }
 
   int statement::bind(char const* name, std::string const& value, copy_semantic fcopy)
   {
-	auto idx = sqlite3_bind_parameter_index(stmt_, name);
+	auto idx = SQLITEDLLCONNECT sqlite3_bind_parameter_index(stmt_, name);
 	return bind(idx, value, fcopy);
   }
 
   int statement::bind(char const* name)
   {
-	auto idx = sqlite3_bind_parameter_index(stmt_, name);
+	auto idx = SQLITEDLLCONNECT sqlite3_bind_parameter_index(stmt_, name);
 	return bind(idx);
   }
 
@@ -435,12 +489,12 @@ namespace sqlite3pp
 
 	char const* sql = tail_;
 
-	while (std::strlen(sql) > 0) { // sqlite3_complete() is broken.
+	while (std::strlen(sql) > 0) { // SQLITEDLLCONNECT sqlite3_complete() is broken.
 	  sqlite3_stmt* old_stmt = stmt_;
 
 	  if ((rc = prepare_impl(sql)) != SQLITE_OK) return rc;
 
-	  if ((rc = sqlite3_transfer_bindings(old_stmt, stmt_)) != SQLITE_OK) return rc;
+	  if ((rc = SQLITEDLLCONNECT sqlite3_transfer_bindings(old_stmt, stmt_)) != SQLITE_OK) return rc;
 
 	  finish_impl(old_stmt);
 
@@ -463,37 +517,37 @@ namespace sqlite3pp
 
   int query::rows::data_count() const
   {
-	return sqlite3_data_count(stmt_);
+	return SQLITEDLLCONNECT sqlite3_data_count(stmt_);
   }
 
   int query::rows::column_type(int idx) const
   {
-	return sqlite3_column_type(stmt_, idx);
+	return SQLITEDLLCONNECT sqlite3_column_type(stmt_, idx);
   }
 
   int query::rows::column_bytes(int idx) const
   {
-	return sqlite3_column_bytes(stmt_, idx);
+	return SQLITEDLLCONNECT sqlite3_column_bytes(stmt_, idx);
   }
 
   int query::rows::get(int idx, int) const
   {
-	return sqlite3_column_int(stmt_, idx);
+	return SQLITEDLLCONNECT sqlite3_column_int(stmt_, idx);
   }
 
   double query::rows::get(int idx, double) const
   {
-	return sqlite3_column_double(stmt_, idx);
+	return SQLITEDLLCONNECT sqlite3_column_double(stmt_, idx);
   }
 
   long long int query::rows::get(int idx, long long int) const
   {
-	return sqlite3_column_int64(stmt_, idx);
+	return SQLITEDLLCONNECT sqlite3_column_int64(stmt_, idx);
   }
 
   char const* query::rows::get( int idx, char const* ) const
   {
-	  return reinterpret_cast<char const*>(sqlite3_column_text( stmt_, idx ));
+	  return reinterpret_cast<char const*>(SQLITEDLLCONNECT sqlite3_column_text( stmt_, idx ));
   }
 
   std::string query::rows::get( int idx, std::string ) const
@@ -508,7 +562,7 @@ namespace sqlite3pp
 
   void const* query::rows::get(int idx, void const*) const
   {
-	return sqlite3_column_blob(stmt_, idx);
+	return SQLITEDLLCONNECT sqlite3_column_blob(stmt_, idx);
   }
 
   null_type query::rows::get(int /*idx*/, null_type) const
@@ -550,7 +604,7 @@ namespace sqlite3pp
 	return *this;
   }
 
-  query::rows query::query_iterator::operator*() const
+  query::query_iterator::value_type query::query_iterator::operator*() const
   {
 	return rows(cmd_->stmt_);
   }
@@ -561,17 +615,17 @@ namespace sqlite3pp
 
   int query::column_count() const
   {
-	return sqlite3_column_count(stmt_);
+	return SQLITEDLLCONNECT sqlite3_column_count(stmt_);
   }
 
   char const* query::column_name(int idx) const
   {
-	return sqlite3_column_name(stmt_, idx);
+	return SQLITEDLLCONNECT sqlite3_column_name(stmt_, idx);
   }
 
   char const* query::column_decltype(int idx) const
   {
-	return sqlite3_column_decltype(stmt_, idx);
+	return SQLITEDLLCONNECT sqlite3_column_decltype(stmt_, idx);
   }
 
 
@@ -624,7 +678,7 @@ namespace sqlite3pp
   {
   }
 
-  database_error::database_error(database& db) : std::runtime_error(sqlite3_errmsg(db.db_))
+  database_error::database_error(database& db) : std::runtime_error(SQLITEDLLCONNECT sqlite3_errmsg(db.db_))
   {
   }
 

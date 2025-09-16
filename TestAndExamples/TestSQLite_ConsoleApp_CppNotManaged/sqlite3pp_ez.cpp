@@ -38,13 +38,13 @@ namespace sqlite3pp
 	std::wstring to_wstring( const char* src )
 	{
 		int nchars = MultiByteToWideChar( CP_ACP, 0, src, -1, NULL, 0 );
-		wchar_t* wsource = new wchar_t[nchars + 2]();
-		if ( wsource == NULL )
+		wchar_t* wSource = new wchar_t[nchars + 2]();
+		if (wSource == NULL )
 			return std::wstring();
-		MultiByteToWideChar( CP_ACP, 0, src, -1, wsource, nchars );
-		std::wstring retrnVal = wsource;
-		delete[] wsource;
-		return retrnVal;
+		MultiByteToWideChar( CP_ACP, 0, src, -1, wSource, nchars );
+		std::wstring returnVal = wSource;
+		delete[] wSource;
+		return returnVal;
 	}
 
 	std::string to_string( const wchar_t* src )
@@ -54,9 +54,9 @@ namespace sqlite3pp
 		if ( source == NULL )
 			return std::string();
 		WideCharToMultiByte( CP_ACP, 0, src, -1, source, nchars, NULL, NULL );
-		std::string retrnVal = source;
+		std::string returnVal = source;
 		delete[] source;
-		return retrnVal;
+		return returnVal;
 	}
 
 	std::string to_string(const std::wstring &src)
@@ -245,26 +245,18 @@ namespace sqlite3pp
 		return m_VerbosityLevels;
 	}
 
-	db_api_root::db_api_root()
-	{
-#ifdef SQLITE3PP_LOADABLE_EXTENSION
-		static sqlite3_api_routines Glbl_sqlite3_api_routines;
-		SQLITE_EXTENSION_INIT2(&Glbl_sqlite3_api_routines);
-#endif // SQLITE3PP_LOADABLE_EXTENSION
-	}
-
 	int database::connect( const  wchar_t* db_filename, int flags, const wchar_t * vfs )
 	{
 		if ( !borrowing_ )
 		{
 			disconnect();
 		}
-		return sqlite3_open16( db_filename, &db_ );
+		return SQLITEDLLCONNECT sqlite3_open16( db_filename, &db_ );
 	}
 
 	database::database(const wchar_t * db_filename, int flags, const wchar_t * vfs ) : db_( nullptr ), borrowing_( false )
 	{
-		// static int rc = ::sqlite3_db_config(db_, SQLITE_DBCONFIG_ENABLE_LOAD_EXTENSION, 1, NULL);
+		// static int rc = SQLITEDLLCONNECT sqlite3_db_config(db_, SQLITE_DBCONFIG_ENABLE_LOAD_EXTENSION, 1, NULL);
 		if ( db_filename )
 		{
 			auto rc = connect( db_filename, flags, vfs );
@@ -323,7 +315,7 @@ namespace sqlite3pp
 			char const** a;
 			void const ** v;
 		}myw2v = {&tail_ };
-		int rc = sqlite3_prepare16_v2( db_.db_, stmt, static_cast<int>(std::wcslen( stmt )), &stmt_, myw2v.v );
+		int rc = SQLITEDLLCONNECT sqlite3_prepare16_v2( db_.db_, stmt, static_cast<int>(std::wcslen( stmt )), &stmt_, myw2v.v );
 		return rc;
 	}
 
@@ -679,7 +671,7 @@ namespace sqlite3pp
 #ifndef SQLITE3PP_NO_UNICODE
 	wchar_t const* query::rows::get(int idx, wchar_t const*) const
 	{
-		return reinterpret_cast<wchar_t const*>(sqlite3_column_text16(stmt_, idx));
+		return reinterpret_cast<wchar_t const*>(SQLITEDLLCONNECT sqlite3_column_text16(stmt_, idx));
 	}
 
 	std::wstring query::rows::get(int idx, const std::wstring&) const
@@ -690,7 +682,7 @@ namespace sqlite3pp
 		bool AllowNullStringReturn = false;
 #endif  // !SQLITE3PP_ALLOW_NULL_STRING_RETURN
 		std::wstring value;
-		const char * strtype = sqlite3_column_decltype(stmt_, idx);
+		const char * strtype = SQLITEDLLCONNECT sqlite3_column_decltype(stmt_, idx);
 		if (!strtype)
 		{
 			V_COUT(WARN, "Received NULL value when getting column type for idx " << idx << ". Treating type as ASCII or UTF8.");
@@ -740,7 +732,7 @@ namespace sqlite3pp
 	Blob query::rows::get(int idx, const Blob&) const
 	{
 		const int data_len = column_bytes(idx);
-		const unsigned char* ptr = static_cast<const unsigned char*>(sqlite3_column_blob(stmt_, idx));
+		const unsigned char* ptr = static_cast<const unsigned char*>(SQLITEDLLCONNECT sqlite3_column_blob(stmt_, idx));
 		Blob data(new std::vector<unsigned char>(ptr, ptr + data_len));
 		return data;
 	}
@@ -748,7 +740,7 @@ namespace sqlite3pp
 	Clob query::rows::get(int idx, const Clob&) const
 	{
 		const int data_len = column_bytes(idx);
-		const char* ptr = static_cast<const char*>(sqlite3_column_blob(stmt_, idx));
+		const char* ptr = static_cast<const char*>(SQLITEDLLCONNECT sqlite3_column_blob(stmt_, idx));
 		Clob data(new std::vector<char>(ptr, ptr + data_len));
 		return data;
 	}
@@ -770,12 +762,12 @@ namespace sqlite3pp
 
 	unsigned long long int query::rows::get(int idx, const unsigned long long int&) const
 	{
-		return static_cast<unsigned long long int>(sqlite3_column_int64(stmt_, idx));
+		return static_cast<unsigned long long int>(SQLITEDLLCONNECT sqlite3_column_int64(stmt_, idx));
 	}
 
 	Date query::rows::get(int idx, const Date&) const
 	{
-		const char* s = reinterpret_cast<const char*>(sqlite3_column_text(stmt_, idx));
+		const char* s = reinterpret_cast<const char*>(SQLITEDLLCONNECT sqlite3_column_text(stmt_, idx));
 		std::tm d = { 0 };
 		Date data = { 0 };
 		int rc = sscanf_s(s, "%d-%d-%d", &d.tm_year, &d.tm_mon, &d.tm_mday);
@@ -803,7 +795,7 @@ namespace sqlite3pp
 	Datetime query::rows::get(int idx, const Datetime&) const
 	{
 		Datetime data = { 0 };
-		const char* s = reinterpret_cast<const char*>(sqlite3_column_text(stmt_, idx));
+		const char* s = reinterpret_cast<const char*>(SQLITEDLLCONNECT sqlite3_column_text(stmt_, idx));
 		int rc = sscanf_s(s, "%d-%d-%d %d:%d:%d", &data.tm_struct.tm_year, &data.tm_struct.tm_mon, &data.tm_struct.tm_mday, &data.tm_struct.tm_hour, &data.tm_struct.tm_min, &data.tm_struct.tm_sec);
 		if (rc < 1 || !data.tm_struct.tm_mday)
 		{
