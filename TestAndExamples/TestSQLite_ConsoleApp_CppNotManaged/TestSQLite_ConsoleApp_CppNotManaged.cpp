@@ -3,25 +3,25 @@
 
 #include <iostream>
 #include <map>
-#include "sqlite3pp_ez.h"
-#include "SQL/sql_Master_Header.h"
+#include "../SQL_Classes/sqlite3pp_ez.h"
+#include "../SQL_Classes/sql_DB_TestData_Master_Header.h"
 
 	// Function to test populating all tables & views.
 static std::map< std::string, std::shared_ptr<sqlite3pp::TableBase> > testPopulatingAllTables()
 {
 	std::map< std::string, std::shared_ptr < sqlite3pp::TableBase>> Tables;
-	Tables["sql_table_SimilarWords"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_table_SimilarWords>());
-	Tables["sql_table_SimilarPhrase"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_table_SimilarPhrase>());
-	Tables["sql_table_SimilarNames"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_table_SimilarNames>());
-	Tables["sql_table_Help"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_table_Help>());
-	Tables["sql_table_TextToConvert"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_table_TextToConvert>());
-	Tables["sql_table_SimilarSoundingWords"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_table_SimilarSoundingWords>());
-	Tables["sql_table_SimilarSoundingWords1To1_AllMatch"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_table_SimilarSoundingWords1To1_AllMatch>());
-	Tables["sql_table_SimilarSoundingWords1To1_NoMatch"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_table_SimilarSoundingWords1To1_NoMatch>());
-	Tables["sql_table_SamePhone_1To1_AllMatch"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_table_SamePhone_1To1_AllMatch>());
-	Tables["sql_table_SameName_1To1_AllMatch"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_table_SameName_1To1_AllMatch>());
-	Tables["sql_table_AllProteins"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_table_AllProteins>());
-	Tables["sql_table_PerformanceResults"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_table_PerformanceResults>());
+	Tables["sql_DB_TestData_table_SimilarWords"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_DB_TestData_table_SimilarWords>());
+	Tables["sql_DB_TestData_table_SimilarPhrase"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_DB_TestData_table_SimilarPhrase>());
+	Tables["sql_DB_TestData_table_SimilarNames"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_DB_TestData_table_SimilarNames>());
+	Tables["sql_DB_TestData_table_Help"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_DB_TestData_table_Help>());
+	Tables["sql_DB_TestData_table_TextToConvert"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_DB_TestData_table_TextToConvert>());
+	Tables["sql_DB_TestData_table_SimilarSoundingWords"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_DB_TestData_table_SimilarSoundingWords>());
+	Tables["sql_DB_TestData_table_SimilarSoundingWords1To1_AllMatch"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_DB_TestData_table_SimilarSoundingWords1To1_AllMatch>());
+	Tables["sql_DB_TestData_table_SimilarSoundingWords1To1_NoMatch"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_DB_TestData_table_SimilarSoundingWords1To1_NoMatch>());
+	Tables["sql_DB_TestData_table_SamePhone_1To1_AllMatch"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_DB_TestData_table_SamePhone_1To1_AllMatch>());
+	Tables["sql_DB_TestData_table_SameName_1To1_AllMatch"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_DB_TestData_table_SameName_1To1_AllMatch>());
+	Tables["sql_DB_TestData_table_AllProteins"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_DB_TestData_table_AllProteins>());
+	Tables["sql_DB_TestData_table_PerformanceResults"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_DB_TestData_table_PerformanceResults>());
 	return Tables;
 }
 static void testAllTables()

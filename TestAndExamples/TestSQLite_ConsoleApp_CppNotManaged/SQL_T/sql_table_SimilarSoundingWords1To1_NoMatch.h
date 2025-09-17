@@ -36,10 +36,10 @@ public:
 	sql_table_SimilarSoundingWords1To1_NoMatch() {} // Default constructor
 	template <class T> sql_table_SimilarSoundingWords1To1_NoMatch(const T &t) { setData(t); } // Allows data input from different (or same) tables/views having the same data types and column names
 
-	// getTableName, getColumnNames, getSelecColumnNames, and getStreamData are required for sqlite3pp::Table template class
+	// getTableName, getColumnNames, getSelectColumnNames, and getStreamData are required for sqlite3pp::Table template class
 	static StrType getTableName() { return _T("SimilarSoundingWords1To1_NoMatch" ); }
 	static StrType getColumnNames() { return _T("Source1, Source2"); }
-	static StrType getSelecColumnNames() { return _T("\"Source1\", \"Source2\""); }
+	static StrType getSelectColumnNames() { return _T("'Source1', 'Source2'"); }
 	StrType GetValues() const
 	{
 		StrType strtype;

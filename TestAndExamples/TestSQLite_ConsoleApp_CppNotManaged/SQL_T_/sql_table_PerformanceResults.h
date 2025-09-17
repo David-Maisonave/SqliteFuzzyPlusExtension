@@ -43,10 +43,10 @@ public:
 	sql_table_PerformanceResults() {} // Default constructor
 	template <class T> sql_table_PerformanceResults(const T &t) { setData(t); } // Allows data input from different (or same) tables/views having the same data types and column names
 
-	// getTableName, getColumnNames, getSelecColumnNames, and getStreamData are required for sqlite3pp::Table template class
+	// getTableName, getColumnNames, getSelectColumnNames, and getStreamData are required for sqlite3pp::Table template class
 	static StrType getTableName() { return T_("PerformanceResults" ); }
 	static StrType getColumnNames() { return T_("FunctionName, FunctionID, QueryText, QtyRowsReturned, Results, Notes, Performance10KRows, Performance100KRows, Performance1MillionRows, Performance5MillionRows, Performance10MillionRows"); }
-	static StrType getSelecColumnNames() { return T_("\"FunctionName\", \"FunctionID\", \"QueryText\", \"QtyRowsReturned\", \"Results\", \"Notes\", \"Performance10KRows\", \"Performance100KRows\", \"Performance1MillionRows\", \"Performance5MillionRows\", \"Performance10MillionRows\""); }
+	static StrType getSelectColumnNames() { return T_("'FunctionName', 'FunctionID', 'QueryText', 'QtyRowsReturned', 'Results', 'Notes', 'Performance10KRows', 'Performance100KRows', 'Performance1MillionRows', 'Performance5MillionRows', 'Performance10MillionRows'"); }
 	StrType GetValues() const
 	{
 		StrType strtype;

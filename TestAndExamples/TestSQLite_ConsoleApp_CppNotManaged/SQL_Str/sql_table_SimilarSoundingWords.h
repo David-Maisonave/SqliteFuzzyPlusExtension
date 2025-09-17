@@ -34,10 +34,10 @@ public:
 	sql_table_SimilarSoundingWords() {} // Default constructor
 	template <class T> sql_table_SimilarSoundingWords(const T &t) { setData(t); } // Allows data input from different (or same) tables/views having the same data types and column names
 
-	// getTableName, getColumnNames, getSelecColumnNames, and getStreamData are required for sqlite3pp::Table template class
+	// getTableName, getColumnNames, getSelectColumnNames, and getStreamData are required for sqlite3pp::Table template class
 	static StrType getTableName() { return "SimilarSoundingWords" ; }
 	static StrType getColumnNames() { return "Words"; }
-	static StrType getSelecColumnNames() { return "\"Words\""; }
+	static StrType getSelectColumnNames() { return "'Words'"; }
 	StrType GetValues() const
 	{
 		StrType strtype;

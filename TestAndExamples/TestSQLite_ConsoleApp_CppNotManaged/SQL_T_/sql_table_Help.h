@@ -39,10 +39,10 @@ public:
 	sql_table_Help() {} // Default constructor
 	template <class T> sql_table_Help(const T &t) { setData(t); } // Allows data input from different (or same) tables/views having the same data types and column names
 
-	// getTableName, getColumnNames, getSelecColumnNames, and getStreamData are required for sqlite3pp::Table template class
+	// getTableName, getColumnNames, getSelectColumnNames, and getStreamData are required for sqlite3pp::Table template class
 	static StrType getTableName() { return T_("Help" ); }
 	static StrType getColumnNames() { return T_("Function, Description, Arguments, Return, Details, ExtensionAlias, WikiAlias"); }
-	static StrType getSelecColumnNames() { return T_("\"Function\", \"Description\", \"Arguments\", \"Return\", \"Details\", \"ExtensionAlias\", \"WikiAlias\""); }
+	static StrType getSelectColumnNames() { return T_("'Function', 'Description', 'Arguments', 'Return', 'Details', 'ExtensionAlias', 'WikiAlias'"); }
 	StrType GetValues() const
 	{
 		StrType strtype;

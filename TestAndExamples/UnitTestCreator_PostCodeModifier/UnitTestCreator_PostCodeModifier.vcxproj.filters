@@ -26,16 +26,16 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sqlite3.h">
+    <ClInclude Include="..\SQL_Classes\sqlite3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sqlite3pp.h">
+    <ClInclude Include="..\SQL_Classes\sqlite3pp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sqlite3pp_ez.h">
+    <ClInclude Include="..\SQL_Classes\sqlite3pp_ez.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SQLiteDLLConnect.h">
+    <ClInclude Include="..\SQL_Classes\SQLiteDLLConnect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -49,13 +49,13 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sqlite3pp.cpp">
+    <ClCompile Include="..\SQL_Classes\SQLiteDLLConnect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sqlite3pp_ez.cpp">
+    <ClCompile Include="..\SQL_Classes\sqlite3pp_ez.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SQLiteDLLConnect.cpp">
+    <ClCompile Include="..\SQL_Classes\sqlite3pp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -69,5 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="sqlite3.lib" />
+    <Library Include="..\SQL_Classes\sqlite3.lib">
+      <Filter>Header Files</Filter>
+    </Library>
   </ItemGroup>
 </Project>

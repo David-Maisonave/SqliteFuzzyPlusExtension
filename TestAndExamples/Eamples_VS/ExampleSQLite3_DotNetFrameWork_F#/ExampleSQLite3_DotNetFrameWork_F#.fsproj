@@ -3,7 +3,9 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net481</TargetFramework> 
     <RootNamespace>ExampleSQLite3_DotNetFrameWork_F_</RootNamespace> 
-    <WarnOn>3390;$(WarnOn)</WarnOn>
+    <WarnOn>3390;$(WarnOn)</WarnOn> 
+    <PlatformTarget>x64</PlatformTarget> 
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
