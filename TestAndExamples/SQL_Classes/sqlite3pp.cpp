@@ -546,7 +546,7 @@ namespace sqlite3pp
   }
 
   char const* query::rows::get( int idx, char const* ) const
-  {
+  { // [David Maisonave changes] -- Fixed bug when using types other than SQLITE_TEXT.
 	  int type = SQLITEDLLCONNECT sqlite3_column_type(stmt_, idx);
 	  if (type == SQLITE_TEXT)
 		return reinterpret_cast<char const*>(SQLITEDLLCONNECT sqlite3_column_text( stmt_, idx ));
@@ -565,8 +565,6 @@ namespace sqlite3pp
 	  if (type == SQLITE_BLOB)
 	  {
 		  const char* value = reinterpret_cast<char const*>(SQLITEDLLCONNECT sqlite3_column_blob(stmt_, idx));
-		  //int value_len = SQLITEDLLCONNECT sqlite3_column_bytes(stmt_, idx);
-		  //std::vector<char> vClob(value, value + value_len);
 		  return value;
 	  }
 	  return "";
