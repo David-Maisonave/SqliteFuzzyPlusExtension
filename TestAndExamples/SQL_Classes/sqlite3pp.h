@@ -75,8 +75,10 @@ SQLITE_EXTENSION_INIT1
 #ifdef SQLITE_MANAGE_CODE // [David Maisonave changes] -- Used for run time level connection to SQLite3.dll
 #include "SQLiteDLLConnect.h"
 #define SQLITEDLLCONNECT SQLiteDLLConnect::
+#define SQLITE_DLLCONNECT runTimeConnect.
 #else
 #define SQLITEDLLCONNECT
+#define SQLITE_DLLCONNECT
 #endif
 
 namespace sqlite3pp

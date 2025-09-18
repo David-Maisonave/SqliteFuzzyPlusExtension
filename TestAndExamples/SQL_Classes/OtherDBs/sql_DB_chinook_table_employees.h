@@ -1,5 +1,5 @@
 /* This file was automatically generated using [Sqlite3pp_EZ].
-Sqlite3pp_EZ Copyright (C) 2021 David Maisonave (http::\www.axter.com)
+Sqlite3pp_EZ Copyright (C) 2025 David Maisonave (http::\www.axter.com)
 Example Usage:		(Using sqlite3pp::Table container)
 	// Example #1
 		sqlite3pp::setGlobalDB("myDatabase.db");
@@ -15,6 +15,20 @@ Example Usage:		(Using sqlite3pp::Table container)
 		for (auto r = my_tbl.begin(); r != my_tbl.end(); ++r)
 			std::wcout << r->get_Email() << std::endl;
 
+	// Example #4
+		sqlite3pp::setGlobalDB("myDatabase.db");
+		sqlite3pp::Table<sql_DB_chinook_table_employees> my_tbl;
+		// Example#4a -- (C++11) Range-based loop
+		for(auto row : my_tbl)
+			std::cout << row.get_EmployeeId() << row.get_LastName() << row.get_FirstName() << row.get_Title() << row.get_ReportsTo() << row.get_BirthDate() << row.get_HireDate() << row.get_Address() << row.get_City() << row.get_State() << row.get_Country() << row.get_PostalCode() << row.get_Phone() << row.get_Fax() << row.get_Email() << std::endl;
+
+		// Example#4b -- C++ style iteration
+		for (auto row = my_tbl.begin(); row != my_tbl.end(); ++row) 
+			std::cout << row->get_EmployeeId() << row->get_LastName() << row->get_FirstName() << row->get_Title() << row->get_ReportsTo() << row->get_BirthDate() << row->get_HireDate() << row->get_Address() << row->get_City() << row->get_State() << row->get_Country() << row->get_PostalCode() << row->get_Phone() << row->get_Fax() << row->get_Email() << std::endl;
+
+		// Example#4c -- C style iteration
+		for (int row = 0; row < my_tbl.size(); ++row) 
+			std::cout << my_tbl[row].get_EmployeeId() << my_tbl[row].get_LastName() << my_tbl[row].get_FirstName() << my_tbl[row].get_Title() << my_tbl[row].get_ReportsTo() << my_tbl[row].get_BirthDate() << my_tbl[row].get_HireDate() << my_tbl[row].get_Address() << my_tbl[row].get_City() << my_tbl[row].get_State() << my_tbl[row].get_Country() << my_tbl[row].get_PostalCode() << my_tbl[row].get_Phone() << my_tbl[row].get_Fax() << my_tbl[row].get_Email() << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
 #ifndef SQL_DB_CHINOOK_TABLE_EMPLOYEES_H

@@ -80,6 +80,8 @@ int main()
 	std::map< std::string, std::shared_ptr < sqlite3pp::TableBase>> Tables;
 	//Tables["sql_table_SimilarWords"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_table_SimilarWords>());
     std::cout << "Finish creating headers\n";
+
+	sqlite3pp::setGlobalDB(L"..\\TestDatabase\\chinook3.5Krows.db", true);
 }
 
 

@@ -1,5 +1,5 @@
 /* This file was automatically generated using [Sqlite3pp_EZ].
-Sqlite3pp_EZ Copyright (C) 2021 David Maisonave (http::\www.axter.com)
+Sqlite3pp_EZ Copyright (C) 2025 David Maisonave (http::\www.axter.com)
 Example Usage:		(Using sqlite3pp::Table container)
 	// Example #1
 		sqlite3pp::setGlobalDB("myDatabase.db");
@@ -15,6 +15,20 @@ Example Usage:		(Using sqlite3pp::Table container)
 		for (auto r = my_tbl.begin(); r != my_tbl.end(); ++r)
 			std::wcout << r->get_HItem() << std::endl;
 
+	// Example #4
+		sqlite3pp::setGlobalDB("myDatabase.db");
+		sqlite3pp::Table<sql_DB_KenshoDataset_table_Z100K> my_tbl;
+		// Example#4a -- (C++11) Range-based loop
+		for(auto row : my_tbl)
+			std::wcout << row.get_TItem() << row.get_HItem() << std::endl;
+
+		// Example#4b -- C++ style iteration
+		for (auto row = my_tbl.begin(); row != my_tbl.end(); ++row) 
+			std::wcout << row->get_TItem() << row->get_HItem() << std::endl;
+
+		// Example#4c -- C style iteration
+		for (int row = 0; row < my_tbl.size(); ++row) 
+			std::wcout << my_tbl[row].get_TItem() << my_tbl[row].get_HItem() << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
 #ifndef SQL_DB_KENSHODATASET_TABLE_Z100K_H

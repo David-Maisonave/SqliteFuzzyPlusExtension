@@ -1,7 +1,7 @@
 /*	sqlite3pp_ez.h
 	GNU General Public License
 	
-	Copyright (C) 2021 David Maisonave (www.axter.com)
+	Copyright (C) 2025 David Maisonave (www.axter.com)
 	The sqlite3pp_ez source code is free software. You can redistribute it and/or modify it under the terms of the GNU General Public License.
 	This source code is distributed in the hope that it will be useful,	but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
@@ -12,7 +12,6 @@
 	This package contains all the files required to use SQLite3, SQLite3pp, and SQLite3pp_EZ.Only minor modifications have been made to SQLite3 C code and SQLite3pp where needed for UNICODE support.Then bulk of the sqlite3pp_EZ implementation is in sqlite3pp_EZ.h and sqlite3pp_EZ.cpp.
 
 	For usage examples see  https://github.com/David-Maisonave/sqlite3pp_EZ
-							or sqlite3pp_ez.h
 */
 
 #ifndef SQLITE3PP_EZ_H
@@ -81,14 +80,13 @@ namespace sqlite3pp
 		using Varchar = std::string;
 		using Text = sqlite3pp::TEXT;
 
-
-		friend database& setGlobalDB( const std::string& db_filename, ActionIfDatabaseOpen actionifopen);
-		friend database& setGlobalDB( const std::wstring& db_filename, ActionIfDatabaseOpen actionifopen);
+		friend database& setGlobalDB(const std::wstring& db_filename, ActionIfDatabaseOpen actionifopen, bool disconnectExistingConnection);
 		friend database& getGlobalDB();
 		friend int Execute( const std::string& sql );
 		friend int Execute( const std::wstring& sql );
 		friend int Connect(const char* db_filename, int flags, const char* vfs );
 		friend int Connect(const wchar_t* db_filename, int flags, const wchar_t* vfs );
+		friend int Disconnect();
 		friend int Attach( const char* db_filename, const char* name );
 		friend int Attach( const  wchar_t* db_filename, const  wchar_t* name );
 		friend int Detach();
@@ -419,13 +417,16 @@ namespace sqlite3pp
 	std::wostream& operator<<(std::wostream& os, const sqlite3pp::Date& t);
 	std::ostream& operator<<(std::ostream& os, const sqlite3pp::Date& t);
 
-	database& setGlobalDB(const std::string& db_filename, ActionIfDatabaseOpen actionifopen = AIO_SkipIfSameFile);
-	database& setGlobalDB(const std::wstring& db_filename, ActionIfDatabaseOpen actionifopen = AIO_SkipIfSameFile);
+	database& setGlobalDB(const std::string& db_filename, ActionIfDatabaseOpen actionifopen = AIO_SkipIfSameFile, bool disconnectExistingConnection = false);
+	database& setGlobalDB(const std::wstring& db_filename, ActionIfDatabaseOpen actionifopen = AIO_SkipIfSameFile, bool disconnectExistingConnection = false);
+	database& setGlobalDB(const std::string& db_filename,  bool disconnectExistingConnection);
+	database& setGlobalDB(const std::wstring& db_filename, bool disconnectExistingConnection);
 	database& getGlobalDB();
 	int Execute( const std::string& sql );
 	int Execute( const std::wstring& sql );
 	int Connect(const char* db_filename, int flags, const char* vfs = nullptr );
 	int Connect(const wchar_t* db_filename, int flags, const wchar_t* vfs = nullptr );
+	int Disconnect();
 	int Attach(const char* db_filename, const char* name );
 	int Attach(const wchar_t* db_filename, const  wchar_t* name );
 	int Detach();
@@ -504,7 +505,10 @@ namespace sqlite3pp
 			, const std::string &AndWhereClause
 		);
 		bool ProcessClassCreation(const std::string& ClassName, std::string QueryStr = "");
-		bool CreateHeaderPrefix(const std::string& TableName, std::ofstream &myfile, std::string& ClassName, std::string& HeaderUpper, std::string FirstColumnName = "", std::string LastColumnName = "", bool AppendToVect = true);
+		static const std::vector<std::pair<std::string, std::string> > columns_dummy;
+		bool CreateHeaderPrefix(const std::string& TableName, std::ofstream &myfile, 
+			std::string& ClassName, std::string& HeaderUpper, std::string FirstColumnName = "", std::string LastColumnName = "", 
+			bool AppendToVect = true, const std::vector<std::pair<std::string, std::string> >& columns = columns_dummy);
 	public:
 		// This constructor is best to use when creating a header for all tables in the constructor.  (Headers can also be created by calling CreateHeader or CreateAllHeaders)
 		SQLiteClassBuilder(const std::string& Db_filename						

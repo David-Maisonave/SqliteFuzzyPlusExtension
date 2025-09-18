@@ -103,5 +103,4 @@ namespace SQLite_DLL
 		va_end(ap);
 		return r;
 	}
-
 }

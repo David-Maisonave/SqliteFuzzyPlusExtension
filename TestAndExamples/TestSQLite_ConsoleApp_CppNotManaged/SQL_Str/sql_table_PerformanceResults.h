@@ -1,5 +1,5 @@
 /* This file was automatically generated using [Sqlite3pp_EZ].
-Sqlite3pp_EZ Copyright (C) 2021 David Maisonave (http::\www.axter.com)
+Sqlite3pp_EZ Copyright (C) 2025 David Maisonave (http::\www.axter.com)
 Example Usage:		(Using sqlite3pp::Table container)
 	// Example #1
 		sqlite3pp::setGlobalDB("myDatabase.db");
@@ -15,6 +15,20 @@ Example Usage:		(Using sqlite3pp::Table container)
 		for (auto r = my_tbl.begin(); r != my_tbl.end(); ++r)
 			std::wcout << r->get_Performance10MillionRows() << std::endl;
 
+	// Example #4
+		sqlite3pp::setGlobalDB("myDatabase.db");
+		sqlite3pp::Table<sql_table_PerformanceResults> my_tbl;
+		// Example#4a -- (C++11) Range-based loop
+		for(auto row : my_tbl)
+			std::wcout << row.get_FunctionName() << row.get_FunctionID() << row.get_QueryText() << row.get_QtyRowsReturned() << row.get_Results() << row.get_Notes() << row.get_Performance10KRows() << row.get_Performance100KRows() << row.get_Performance1MillionRows() << row.get_Performance5MillionRows() << row.get_Performance10MillionRows() << std::endl;
+
+		// Example#4b -- C++ style iteration
+		for (auto row = my_tbl.begin(); row != my_tbl.end(); ++row) 
+			std::wcout << row->get_FunctionName() << row->get_FunctionID() << row->get_QueryText() << row->get_QtyRowsReturned() << row->get_Results() << row->get_Notes() << row->get_Performance10KRows() << row->get_Performance100KRows() << row->get_Performance1MillionRows() << row->get_Performance5MillionRows() << row->get_Performance10MillionRows() << std::endl;
+
+		// Example#4c -- C style iteration
+		for (int row = 0; row < my_tbl.size(); ++row) 
+			std::wcout << my_tbl[row].get_FunctionName() << my_tbl[row].get_FunctionID() << my_tbl[row].get_QueryText() << my_tbl[row].get_QtyRowsReturned() << my_tbl[row].get_Results() << my_tbl[row].get_Notes() << my_tbl[row].get_Performance10KRows() << my_tbl[row].get_Performance100KRows() << my_tbl[row].get_Performance1MillionRows() << my_tbl[row].get_Performance5MillionRows() << my_tbl[row].get_Performance10MillionRows() << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
 #ifndef SQL_TABLE_PERFORMANCERESULTS_H

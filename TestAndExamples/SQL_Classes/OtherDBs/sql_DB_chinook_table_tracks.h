@@ -1,5 +1,5 @@
 /* This file was automatically generated using [Sqlite3pp_EZ].
-Sqlite3pp_EZ Copyright (C) 2021 David Maisonave (http::\www.axter.com)
+Sqlite3pp_EZ Copyright (C) 2025 David Maisonave (http::\www.axter.com)
 Example Usage:		(Using sqlite3pp::Table container)
 	// Example #1
 		sqlite3pp::setGlobalDB("myDatabase.db");
@@ -15,6 +15,20 @@ Example Usage:		(Using sqlite3pp::Table container)
 		for (auto r = my_tbl.begin(); r != my_tbl.end(); ++r)
 			std::wcout << r->get_UnitPrice() << std::endl;
 
+	// Example #4
+		sqlite3pp::setGlobalDB("myDatabase.db");
+		sqlite3pp::Table<sql_DB_chinook_table_tracks> my_tbl;
+		// Example#4a -- (C++11) Range-based loop
+		for(auto row : my_tbl)
+			std::cout << row.get_TrackId() << row.get_Name() << row.get_AlbumId() << row.get_MediaTypeId() << row.get_GenreId() << row.get_Composer() << row.get_Milliseconds() << row.get_Bytes() << row.get_UnitPrice() << std::endl;
+
+		// Example#4b -- C++ style iteration
+		for (auto row = my_tbl.begin(); row != my_tbl.end(); ++row) 
+			std::cout << row->get_TrackId() << row->get_Name() << row->get_AlbumId() << row->get_MediaTypeId() << row->get_GenreId() << row->get_Composer() << row->get_Milliseconds() << row->get_Bytes() << row->get_UnitPrice() << std::endl;
+
+		// Example#4c -- C style iteration
+		for (int row = 0; row < my_tbl.size(); ++row) 
+			std::cout << my_tbl[row].get_TrackId() << my_tbl[row].get_Name() << my_tbl[row].get_AlbumId() << my_tbl[row].get_MediaTypeId() << my_tbl[row].get_GenreId() << my_tbl[row].get_Composer() << my_tbl[row].get_Milliseconds() << my_tbl[row].get_Bytes() << my_tbl[row].get_UnitPrice() << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
 #ifndef SQL_DB_CHINOOK_TABLE_TRACKS_H

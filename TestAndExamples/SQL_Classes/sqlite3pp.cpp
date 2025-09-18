@@ -304,10 +304,16 @@ namespace sqlite3pp
 	  SQLITEDLLCONNECT sqlite3_free(data);
 	  return execute(msql.get());
   }
+
   int database::executef(char const* sql, const char* name)
   {
-	  std::shared_ptr<char> msql(SQLITEDLLCONNECT sqlite3_vmprintf(sql, (char*)name), SQLITEDLLCONNECT sqlite3_free);
-	return execute(msql.get());
+#ifdef SQLITE_MANAGE_CODE
+	  SQLite_DLL::RunTimeConnect runTimeConnect;
+#endif
+	  char* str = SQLITE_DLLCONNECT sqlite3_mprintf(sql, (char*)name);
+	  int returnValue = execute(str);
+	  SQLITEDLLCONNECT sqlite3_free(str);
+	  return returnValue;
   }
 
   int database::set_busy_timeout(int ms)

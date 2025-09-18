@@ -1,12 +1,11 @@
 /*
 	GNU General Public License
 
-	Copyright (C) 2021 David Maisonave (www.axter.com) 
+	Copyright (C) 2025 David Maisonave (www.axter.com) 
 	The sqlite3pp_ez source code is free software. You can redistribute it and/or modify it under the terms of the GNU General Public License.
 	This source code is distributed in the hope that it will be useful,	but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
 	For usage examples see  https://github.com/David-Maisonave/sqlite3pp_EZ
-							or sqlite3pp_ez.h
 */
 #include <windows.h>
 #include <stringapiset.h>
@@ -349,13 +348,16 @@ namespace sqlite3pp
 		bIsGlblDbOpen = false;
 	}
 
-	database& setGlobalDB( const std::string& db_filename, ActionIfDatabaseOpen actionifopen)
+	database& setGlobalDB( const std::string& db_filename, ActionIfDatabaseOpen actionifopen, bool disconnectExistingConnection)
 	{
-		return setGlobalDB(to_wstring(db_filename), actionifopen);
+		return setGlobalDB(to_wstring(db_filename), actionifopen, disconnectExistingConnection);
 	}
 
-	database& setGlobalDB( const std::wstring& db_filename_i, ActionIfDatabaseOpen actionifopen)
+	database& setGlobalDB( const std::wstring& db_filename_i, ActionIfDatabaseOpen actionifopen, bool disconnectExistingConnection)
 	{
+		if (disconnectExistingConnection && sql_base::bIsGlblDbOpen)
+			Disconnect();
+
 		const std::wstring& db_filename = Get_UpdatedPathCopy(db_filename_i);
 		if (sql_base::bIsGlblDbOpen)
 		{
@@ -372,6 +374,17 @@ namespace sqlite3pp
 		sql_base::global_db = database(db_filename.c_str());
 		sql_base::set(to_tstring(db_filename));
 		return sql_base::global_db;
+	}
+
+	database& setGlobalDB(const std::string& db_filename, bool disconnectExistingConnection)
+	{
+		return setGlobalDB(db_filename, AIO_SkipIfSameFile, disconnectExistingConnection);
+	}
+
+	database& setGlobalDB(const std::wstring& db_filename, bool disconnectExistingConnection)
+	{
+		return setGlobalDB(to_wstring(db_filename), AIO_SkipIfSameFile, disconnectExistingConnection);
+
 	}
 
 	database& getGlobalDB( )
@@ -419,6 +432,15 @@ namespace sqlite3pp
 		else
 			throw database_error("Connect failed for '" + to_string(db_filename) + "'.");
 		return rc;
+	}
+
+	int Disconnect()
+	{
+		if (!sql_base::bIsGlblDbOpen)
+			return SQLITE_ERROR;
+		int returnValue = sql_base::global_db.disconnect();
+		sql_base::unset();
+		return returnValue;
 	}
 
 	int Attach( const char* cdb_filename, const char* name )
@@ -1126,10 +1148,13 @@ namespace sqlite3pp
 		V_COUT(DEBUG, "Calling CreateAllHeaders with Where Clause '" << AndWhereClause << "'.");
 		return CreateAllHeaders(m_options, AndWhereClause);
 	}
-	static const char TopHeaderCommnetsPrt1[] = "/* This file was automatically generated using [Sqlite3pp_EZ].\nSqlite3pp_EZ Copyright (C) 2021 David Maisonave (http::\\www.axter.com)";
+	static const char TopHeaderCommnetsPrt1[] = "/* This file was automatically generated using [Sqlite3pp_EZ].\nSqlite3pp_EZ Copyright (C) 2025 David Maisonave (http::\\www.axter.com)";
 	static const char TopHeaderCommnetsPrt2[] = "For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ\n*/";
+	const std::vector<std::pair<std::string, std::string> > SQLiteClassBuilder::columns_dummy;
 
-	bool SQLiteClassBuilder::CreateHeaderPrefix(const std::string& TableName, std::ofstream &myfile, std::string& ClassName, std::string& HeaderUpper, std::string FirstColumnName, std::string LastColumnName, bool AppendToVect)
+	bool SQLiteClassBuilder::CreateHeaderPrefix(const std::string& TableName, std::ofstream &myfile, 
+		std::string& ClassName, std::string& HeaderUpper, std::string FirstColumnName, std::string LastColumnName, 
+		bool AppendToVect, const std::vector<std::pair<std::string, std::string> > &columns)
 	{
 		V_COUT(DEBUG, "Entering with arguments: '" << TableName << "', ofstream, '" << ClassName << "', '" << HeaderUpper << "', '" << FirstColumnName << "', '" << LastColumnName << "', " << AppendToVect);
 		std::ios_base::openmode openMode = m_AppendTableToHeader ? std::ios_base::out | std::ios_base::app : std::ios_base::out;
@@ -1168,7 +1193,38 @@ namespace sqlite3pp
 			myfile << "\t// Example #2\n\t\tfor (int i = 0; i < my_tbl.size(); ++i)\n\t\t\tstd::wcout << my_tbl[i].get_" << FirstColumnName << "() << std::endl;\n" << std::endl;
 
 			myfile << "\t// Example #3\n\t\tfor (auto r = my_tbl.begin(); r != my_tbl.end(); ++r)\n\t\t\tstd::wcout << r->get_" << LastColumnName << "() << std::endl;\n" << std::endl;
+			if (columns.size() > 0)
+			{
+				std::string outType = "std::cout";
+				for (auto& c : columns)
+					if (c.second == "Text")
+						outType = "std::wcout";
+				myfile << "\t// Example #4\n\t\tsqlite3pp::setGlobalDB(\"myDatabase.db\");" << std::endl;
+				myfile << "\t\tsqlite3pp::Table<" << ClassName << "> my_tbl;";
+
+				myfile << "\n\t\t// Example#4a -- (C++11) Range-based loop";
+				myfile << "\n\t\tfor(auto row : my_tbl)\n";
+				myfile << "\t\t\t" << outType;
+				for (auto& c : columns)
+					myfile << " << row.get_" << c.first << "()";
+				myfile << " << std::endl;" << std::endl;
+
+				myfile << "\n\t\t// Example#4b -- C++ style iteration";
+				myfile << "\n\t\tfor (auto row = my_tbl.begin(); row != my_tbl.end(); ++row) \n";
+				myfile << "\t\t\t" << outType;
+				for (auto& c : columns)
+					myfile << " << row->get_" << c.first << "()";
+				myfile << " << std::endl;" << std::endl;
+
+				myfile << "\n\t\t// Example#4c -- C style iteration";
+				myfile << "\n\t\tfor (int row = 0; row < my_tbl.size(); ++row) \n";
+				myfile << "\t\t\t" << outType;
+				for (auto& c : columns)
+					myfile << " << my_tbl[row].get_" << c.first << "()";
+				myfile << " << std::endl;" << std::endl;
+			}
 			myfile << TopHeaderCommnetsPrt2 << std::endl;
+			
 		}
 		// Add includes needed to support specified m_options.str_type
 		myfile << "#ifndef " << HeaderUpper << std::endl;
@@ -1337,7 +1393,7 @@ namespace sqlite3pp
 		}
 		std::ofstream myfile;
 		std::string ClassName, HeaderUpper;
-		if (!CreateHeaderPrefix(TableName, myfile, ClassName, HeaderUpper, FirstColumnName, LastColumnName))
+		if (!CreateHeaderPrefix(TableName, myfile, ClassName, HeaderUpper, FirstColumnName, LastColumnName, true, columns))
 			return false;
 		m_ClassNames.push_back(ClassName);
 		////////////////////////////////////////////////////////////////////////////////////////////
