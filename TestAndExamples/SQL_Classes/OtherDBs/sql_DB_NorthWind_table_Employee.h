@@ -20,15 +20,15 @@ Example Usage:		(Using sqlite3pp::Table container)
 		sqlite3pp::Table<sql_DB_NorthWind_table_Employee> my_tbl;
 		// Example#4a -- (C++11) Range-based loop
 		for(auto row : my_tbl)
-			std::cout << row.get_Id() << row.get_LastName() << row.get_FirstName() << row.get_Title() << row.get_TitleOfCourtesy() << row.get_BirthDate() << row.get_HireDate() << row.get_Address() << row.get_City() << row.get_Region() << row.get_PostalCode() << row.get_Country() << row.get_HomePhone() << row.get_Extension() << row.get_Photo() << row.get_Notes() << row.get_ReportsTo() << row.get_PhotoPath() << std::endl;
+			std::cout << row.get_Id() << " | " << row.get_LastName() << " | " << row.get_FirstName() << " | " << row.get_Title() << " | " << row.get_TitleOfCourtesy() << " | " << row.get_BirthDate() << " | " << row.get_HireDate() << " | " << row.get_Address() << " | " << row.get_City() << " | " << row.get_Region() << " | " << row.get_PostalCode() << " | " << row.get_Country() << " | " << row.get_HomePhone() << " | " << row.get_Extension() << " | " << row.get_Photo() << " | " << row.get_Notes() << " | " << row.get_ReportsTo() << " | " << row.get_PhotoPath() << " | " << std::endl;
 
 		// Example#4b -- C++ style iteration
 		for (auto row = my_tbl.begin(); row != my_tbl.end(); ++row) 
-			std::cout << row->get_Id() << row->get_LastName() << row->get_FirstName() << row->get_Title() << row->get_TitleOfCourtesy() << row->get_BirthDate() << row->get_HireDate() << row->get_Address() << row->get_City() << row->get_Region() << row->get_PostalCode() << row->get_Country() << row->get_HomePhone() << row->get_Extension() << row->get_Photo() << row->get_Notes() << row->get_ReportsTo() << row->get_PhotoPath() << std::endl;
+			std::cout << row->get_Id() << " | " << row->get_LastName() << " | " << row->get_FirstName() << " | " << row->get_Title() << " | " << row->get_TitleOfCourtesy() << " | " << row->get_BirthDate() << " | " << row->get_HireDate() << " | " << row->get_Address() << " | " << row->get_City() << " | " << row->get_Region() << " | " << row->get_PostalCode() << " | " << row->get_Country() << " | " << row->get_HomePhone() << " | " << row->get_Extension() << " | " << row->get_Photo() << " | " << row->get_Notes() << " | " << row->get_ReportsTo() << " | " << row->get_PhotoPath() << " | " << std::endl;
 
 		// Example#4c -- C style iteration
 		for (int row = 0; row < my_tbl.size(); ++row) 
-			std::cout << my_tbl[row].get_Id() << my_tbl[row].get_LastName() << my_tbl[row].get_FirstName() << my_tbl[row].get_Title() << my_tbl[row].get_TitleOfCourtesy() << my_tbl[row].get_BirthDate() << my_tbl[row].get_HireDate() << my_tbl[row].get_Address() << my_tbl[row].get_City() << my_tbl[row].get_Region() << my_tbl[row].get_PostalCode() << my_tbl[row].get_Country() << my_tbl[row].get_HomePhone() << my_tbl[row].get_Extension() << my_tbl[row].get_Photo() << my_tbl[row].get_Notes() << my_tbl[row].get_ReportsTo() << my_tbl[row].get_PhotoPath() << std::endl;
+			std::cout << my_tbl[row].get_Id() << " | " << my_tbl[row].get_LastName() << " | " << my_tbl[row].get_FirstName() << " | " << my_tbl[row].get_Title() << " | " << my_tbl[row].get_TitleOfCourtesy() << " | " << my_tbl[row].get_BirthDate() << " | " << my_tbl[row].get_HireDate() << " | " << my_tbl[row].get_Address() << " | " << my_tbl[row].get_City() << " | " << my_tbl[row].get_Region() << " | " << my_tbl[row].get_PostalCode() << " | " << my_tbl[row].get_Country() << " | " << my_tbl[row].get_HomePhone() << " | " << my_tbl[row].get_Extension() << " | " << my_tbl[row].get_Photo() << " | " << my_tbl[row].get_Notes() << " | " << my_tbl[row].get_ReportsTo() << " | " << my_tbl[row].get_PhotoPath() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
 #ifndef SQL_DB_NORTHWIND_TABLE_EMPLOYEE_H
@@ -68,7 +68,7 @@ public:
 	// getTableName, getColumnNames, getSelectColumnNames, and getStreamData are required for sqlite3pp::Table template class
 	static StrType getTableName() { return "Employee" ; }
 	static StrType getColumnNames() { return "Id, LastName, FirstName, Title, TitleOfCourtesy, BirthDate, HireDate, Address, City, Region, PostalCode, Country, HomePhone, Extension, Photo, Notes, ReportsTo, PhotoPath"; }
-	static StrType getSelectColumnNames() { return "'Id', 'LastName', 'FirstName', 'Title', 'TitleOfCourtesy', 'BirthDate', 'HireDate', 'Address', 'City', 'Region', 'PostalCode', 'Country', 'HomePhone', 'Extension', 'Photo', 'Notes', 'ReportsTo', 'PhotoPath'"; }
+	static StrType getSelectColumnNames() { return "\"Id\", \"LastName\", \"FirstName\", \"Title\", \"TitleOfCourtesy\", \"BirthDate\", \"HireDate\", \"Address\", \"City\", \"Region\", \"PostalCode\", \"Country\", \"HomePhone\", \"Extension\", \"Photo\", \"Notes\", \"ReportsTo\", \"PhotoPath\""; }
 	StrType GetValues() const
 	{
 		StrType strtype;

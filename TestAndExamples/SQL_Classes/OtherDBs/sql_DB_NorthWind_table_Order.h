@@ -20,15 +20,15 @@ Example Usage:		(Using sqlite3pp::Table container)
 		sqlite3pp::Table<sql_DB_NorthWind_table_Order> my_tbl;
 		// Example#4a -- (C++11) Range-based loop
 		for(auto row : my_tbl)
-			std::cout << row.get_Id() << row.get_CustomerId() << row.get_EmployeeId() << row.get_OrderDate() << row.get_RequiredDate() << row.get_ShippedDate() << row.get_ShipVia() << row.get_Freight() << row.get_ShipName() << row.get_ShipAddress() << row.get_ShipCity() << row.get_ShipRegion() << row.get_ShipPostalCode() << row.get_ShipCountry() << std::endl;
+			std::cout << row.get_Id() << " | " << row.get_CustomerId() << " | " << row.get_EmployeeId() << " | " << row.get_OrderDate() << " | " << row.get_RequiredDate() << " | " << row.get_ShippedDate() << " | " << row.get_ShipVia() << " | " << row.get_Freight() << " | " << row.get_ShipName() << " | " << row.get_ShipAddress() << " | " << row.get_ShipCity() << " | " << row.get_ShipRegion() << " | " << row.get_ShipPostalCode() << " | " << row.get_ShipCountry() << " | " << std::endl;
 
 		// Example#4b -- C++ style iteration
 		for (auto row = my_tbl.begin(); row != my_tbl.end(); ++row) 
-			std::cout << row->get_Id() << row->get_CustomerId() << row->get_EmployeeId() << row->get_OrderDate() << row->get_RequiredDate() << row->get_ShippedDate() << row->get_ShipVia() << row->get_Freight() << row->get_ShipName() << row->get_ShipAddress() << row->get_ShipCity() << row->get_ShipRegion() << row->get_ShipPostalCode() << row->get_ShipCountry() << std::endl;
+			std::cout << row->get_Id() << " | " << row->get_CustomerId() << " | " << row->get_EmployeeId() << " | " << row->get_OrderDate() << " | " << row->get_RequiredDate() << " | " << row->get_ShippedDate() << " | " << row->get_ShipVia() << " | " << row->get_Freight() << " | " << row->get_ShipName() << " | " << row->get_ShipAddress() << " | " << row->get_ShipCity() << " | " << row->get_ShipRegion() << " | " << row->get_ShipPostalCode() << " | " << row->get_ShipCountry() << " | " << std::endl;
 
 		// Example#4c -- C style iteration
 		for (int row = 0; row < my_tbl.size(); ++row) 
-			std::cout << my_tbl[row].get_Id() << my_tbl[row].get_CustomerId() << my_tbl[row].get_EmployeeId() << my_tbl[row].get_OrderDate() << my_tbl[row].get_RequiredDate() << my_tbl[row].get_ShippedDate() << my_tbl[row].get_ShipVia() << my_tbl[row].get_Freight() << my_tbl[row].get_ShipName() << my_tbl[row].get_ShipAddress() << my_tbl[row].get_ShipCity() << my_tbl[row].get_ShipRegion() << my_tbl[row].get_ShipPostalCode() << my_tbl[row].get_ShipCountry() << std::endl;
+			std::cout << my_tbl[row].get_Id() << " | " << my_tbl[row].get_CustomerId() << " | " << my_tbl[row].get_EmployeeId() << " | " << my_tbl[row].get_OrderDate() << " | " << my_tbl[row].get_RequiredDate() << " | " << my_tbl[row].get_ShippedDate() << " | " << my_tbl[row].get_ShipVia() << " | " << my_tbl[row].get_Freight() << " | " << my_tbl[row].get_ShipName() << " | " << my_tbl[row].get_ShipAddress() << " | " << my_tbl[row].get_ShipCity() << " | " << my_tbl[row].get_ShipRegion() << " | " << my_tbl[row].get_ShipPostalCode() << " | " << my_tbl[row].get_ShipCountry() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
 #ifndef SQL_DB_NORTHWIND_TABLE_ORDER_H
@@ -64,7 +64,7 @@ public:
 	// getTableName, getColumnNames, getSelectColumnNames, and getStreamData are required for sqlite3pp::Table template class
 	static StrType getTableName() { return "Order" ; }
 	static StrType getColumnNames() { return "Id, CustomerId, EmployeeId, OrderDate, RequiredDate, ShippedDate, ShipVia, Freight, ShipName, ShipAddress, ShipCity, ShipRegion, ShipPostalCode, ShipCountry"; }
-	static StrType getSelectColumnNames() { return "'Id', 'CustomerId', 'EmployeeId', 'OrderDate', 'RequiredDate', 'ShippedDate', 'ShipVia', 'Freight', 'ShipName', 'ShipAddress', 'ShipCity', 'ShipRegion', 'ShipPostalCode', 'ShipCountry'"; }
+	static StrType getSelectColumnNames() { return "\"Id\", \"CustomerId\", \"EmployeeId\", \"OrderDate\", \"RequiredDate\", \"ShippedDate\", \"ShipVia\", \"Freight\", \"ShipName\", \"ShipAddress\", \"ShipCity\", \"ShipRegion\", \"ShipPostalCode\", \"ShipCountry\""; }
 	StrType GetValues() const
 	{
 		StrType strtype;

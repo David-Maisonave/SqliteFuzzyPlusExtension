@@ -20,15 +20,15 @@ Example Usage:		(Using sqlite3pp::Table container)
 		sqlite3pp::Table<sql_DB_KenshoDataset_table_Z100K> my_tbl;
 		// Example#4a -- (C++11) Range-based loop
 		for(auto row : my_tbl)
-			std::wcout << row.get_TItem() << row.get_HItem() << std::endl;
+			std::cout << row.get_TItem() << " | " << row.get_HItem() << " | " << std::endl;
 
 		// Example#4b -- C++ style iteration
 		for (auto row = my_tbl.begin(); row != my_tbl.end(); ++row) 
-			std::wcout << row->get_TItem() << row->get_HItem() << std::endl;
+			std::cout << row->get_TItem() << " | " << row->get_HItem() << " | " << std::endl;
 
 		// Example#4c -- C style iteration
 		for (int row = 0; row < my_tbl.size(); ++row) 
-			std::wcout << my_tbl[row].get_TItem() << my_tbl[row].get_HItem() << std::endl;
+			std::cout << my_tbl[row].get_TItem() << " | " << my_tbl[row].get_HItem() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
 #ifndef SQL_DB_KENSHODATASET_TABLE_Z100K_H
@@ -52,7 +52,7 @@ public:
 	// getTableName, getColumnNames, getSelectColumnNames, and getStreamData are required for sqlite3pp::Table template class
 	static StrType getTableName() { return "Z100K" ; }
 	static StrType getColumnNames() { return "TItem, HItem"; }
-	static StrType getSelectColumnNames() { return "'TItem', 'HItem'"; }
+	static StrType getSelectColumnNames() { return "\"TItem\", \"HItem\""; }
 	StrType GetValues() const
 	{
 		StrType strtype;

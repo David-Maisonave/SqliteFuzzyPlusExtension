@@ -20,15 +20,15 @@ Example Usage:		(Using sqlite3pp::Table container)
 		sqlite3pp::Table<sql_DB_chinook_table_genres> my_tbl;
 		// Example#4a -- (C++11) Range-based loop
 		for(auto row : my_tbl)
-			std::cout << row.get_GenreId() << row.get_Name() << std::endl;
+			std::cout << row.get_GenreId() << " | " << row.get_Name() << " | " << std::endl;
 
 		// Example#4b -- C++ style iteration
 		for (auto row = my_tbl.begin(); row != my_tbl.end(); ++row) 
-			std::cout << row->get_GenreId() << row->get_Name() << std::endl;
+			std::cout << row->get_GenreId() << " | " << row->get_Name() << " | " << std::endl;
 
 		// Example#4c -- C style iteration
 		for (int row = 0; row < my_tbl.size(); ++row) 
-			std::cout << my_tbl[row].get_GenreId() << my_tbl[row].get_Name() << std::endl;
+			std::cout << my_tbl[row].get_GenreId() << " | " << my_tbl[row].get_Name() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
 #ifndef SQL_DB_CHINOOK_TABLE_GENRES_H
@@ -52,7 +52,7 @@ public:
 	// getTableName, getColumnNames, getSelectColumnNames, and getStreamData are required for sqlite3pp::Table template class
 	static StrType getTableName() { return "genres" ; }
 	static StrType getColumnNames() { return "GenreId, Name"; }
-	static StrType getSelectColumnNames() { return "'GenreId', 'Name'"; }
+	static StrType getSelectColumnNames() { return "\"GenreId\", \"Name\""; }
 	StrType GetValues() const
 	{
 		StrType strtype;

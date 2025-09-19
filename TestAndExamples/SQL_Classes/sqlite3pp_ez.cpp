@@ -835,19 +835,7 @@ namespace sqlite3pp
 		return data;
 	}
 
-	static std::wostream& operator<<(std::wostream& os, const sql_base::Character& t)
-	{
-		os << to_wstring(t);
-		return os;
-	}
-
-	static std::ostream& operator<<(std::ostream& os, const sql_base::Nchar& t)
-	{
-		os << to_string(t);
-		return os;
-	}
-
-	static std::wostream& operator<<(std::wostream& os, const sqlite3pp::Blob& t)
+	std::wostream& operator<<(std::wostream& os, const sqlite3pp::Blob& t)
 	{
 		std::string data(t->data(), t->data() + t->size());
 		std::wstring wdata = to_wstring(data);
@@ -944,6 +932,17 @@ namespace sqlite3pp
 		}
 		return os;
 	}
+
+	std::wostream& operator<<(std::wostream& os, const sqlite3pp::TEXT& obj) {
+		os << sqlite3pp::to_wstring(obj).c_str();
+		return os;
+	}
+
+	std::ostream& operator<<(std::ostream& os, const sqlite3pp::TEXT& obj) {
+		os << sqlite3pp::to_string(obj).c_str();
+		return os;
+	}
+
 #endif	// !SQLITE3PP_CONVERT_TO_RESULTING_AFFINITY
 
 
@@ -1088,9 +1087,9 @@ namespace sqlite3pp
 				return "Float";
 
 			// String types
-			if (strcmp("TEXT", str) == 0)
+			if (strcmp("TEXT", str) == 0 || str_type.find(" SUB_TYPE TEXT") != std::string::npos)
 				return "Text";
-			if (str_type.find("CHARACTER") == 0)
+			if (str_type.find("CHAR") == 0)
 				return "Character";
 			if (str_type.find("VARYING CHARACTER") == 0
 				|| str_type.find("VARCHAR") == 0)
@@ -1100,6 +1099,9 @@ namespace sqlite3pp
 				return "Nchar";
 			if (str_type.find("NVARCHAR") == 0)
 				return "Nvarchar";
+
+			if (strcmp("TIMESTAMP", str) == 0)
+				return "Bigint";
 		}
 
 		V_COUT(WARN, "Received unknown type ('" << str_org << "') from DB  for column '" << colName << "' in table/view '" << tblVw << "'.");
@@ -1196,9 +1198,13 @@ namespace sqlite3pp
 			if (columns.size() > 0)
 			{
 				std::string outType = "std::cout";
-				for (auto& c : columns)
-					if (c.second == "Text")
-						outType = "std::wcout";
+				std::string ColumnSep = " << \" | \"";
+				//for (auto& c : columns)
+				//	if (c.second == "Text")
+				//	{
+				//		outType = "std::wcout";
+				//		ColumnSep = " << L\" | \"";
+				//	}
 				myfile << "\t// Example #4\n\t\tsqlite3pp::setGlobalDB(\"myDatabase.db\");" << std::endl;
 				myfile << "\t\tsqlite3pp::Table<" << ClassName << "> my_tbl;";
 
@@ -1206,21 +1212,21 @@ namespace sqlite3pp
 				myfile << "\n\t\tfor(auto row : my_tbl)\n";
 				myfile << "\t\t\t" << outType;
 				for (auto& c : columns)
-					myfile << " << row.get_" << c.first << "()";
+					myfile << " << row.get_" << c.first << "()" << ColumnSep;
 				myfile << " << std::endl;" << std::endl;
 
 				myfile << "\n\t\t// Example#4b -- C++ style iteration";
 				myfile << "\n\t\tfor (auto row = my_tbl.begin(); row != my_tbl.end(); ++row) \n";
 				myfile << "\t\t\t" << outType;
 				for (auto& c : columns)
-					myfile << " << row->get_" << c.first << "()";
+					myfile << " << row->get_" << c.first << "()" << ColumnSep;
 				myfile << " << std::endl;" << std::endl;
 
 				myfile << "\n\t\t// Example#4c -- C style iteration";
 				myfile << "\n\t\tfor (int row = 0; row < my_tbl.size(); ++row) \n";
 				myfile << "\t\t\t" << outType;
 				for (auto& c : columns)
-					myfile << " << my_tbl[row].get_" << c.first << "()";
+					myfile << " << my_tbl[row].get_" << c.first << "()" << ColumnSep;
 				myfile << " << std::endl;" << std::endl;
 			}
 			myfile << TopHeaderCommnetsPrt2 << std::endl;
@@ -1372,7 +1378,7 @@ namespace sqlite3pp
 		//		The pragma should return columns (cid, name, type, notnull, dflt_value, pk)
 		const char* CommentSection = "////////////////////////////////////////////////////////////////////////////////////////////";
 		if (QueryStr.empty())
-			QueryStr = "SELECT * FROM '" + TableName + "'";
+			QueryStr = "SELECT * FROM \"" + TableName + "\"";
 		std::shared_ptr < sqlite3pp::query> qry(sql_base::CreateQuery(m_db, QueryStr));
 		if (!qry)
 			return false;
@@ -1444,7 +1450,7 @@ namespace sqlite3pp
 			// Create getSelectColumnNames member function. Needed for sqlite3pp::Table template class
 			myfile << "\tstatic StrType getSelectColumnNames() { return " << m_options.s.str_pre << "\"";
 			for (auto& c : columns_with_comma)
-				myfile << c.second << "'" << c.first << "'";
+				myfile << c.second << "\\\"" << c.first << "\\\"";
 			myfile << "\"" << m_options.s.str_post << "; }" << std::endl;
 
 			// Create GetValues member function. Needed for sqlite3pp::Table template class

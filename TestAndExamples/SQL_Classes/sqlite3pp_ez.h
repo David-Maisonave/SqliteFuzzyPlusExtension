@@ -114,7 +114,6 @@ namespace sqlite3pp
 		static void set(tstring db_filename);
 		static void unset();
 	};
-	
 
 	std::string to_string(const std::wstring &src);
 	std::string to_string(const std::string &src);// For template usage
@@ -242,7 +241,8 @@ namespace sqlite3pp
 		Table(sqlite3pp::database &db, DbFileNameArg dbfilenamearg, PreExecuteArg preexecutearg, WhereClauseArg whereclausearg = WhereClauseArg()) :m_PreExecute(preexecutearg), m_WhereClause(whereclausearg), m_DbFileName(dbfilenamearg), m_db(db), m_InitQuery(CreateSelectQueryStr(whereclausearg, T_STR())), m_TableName(T::getTableName()), m_ColumnNames(T::getColumnNames()), m_ColumnCount(T::getColumnCount()) { ExecuteQuery(m_db, m_InitQuery, preexecutearg, dbfilenamearg); }
 
 		// Same as above set, but this set uses the single global database instance, and so db does not need to be pass to the constructor. These constructors automatically populate the object using data from the global database instance.
-		Table(WhereClauseArg whereclausearg = WhereClauseArg()	, PreExecuteArg preexecutearg = PreExecuteArg(), DbFileNameArg dbfilenamearg = DbFileNameArg()):m_PreExecute(preexecutearg), m_WhereClause(whereclausearg), m_DbFileName(dbfilenamearg), m_db( global_db ), m_InitQuery(CreateSelectQueryStr(whereclausearg, T_STR())), m_TableName(T::getTableName()), m_ColumnNames(T::getColumnNames()), m_ColumnCount(T::getColumnCount()) { ExecuteQuery( m_db, m_InitQuery, preexecutearg, dbfilenamearg); }
+		Table(WhereClauseArg whereclausearg = WhereClauseArg()	, PreExecuteArg preexecutearg = PreExecuteArg(), DbFileNameArg dbfilenamearg = DbFileNameArg()) // **Default Constructor**
+			:m_PreExecute(preexecutearg), m_WhereClause(whereclausearg), m_DbFileName(dbfilenamearg), m_db( global_db ), m_InitQuery(CreateSelectQueryStr(whereclausearg, T_STR())), m_TableName(T::getTableName()), m_ColumnNames(T::getColumnNames()), m_ColumnCount(T::getColumnCount()) { ExecuteQuery( m_db, m_InitQuery, preexecutearg, dbfilenamearg); }
 		Table(PreExecuteArg preexecutearg						, WhereClauseArg whereclausearg = WhereClauseArg(), DbFileNameArg dbfilenamearg = DbFileNameArg()) :m_PreExecute(preexecutearg), m_WhereClause(whereclausearg), m_DbFileName(dbfilenamearg), m_db(global_db), m_InitQuery(CreateSelectQueryStr(whereclausearg, T_STR())), m_TableName(T::getTableName()), m_ColumnNames(T::getColumnNames()), m_ColumnCount(T::getColumnCount()) { ExecuteQuery(  m_db, m_InitQuery, preexecutearg, dbfilenamearg); }
 		Table(DbFileNameArg dbfilenamearg						, WhereClauseArg whereclausearg = WhereClauseArg(), PreExecuteArg preexecutearg = PreExecuteArg()) :m_PreExecute(preexecutearg), m_WhereClause(whereclausearg), m_DbFileName(dbfilenamearg), m_db(global_db), m_InitQuery(CreateSelectQueryStr(whereclausearg, T_STR())), m_TableName(T::getTableName()), m_ColumnNames(T::getColumnNames()), m_ColumnCount(T::getColumnCount()) { ExecuteQuery( m_db, m_InitQuery, preexecutearg, dbfilenamearg); }
 		Table(DbFileNameArg dbfilenamearg						, PreExecuteArg preexecutearg, WhereClauseArg whereclausearg = WhereClauseArg()) :m_PreExecute(preexecutearg), m_WhereClause(whereclausearg), m_DbFileName(dbfilenamearg), m_db(global_db), m_InitQuery(CreateSelectQueryStr(whereclausearg, T_STR())), m_TableName(T::getTableName()), m_ColumnNames(T::getColumnNames()), m_ColumnCount(T::getColumnCount()) { ExecuteQuery( m_db, m_InitQuery, preexecutearg, dbfilenamearg); }
@@ -416,6 +416,8 @@ namespace sqlite3pp
 	std::ostream& operator<<(std::ostream& os, const sqlite3pp::Datetime& t);
 	std::wostream& operator<<(std::wostream& os, const sqlite3pp::Date& t);
 	std::ostream& operator<<(std::ostream& os, const sqlite3pp::Date& t);
+	std::wostream& operator<<(std::wostream& os, const sqlite3pp::TEXT& obj);
+	std::ostream& operator<<(std::ostream& os, const sqlite3pp::TEXT& obj);
 
 	database& setGlobalDB(const std::string& db_filename, ActionIfDatabaseOpen actionifopen = AIO_SkipIfSameFile, bool disconnectExistingConnection = false);
 	database& setGlobalDB(const std::wstring& db_filename, ActionIfDatabaseOpen actionifopen = AIO_SkipIfSameFile, bool disconnectExistingConnection = false);

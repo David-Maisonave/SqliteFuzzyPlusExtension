@@ -20,15 +20,15 @@ Example Usage:		(Using sqlite3pp::Table container)
 		sqlite3pp::Table<sql_DB_GameNames_table_AlternateNames> my_tbl;
 		// Example#4a -- (C++11) Range-based loop
 		for(auto row : my_tbl)
-			std::wcout << row.get_Name() << row.get_Alternate() << row.get_Title() << row.get_HashName() << row.get_HashAlternate() << row.get_HashTitle() << std::endl;
+			std::cout << row.get_Name() << " | " << row.get_Alternate() << " | " << row.get_Title() << " | " << row.get_HashName() << " | " << row.get_HashAlternate() << " | " << row.get_HashTitle() << " | " << std::endl;
 
 		// Example#4b -- C++ style iteration
 		for (auto row = my_tbl.begin(); row != my_tbl.end(); ++row) 
-			std::wcout << row->get_Name() << row->get_Alternate() << row->get_Title() << row->get_HashName() << row->get_HashAlternate() << row->get_HashTitle() << std::endl;
+			std::cout << row->get_Name() << " | " << row->get_Alternate() << " | " << row->get_Title() << " | " << row->get_HashName() << " | " << row->get_HashAlternate() << " | " << row->get_HashTitle() << " | " << std::endl;
 
 		// Example#4c -- C style iteration
 		for (int row = 0; row < my_tbl.size(); ++row) 
-			std::wcout << my_tbl[row].get_Name() << my_tbl[row].get_Alternate() << my_tbl[row].get_Title() << my_tbl[row].get_HashName() << my_tbl[row].get_HashAlternate() << my_tbl[row].get_HashTitle() << std::endl;
+			std::cout << my_tbl[row].get_Name() << " | " << my_tbl[row].get_Alternate() << " | " << my_tbl[row].get_Title() << " | " << my_tbl[row].get_HashName() << " | " << my_tbl[row].get_HashAlternate() << " | " << my_tbl[row].get_HashTitle() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
 #ifndef SQL_DB_GAMENAMES_TABLE_ALTERNATENAMES_H
@@ -56,7 +56,7 @@ public:
 	// getTableName, getColumnNames, getSelectColumnNames, and getStreamData are required for sqlite3pp::Table template class
 	static StrType getTableName() { return "AlternateNames" ; }
 	static StrType getColumnNames() { return "Name, Alternate, Title, HashName, HashAlternate, HashTitle"; }
-	static StrType getSelectColumnNames() { return "'Name', 'Alternate', 'Title', 'HashName', 'HashAlternate', 'HashTitle'"; }
+	static StrType getSelectColumnNames() { return "\"Name\", \"Alternate\", \"Title\", \"HashName\", \"HashAlternate\", \"HashTitle\""; }
 	StrType GetValues() const
 	{
 		StrType strtype;

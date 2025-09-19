@@ -20,15 +20,15 @@ Example Usage:		(Using sqlite3pp::Table container)
 		sqlite3pp::Table<sql_DB_NorthWind_table_Product> my_tbl;
 		// Example#4a -- (C++11) Range-based loop
 		for(auto row : my_tbl)
-			std::cout << row.get_Id() << row.get_ProductName() << row.get_SupplierId() << row.get_CategoryId() << row.get_QuantityPerUnit() << row.get_UnitPrice() << row.get_UnitsInStock() << row.get_UnitsOnOrder() << row.get_ReorderLevel() << row.get_Discontinued() << std::endl;
+			std::cout << row.get_Id() << " | " << row.get_ProductName() << " | " << row.get_SupplierId() << " | " << row.get_CategoryId() << " | " << row.get_QuantityPerUnit() << " | " << row.get_UnitPrice() << " | " << row.get_UnitsInStock() << " | " << row.get_UnitsOnOrder() << " | " << row.get_ReorderLevel() << " | " << row.get_Discontinued() << " | " << std::endl;
 
 		// Example#4b -- C++ style iteration
 		for (auto row = my_tbl.begin(); row != my_tbl.end(); ++row) 
-			std::cout << row->get_Id() << row->get_ProductName() << row->get_SupplierId() << row->get_CategoryId() << row->get_QuantityPerUnit() << row->get_UnitPrice() << row->get_UnitsInStock() << row->get_UnitsOnOrder() << row->get_ReorderLevel() << row->get_Discontinued() << std::endl;
+			std::cout << row->get_Id() << " | " << row->get_ProductName() << " | " << row->get_SupplierId() << " | " << row->get_CategoryId() << " | " << row->get_QuantityPerUnit() << " | " << row->get_UnitPrice() << " | " << row->get_UnitsInStock() << " | " << row->get_UnitsOnOrder() << " | " << row->get_ReorderLevel() << " | " << row->get_Discontinued() << " | " << std::endl;
 
 		// Example#4c -- C style iteration
 		for (int row = 0; row < my_tbl.size(); ++row) 
-			std::cout << my_tbl[row].get_Id() << my_tbl[row].get_ProductName() << my_tbl[row].get_SupplierId() << my_tbl[row].get_CategoryId() << my_tbl[row].get_QuantityPerUnit() << my_tbl[row].get_UnitPrice() << my_tbl[row].get_UnitsInStock() << my_tbl[row].get_UnitsOnOrder() << my_tbl[row].get_ReorderLevel() << my_tbl[row].get_Discontinued() << std::endl;
+			std::cout << my_tbl[row].get_Id() << " | " << my_tbl[row].get_ProductName() << " | " << my_tbl[row].get_SupplierId() << " | " << my_tbl[row].get_CategoryId() << " | " << my_tbl[row].get_QuantityPerUnit() << " | " << my_tbl[row].get_UnitPrice() << " | " << my_tbl[row].get_UnitsInStock() << " | " << my_tbl[row].get_UnitsOnOrder() << " | " << my_tbl[row].get_ReorderLevel() << " | " << my_tbl[row].get_Discontinued() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
 #ifndef SQL_DB_NORTHWIND_TABLE_PRODUCT_H
@@ -60,7 +60,7 @@ public:
 	// getTableName, getColumnNames, getSelectColumnNames, and getStreamData are required for sqlite3pp::Table template class
 	static StrType getTableName() { return "Product" ; }
 	static StrType getColumnNames() { return "Id, ProductName, SupplierId, CategoryId, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued"; }
-	static StrType getSelectColumnNames() { return "'Id', 'ProductName', 'SupplierId', 'CategoryId', 'QuantityPerUnit', 'UnitPrice', 'UnitsInStock', 'UnitsOnOrder', 'ReorderLevel', 'Discontinued'"; }
+	static StrType getSelectColumnNames() { return "\"Id\", \"ProductName\", \"SupplierId\", \"CategoryId\", \"QuantityPerUnit\", \"UnitPrice\", \"UnitsInStock\", \"UnitsOnOrder\", \"ReorderLevel\", \"Discontinued\""; }
 	StrType GetValues() const
 	{
 		StrType strtype;

@@ -20,15 +20,15 @@ Example Usage:		(Using sqlite3pp::Table container)
 		sqlite3pp::Table<sql_DB_TestData_table_SimilarSoundingWords1To1_NoMatch> my_tbl;
 		// Example#4a -- (C++11) Range-based loop
 		for(auto row : my_tbl)
-			std::wcout << row.get_Source1() << row.get_Source2() << std::endl;
+			std::cout << row.get_Source1() << " | " << row.get_Source2() << " | " << std::endl;
 
 		// Example#4b -- C++ style iteration
 		for (auto row = my_tbl.begin(); row != my_tbl.end(); ++row) 
-			std::wcout << row->get_Source1() << row->get_Source2() << std::endl;
+			std::cout << row->get_Source1() << " | " << row->get_Source2() << " | " << std::endl;
 
 		// Example#4c -- C style iteration
 		for (int row = 0; row < my_tbl.size(); ++row) 
-			std::wcout << my_tbl[row].get_Source1() << my_tbl[row].get_Source2() << std::endl;
+			std::cout << my_tbl[row].get_Source1() << " | " << my_tbl[row].get_Source2() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
 #ifndef SQL_DB_TESTDATA_TABLE_SIMILARSOUNDINGWORDS1TO1_NOMATCH_H
@@ -52,7 +52,7 @@ public:
 	// getTableName, getColumnNames, getSelectColumnNames, and getStreamData are required for sqlite3pp::Table template class
 	static StrType getTableName() { return "SimilarSoundingWords1To1_NoMatch" ; }
 	static StrType getColumnNames() { return "Source1, Source2"; }
-	static StrType getSelectColumnNames() { return "'Source1', 'Source2'"; }
+	static StrType getSelectColumnNames() { return "\"Source1\", \"Source2\""; }
 	StrType GetValues() const
 	{
 		StrType strtype;

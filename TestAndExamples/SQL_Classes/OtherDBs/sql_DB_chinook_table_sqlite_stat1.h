@@ -20,15 +20,15 @@ Example Usage:		(Using sqlite3pp::Table container)
 		sqlite3pp::Table<sql_DB_chinook_table_sqlite_stat1> my_tbl;
 		// Example#4a -- (C++11) Range-based loop
 		for(auto row : my_tbl)
-			std::wcout << row.get_tbl() << row.get_idx() << row.get_stat() << std::endl;
+			std::cout << row.get_tbl() << " | " << row.get_idx() << " | " << row.get_stat() << " | " << std::endl;
 
 		// Example#4b -- C++ style iteration
 		for (auto row = my_tbl.begin(); row != my_tbl.end(); ++row) 
-			std::wcout << row->get_tbl() << row->get_idx() << row->get_stat() << std::endl;
+			std::cout << row->get_tbl() << " | " << row->get_idx() << " | " << row->get_stat() << " | " << std::endl;
 
 		// Example#4c -- C style iteration
 		for (int row = 0; row < my_tbl.size(); ++row) 
-			std::wcout << my_tbl[row].get_tbl() << my_tbl[row].get_idx() << my_tbl[row].get_stat() << std::endl;
+			std::cout << my_tbl[row].get_tbl() << " | " << my_tbl[row].get_idx() << " | " << my_tbl[row].get_stat() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
 #ifndef SQL_DB_CHINOOK_TABLE_SQLITE_STAT1_H
@@ -53,7 +53,7 @@ public:
 	// getTableName, getColumnNames, getSelectColumnNames, and getStreamData are required for sqlite3pp::Table template class
 	static StrType getTableName() { return "sqlite_stat1" ; }
 	static StrType getColumnNames() { return "tbl, idx, stat"; }
-	static StrType getSelectColumnNames() { return "'tbl', 'idx', 'stat'"; }
+	static StrType getSelectColumnNames() { return "\"tbl\", \"idx\", \"stat\""; }
 	StrType GetValues() const
 	{
 		StrType strtype;

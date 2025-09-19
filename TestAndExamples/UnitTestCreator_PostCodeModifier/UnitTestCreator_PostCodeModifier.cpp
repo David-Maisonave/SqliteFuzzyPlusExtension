@@ -314,6 +314,9 @@ int main()
     headerOpt.header_prefix = "sql_DB_KenshoDataset_";
     CreateDbClassInterface("..\\TestDatabase\\kensho_dataset(1millionRows).db", headerOpt);
 
+    headerOpt.header_prefix = "sql_DB_sakila_";
+    CreateDbClassInterface("..\\TestDatabase\\sakila.db", headerOpt);
+
 
     return returnValue;
 }

@@ -20,15 +20,15 @@ Example Usage:		(Using sqlite3pp::Table container)
 		sqlite3pp::Table<sql_DB_NorthWind_table_Customer> my_tbl;
 		// Example#4a -- (C++11) Range-based loop
 		for(auto row : my_tbl)
-			std::cout << row.get_Id() << row.get_CompanyName() << row.get_ContactName() << row.get_ContactTitle() << row.get_Address() << row.get_City() << row.get_Region() << row.get_PostalCode() << row.get_Country() << row.get_Phone() << row.get_Fax() << std::endl;
+			std::cout << row.get_Id() << " | " << row.get_CompanyName() << " | " << row.get_ContactName() << " | " << row.get_ContactTitle() << " | " << row.get_Address() << " | " << row.get_City() << " | " << row.get_Region() << " | " << row.get_PostalCode() << " | " << row.get_Country() << " | " << row.get_Phone() << " | " << row.get_Fax() << " | " << std::endl;
 
 		// Example#4b -- C++ style iteration
 		for (auto row = my_tbl.begin(); row != my_tbl.end(); ++row) 
-			std::cout << row->get_Id() << row->get_CompanyName() << row->get_ContactName() << row->get_ContactTitle() << row->get_Address() << row->get_City() << row->get_Region() << row->get_PostalCode() << row->get_Country() << row->get_Phone() << row->get_Fax() << std::endl;
+			std::cout << row->get_Id() << " | " << row->get_CompanyName() << " | " << row->get_ContactName() << " | " << row->get_ContactTitle() << " | " << row->get_Address() << " | " << row->get_City() << " | " << row->get_Region() << " | " << row->get_PostalCode() << " | " << row->get_Country() << " | " << row->get_Phone() << " | " << row->get_Fax() << " | " << std::endl;
 
 		// Example#4c -- C style iteration
 		for (int row = 0; row < my_tbl.size(); ++row) 
-			std::cout << my_tbl[row].get_Id() << my_tbl[row].get_CompanyName() << my_tbl[row].get_ContactName() << my_tbl[row].get_ContactTitle() << my_tbl[row].get_Address() << my_tbl[row].get_City() << my_tbl[row].get_Region() << my_tbl[row].get_PostalCode() << my_tbl[row].get_Country() << my_tbl[row].get_Phone() << my_tbl[row].get_Fax() << std::endl;
+			std::cout << my_tbl[row].get_Id() << " | " << my_tbl[row].get_CompanyName() << " | " << my_tbl[row].get_ContactName() << " | " << my_tbl[row].get_ContactTitle() << " | " << my_tbl[row].get_Address() << " | " << my_tbl[row].get_City() << " | " << my_tbl[row].get_Region() << " | " << my_tbl[row].get_PostalCode() << " | " << my_tbl[row].get_Country() << " | " << my_tbl[row].get_Phone() << " | " << my_tbl[row].get_Fax() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
 #ifndef SQL_DB_NORTHWIND_TABLE_CUSTOMER_H
@@ -61,7 +61,7 @@ public:
 	// getTableName, getColumnNames, getSelectColumnNames, and getStreamData are required for sqlite3pp::Table template class
 	static StrType getTableName() { return "Customer" ; }
 	static StrType getColumnNames() { return "Id, CompanyName, ContactName, ContactTitle, Address, City, Region, PostalCode, Country, Phone, Fax"; }
-	static StrType getSelectColumnNames() { return "'Id', 'CompanyName', 'ContactName', 'ContactTitle', 'Address', 'City', 'Region', 'PostalCode', 'Country', 'Phone', 'Fax'"; }
+	static StrType getSelectColumnNames() { return "\"Id\", \"CompanyName\", \"ContactName\", \"ContactTitle\", \"Address\", \"City\", \"Region\", \"PostalCode\", \"Country\", \"Phone\", \"Fax\""; }
 	StrType GetValues() const
 	{
 		StrType strtype;

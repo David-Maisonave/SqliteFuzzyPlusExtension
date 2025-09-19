@@ -20,15 +20,15 @@ Example Usage:		(Using sqlite3pp::Table container)
 		sqlite3pp::Table<sql_DB_NorthWind_table_OrderDetail> my_tbl;
 		// Example#4a -- (C++11) Range-based loop
 		for(auto row : my_tbl)
-			std::cout << row.get_Id() << row.get_OrderId() << row.get_ProductId() << row.get_UnitPrice() << row.get_Quantity() << row.get_Discount() << std::endl;
+			std::cout << row.get_Id() << " | " << row.get_OrderId() << " | " << row.get_ProductId() << " | " << row.get_UnitPrice() << " | " << row.get_Quantity() << " | " << row.get_Discount() << " | " << std::endl;
 
 		// Example#4b -- C++ style iteration
 		for (auto row = my_tbl.begin(); row != my_tbl.end(); ++row) 
-			std::cout << row->get_Id() << row->get_OrderId() << row->get_ProductId() << row->get_UnitPrice() << row->get_Quantity() << row->get_Discount() << std::endl;
+			std::cout << row->get_Id() << " | " << row->get_OrderId() << " | " << row->get_ProductId() << " | " << row->get_UnitPrice() << " | " << row->get_Quantity() << " | " << row->get_Discount() << " | " << std::endl;
 
 		// Example#4c -- C style iteration
 		for (int row = 0; row < my_tbl.size(); ++row) 
-			std::cout << my_tbl[row].get_Id() << my_tbl[row].get_OrderId() << my_tbl[row].get_ProductId() << my_tbl[row].get_UnitPrice() << my_tbl[row].get_Quantity() << my_tbl[row].get_Discount() << std::endl;
+			std::cout << my_tbl[row].get_Id() << " | " << my_tbl[row].get_OrderId() << " | " << my_tbl[row].get_ProductId() << " | " << my_tbl[row].get_UnitPrice() << " | " << my_tbl[row].get_Quantity() << " | " << my_tbl[row].get_Discount() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
 #ifndef SQL_DB_NORTHWIND_TABLE_ORDERDETAIL_H
@@ -56,7 +56,7 @@ public:
 	// getTableName, getColumnNames, getSelectColumnNames, and getStreamData are required for sqlite3pp::Table template class
 	static StrType getTableName() { return "OrderDetail" ; }
 	static StrType getColumnNames() { return "Id, OrderId, ProductId, UnitPrice, Quantity, Discount"; }
-	static StrType getSelectColumnNames() { return "'Id', 'OrderId', 'ProductId', 'UnitPrice', 'Quantity', 'Discount'"; }
+	static StrType getSelectColumnNames() { return "\"Id\", \"OrderId\", \"ProductId\", \"UnitPrice\", \"Quantity\", \"Discount\""; }
 	StrType GetValues() const
 	{
 		StrType strtype;

@@ -20,15 +20,15 @@ Example Usage:		(Using sqlite3pp::Table container)
 		sqlite3pp::Table<sql_DB_chinook_table_invoices> my_tbl;
 		// Example#4a -- (C++11) Range-based loop
 		for(auto row : my_tbl)
-			std::cout << row.get_InvoiceId() << row.get_CustomerId() << row.get_InvoiceDate() << row.get_BillingAddress() << row.get_BillingCity() << row.get_BillingState() << row.get_BillingCountry() << row.get_BillingPostalCode() << row.get_Total() << std::endl;
+			std::cout << row.get_InvoiceId() << " | " << row.get_CustomerId() << " | " << row.get_InvoiceDate() << " | " << row.get_BillingAddress() << " | " << row.get_BillingCity() << " | " << row.get_BillingState() << " | " << row.get_BillingCountry() << " | " << row.get_BillingPostalCode() << " | " << row.get_Total() << " | " << std::endl;
 
 		// Example#4b -- C++ style iteration
 		for (auto row = my_tbl.begin(); row != my_tbl.end(); ++row) 
-			std::cout << row->get_InvoiceId() << row->get_CustomerId() << row->get_InvoiceDate() << row->get_BillingAddress() << row->get_BillingCity() << row->get_BillingState() << row->get_BillingCountry() << row->get_BillingPostalCode() << row->get_Total() << std::endl;
+			std::cout << row->get_InvoiceId() << " | " << row->get_CustomerId() << " | " << row->get_InvoiceDate() << " | " << row->get_BillingAddress() << " | " << row->get_BillingCity() << " | " << row->get_BillingState() << " | " << row->get_BillingCountry() << " | " << row->get_BillingPostalCode() << " | " << row->get_Total() << " | " << std::endl;
 
 		// Example#4c -- C style iteration
 		for (int row = 0; row < my_tbl.size(); ++row) 
-			std::cout << my_tbl[row].get_InvoiceId() << my_tbl[row].get_CustomerId() << my_tbl[row].get_InvoiceDate() << my_tbl[row].get_BillingAddress() << my_tbl[row].get_BillingCity() << my_tbl[row].get_BillingState() << my_tbl[row].get_BillingCountry() << my_tbl[row].get_BillingPostalCode() << my_tbl[row].get_Total() << std::endl;
+			std::cout << my_tbl[row].get_InvoiceId() << " | " << my_tbl[row].get_CustomerId() << " | " << my_tbl[row].get_InvoiceDate() << " | " << my_tbl[row].get_BillingAddress() << " | " << my_tbl[row].get_BillingCity() << " | " << my_tbl[row].get_BillingState() << " | " << my_tbl[row].get_BillingCountry() << " | " << my_tbl[row].get_BillingPostalCode() << " | " << my_tbl[row].get_Total() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
 #ifndef SQL_DB_CHINOOK_TABLE_INVOICES_H
@@ -59,7 +59,7 @@ public:
 	// getTableName, getColumnNames, getSelectColumnNames, and getStreamData are required for sqlite3pp::Table template class
 	static StrType getTableName() { return "invoices" ; }
 	static StrType getColumnNames() { return "InvoiceId, CustomerId, InvoiceDate, BillingAddress, BillingCity, BillingState, BillingCountry, BillingPostalCode, Total"; }
-	static StrType getSelectColumnNames() { return "'InvoiceId', 'CustomerId', 'InvoiceDate', 'BillingAddress', 'BillingCity', 'BillingState', 'BillingCountry', 'BillingPostalCode', 'Total'"; }
+	static StrType getSelectColumnNames() { return "\"InvoiceId\", \"CustomerId\", \"InvoiceDate\", \"BillingAddress\", \"BillingCity\", \"BillingState\", \"BillingCountry\", \"BillingPostalCode\", \"Total\""; }
 	StrType GetValues() const
 	{
 		StrType strtype;
