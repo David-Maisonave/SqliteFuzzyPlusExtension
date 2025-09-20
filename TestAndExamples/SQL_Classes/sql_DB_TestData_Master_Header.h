@@ -14,6 +14,8 @@
 #include "sql_DB_TestData_table_SameName_1To1_AllMatch.h"
 #include "sql_DB_TestData_table_AllProteins.h"
 #include "sql_DB_TestData_table_PerformanceResults.h"
+#include "sql_DB_TestData_table_zTroubleFields.h"
+#include "sql_DB_TestData_table_zz Trouble Fields.h"
 
 
 /*
@@ -42,6 +44,8 @@ namespace sqlite3pp
 		Tables["sql_DB_TestData_table_SameName_1To1_AllMatch"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_DB_TestData_table_SameName_1To1_AllMatch>());
 		Tables["sql_DB_TestData_table_AllProteins"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_DB_TestData_table_AllProteins>());
 		Tables["sql_DB_TestData_table_PerformanceResults"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_DB_TestData_table_PerformanceResults>());
+		Tables["sql_DB_TestData_table_zTroubleFields"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_DB_TestData_table_zTroubleFields>());
+		Tables["sql_DB_TestData_table_zz__Trouble__Fields"] = std::shared_ptr<sqlite3pp::TableBase>(new sqlite3pp::Table<sql_DB_TestData_table_zz__Trouble__Fields>());
 		return Tables;
 	}
 

@@ -1035,7 +1035,7 @@ namespace sqlite3pp
 
 			if (strcmp("INTEGER", str) == 0 || strcmp("INT", str) == 0 || strcmp("TINYINT", str) == 0 || strcmp("SMALLINT", str) == 0 || strcmp("MEDIUMINTSMALLINT", str) == 0 || strcmp("BIGINT", str) == 0 || strcmp("UNSIGNED BIG INT", str) == 0 || strcmp("INT2", str) == 0 || strcmp("INT8", str) == 0)
 				return "int";
-			if (strcmp("REAL", str) == 0 || strcmp("DOUBLE", str) == 0 || strcmp("DOUBLE PRECISION", str) == 0 || strcmp("FLOAT", str) == 0 || strncmp("DECIMAL", str, 7) == 0 || strcmp("BOOLEANL", str) == 0 || strcmp("BOOLEAN", str) == 0 || strcmp("DATE", str) == 0 || strcmp("DATETIME", str) == 0 || strcmp("NUMERIC", str) == 0)
+			if (strcmp("REAL", str) == 0 || strcmp("DOUBLE", str) == 0 || strcmp("DOUBLE PRECISION", str) == 0 || strcmp("FLOAT", str) == 0 || strncmp("DECIMAL", str, 7) == 0 || strcmp("BOOLEANL", str) == 0 || strcmp("BOOLEAN", str) == 0 || strcmp("BOOL", str) == 0 || strcmp("DATE", str) == 0 || strcmp("DATETIME", str) == 0 || strcmp("NUMERIC", str) == 0 || strcmp("NUMBER", str) == 0)
 				return "double";
 
 			if (m_options.m.use_basic_types_only)
@@ -1063,17 +1063,17 @@ namespace sqlite3pp
 				return "Smallint";
 			if (strcmp("MEDIUMINTSMALLINT", str) == 0)
 				return "Mediumint";
-			if (strcmp("BOOLEAN", str) == 0 || strcmp("BOOLEANL", str) == 0)
+			if (strcmp("BOOLEAN", str) == 0 || strcmp("BOOLEANL", str) == 0 || strcmp("BOOL", str) == 0)
 				return "Boolean";
 			if (strcmp("BIGINT", str) == 0)
 				return "Bigint";
-			if (strcmp("UNSIGNED BIG INT", str) == 0)
+			if (strcmp("UNSIGNED BIG INT", str) == 0 || strcmp("UBIGINT", str) == 0)
 				return "UBigint";
 			if (strcmp("DATE", str) == 0)
 				return "Date";
 			if (strcmp("DATETIME", str) == 0)
 				return "Datetime";
-			if (str_type.find("NUMERIC") == 0)
+			if (str_type.find("NUMERIC") == 0 || str_type.find("NUMBER") == 0)
 				return "Numeric";
 			if (str_type.find("DECIMAL") == 0)
 				return "Decimal";
@@ -1153,6 +1153,22 @@ namespace sqlite3pp
 	static const char TopHeaderCommnetsPrt1[] = "/* This file was automatically generated using [Sqlite3pp_EZ].\nSqlite3pp_EZ Copyright (C) 2025 David Maisonave (http::\\www.axter.com)";
 	static const char TopHeaderCommnetsPrt2[] = "For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ\n*/";
 	const std::vector<std::pair<std::string, std::string> > SQLiteClassBuilder::columns_dummy;
+	
+	void replaceAll(std::string& str, const std::string& from, const std::string& to) {
+		if (from.empty())
+			return;
+		size_t start_pos = 0;
+		while ((start_pos = str.find(from, start_pos)) != std::string::npos) {
+			str.replace(start_pos, from.length(), to);
+			start_pos += to.length(); // Move past the replaced text
+		}
+	}
+	std::string GetValidFuncName(std::string name) 
+	{
+		//ToDo: Use regex to make sure all values are AlphaNum
+		replaceAll(name, " ", "__");
+		return name;
+	}
 
 	bool SQLiteClassBuilder::CreateHeaderPrefix(const std::string& TableName, std::ofstream &myfile, 
 		std::string& ClassName, std::string& HeaderUpper, std::string FirstColumnName, std::string LastColumnName, 
@@ -1192,9 +1208,9 @@ namespace sqlite3pp
 			myfile << "\t// Example #1\n\t\tsqlite3pp::setGlobalDB(\"myDatabase.db\");" << std::endl;
 			myfile << "\t\tsqlite3pp::Table<" << ClassName << "> my_tbl;\n\t\tfor (auto row : my_tbl)\n\t\t\tstd::wcout << row << std::endl;\n" << std::endl;
 
-			myfile << "\t// Example #2\n\t\tfor (int i = 0; i < my_tbl.size(); ++i)\n\t\t\tstd::wcout << my_tbl[i].get_" << FirstColumnName << "() << std::endl;\n" << std::endl;
+			myfile << "\t// Example #2\n\t\tfor (int i = 0; i < my_tbl.size(); ++i)\n\t\t\tstd::wcout << my_tbl[i].get_" << GetValidFuncName(FirstColumnName) << "() << std::endl;\n" << std::endl;
 
-			myfile << "\t// Example #3\n\t\tfor (auto r = my_tbl.begin(); r != my_tbl.end(); ++r)\n\t\t\tstd::wcout << r->get_" << LastColumnName << "() << std::endl;\n" << std::endl;
+			myfile << "\t// Example #3\n\t\tfor (auto r = my_tbl.begin(); r != my_tbl.end(); ++r)\n\t\t\tstd::wcout << r->get_" << GetValidFuncName(LastColumnName) << "() << std::endl;\n" << std::endl;
 			if (columns.size() > 0)
 			{
 				std::string outType = "std::cout";
@@ -1212,21 +1228,21 @@ namespace sqlite3pp
 				myfile << "\n\t\tfor(auto row : my_tbl)\n";
 				myfile << "\t\t\t" << outType;
 				for (auto& c : columns)
-					myfile << " << row.get_" << c.first << "()" << ColumnSep;
+					myfile << " << row.get_" << GetValidFuncName(c.first) << "()" << ColumnSep;
 				myfile << " << std::endl;" << std::endl;
 
 				myfile << "\n\t\t// Example#4b -- C++ style iteration";
 				myfile << "\n\t\tfor (auto row = my_tbl.begin(); row != my_tbl.end(); ++row) \n";
 				myfile << "\t\t\t" << outType;
 				for (auto& c : columns)
-					myfile << " << row->get_" << c.first << "()" << ColumnSep;
+					myfile << " << row->get_" << GetValidFuncName(c.first) << "()" << ColumnSep;
 				myfile << " << std::endl;" << std::endl;
 
 				myfile << "\n\t\t// Example#4c -- C style iteration";
 				myfile << "\n\t\tfor (int row = 0; row < my_tbl.size(); ++row) \n";
 				myfile << "\t\t\t" << outType;
 				for (auto& c : columns)
-					myfile << " << my_tbl[row].get_" << c.first << "()" << ColumnSep;
+					myfile << " << my_tbl[row].get_" << GetValidFuncName(c.first) << "()" << ColumnSep;
 				myfile << " << std::endl;" << std::endl;
 			}
 			myfile << TopHeaderCommnetsPrt2 << std::endl;
@@ -1401,10 +1417,10 @@ namespace sqlite3pp
 		std::string ClassName, HeaderUpper;
 		if (!CreateHeaderPrefix(TableName, myfile, ClassName, HeaderUpper, FirstColumnName, LastColumnName, true, columns))
 			return false;
-		m_ClassNames.push_back(ClassName);
+		m_ClassNames.push_back(GetValidFuncName(ClassName));
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Create Table/View class
-		myfile << "\nclass " << ClassName << ": public sqlite3pp::sql_base\n{" << std::endl;
+		myfile << "\nclass " << GetValidFuncName(ClassName) << ": public sqlite3pp::sql_base\n{" << std::endl;
 
 		if (!m_options.m.exclude_table_interface)
 		{
@@ -1416,7 +1432,7 @@ namespace sqlite3pp
 			
 			// Define data member variables associated with the table/view
 			for (auto& c : columns)
-				myfile << "\t" << c.second << " " << c.first << InitializeValue(c.second) << ";" << std::endl;
+				myfile << "\t" << c.second << " " << GetValidFuncName(c.first) << InitializeValue(c.second) << ";" << std::endl;
 
 			myfile << "\npublic:" << std::endl;
 			// Create a define type for strings
@@ -1426,11 +1442,11 @@ namespace sqlite3pp
 			if (!m_options.m.exclude_comments)
 				myfile << "\t// Constructors" << std::endl;
 			// These constructors are only useful if method setData is created.
-			myfile << "\t" << ClassName << "() {}";  // Allow default constructor to still work
+			myfile << "\t" << GetValidFuncName(ClassName) << "() {}";  // Allow default constructor to still work
 			if (!m_options.m.exclude_comments)
 				myfile << " // Default constructor";
 			myfile << std::endl;
-			myfile << "\ttemplate <class T> " << ClassName << "(const T &t) { setData(t); }"; // This constructor allows data transfer from different tables/views having same data types and column names
+			myfile << "\ttemplate <class T> " << GetValidFuncName(ClassName) << "(const T &t) { setData(t); }"; // This constructor allows data transfer from different tables/views having same data types and column names
 			if (!m_options.m.exclude_comments)
 				myfile << " // Allows data input from different (or same) tables/views having the same data types and column names";
 			myfile << std::endl;
@@ -1444,13 +1460,13 @@ namespace sqlite3pp
 			// Create getColumnNames member function. Needed for sqlite3pp::Table template class
 			myfile << "\tstatic StrType getColumnNames() { return " << m_options.s.str_pre << "\"";
 			for (auto& c : columns_with_comma)
-				myfile << c.second << c.first;
+				myfile << c.second << GetValidFuncName(c.first);
 			myfile << "\"" << m_options.s.str_post << "; }" << std::endl;
 
 			// Create getSelectColumnNames member function. Needed for sqlite3pp::Table template class
 			myfile << "\tstatic StrType getSelectColumnNames() { return " << m_options.s.str_pre << "\"";
 			for (auto& c : columns_with_comma)
-				myfile << c.second << "\\\"" << c.first << "\\\"";
+				myfile << c.second << "\\\"" << GetValidFuncName(c.first) << "\\\"";
 			myfile << "\"" << m_options.s.str_post << "; }" << std::endl;
 
 			// Create GetValues member function. Needed for sqlite3pp::Table template class
@@ -1459,7 +1475,7 @@ namespace sqlite3pp
 			for (auto& c : columns)
 			{
 				myfile << "\n\t\tstrtype +=  " << m_options.s.str_pre << "\"" << commaDel << "'\"" <<  m_options.s.str_post 
-					<< " + " << m_options.s.str_tostr << "( " << c.first << ") + " << m_options.s.str_pre << "\"'\""  << m_options.s.str_post << ";";
+					<< " + " << m_options.s.str_tostr << "( " << GetValidFuncName(c.first) << ") + " << m_options.s.str_pre << "\"'\""  << m_options.s.str_post << ";";
 				commaDel = ",";
 			}
 			myfile << "\n\t\treturn strtype;\n\t}" << std::endl;
@@ -1467,13 +1483,13 @@ namespace sqlite3pp
 			// Create getStreamData member function. Needed for sqlite3pp::Table template class
 			myfile << "\ttemplate<class T> void getStreamData( T q ) { q.getter() ";
 			for (auto& c : columns)
-				myfile << " >> " << c.first;
+				myfile << " >> " << GetValidFuncName(c.first);
 			myfile << ";}" << std::endl;
 
 			// Create setData member function. Used to transfer data from different tables/views having same data types and column names
 			myfile << "\ttemplate <class T> void setData(const T &t) // Used to transfer data from different tables/views having same data types and column names\n\t{" << std::endl;
 			for (auto& c : columns)
-				myfile << "\t\t" << c.first << " = t.get_" << c.first << "();" << std::endl;
+				myfile << "\t\t" << GetValidFuncName(c.first) << " = t.get_" << GetValidFuncName(c.first) << "();" << std::endl;
 			myfile << "\t}" << std::endl;
 
 
@@ -1492,7 +1508,7 @@ namespace sqlite3pp
 				myfile << ", which allows read-only access to protected member variables";
 			myfile << "." << std::endl;
 			for (auto& c : columns)
-				myfile << "\tconst " << c.second << "& get_" << c.first << "() const {return " << c.first << ";}" << std::endl;
+				myfile << "\tconst " << c.second << "& get_" << GetValidFuncName(c.first) << "() const {return " << GetValidFuncName(c.first) << ";}" << std::endl;
 		}
 
 		// Define set function for each data member variable.
@@ -1501,10 +1517,10 @@ namespace sqlite3pp
 			if (!m_options.m.exclude_comments)
 				myfile << "\n\t// A set_ function for each field in the table." << std::endl;
 			for (auto& c : columns)
-				myfile << "\tvoid set_" << c.first << "(const " << c.second << "& data__) {" << c.first << " = data__;}" << std::endl;
+				myfile << "\tvoid set_" << GetValidFuncName(c.first) << "(const " << c.second << "& data__) {" << GetValidFuncName(c.first) << " = data__;}" << std::endl;
 		}
 
-		const std::string OperatorStreamComment1 = "/* sqlite3pp::TableOStream container interface.\n\tFunctions OStream(), operator<<(), and Delimiter() are required when using the sqlite3pp::TableOStream container.\n\tExample Usage:\t\t(Using sqlite3pp::TableOStream container)\n\t\t\tTableOStream<" + ClassName + "> tbl(DbFileNameArg(\"myDatabase.db\"));\n\t\t\ttbl.setDelimit(\"|\"); // Change delimiter\n\t\t\tstd::cout << tbl; // Send data to screen with the changed delimiter\n\n\t\t\tstd::ofstream ofs (\"data.csv\", std::ofstream::out);\n\t\t\ttbl.setDelimit(\",\"); // Change delimiter\n\t\t\tofs << tbl; // Write data to a CSV file using the changed \",\" delimiter.\n\n\t\t\ttbl.out(std::cout); // Send data to screen using out() member function.\n\tTo exclude TableOStream interface, set exclude_ostream_operator to true when creating this class using SQLiteClassBuilder.\n\t*/\n";
+		const std::string OperatorStreamComment1 = "/* sqlite3pp::TableOStream container interface.\n\tFunctions OStream(), operator<<(), and Delimiter() are required when using the sqlite3pp::TableOStream container.\n\tExample Usage:\t\t(Using sqlite3pp::TableOStream container)\n\t\t\tTableOStream<" + GetValidFuncName(ClassName) + "> tbl(DbFileNameArg(\"myDatabase.db\"));\n\t\t\ttbl.setDelimit(\"|\"); // Change delimiter\n\t\t\tstd::cout << tbl; // Send data to screen with the changed delimiter\n\n\t\t\tstd::ofstream ofs (\"data.csv\", std::ofstream::out);\n\t\t\ttbl.setDelimit(\",\"); // Change delimiter\n\t\t\tofs << tbl; // Write data to a CSV file using the changed \",\" delimiter.\n\n\t\t\ttbl.out(std::cout); // Send data to screen using out() member function.\n\tTo exclude TableOStream interface, set exclude_ostream_operator to true when creating this class using SQLiteClassBuilder.\n\t*/\n";
 		const char* OperatorStreamComment2 = "// sqlite3pp::TableOStream container interface.\n";
 		if (m_options.m.exclude_ostream_operator != true)
 		{
@@ -1517,17 +1533,17 @@ namespace sqlite3pp
 			for (auto& c : columns)
 			{
 				if (IsStrType(c.second.c_str()))
-					myfile << delimiter_tmp << " << t.str(" << c.first << ")";
+					myfile << delimiter_tmp << " << t.str(" << GetValidFuncName(c.first) << ")";
 				else
-					myfile << delimiter_tmp << " << " << c.first;
+					myfile << delimiter_tmp << " << " << GetValidFuncName(c.first);
 				if (delimiter_tmp.empty())
 					delimiter_tmp = " << t.d";
 			}
 			myfile << ";\n\t\treturn t;\n\t}" << std::endl;
 			////////////////////////////////////////////////////////////////////////////////////////////
 			// Declare operator<< friends
-			myfile << "\tfriend std::ostream& operator<<(std::ostream& os, const " << ClassName << "& t);" << std::endl;
-			myfile << "\tfriend std::wostream& operator<<(std::wostream& os, const " << ClassName << "& t);" << std::endl;
+			myfile << "\tfriend std::ostream& operator<<(std::ostream& os, const " << GetValidFuncName(ClassName) << "& t);" << std::endl;
+			myfile << "\tfriend std::wostream& operator<<(std::wostream& os, const " << GetValidFuncName(ClassName) << "& t);" << std::endl;
 			// Create Delimit member function. It's needed for operator<<
 			myfile << "\tstatic StrType Delimiter() { return " << m_options.s.str_pre << "\"" << m_options.m.delimiter << "\" " << m_options.s.str_post << "; }" << std::endl;
 			if (!m_options.m.exclude_comments)
@@ -1543,15 +1559,15 @@ namespace sqlite3pp
 		{
 			if (!m_options.m.exclude_comments)
 				myfile << OperatorStreamComment2;
-			myfile << "inline std::ostream& operator<<(std::ostream& os, const " << ClassName << "& t) { sqlite3pp::ostream_a o(os, t.Delimiter()); return t.OStream(o).os; }" << std::endl;
-			myfile << "inline std::wostream& operator<<(std::wostream& os, const " << ClassName << "& t) { sqlite3pp::ostream_w o(os, t.Delimiter());  return t.OStream(o).os; }" << std::endl;
+			myfile << "inline std::ostream& operator<<(std::ostream& os, const " << GetValidFuncName(ClassName) << "& t) { sqlite3pp::ostream_a o(os, t.Delimiter()); return t.OStream(o).os; }" << std::endl;
+			myfile << "inline std::wostream& operator<<(std::wostream& os, const " << GetValidFuncName(ClassName) << "& t) { sqlite3pp::ostream_w o(os, t.Delimiter());  return t.OStream(o).os; }" << std::endl;
 		}
 
 		myfile << "\n#endif // !" << HeaderUpper << std::endl;
 
 		//Done
 		myfile.close();
-		V_COUT(DETAIL, "Finish creating class '" << ClassName << "' for table '" << TableName << "'");
+		V_COUT(DETAIL, "Finish creating class '" << GetValidFuncName(ClassName) << "' for table '" << TableName << "'");
 		return true;
 	}
 };
