@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B1DE0268-D7E9-4868-BF3C-6298E5905597}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FuzzyPlusCSharp_PhoneticMatching</RootNamespace>
+    <AssemblyName>FuzzyPlusCSharp_PhoneticMatching</AssemblyName>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\Fuzzy.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\ColognePhonetics\ColognePhonetics.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\BlockDistance.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\ChapmanLengthDeviation.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\ChapmanMeanLength.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\CosineSimilarity.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\DamerauLevenshtein.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\DiceSimilarity.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\EditDistanceWithWildCard.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\Euclidean.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\Hamming.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\IDistance.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\IExactMatch.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\JaccardIndex.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\JaccardSimilarity.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\Jaro.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\JaroWinkler.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\Levenshtein.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\Levenshtein2.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\LongestCommonSequence.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\LongestCommonSubsequence.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\LongestCommonSubstring.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\MatchingCoefficient.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\MongeElkan.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\NeedlemanWunsch.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\NGramsDistance.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\NormalizedLevenshtein.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\OverlapCoefficient.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\PhraseTokenize.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\QGramsDistance.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\RatcliffObershelpSimilarity.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\SimMetricsCore.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\SmithWaterman.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\SmithWatermanGotoh.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\SmithWatermanGotohWindowedAffine.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\SorensenDice.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\StringMatchingAlgorithms\TanimotoCoefficient.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\Misc\HasInSameOrder.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\Misc\Normalize.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\Misc\Sameness.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\PhoneticMethods\SoundexVer2.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\Phonix\Caverphone.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\Phonix\DoubleMetaphone.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\Phonix\ISimilarity.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\Phonix\MatchRatingApproach.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\Phonix\Metaphone.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\Phonix\MetaphoneEncoder.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\Phonix\Ngram.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\Phonix\NysiiSc.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\Phonix\PhoneticEncoder.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\Phonix\SIOHelpers.cs" />
+    <Compile Include="..\..\SqliteFuzzyPlusExtension\FuzzyPlusCSharp\Phonix\Soundex.cs" />
+    <Compile Include="FuzzyPhoneticMatching.cs" />
+    <Compile Include="Distance\DistanceInput.cs" />
+    <Compile Include="Distance\EnHybridDistance.cs" />
+    <Compile Include="Distance\EnPhoneticDistance.cs" />
+    <Compile Include="Distance\IDistance.cs" />
+    <Compile Include="Distance\StringDistance.cs" />
+    <Compile Include="EnPronouncer.cs" />
+    <Compile Include="EnPronunciation.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="ManagedCallback.cs" />
+    <Compile Include="Match.cs" />
+    <Compile Include="Matchers\BaseMatcher.cs" />
+    <Compile Include="Matchers\ContactMatcher\ContactFields.cs" />
+    <Compile Include="Matchers\ContactMatcher\ContactMatcherConfig.cs" />
+    <Compile Include="Matchers\ContactMatcher\EnContactMatcher.cs" />
+    <Compile Include="Matchers\FuzzyMatcher\AbstractFuzzyMatcher.cs" />
+    <Compile Include="Matchers\FuzzyMatcher\FuzzyMatcher.cs" />
+    <Compile Include="Matchers\FuzzyMatcher\FuzzyMatcherBase.cs" />
+    <Compile Include="Matchers\FuzzyMatcher\IFuzzyMatcher.cs" />
+    <Compile Include="Matchers\FuzzyMatcher\Normalized\EnHybridFuzzyMatcher.cs" />
+    <Compile Include="Matchers\FuzzyMatcher\Normalized\EnPhoneticFuzzyMatcher.cs" />
+    <Compile Include="Matchers\FuzzyMatcher\Normalized\NormalizedFuzzyMatcher.cs" />
+    <Compile Include="Matchers\FuzzyMatcher\Normalized\StringFuzzyMatcher.cs" />
+    <Compile Include="Matchers\MatcherConfig.cs" />
+    <Compile Include="Matchers\PlaceMatcher\EnPlaceMatcher.cs" />
+    <Compile Include="Matchers\PlaceMatcher\PlaceFields.cs" />
+    <Compile Include="Matchers\PlaceMatcher\PlaceMatcherConfig.cs" />
+    <Compile Include="Matchers\Target.cs" />
+    <Compile Include="NativeResourceWrapper.cs" />
+    <Compile Include="Nlp\Preprocessor\CaseFoldingPreProcessor.cs" />
+    <Compile Include="Nlp\Preprocessor\ChainedRuleBasedPreProcessor.cs" />
+    <Compile Include="Nlp\Preprocessor\EnPlacesPreProcessor.cs" />
+    <Compile Include="Nlp\Preprocessor\EnPreProcessor.cs" />
+    <Compile Include="Nlp\Preprocessor\IPreProcessor.cs" />
+    <Compile Include="Nlp\Preprocessor\UnicodePreProcessor.cs" />
+    <Compile Include="Nlp\Preprocessor\WhiteSpacePreProcessor.cs" />
+    <Compile Include="Nlp\Tokenizer\Interval.cs" />
+    <Compile Include="Nlp\Tokenizer\ITokenizer.cs" />
+    <Compile Include="Nlp\Tokenizer\SplittingTokenizer.cs" />
+    <Compile Include="Nlp\Tokenizer\Token.cs" />
+    <Compile Include="Nlp\Tokenizer\WhitespaceTokenizer.cs" />
+    <Compile Include="Phone.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Microsoft.PhoneticMatching.0.0.7\build\Microsoft.PhoneticMatching.targets" Condition="Exists('..\packages\Microsoft.PhoneticMatching.0.0.7\build\Microsoft.PhoneticMatching.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.PhoneticMatching.0.0.7\build\Microsoft.PhoneticMatching.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.PhoneticMatching.0.0.7\build\Microsoft.PhoneticMatching.targets'))" />
+  </Target>
+</Project>

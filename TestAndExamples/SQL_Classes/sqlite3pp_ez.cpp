@@ -604,15 +604,25 @@ namespace sqlite3pp
 
 	static void replace_all(std::wstring & data, const std::wstring &toSearch, const std::wstring &replaceStr)
 	{
-		// Get the first occurrence
+		if (toSearch.empty())
+			return;
 		size_t pos = data.find(toSearch);
-		// Repeat till end is reached
 		while (pos != std::string::npos)
 		{
-			// Replace this occurrence of Sub String
 			data.replace(pos, toSearch.size(), replaceStr);
-			// Get the next occurrence from the current position
 			pos = data.find(toSearch, pos + replaceStr.size());
+		}
+	}
+
+	static void replace_all(std::string& str, const std::string& toSearch, const std::string& replaceStr)
+	{
+		if (toSearch.empty())
+			return;
+		size_t start_pos = 0;
+		while ((start_pos = str.find(toSearch, start_pos)) != std::string::npos)
+		{
+			str.replace(start_pos, toSearch.length(), replaceStr);
+			start_pos += replaceStr.length(); // Move past the replaced text
 		}
 	}
 
@@ -705,13 +715,14 @@ namespace sqlite3pp
 #endif  // !SQLITE3PP_ALLOW_NULL_STRING_RETURN
 		std::wstring value;
 		const char * strtype = SQLITEDLLCONNECT sqlite3_column_decltype(stmt_, idx);
+		const std::string str_type = strtype == NULL ? "" : strtype;
 		if (!strtype)
 		{
 			V_COUT(WARN, "Received NULL value when getting column type for idx " << idx << ". Treating type as ASCII or UTF8.");
 		}
 
 		bool GetUnicodeString = false;
-		if (!strtype || strcmp(strtype, "TEXT") == 0 || strncmp("CHARACTER", strtype, 9) == 0 || strncmp("VARYING CHARACTER", strtype, 17) == 0 || strncmp("VARCHAR", strtype, 7) == 0)
+		if (!strtype || strcmp(strtype, "TEXT") == 0 || str_type.find(" SUB_TYPE TEXT") != std::string::npos || strncmp("CHARACTER", strtype, 9) == 0 || strncmp("VARYING CHARACTER", strtype, 17) == 0 || strncmp("VARCHAR", strtype, 7) == 0)
 			GetUnicodeString = false;
 		else if ( strncmp("NCHAR", strtype, 5) == 0 || strncmp("NVARCHAR", strtype, 8) == 0 || strncmp("NATIVE CHARACTER", strtype, 16) == 0)
 			GetUnicodeString = true;
@@ -1035,7 +1046,7 @@ namespace sqlite3pp
 
 			if (strcmp("INTEGER", str) == 0 || strcmp("INT", str) == 0 || strcmp("TINYINT", str) == 0 || strcmp("SMALLINT", str) == 0 || strcmp("MEDIUMINTSMALLINT", str) == 0 || strcmp("BIGINT", str) == 0 || strcmp("UNSIGNED BIG INT", str) == 0 || strcmp("INT2", str) == 0 || strcmp("INT8", str) == 0)
 				return "int";
-			if (strcmp("REAL", str) == 0 || strcmp("DOUBLE", str) == 0 || strcmp("DOUBLE PRECISION", str) == 0 || strcmp("FLOAT", str) == 0 || strncmp("DECIMAL", str, 7) == 0 || strcmp("BOOLEANL", str) == 0 || strcmp("BOOLEAN", str) == 0 || strcmp("BOOL", str) == 0 || strcmp("DATE", str) == 0 || strcmp("DATETIME", str) == 0 || strcmp("NUMERIC", str) == 0 || strcmp("NUMBER", str) == 0)
+			if (strcmp("REAL", str) == 0 || strcmp("DOUBLE", str) == 0 || strcmp("DOUBLE PRECISION", str) == 0 || strcmp("FLOAT", str) == 0 || strncmp("DECIMAL", str, 7) == 0 || strcmp("BOOLEANL", str) == 0 || strcmp("BOOLEAN", str) == 0 || strcmp("BOOL", str) == 0 || strcmp("DATE", str) == 0 || strcmp("DATETIME", str) == 0 || strcmp("TIMESTAMP", str) == 0 || strcmp("NUMERIC", str) == 0 || strcmp("NUMBER", str) == 0)
 				return "double";
 
 			if (m_options.m.use_basic_types_only)
@@ -1154,19 +1165,10 @@ namespace sqlite3pp
 	static const char TopHeaderCommnetsPrt2[] = "For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ\n*/";
 	const std::vector<std::pair<std::string, std::string> > SQLiteClassBuilder::columns_dummy;
 	
-	void replaceAll(std::string& str, const std::string& from, const std::string& to) {
-		if (from.empty())
-			return;
-		size_t start_pos = 0;
-		while ((start_pos = str.find(from, start_pos)) != std::string::npos) {
-			str.replace(start_pos, from.length(), to);
-			start_pos += to.length(); // Move past the replaced text
-		}
-	}
 	std::string GetValidFuncName(std::string name) 
 	{
 		//ToDo: Use regex to make sure all values are AlphaNum
-		replaceAll(name, " ", "__");
+		replace_all(name, " ", "__");
 		return name;
 	}
 

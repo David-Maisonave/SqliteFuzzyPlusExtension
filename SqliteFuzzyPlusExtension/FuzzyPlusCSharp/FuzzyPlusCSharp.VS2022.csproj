@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B1DE0268-D7E9-4868-BF3C-6298E5905597}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FuzzyPlusCSharp</RootNamespace>
+    <AssemblyName>FuzzyPlusCSharp</AssemblyName>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+    <RegisterForComInterop>false</RegisterForComInterop>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+    <RegisterForComInterop>false</RegisterForComInterop>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <RegisterForComInterop>false</RegisterForComInterop>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ColognePhonetics\ColognePhonetics.cs" />
+    <Compile Include="Misc\SQLite.cs" />
+    <Compile Include="Misc\USAddress\AddressParser.cs" />
+    <Compile Include="Misc\USAddress\AddressParseResult.cs" />
+    <Compile Include="Misc\USAddress\Components.cs" />
+    <Compile Include="Misc\USAddress\StringHelper.cs" />
+    <Compile Include="StringMatchingAlgorithms\BlockDistance.cs" />
+    <Compile Include="StringMatchingAlgorithms\ChapmanLengthDeviation.cs" />
+    <Compile Include="StringMatchingAlgorithms\ChapmanMeanLength.cs" />
+    <Compile Include="StringMatchingAlgorithms\CosineSimilarity.cs" />
+    <Compile Include="StringMatchingAlgorithms\DamerauLevenshtein.cs" />
+    <Compile Include="StringMatchingAlgorithms\DiceSimilarity.cs" />
+    <Compile Include="StringMatchingAlgorithms\EditDistanceWithWildCard.cs" />
+    <Compile Include="StringMatchingAlgorithms\Euclidean.cs" />
+    <Compile Include="StringMatchingAlgorithms\GeneralizedCompressionDistance.cs" />
+    <Compile Include="StringMatchingAlgorithms\Hamming.cs" />
+    <Compile Include="StringMatchingAlgorithms\IDistance.cs" />
+    <Compile Include="StringMatchingAlgorithms\IExactMatch.cs" />
+    <Compile Include="StringMatchingAlgorithms\JaccardIndex.cs" />
+    <Compile Include="StringMatchingAlgorithms\JaccardSimilarity.cs" />
+    <Compile Include="StringMatchingAlgorithms\Jaro.cs" />
+    <Compile Include="StringMatchingAlgorithms\JaroWinkler.cs" />
+    <Compile Include="StringMatchingAlgorithms\Levenshtein.cs" />
+    <Compile Include="StringMatchingAlgorithms\Levenshtein2.cs" />
+    <Compile Include="StringMatchingAlgorithms\LongestCommonSequence.cs" />
+    <Compile Include="StringMatchingAlgorithms\LongestCommonSubsequence.cs" />
+    <Compile Include="StringMatchingAlgorithms\LongestCommonSubstring.cs" />
+    <Compile Include="StringMatchingAlgorithms\MatchingCoefficient.cs" />
+    <Compile Include="StringMatchingAlgorithms\MinHash.cs" />
+    <Compile Include="StringMatchingAlgorithms\MongeElkan.cs" />
+    <Compile Include="StringMatchingAlgorithms\NeedlemanWunsch.cs" />
+    <Compile Include="StringMatchingAlgorithms\NGramsDistance.cs" />
+    <Compile Include="StringMatchingAlgorithms\NormalizedLevenshtein.cs" />
+    <Compile Include="StringMatchingAlgorithms\OverlapCoefficient.cs" />
+    <Compile Include="StringMatchingAlgorithms\PhraseTokenize.cs" />
+    <Compile Include="StringMatchingAlgorithms\QGramsDistance.cs" />
+    <Compile Include="StringMatchingAlgorithms\RatcliffObershelpSimilarity.cs" />
+    <Compile Include="StringMatchingAlgorithms\Sift4.cs" />
+    <Compile Include="StringMatchingAlgorithms\SimHash.cs" />
+    <Compile Include="StringMatchingAlgorithms\SimMetricsCore.cs" />
+    <Compile Include="StringMatchingAlgorithms\SmithWaterman.cs" />
+    <Compile Include="StringMatchingAlgorithms\SmithWatermanGotoh.cs" />
+    <Compile Include="StringMatchingAlgorithms\SmithWatermanGotohWindowedAffine.cs" />
+    <Compile Include="StringMatchingAlgorithms\SorensenDice.cs" />
+    <Compile Include="StringMatchingAlgorithms\TanimotoCoefficient.cs" />
+    <Compile Include="Fuzzy.cs" />
+    <Compile Include="FuzzyPhoneticMatching.cs" />
+    <Compile Include="Misc\HasInSameOrder.cs" />
+    <Compile Include="Misc\Normalize.cs" />
+    <Compile Include="Misc\Sameness.cs" />
+    <Compile Include="PhoneticMethods\SoundexVer2.cs" />
+    <Compile Include="Phonix\Caverphone.cs" />
+    <Compile Include="Phonix\DoubleMetaphone.cs" />
+    <Compile Include="Phonix\ISimilarity.cs" />
+    <Compile Include="Phonix\MatchRatingApproach.cs" />
+    <Compile Include="Phonix\Metaphone.cs" />
+    <Compile Include="Phonix\MetaphoneEncoder.cs" />
+    <Compile Include="Phonix\Ngram.cs" />
+    <Compile Include="Phonix\NysiiSc.cs" />
+    <Compile Include="Phonix\PhoneticEncoder.cs" />
+    <Compile Include="Phonix\SIOHelpers.cs" />
+    <Compile Include="Phonix\Soundex.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringMatchingAlgorithms\TverskyIndex.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
