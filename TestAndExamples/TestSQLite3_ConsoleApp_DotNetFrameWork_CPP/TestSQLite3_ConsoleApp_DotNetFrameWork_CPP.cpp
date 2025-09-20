@@ -70,6 +70,14 @@ int main()
     for (int row = 0; row < tbl.size(); ++row)								// C style iteration
         std::wcout << tbl[row].get_Function() << tbl[row].get_Description() << tbl[row].get_Arguments() << tbl[row].get_Return() << tbl[row].get_Details() << tbl[row].get_ExtensionAlias() << tbl[row].get_WikiAlias() << std::endl;
 
+    sqlite3pp::Table<sql_DB_TestData_table_zTroubleFields> tbl2; // Table with problematic field and table names.
+    for (auto row : tbl2)
+        std::cout << row.get_Some__Names() << " | " << row.get_Zip__Code() << " | " << row.get_City__and__State() << " | " << row.get_Area__Code() << " | " << row.get_Bad__Type() << " | " << row.get_Is__US__Born() << " | " << row.get_Is__US__Citizen__() << " | " << row.get_Unsigned__Big__Integer__Support() << " | " << row.get_Unsigned__Big__Integer__Support2() << " | " << row.get_Big__Integer__Support() << " | " << row.get_Big__Integer__Support__2() << " | " << row.get_Big__Integer__Support__3() << " | " << std::endl;
+
+    sqlite3pp::Table<sql_DB_TestData_table_zz__Trouble__Fields> tbl3; // Table with problematic field and table names.
+    for (auto row : tbl3)
+        std::cout << row.get_Some__Names() << " | " << row.get_Zip__Code() << " | " << row.get_City__and__State() << " | " << row.get_Area__Code() << " | " << row.get_Bad__Type() << " | " << row.get_Is__US__Born() << " | " << row.get_Is__US__Citizen__() << " | " << row.get_Unsigned__Big__Integer__Support() << " | " << row.get_Unsigned__Big__Integer__Support2() << " | " << row.get_Big__Integer__Support() << " | " << row.get_Big__Integer__Support__2() << " | " << row.get_Big__Integer__Support__3() << " | " << std::endl;
+
     dbFileName = "..\\TestDatabase\\chinook3.5Krows.db";
     if (sqlite3pp::file_exists(dbFileName))
     {
