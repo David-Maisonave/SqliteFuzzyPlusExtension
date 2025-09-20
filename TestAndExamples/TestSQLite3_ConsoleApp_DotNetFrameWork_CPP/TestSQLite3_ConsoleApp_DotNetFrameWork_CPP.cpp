@@ -1,5 +1,3 @@
-#include "pch.h"
-
 using namespace System;
 #include <iostream>
 #include "../SQL_Classes/SQLiteDLLConnect.h"

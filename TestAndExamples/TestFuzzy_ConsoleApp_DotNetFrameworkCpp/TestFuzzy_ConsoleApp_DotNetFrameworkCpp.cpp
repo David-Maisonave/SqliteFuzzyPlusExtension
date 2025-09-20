@@ -1,4 +1,3 @@
-#include "pch.h"
 #include <atlstr.h>
 #include <fstream>
 #include <iostream>
