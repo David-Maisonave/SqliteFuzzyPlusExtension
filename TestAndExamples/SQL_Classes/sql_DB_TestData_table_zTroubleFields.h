@@ -61,8 +61,8 @@ public:
 
 	// getTableName, getColumnNames, getSelectColumnNames, and getStreamData are required for sqlite3pp::Table template class
 	static StrType getTableName() { return "zTroubleFields" ; }
-	static StrType getColumnNames() { return "Some__Names, Zip__Code, City__and__State, Area__Code, Bad__Type, Is__US__Born, Is__US__Citizen__, Unsigned__Big__Integer__Support, Unsigned__Big__Integer__Support2, Big__Integer__Support, Big__Integer__Support__2, Big__Integer__Support__3"; }
-	static StrType getSelectColumnNames() { return "\"Some__Names\", \"Zip__Code\", \"City__and__State\", \"Area__Code\", \"Bad__Type\", \"Is__US__Born\", \"Is__US__Citizen__\", \"Unsigned__Big__Integer__Support\", \"Unsigned__Big__Integer__Support2\", \"Big__Integer__Support\", \"Big__Integer__Support__2\", \"Big__Integer__Support__3\""; }
+	static StrType getColumnNames() { return "\"Some Names\", \"Zip Code\", \"City and State\", \"Area Code\", \"Bad Type\", \"Is US Born\", \"Is US Citizen \", \"Unsigned Big Integer Support\", \"Unsigned Big Integer Support2\", \"Big Integer Support\", \"Big Integer Support 2\", \"Big Integer Support 3\""; }
+	static StrType getSelectColumnNames() { return "\"Some Names\", \"Zip Code\", \"City and State\", \"Area Code\", \"Bad Type\", \"Is US Born\", \"Is US Citizen \", \"Unsigned Big Integer Support\", \"Unsigned Big Integer Support2\", \"Big Integer Support\", \"Big Integer Support 2\", \"Big Integer Support 3\""; }
 	StrType GetValues() const
 	{
 		StrType strtype;

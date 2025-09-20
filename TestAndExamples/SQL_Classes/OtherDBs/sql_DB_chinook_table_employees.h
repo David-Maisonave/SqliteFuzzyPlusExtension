@@ -64,7 +64,7 @@ public:
 
 	// getTableName, getColumnNames, getSelectColumnNames, and getStreamData are required for sqlite3pp::Table template class
 	static StrType getTableName() { return "employees" ; }
-	static StrType getColumnNames() { return "EmployeeId, LastName, FirstName, Title, ReportsTo, BirthDate, HireDate, Address, City, State, Country, PostalCode, Phone, Fax, Email"; }
+	static StrType getColumnNames() { return "\"EmployeeId\", \"LastName\", \"FirstName\", \"Title\", \"ReportsTo\", \"BirthDate\", \"HireDate\", \"Address\", \"City\", \"State\", \"Country\", \"PostalCode\", \"Phone\", \"Fax\", \"Email\""; }
 	static StrType getSelectColumnNames() { return "\"EmployeeId\", \"LastName\", \"FirstName\", \"Title\", \"ReportsTo\", \"BirthDate\", \"HireDate\", \"Address\", \"City\", \"State\", \"Country\", \"PostalCode\", \"Phone\", \"Fax\", \"Email\""; }
 	StrType GetValues() const
 	{

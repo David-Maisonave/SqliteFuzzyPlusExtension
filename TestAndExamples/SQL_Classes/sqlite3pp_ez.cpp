@@ -1249,8 +1249,8 @@ namespace sqlite3pp
 			
 		}
 		// Add includes needed to support specified m_options.str_type
-		myfile << "#ifndef " << HeaderUpper << std::endl;
-		myfile << "#define " << HeaderUpper << std::endl;
+		myfile << "#ifndef " << GetValidFuncName(HeaderUpper) << std::endl;
+		myfile << "#define " << GetValidFuncName(HeaderUpper) << std::endl;
 		const std::string AdditionalInclude = "#include \"" + m_options.h.header_include + "\"";
 		if (m_options.s.str_include.size() && m_options.s.str_include != AdditionalInclude &&
 			(m_options.s.str_include != strOpt_sql_tstring.str_include || (m_options.h.header_include != HeadersCreatedSqlDir.header_include && m_options.h.header_include != HeadersCreatedBaseDir.header_include) ))
@@ -1322,7 +1322,7 @@ namespace sqlite3pp
 					myfile << "*/" << std::endl;
 				myfile << "\n" << std::endl;
 			}
-			myfile << "\n#endif // !" << HeaderUpper << std::endl;
+			myfile << "\n#endif // !" << GetValidFuncName(HeaderUpper) << std::endl;
 			myfile.close();
 			V_COUT(DETAIL, "Finish creating Master_Header file.");
 		}
@@ -1460,13 +1460,13 @@ namespace sqlite3pp
 			// Create getColumnNames member function. Needed for sqlite3pp::Table template class
 			myfile << "\tstatic StrType getColumnNames() { return " << m_options.s.str_pre << "\"";
 			for (auto& c : columns_with_comma)
-				myfile << c.second << GetValidFuncName(c.first);
+				myfile << c.second << "\\\"" << c.first << "\\\"";
 			myfile << "\"" << m_options.s.str_post << "; }" << std::endl;
 
 			// Create getSelectColumnNames member function. Needed for sqlite3pp::Table template class
 			myfile << "\tstatic StrType getSelectColumnNames() { return " << m_options.s.str_pre << "\"";
 			for (auto& c : columns_with_comma)
-				myfile << c.second << "\\\"" << GetValidFuncName(c.first) << "\\\"";
+				myfile << c.second << "\\\"" << c.first << "\\\"";
 			myfile << "\"" << m_options.s.str_post << "; }" << std::endl;
 
 			// Create GetValues member function. Needed for sqlite3pp::Table template class

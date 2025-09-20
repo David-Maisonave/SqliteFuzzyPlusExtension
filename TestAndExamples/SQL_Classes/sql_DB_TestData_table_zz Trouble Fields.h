@@ -31,8 +31,8 @@ Example Usage:		(Using sqlite3pp::Table container)
 			std::cout << my_tbl[row].get_Some__Names() << " | " << my_tbl[row].get_Zip__Code() << " | " << my_tbl[row].get_City__and__State() << " | " << my_tbl[row].get_Area__Code() << " | " << my_tbl[row].get_Bad__Type() << " | " << my_tbl[row].get_Is__US__Born() << " | " << my_tbl[row].get_Is__US__Citizen__() << " | " << my_tbl[row].get_Unsigned__Big__Integer__Support() << " | " << my_tbl[row].get_Unsigned__Big__Integer__Support2() << " | " << my_tbl[row].get_Big__Integer__Support() << " | " << my_tbl[row].get_Big__Integer__Support__2() << " | " << my_tbl[row].get_Big__Integer__Support__3() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
-#ifndef SQL_DB_TESTDATA_TABLE_ZZ TROUBLE FIELDS_H
-#define SQL_DB_TESTDATA_TABLE_ZZ TROUBLE FIELDS_H
+#ifndef SQL_DB_TESTDATA_TABLE_ZZ__TROUBLE__FIELDS_H
+#define SQL_DB_TESTDATA_TABLE_ZZ__TROUBLE__FIELDS_H
 #include <string>
 #include "sqlite3pp_ez.h"
 
@@ -61,8 +61,8 @@ public:
 
 	// getTableName, getColumnNames, getSelectColumnNames, and getStreamData are required for sqlite3pp::Table template class
 	static StrType getTableName() { return "zz Trouble Fields" ; }
-	static StrType getColumnNames() { return "Some__Names, Zip__Code, City__and__State, Area__Code, Bad__Type, Is__US__Born, Is__US__Citizen__, Unsigned__Big__Integer__Support, Unsigned__Big__Integer__Support2, Big__Integer__Support, Big__Integer__Support__2, Big__Integer__Support__3"; }
-	static StrType getSelectColumnNames() { return "\"Some__Names\", \"Zip__Code\", \"City__and__State\", \"Area__Code\", \"Bad__Type\", \"Is__US__Born\", \"Is__US__Citizen__\", \"Unsigned__Big__Integer__Support\", \"Unsigned__Big__Integer__Support2\", \"Big__Integer__Support\", \"Big__Integer__Support__2\", \"Big__Integer__Support__3\""; }
+	static StrType getColumnNames() { return "\"Some Names\", \"Zip Code\", \"City and State\", \"Area Code\", \"Bad Type\", \"Is US Born\", \"Is US Citizen \", \"Unsigned Big Integer Support\", \"Unsigned Big Integer Support2\", \"Big Integer Support\", \"Big Integer Support 2\", \"Big Integer Support 3\""; }
+	static StrType getSelectColumnNames() { return "\"Some Names\", \"Zip Code\", \"City and State\", \"Area Code\", \"Bad Type\", \"Is US Born\", \"Is US Citizen \", \"Unsigned Big Integer Support\", \"Unsigned Big Integer Support2\", \"Big Integer Support\", \"Big Integer Support 2\", \"Big Integer Support 3\""; }
 	StrType GetValues() const
 	{
 		StrType strtype;
