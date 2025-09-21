@@ -6,7 +6,6 @@
 const sqlite3_api_routines* sqlite3_api = NULL;
 #include "SQLiteWrapper.h"
 SQLITE_EXTENSION_INIT3
-#define SQLITEFUZZYPLUSEXTENSION_LIB "SQLITEFUZZYPLUSEXTENSION.LIB"
 #include "..\..\SqliteFuzzyPlusExtension\SqliteFuzzyPlusExtension.h"
 
 bool b0 =   false;

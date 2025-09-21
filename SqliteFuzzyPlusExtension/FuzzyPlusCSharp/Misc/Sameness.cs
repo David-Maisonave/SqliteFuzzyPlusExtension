@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.Misc
 {
+#pragma warning disable CRR0050 // Disabling this warning, because using string.compare() does NOT make the code more readable compared to a simple ==  or != operators.
     public static class Sameness
     {
         // The Sameness functions first normalize the input values before comparing them.

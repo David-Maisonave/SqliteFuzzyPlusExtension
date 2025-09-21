@@ -106,8 +106,8 @@
       <UseDynamicDebugging>true</UseDynamicDebugging>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.dll" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.dll"
-copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.lib" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.lib"</Command>
+      <Command>copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.VS2022.dll" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.VS2022.dll"
+copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.VS2022.lib" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.VS2022.lib"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -126,8 +126,8 @@ copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatch
       <UseDynamicDebugging>true</UseDynamicDebugging>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.dll" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.dll"
-copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.lib" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.lib"</Command>
+      <Command>copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.VS2022.dll" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.VS2022.dll"
+copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.VS2022.lib" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.VS2022.lib"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -143,8 +143,8 @@ copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatch
       <AdditionalOptions> /ignore:4248 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.dll" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.dll"
-copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.lib" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.lib"</Command>
+      <Command>copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.VS2022.dll" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.VS2022.dll"
+copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.VS2022.lib" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.VS2022.lib"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -160,8 +160,8 @@ copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatch
       <AdditionalOptions> /ignore:4248 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.dll" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.dll"
-copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.lib" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.lib"</Command>
+      <Command>copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.VS2022.dll" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.VS2022.dll"
+copy "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtensionWithMsPhoneticMatching.VS2022.lib" "$(SolutionDir)$(Configuration)\SqliteFuzzyPlusExtension.VS2022.lib"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

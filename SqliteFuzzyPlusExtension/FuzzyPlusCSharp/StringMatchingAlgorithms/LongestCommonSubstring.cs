@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
+#pragma warning disable CRR0047 // Disabling this warning because we want to keep this class here to simplify the code.
     public class ILongestCommonSubstring : FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {
         public double Percentage(string source1, string source2, bool isCaseSensitive = true) => LongestCommonSubstring.Percentage(source1, source2, isCaseSensitive);

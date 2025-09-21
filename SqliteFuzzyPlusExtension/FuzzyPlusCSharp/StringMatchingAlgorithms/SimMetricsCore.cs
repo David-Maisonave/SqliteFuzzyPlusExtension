@@ -9,6 +9,8 @@ using static FuzzyPlusCSharp.StringMatchingAlgorithms.SmithWatermanGotohWindowed
 
 namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
+#pragma warning disable CRR0047 // Disabling this warning because we want to keep this class here to simplify the code.
+#pragma warning disable CRR0048
     public interface IStringMetric
     {
         double GetSimilarity(string firstWord, string secondWord);
@@ -556,7 +558,7 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
         {
             if (string.IsNullOrEmpty(base.SuppliedWord))
             {
-                return string.Format("{0} : not word passed for tokenizing yet.", this.ShortDescriptionString);
+                return $"{this.ShortDescriptionString} : not word passed for tokenizing yet.";
             }
             return string.Format("{0} - currently holding : {1}.{2}The method is using a QGram length of {3}.", new object[] { this.ShortDescriptionString, base.SuppliedWord, Environment.NewLine, Convert.ToInt32(base.QGramLength) });
         }
@@ -625,7 +627,7 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
                 num3--;
                 for (int j = 0; j < num3; j++)
                 {
-                    string str3 = str.Substring(j, count) + str.Substring(j + tokenLength, 1);
+                    string str3 = $"{(str.Substring(j, count))}{(str.Substring(j + tokenLength, 1))}";
                     if (!this.stopWordHandler.IsWord(str3) && !collection.Contains(str3))
                     {
                         collection.Add(str3);
@@ -726,7 +728,7 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
         {
             if (string.IsNullOrEmpty(base.SuppliedWord))
             {
-                return string.Format("{0} : not word passed for tokenizing yet.", this.ShortDescriptionString);
+                return $"{this.ShortDescriptionString} : not word passed for tokenizing yet.";
             }
             return string.Format("{0} - currently holding : {1}.{2}The method is using a QGram length of {3}.", new object[] { this.ShortDescriptionString, base.SuppliedWord, Environment.NewLine, Convert.ToInt32(base.QGramLength) });
         }

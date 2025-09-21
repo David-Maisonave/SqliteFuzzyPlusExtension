@@ -995,8 +995,8 @@ namespace sqlite3pp
 	const MiscOptions SQLiteClassBuilder::MiscOpt_min = { ",", true, true, true, true, true, false, false, true, true };
 	const MiscOptions SQLiteClassBuilder::MiscOpt_var = { ",", true, true, true, true, true, true, false, true, true };
 	// Default settings for HeaderOpt
-	const HeaderOpt SQLiteClassBuilder::HeadersCreatedSqlDir = { "SQL\\", "sql_", "", "h", "..\\sqlite3pp_ez.h" };
-	const HeaderOpt SQLiteClassBuilder::HeadersCreatedBaseDir = { "", "sql_", "", "h", "sqlite3pp_ez.h" };
+	const HeaderOpt SQLiteClassBuilder::HeadersCreatedSqlDir = { "SQL\\", "sql_", "", "hpp", "..\\sqlite3pp_ez.h" };
+	const HeaderOpt SQLiteClassBuilder::HeadersCreatedBaseDir = { "", "sql_", "", "hpp", "sqlite3pp_ez.h" };
 
 	const char *SQLiteClassBuilder::Nill = "#NILL#";
 	const char *SQLiteClassBuilder::CreateHeaderForAllTables = "%_CreateHeaderForAllTables_%";
@@ -1165,18 +1165,29 @@ namespace sqlite3pp
 	static const char TopHeaderCommnetsPrt2[] = "For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ\n*/";
 	const std::vector<std::pair<std::string, std::string> > SQLiteClassBuilder::columns_dummy;
 	
-	std::string GetValidFuncName(std::string name) 
+	static std::string GetValidFuncName(std::string name)
 	{
 		//ToDo: Use regex to make sure all values are AlphaNum
 		replace_all(name, " ", "__");
 		return name;
 	}
 
-	bool SQLiteClassBuilder::CreateHeaderPrefix(const std::string& TableName, std::ofstream &myfile, 
-		std::string& ClassName, std::string& HeaderUpper, std::string FirstColumnName, std::string LastColumnName, 
-		bool AppendToVect, const std::vector<std::pair<std::string, std::string> > &columns)
+	bool SQLiteClassBuilder::CreateHeaderPrefix(const std::string& TableName, std::ofstream& myfile,
+		std::string& ClassName, std::string& HeaderUpper, std::string FirstColumnName, std::string LastColumnName,
+		bool AppendToVect, const std::vector<std::pair<std::string, std::string> >& columns)
 	{
 		V_COUT(DEBUG, "Entering with arguments: '" << TableName << "', ofstream, '" << ClassName << "', '" << HeaderUpper << "', '" << FirstColumnName << "', '" << LastColumnName << "', " << AppendToVect);
+		if (m_options.m.progLang & ProgLang::CPP_Lang && !CreateHeaderPrefix_CPP(TableName, myfile, ClassName, HeaderUpper, FirstColumnName, LastColumnName, AppendToVect, columns))
+			return false;
+		if (m_options.m.progLang & ProgLang::C_Lang && !CreateHeaderPrefix_C(TableName, myfile, ClassName, HeaderUpper, FirstColumnName, LastColumnName, AppendToVect, columns))
+			return false;
+		return true;
+	}
+
+	bool SQLiteClassBuilder::CreateHeaderPrefix_C(const std::string& TableName, std::ofstream& myfile,
+			std::string& ClassName, std::string& HeaderUpper, std::string FirstColumnName, std::string LastColumnName,
+			bool AppendToVect, const std::vector<std::pair<std::string, std::string> >& columns)
+	{
 		std::ios_base::openmode openMode = m_AppendTableToHeader ? std::ios_base::out | std::ios_base::app : std::ios_base::out;
 		ClassName = m_options.h.header_prefix + TableName + m_options.h.header_postfix;
 		const std::string HeaderFileName = ClassName + "." + m_options.h.file_type;
@@ -1207,12 +1218,66 @@ namespace sqlite3pp
 			if (LastColumnName.empty())
 				LastColumnName = "ColumnWiget";
 			myfile << "Example Usage:\t\t(Using sqlite3pp::Table container)" << std::endl;
+			myfile << "\t// Example\n\t\tsetGlobalDB(\"myDatabase.db\");" << std::endl;
+			myfile << "\t\tfor (int i = 0; i < my_tbl.size(); ++i)\n\t\t\tprintf(my_tbl[i]." << GetValidFuncName(FirstColumnName) << ");\n" << std::endl;
+			myfile << TopHeaderCommnetsPrt2 << std::endl;
+			
+		}
+		// Add includes needed to support specified m_options.str_type
+		myfile << "#ifndef " << GetValidFuncName(HeaderUpper) << std::endl;
+		myfile << "#define " << GetValidFuncName(HeaderUpper) << std::endl;
+		const std::string AdditionalInclude = "#include \"" + m_options.h.header_include + "\"";
+		if (m_options.s.str_include.size() && m_options.s.str_include != AdditionalInclude &&
+			(m_options.s.str_include != strOpt_sql_tstring.str_include || (m_options.h.header_include != HeadersCreatedSqlDir.header_include && m_options.h.header_include != HeadersCreatedBaseDir.header_include) ))
+			myfile << m_options.s.str_include << std::endl;
+
+		if (m_options.h.header_include.size())
+			myfile << AdditionalInclude << std::endl;
+
+		V_COUT(DETAIL, "Created prefix data for class '" << ClassName << "' in file '" << HeaderFileNameWithFolder << "' for table '" << TableName << "'");
+		return true;
+	}
+
+	bool SQLiteClassBuilder::CreateHeaderPrefix_CPP(const std::string& TableName, std::ofstream& myfile,
+			std::string& ClassName, std::string& HeaderUpper, std::string FirstColumnName, std::string LastColumnName,
+			bool AppendToVect, const std::vector<std::pair<std::string, std::string> >& columns)
+	{
+		std::ios_base::openmode openMode = m_AppendTableToHeader ? std::ios_base::out | std::ios_base::app : std::ios_base::out;
+		ClassName = m_options.h.header_prefix + TableName + m_options.h.header_postfix;
+		const std::string HeaderFileName = ClassName + "." + m_options.h.file_type;
+		if (!DirExists(m_options.h.dest_folder))
+			if (_mkdir(m_options.h.dest_folder.c_str()) != 0)
+			{
+				V_COUT(ERROR, "Failed to create folder '" << m_options.h.dest_folder << "'");
+				return false;
+			}
+		const std::string HeaderFileNameWithFolder = m_options.h.dest_folder + HeaderFileName;
+		myfile.open(HeaderFileNameWithFolder.c_str(), openMode);
+		if (!myfile.is_open())
+		{
+			V_COUT(ERROR, "Failed to open file '" << HeaderFileNameWithFolder << "'");
+			return false;
+		}
+		if (AppendToVect)
+			m_HeadersCreated.push_back(HeaderFileName);
+		char headerUpper[256] = { 0 };
+		strcpy_s(headerUpper, (ClassName + "_HPP").c_str());
+		_strupr_s(headerUpper);
+		HeaderUpper = headerUpper;
+		if (!m_options.m.exclude_comments && AppendToVect == true)
+		{
+			myfile << TopHeaderCommnetsPrt1 << std::endl;
+			if (FirstColumnName.empty())
+				FirstColumnName = "ColumnFoo";
+			if (LastColumnName.empty())
+				LastColumnName = "ColumnWiget";
+			myfile << "Example Usage:\t\t(Using sqlite3pp::Table container)" << std::endl;
 			myfile << "\t// Example #1\n\t\tsqlite3pp::setGlobalDB(\"myDatabase.db\");" << std::endl;
-			myfile << "\t\tsqlite3pp::Table<" << ClassName << "> my_tbl;\n\t\tfor (auto row : my_tbl)\n\t\t\tstd::wcout << row << std::endl;\n" << std::endl;
+			myfile << "\t\tsqlite3pp::Table<" << ClassName << "> my_tbl;\n\t\tfor (auto& row : my_tbl)\n\t\t\tstd::cout << row << std::endl;\n" << std::endl;
 
-			myfile << "\t// Example #2\n\t\tfor (int i = 0; i < my_tbl.size(); ++i)\n\t\t\tstd::wcout << my_tbl[i].get_" << GetValidFuncName(FirstColumnName) << "() << std::endl;\n" << std::endl;
+			myfile << "\t// Example #2\n\t\tfor (int i = 0; i < my_tbl.size(); ++i)\n\t\t\tstd::cout << my_tbl[i].get_" << GetValidFuncName(FirstColumnName) << "() << std::endl;\n" << std::endl;
 
-			myfile << "\t// Example #3\n\t\tfor (auto r = my_tbl.begin(); r != my_tbl.end(); ++r)\n\t\t\tstd::wcout << r->get_" << GetValidFuncName(LastColumnName) << "() << std::endl;\n" << std::endl;
+			myfile << "\t// Example #3\n\t\tfor (auto r = my_tbl.begin(); r != my_tbl.end(); ++r)\n\t\t\tstd::cout << r->get_" << GetValidFuncName(LastColumnName) << "() << std::endl;\n" << std::endl;
 			if (columns.size() > 0)
 			{
 				std::string outType = "std::cout";
@@ -1227,7 +1292,7 @@ namespace sqlite3pp
 				myfile << "\t\tsqlite3pp::Table<" << ClassName << "> my_tbl;";
 
 				myfile << "\n\t\t// Example#4a -- (C++11) Range-based loop";
-				myfile << "\n\t\tfor(auto row : my_tbl)\n";
+				myfile << "\n\t\tfor(auto& row : my_tbl)\n";
 				myfile << "\t\t\t" << outType;
 				for (auto& c : columns)
 					myfile << " << row.get_" << GetValidFuncName(c.first) << "()" << ColumnSep;
@@ -1374,7 +1439,7 @@ namespace sqlite3pp
 		if (TypeName == "BOOLEAN")
 			return " = false";
 		if (TypeName == "INTEGER" || TypeName == "INT" || TypeName == "INT2" || TypeName == "INT8" || TypeName == "TINYINT" ||
-			TypeName == "Smallint" || TypeName == "Mediumint" || TypeName == "Bigint" || TypeName == "UBigint")
+			TypeName == "SMALLINT" || TypeName == "MEDIUMINT" || TypeName == "BIGINT" || TypeName == "UBIGINT")
 			return " = 0";
 		if (TypeName == "REAL" || TypeName == "DOUBLEPRCSN" || TypeName == "NUMERIC" || TypeName == "DECIMAL" || TypeName == "DOUBLE" || TypeName == "FLOAT")
 			return " = 0.0f";
@@ -1382,9 +1447,9 @@ namespace sqlite3pp
 		{
 			if (TypeName == "TEXT")
 				return " = " + m_options.s.str_pre + "\"\"" + m_options.s.str_post;
-			if (TypeName == "TEXT" || TypeName == "Character" || TypeName == "Varchar")
+			if (TypeName == "TEXT" || TypeName == "CHARACTER" || TypeName == "VARCHAR")
 				return " = \"\"";
-			if (TypeName == "Nchar" || TypeName == "Nvarchar")
+			if (TypeName == "NCHAR" || TypeName == "NVARCHAR")
 				return " = " + m_options.s.str_pre + "\"\"" + m_options.s.str_post;
 		}
 		return "";
@@ -1422,7 +1487,11 @@ namespace sqlite3pp
 		m_ClassNames.push_back(GetValidFuncName(ClassName));
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Create Table/View class
-		myfile << "\nclass " << GetValidFuncName(ClassName) << ": public sqlite3pp::sql_base\n{" << std::endl;
+		if (m_options.m.progLang & ProgLang::CPP_Lang)
+			myfile << "\nclass " << GetValidFuncName(ClassName) << ": public sqlite3pp::sql_base\n{" << std::endl;
+		else if (m_options.m.progLang & ProgLang::C_Lang)
+			myfile << "\ntypedef struct " << GetValidFuncName(ClassName) << " \n{" << std::endl;
+
 
 		if (!m_options.m.exclude_table_interface)
 		{
@@ -1430,13 +1499,15 @@ namespace sqlite3pp
 				myfile << "\t// A member variable for each field in the table" << std::endl;
 			// Define if data member variables are protected or public
 			const char* publicOrPrivate = m_options.m.is_public_var_members ? "public" : "protected";
-			myfile << publicOrPrivate << ":" << std::endl;
+			if (m_options.m.progLang & ProgLang::CPP_Lang)
+				myfile << publicOrPrivate << ":" << std::endl;
 			
 			// Define data member variables associated with the table/view
 			for (auto& c : columns)
 				myfile << "\t" << c.second << " " << GetValidFuncName(c.first) << InitializeValue(c.second) << ";" << std::endl;
 
-			myfile << "\npublic:" << std::endl;
+			if (m_options.m.progLang & ProgLang::CPP_Lang)
+				myfile << "\npublic:" << std::endl;
 			// Create a define type for strings
 			myfile << "\tusing StrType = " << m_options.s.str_type << ";" << std::endl;
 			//myfile << "\n\tusing Text = StrType;" << std::endl;

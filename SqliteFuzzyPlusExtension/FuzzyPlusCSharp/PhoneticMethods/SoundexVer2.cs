@@ -40,7 +40,7 @@ namespace FuzzyPlusCSharp.PhoneticMethods
             Numified = RemoveVowelSounds.Replace(Numified, string.Empty);
 
             // Concatenate, pad and trim to ensure X### format.
-            return string.Format("{0}{1}", Phrase[0], Numified).PadRight(4, '0').Substring(0, 4);
+            return $"{Phrase[0]}{Numified}".PadRight(4, '0').Substring(0, 4);
         }
 
         private static string Numify(string Phrase)

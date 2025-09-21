@@ -10,6 +10,7 @@ namespace ExampleSQLite3_DotNetFrameWork_C_
     {
         static void Main(string[] args)
         {
+            Console.WriteLine($"Hello, World!{args.Length}");
         }
     }
 }

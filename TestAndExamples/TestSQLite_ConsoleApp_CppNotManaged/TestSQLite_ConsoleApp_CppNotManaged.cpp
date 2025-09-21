@@ -4,7 +4,7 @@
 #include <iostream>
 #include <map>
 #include "../SQL_Classes/sqlite3pp_ez.h"
-#include "../SQL_Classes/sql_DB_TestData_Master_Header.h"
+#include "../SQL_Classes/sql_DB_TestData_Master_Header.hpp"
 
 	// Function to test populating all tables & views.
 static std::map< std::string, std::shared_ptr<sqlite3pp::TableBase> > testPopulatingAllTables()
@@ -31,8 +31,10 @@ static void testAllTables()
 		std::cout << t.second;
 }
 
-int main()
+int main(int argc, char* argv[])
 {
+	if (argc > 1)
+		std::cout << "Number of arguments: " << argc << " ; First Arg=" << argv[0] << "\n";
 	sqlite3pp::setGlobalDB(L"..\\..\\SqliteFuzzyPlusExtension\\TestData\\TestData.db");
 	// Create C++ headers for associated database tables
 	sqlite3pp::SQLiteClassBuilder	createMyClasses(

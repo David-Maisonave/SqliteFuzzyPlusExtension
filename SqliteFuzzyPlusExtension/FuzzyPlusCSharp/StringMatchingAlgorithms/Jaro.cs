@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
+#pragma warning disable CRR0047 // Disabling this warning because we want to keep this class here to simplify the code.
     public class IJaro : FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {
         public double Percentage(string source1, string source2, bool isCaseSensitive = true) => Jaro.Percentage(source1, source2, isCaseSensitive);
@@ -27,6 +28,7 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
                 sourceTargetIntersectAsString += character;
             foreach (char character in targetIntersectSource)
                 targetSourceIntersectAsString += character;
+#pragma warning disable CRR0020
             double t = Levenshtein.Distance(sourceTargetIntersectAsString, targetSourceIntersectAsString, isCaseSensitive) / 2;
             return (double)((m / source1.Length) + (m / source2.Length) + ((m - t) / m)) / 3;
         }

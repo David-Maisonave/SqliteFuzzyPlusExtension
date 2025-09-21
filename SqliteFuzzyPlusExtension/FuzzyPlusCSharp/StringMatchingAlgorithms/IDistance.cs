@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
+#pragma warning disable CRR0047 // Disabling this warning because we want to keep this class here to simplify the code.
     // At minimum, all FuzzyPlusCSharp distance classes must support IDistance.
     public interface IDistance
     {

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
+#pragma warning disable CRR0047 // Disabling this warning because we want to keep this class here to simplify the code.
     // IEditDistanceWithWildCard is a place holder class, and doesn't have implementation for a wildcard yet.
     public class IEditDistanceWithWildCard : FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {

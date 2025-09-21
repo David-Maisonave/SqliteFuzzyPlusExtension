@@ -33,6 +33,7 @@
 #if (defined(_WIN32) || defined(WIN32)) && !defined(_CRT_SECURE_NO_WARNINGS)
 /* This needs to come before any includes for MSVC compiler */
 #define _CRT_SECURE_NO_WARNINGS
+#pragma warning(disable: 6031 6308 28182 6387 6011 6386 6385 28183 1 3 4 102) 
 #endif
 
 /*
@@ -2067,7 +2068,7 @@ static void sha3QueryFunc(
           case SQLITE_INTEGER: {
             sqlite3_uint64 u;
             int j;
-            unsigned char x[9];
+            unsigned char x[9]={0};
             sqlite3_int64 v = sqlite3_column_int64(pStmt,i);
             memcpy(&u, &v, 8);
             for(j=8; j>=1; j--){
@@ -2081,7 +2082,7 @@ static void sha3QueryFunc(
           case SQLITE_FLOAT: {
             sqlite3_uint64 u;
             int j;
-            unsigned char x[9];
+            unsigned char x[9]={0};
             double r = sqlite3_column_double(pStmt,i);
             memcpy(&u, &r, 8);
             for(j=8; j>=1; j--){
@@ -2363,9 +2364,9 @@ static sqlite3_uint64 fileTimeToUnixTime(
   LPFILETIME pFileTime
 ){
   SYSTEMTIME epochSystemTime;
-  ULARGE_INTEGER epochIntervals;
+  ULARGE_INTEGER epochIntervals = { 0 };
   FILETIME epochFileTime;
-  ULARGE_INTEGER fileIntervals;
+  ULARGE_INTEGER fileIntervals = { 0 };
 
   memset(&epochSystemTime, 0, sizeof(SYSTEMTIME));
   epochSystemTime.wYear = 1970;
@@ -2569,7 +2570,7 @@ static int writeFile(
 #if !SQLITE_OS_WINRT
     /* Windows */
     FILETIME lastAccess;
-    FILETIME lastWrite;
+    FILETIME lastWrite = { 0 };
     SYSTEMTIME currentTime;
     LONGLONG intervals;
     HANDLE hFile;
@@ -2683,7 +2684,7 @@ static void lsModeFunc(
 ){
   int i;
   int iMode = sqlite3_value_int(argv[0]);
-  char z[16];
+  char z[16] = { 0 };
   (void)argc;
   if( S_ISLNK(iMode) ){
     z[0] = 'l';
@@ -5451,7 +5452,7 @@ static void ieee754func_to_blob(
   ){
     double r = sqlite3_value_double(argv[0]);
     sqlite3_uint64 v;
-    unsigned char a[sizeof(r)];
+    unsigned char a[sizeof(r)] = { 0 };
     unsigned int i;
     memcpy(&v, &r, sizeof(r));
     for(i=1; i<=sizeof(r); i++){
@@ -5833,7 +5834,7 @@ static int seriesBestIndex(
   int bStartSeen = 0;    /* EQ constraint seen on the START column */
   int unusableMask = 0;  /* Mask of unusable constraints */
   int nArg = 0;          /* Number of arguments that seriesFilter() expects */
-  int aIdx[3];           /* Constraints on start, stop, and step */
+  int aIdx[3] = { 0 };           /* Constraints on start, stop, and step */
   const struct sqlite3_index_constraint *pConstraint;
 
   /* This implementation assumes that the start, stop, and step columns
@@ -6159,15 +6160,15 @@ static int re_space_char(int c){
 ** string zIn[].  Return true on a match and false if there is no match.
 */
 static int re_match(ReCompiled *pRe, const unsigned char *zIn, int nIn){
-  ReStateSet aStateSet[2], *pThis, *pNext;
-  ReStateNumber aSpace[100];
-  ReStateNumber *pToFree;
+  ReStateSet aStateSet[2] = { 0 }, *pThis = NULL, *pNext = NULL;
+  ReStateNumber aSpace[100] = { 0 };
+  ReStateNumber *pToFree = NULL;
   unsigned int i = 0;
   unsigned int iSwap = 0;
   int c = RE_EOF+1;
   int cPrev = 0;
   int rc = 0;
-  ReInput in;
+  ReInput in = { 0 };
 
   in.z = zIn;
   in.i = 0;
@@ -9442,8 +9443,8 @@ static void idxHashInit(IdxHash *pHash){
 static void idxHashClear(IdxHash *pHash){
   int i;
   for(i=0; i<IDX_HASH_SIZE; i++){
-    IdxHashEntry *pEntry;
-    IdxHashEntry *pNext;
+    IdxHashEntry *pEntry = NULL;
+    IdxHashEntry *pNext = NULL;
     for(pEntry=pHash->aHash[i]; pEntry; pEntry=pNext){
       pNext = pEntry->pHashNext;
       sqlite3_free(pEntry->zVal2);
@@ -10341,8 +10342,8 @@ static int idxCreateCandidates(sqlite3expert *p){
 ** Free all elements of the linked list starting at pConstraint.
 */
 static void idxConstraintFree(IdxConstraint *pConstraint){
-  IdxConstraint *pNext;
-  IdxConstraint *p;
+  IdxConstraint *pNext = NULL;
+  IdxConstraint *p = NULL;
 
   for(p=pConstraint; p; p=pNext){
     pNext = p->pNext;
@@ -10355,8 +10356,8 @@ static void idxConstraintFree(IdxConstraint *pConstraint){
 ** (pLast is not freed).
 */
 static void idxScanFree(IdxScan *pScan, IdxScan *pLast){
-  IdxScan *p;
-  IdxScan *pNext;
+  IdxScan *p = NULL;
+  IdxScan *pNext = NULL;
   for(p=pScan; p!=pLast; p=pNext){
     pNext = p->pNextScan;
     idxConstraintFree(p->pOrder);
@@ -10371,8 +10372,8 @@ static void idxScanFree(IdxScan *pScan, IdxScan *pLast){
 ** until pLast (pLast is not freed).
 */
 static void idxStatementFree(IdxStatement *pStatement, IdxStatement *pLast){
-  IdxStatement *p;
-  IdxStatement *pNext;
+  IdxStatement *p = NULL;
+  IdxStatement *pNext = NULL;
   for(p=pStatement; p!=pLast; p=pNext){
     pNext = p->pNext;
     sqlite3_free(p->zEQP);
@@ -10385,8 +10386,8 @@ static void idxStatementFree(IdxStatement *pStatement, IdxStatement *pLast){
 ** Free the linked list of IdxTable objects starting at pTab.
 */
 static void idxTableFree(IdxTable *pTab){
-  IdxTable *pIter;
-  IdxTable *pNext;
+  IdxTable *pIter = NULL;
+  IdxTable *pNext = NULL;
   for(pIter=pTab; pIter; pIter=pNext){
     pNext = pIter->pNext;
     sqlite3_free(pIter);
@@ -10397,8 +10398,8 @@ static void idxTableFree(IdxTable *pTab){
 ** Free the linked list of IdxWrite objects starting at pTab.
 */
 static void idxWriteFree(IdxWrite *pTab){
-  IdxWrite *pIter;
-  IdxWrite *pNext;
+  IdxWrite *pIter = NULL;
+  IdxWrite *pNext = NULL;
   for(pIter=pTab; pIter; pIter=pNext){
     pNext = pIter->pNext;
     sqlite3_free(pIter);
@@ -12936,7 +12937,7 @@ static int shellAuth(
      "FUNCTION",             "SAVEPOINT",            "RECURSIVE"
   };
   int i;
-  const char *az[4];
+  const char *az[4] = { 0 };
   az[0] = zA1;
   az[1] = zA2;
   az[2] = zA3;
@@ -13021,7 +13022,7 @@ static void eqp_append(ShellState *p, int iEqpId, int p2, const char *zText){
 ** in p->sGraph.
 */
 static void eqp_reset(ShellState *p){
-  EQPGraphRow *pRow, *pNext;
+  EQPGraphRow *pRow = NULL, *pNext = NULL;
   for(pRow = p->sGraph.pRow; pRow; pRow = pNext){
     pNext = pRow->pNext;
     sqlite3_free(pRow);
@@ -13042,7 +13043,7 @@ static EQPGraphRow *eqp_next_row(ShellState *p, int iEqpId, EQPGraphRow *pOld){
 ** recursively to render sublevels.
 */
 static void eqp_render_level(ShellState *p, int iEqpId){
-  EQPGraphRow *pRow, *pNext;
+  EQPGraphRow *pRow = NULL, *pNext = NULL;
   int n = strlen30(p->sGraph.zPrefix);
   char *z;
   for(pRow = eqp_next_row(p, iEqpId, 0); pRow; pRow = pNext){
@@ -15478,8 +15479,8 @@ static unsigned char *readHexDb(ShellState *p, int *pnData){
   int rc;
   FILE *in;
   const char *zDbFilename = p->pAuxDb->zDbFilename;
-  unsigned int x[16];
-  char zLine[1000];
+  unsigned int x[16] = { 0 };
+  char zLine[1000] = { 0 };
   if( zDbFilename ){
     in = fopen(zDbFilename, "r");
     if( in==0 ){
@@ -15539,7 +15540,12 @@ static unsigned char *readHexDb(ShellState *p, int *pnData){
   return a;
 
 readHexDb_error:
-  if( in!=p->in ){
+  if (p == 0)
+  {
+	  assert(0);
+      utf8_printf(stderr, "Error: readHexDb:  p = NULL\n");
+  }
+  else if( in!=p->in ){
     fclose(in);
   }else{
     while( fgets(zLine, sizeof(zLine), p->in)!=0 ){
@@ -18614,7 +18620,7 @@ static int do_meta_command(char *zLine, ShellState *p){
   int nArg = 0;
   int n, c;
   int rc = 0;
-  char *azArg[52];
+  char *azArg[52] = { 0 };
 
 #ifndef SQLITE_OMIT_VIRTUALTABLE
   if( p->expert.pExpert ){
@@ -19515,7 +19521,7 @@ static int do_meta_command(char *zLine, ShellState *p){
       goto meta_command_exit;
     }
     if( eVerbose>=2 || (eVerbose>=1 && useOutputMode) ){
-      char zSep[2];
+      char zSep[2] = { 0 };
       zSep[1] = 0;
       zSep[0] = sCtx.cColSep;
       utf8_printf(p->out, "Column separator ");
@@ -20495,7 +20501,7 @@ static int do_meta_command(char *zLine, ShellState *p){
                   || sqlite3_strlike(zName,"sqlite_temp_master", '\\')==0
                   || sqlite3_strlike(zName,"sqlite_temp_schema", '\\')==0;
       if( isSchema ){
-        char *new_argv[2], *new_colv[2];
+        char *new_argv[2] = { 0 }, *new_colv[2] = { 0 };
         new_argv[0] = sqlite3_mprintf(
                       "CREATE TABLE %s (\n"
                       "  type text,\n"

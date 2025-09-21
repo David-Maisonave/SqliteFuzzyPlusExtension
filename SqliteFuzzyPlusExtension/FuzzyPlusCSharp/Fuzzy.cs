@@ -16,6 +16,8 @@ using static FuzzyPlusCSharp.Fuzzy;
 
 namespace FuzzyPlusCSharp
 {
+#pragma warning disable CRR0050 // Disabling this warning, because using string.compare() does NOT make the code more readable compared to a simple ==  or != operators.
+#pragma warning disable CRR0047
     #region Non-Static version
     [ComVisible(true)]
     [Guid("03e496b7-1f0c-4699-b7fc-cf32bb949b75")]
@@ -123,8 +125,8 @@ namespace FuzzyPlusCSharp
         public static CaverPhone caverPhonePhonix = new CaverPhone();
         public static Phonix.Soundex soundexPhonix = new Phonix.Soundex();
         public static DoubleMetaphone doubleMetaphone = new DoubleMetaphone();
-        public static SQLite.SQLiteConnection connection = null;
-        public static SQLite.SQLiteConnection virtualConnection = null;
+        public static SQLite.SQLiteConnection connection;
+        public static SQLite.SQLiteConnection virtualConnection;
         #endregion Distance, Phonetic class, and misc variable members
         #region StringMatchingAlgorithm_ID definitions
         public enum StringMatchingAlgorithm_ID
@@ -917,7 +919,7 @@ namespace FuzzyPlusCSharp
         {
             StringBuilder hex = new StringBuilder(ba.Length * 2);
             foreach (byte b in ba)
-                hex.AppendFormat("{0:x2}", b);
+                hex.Append($"{b:x2}");
             return hex.ToString();
         }
         public static string ToHash(string data, HashType hashType)

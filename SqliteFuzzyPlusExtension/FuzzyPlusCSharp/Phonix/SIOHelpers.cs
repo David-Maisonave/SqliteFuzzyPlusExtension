@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 namespace Phonix
 {
 #pragma warning disable IDE2000 // Avoid multiple blank lines
+#pragma warning disable CRR0048
     internal static class SioHelpers
     {
 

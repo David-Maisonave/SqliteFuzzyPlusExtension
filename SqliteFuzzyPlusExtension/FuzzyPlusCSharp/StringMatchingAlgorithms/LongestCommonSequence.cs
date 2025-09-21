@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
+#pragma warning disable CRR0050 // Disabling this warning, because using string.compare() does NOT make the code more readable compared to a simple ==  or != operators.
+#pragma warning disable CRR0047 // Disabling this warning because we want to keep this class here to simplify the code.
     public class ILongestCommonSequence : FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {
         public double Percentage(string source1, string source2, bool isCaseSensitive = true) => LongestCommonSequence.Percentage(source1, source2, isCaseSensitive);

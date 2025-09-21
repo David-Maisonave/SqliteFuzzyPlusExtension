@@ -69,7 +69,7 @@ namespace Phonix
                 ReplaceLastCharacter(ref remainingName);
             }
             //collapse repeating characters and append first character back on
-            fullKey = firstCharacter + SioHelpers.CollapseAdjacentRepeating(remainingName);
+            fullKey = $"{firstCharacter}{SioHelpers.CollapseAdjacentRepeating(remainingName)}";
 
             //a true NYSIIS key is only 6 characters long
             key = fullKey.Substring(0, (fullKey.Length >= 6 ? 6 : fullKey.Length));
@@ -151,27 +151,27 @@ namespace Phonix
 
             if (name.StartsWith("MAC", System.StringComparison.Ordinal))
             {
-                name = "MCC" + name.Substring(3 < nameLength ? 3 : nameLength);
+                name = $"MCC{(name.Substring(3 < nameLength ? 3 : nameLength))}";
             }
             else if (name.StartsWith("KN", System.StringComparison.Ordinal))
             {
-                name = "N" + name.Substring(2 < nameLength ? 2 : nameLength);
+                name = $"N{(name.Substring(2 < nameLength ? 2 : nameLength))}";
             }
             else if (name.StartsWith("K", System.StringComparison.Ordinal))
             {
-                name = "C" + name.Substring(1 < nameLength ? 1 : nameLength);
+                name = $"C{(name.Substring(1 < nameLength ? 1 : nameLength))}";
             }
             else if (name.StartsWith("PH", System.StringComparison.Ordinal))
             {
-                name = "FF" + name.Substring(2 < nameLength ? 2 : nameLength);
+                name = $"FF{(name.Substring(2 < nameLength ? 2 : nameLength))}";
             }
             else if (name.StartsWith("PF", System.StringComparison.Ordinal))
             {
-                name = "FF" + name.Substring(2 < nameLength ? 2 : nameLength);
+                name = $"FF{(name.Substring(2 < nameLength ? 2 : nameLength))}";
             }
             else if (name.StartsWith("SCH", System.StringComparison.Ordinal))
             {
-                name = "SSS" + name.Substring(3 < nameLength ? 3 : nameLength);
+                name = $"SSS{(name.Substring(3 < nameLength ? 3 : nameLength))}";
             }
         }
 
@@ -180,13 +180,13 @@ namespace Phonix
             //Translate last characters of name: EE → Y, IE → Y, DT, RT, RD, NT, ND → D
             if (name.EndsWith("EE", System.StringComparison.Ordinal) || name.EndsWith("IE", System.StringComparison.Ordinal))
             {
-                name = name.Substring(0, name.Length - 2) + "Y";
+                name = $"{(name.Substring(0, name.Length - 2))}Y";
             }
             else if (name.EndsWith("DT", System.StringComparison.Ordinal) || name.EndsWith("RT", System.StringComparison.Ordinal) 
                      || name.EndsWith("RD", System.StringComparison.Ordinal) || name.EndsWith("NT", System.StringComparison.Ordinal) 
                      || name.EndsWith("ND", System.StringComparison.Ordinal))
             {
-                name = name.Substring(0, name.Length - 2) + "D";
+                name = $"{(name.Substring(0, name.Length - 2))}D";
             }
         }
 
@@ -221,7 +221,7 @@ namespace Phonix
                 ReplaceLastCharacter(ref remainingName);
             }
             //collapse repeating characters and append first character back on
-            return firstCharacter + SioHelpers.CollapseAdjacentRepeating(remainingName);
+            return $"{firstCharacter}{SioHelpers.CollapseAdjacentRepeating(remainingName)}";
         }
 
         public bool IsSimilar(string[] words)

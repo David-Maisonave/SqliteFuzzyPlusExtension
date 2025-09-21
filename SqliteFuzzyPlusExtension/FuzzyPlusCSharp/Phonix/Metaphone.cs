@@ -3,6 +3,7 @@ using Phonix.Similarity;
 
 namespace Phonix
 {
+#pragma warning disable CRR0050 // Disabling this warning, because using string.compare() does NOT make the code more readable compared to a simple ==  or != operators.
 #pragma warning disable IDE0047 // Remove unnecessary parentheses
 #pragma warning disable IDE2000 // Avoid multiple blank lines
     /// <summary> Encoder implementing the phonetic algorithm "Metaphone".
@@ -51,7 +52,7 @@ namespace Phonix
         /// <summary> Returns a <tt>String</tt> identifying the algorithm.</summary>
         public override string ToString()
         {
-            return "Metaphone_" + MaxLength;
+            return $"Metaphone_{MaxLength}";
         }
 
         public bool IsSimilar(string[] words)
@@ -101,10 +102,10 @@ namespace Phonix
                 word = word.Substring(1);
 
             if (Match(word, 0, 'X'))
-                word = "S" + word.Substring(1);
+                word = $"S{word.Substring(1)}";
 
             if (Match(word, 0, WH))
-                word = "W" + word.Substring(2);
+                word = $"W{word.Substring(2)}";
 
             int length = word.Length;
             int last = length - 1;

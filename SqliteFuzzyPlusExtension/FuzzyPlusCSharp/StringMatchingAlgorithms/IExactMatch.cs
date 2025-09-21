@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
+#pragma warning disable CRR0050 // Disabling this warning, because using string.compare() does NOT make the code more readable compared to a simple ==  or != operators.
     public class IExactMatch : FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {
         public double Percentage(string source1, string source2, bool isCaseSensitive = true)

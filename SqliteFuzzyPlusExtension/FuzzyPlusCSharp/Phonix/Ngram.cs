@@ -5,6 +5,7 @@ namespace Phonix
 {
 #pragma warning disable IDE2000 // Avoid multiple blank lines
 #pragma warning disable IDE2001 // Embedded statements must be on their own line
+#pragma warning disable CRR0048
     internal sealed class NGram
     {
         public static List<string> GenerateNGram(string name, int n, bool removeSpaces)

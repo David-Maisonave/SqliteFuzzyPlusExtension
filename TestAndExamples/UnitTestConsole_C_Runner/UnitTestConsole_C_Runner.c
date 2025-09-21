@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 #define COMPILE_TO_C_LANGUAGE_SQLITEFUZZYPLUSEXTENSION__
-#define SQLITEFUZZYPLUSEXTENSION_LIB "SQLITEFUZZYPLUSEXTENSION.LIB"
 #include "..\..\SqliteFuzzyPlusExtension\SqliteFuzzyPlusExtension.h"
 
 static void TestPhonetics(const char* defaultSoundMethod) 

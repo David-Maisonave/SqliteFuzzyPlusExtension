@@ -3,12 +3,10 @@
 #include <cassert>
 #include <atlstr.h>
 #include <fstream>
-#include <iostream>
 #include <filesystem> 
 #include <string>
 #include <windows.h>
 #include "../SQL_Classes/sqlite3pp_ez.h"
-#define SQLITEFUZZYPLUSEXTENSION_LIB "SQLITEFUZZYPLUSEXTENSION.LIB"
 #include "..\..\SqliteFuzzyPlusExtension\SqliteFuzzyPlusExtension.h"
 using namespace std;
 using namespace System;
@@ -264,7 +262,7 @@ static void CreateUnitTestSqlFiles()
     CreateScriptSimilarSound(rootDir, "Words", "SimilarSoundingWords", "SameSound", "'their'");
 }
 
-static int CreateDbClassInterface(const std::string &dbFileName, const sqlite3pp::HeaderOpt &headerOpt)
+static int CreateDbClassInterface(const std::string &dbFileName, const sqlite3pp::HeaderOpt& headerOpt, const sqlite3pp::MiscOptions& miscOptions)
 {
     if (!std::filesystem::exists(dbFileName.c_str()))
     {
@@ -276,13 +274,15 @@ static int CreateDbClassInterface(const std::string &dbFileName, const sqlite3pp
         dbFileName
         , sqlite3pp::SQLiteClassBuilder::strOpt_std_string	// This option creates a class with string as the default string.
         , headerOpt
-        , sqlite3pp::SQLiteClassBuilder::MiscOpt_max
+        , miscOptions
     );
     return 0;
 }
 
-int main()
+int main(int argc, char* argv[])
 {
+    if (argc > 1)
+        std::cout << "Number of arguments: " << argc << " ; First Arg=" << argv[0] << "\n";
     int returnValue = ValidateSamenessFunctions();
     CreateUnitTestSqlFiles();
 
@@ -292,7 +292,9 @@ int main()
 	headerOpt.dest_folder = "..\\SQL_Classes\\"; // Change default destination folder
     headerOpt.header_prefix = "sql_DB_TestData_";
 	headerOpt.header_include = "sqlite3pp_ez.h";
-    if (CreateDbClassInterface(dbFileName, headerOpt) != 0)
+    sqlite3pp::MiscOptions miscOptions = sqlite3pp::SQLiteClassBuilder::MiscOpt_max; // Get default MiscOptions
+    // miscOptions.initialize_str_member_var = true;
+    if (CreateDbClassInterface(dbFileName, headerOpt, miscOptions) != 0)
     {
         returnValue =+ -32;
         cout << "Error: Failed to create SQL classes for database " << dbFileName << " in path " << headerOpt.dest_folder << "." << endl;
@@ -302,19 +304,19 @@ int main()
     headerOpt.header_include = "..\\sqlite3pp_ez.h";
 
     headerOpt.header_prefix = "sql_DB_NorthWind_";
-    CreateDbClassInterface("..\\TestDatabase\\NorthWind_small.db", headerOpt);
+    CreateDbClassInterface("..\\TestDatabase\\NorthWind_small.db", headerOpt, miscOptions);
 
     headerOpt.header_prefix = "sql_DB_chinook_";
-    CreateDbClassInterface("..\\TestDatabase\\chinook3.5Krows.db", headerOpt);
+    CreateDbClassInterface("..\\TestDatabase\\chinook3.5Krows.db", headerOpt, miscOptions);
 
     headerOpt.header_prefix = "sql_DB_GameNames_";
-    CreateDbClassInterface("..\\TestDatabase\\GameNames53KRows.db", headerOpt);
+    CreateDbClassInterface("..\\TestDatabase\\GameNames53KRows.db", headerOpt, miscOptions);
 
     headerOpt.header_prefix = "sql_DB_KenshoDataset_";
-    CreateDbClassInterface("..\\TestDatabase\\kensho_dataset(1millionRows).db", headerOpt);
+    CreateDbClassInterface("..\\TestDatabase\\kensho_dataset(1millionRows).db", headerOpt, miscOptions);
 
     headerOpt.header_prefix = "sql_DB_sakila_";
-    CreateDbClassInterface("..\\TestDatabase\\sakila.db", headerOpt);
+    CreateDbClassInterface("..\\TestDatabase\\sakila.db", headerOpt, miscOptions);
 
 
     return returnValue;

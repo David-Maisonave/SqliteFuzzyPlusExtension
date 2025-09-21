@@ -32,7 +32,7 @@ namespace FuzzyPlusCSharp.Misc
                         returnStr += " OR ";
                 }
             }
-            return (fieldToCompare.Length > 0) ? "(" + returnStr + ")" : returnStr;
+            return (fieldToCompare.Length > 0) ? $"({returnStr})" : returnStr;
         }
         public static string WordsToJson(string words, int minimumWordLenForWordInWordMatch = 3)
         {
@@ -47,7 +47,7 @@ namespace FuzzyPlusCSharp.Misc
                         returnStr += ", ";
                 }
             }
-            return "[" + returnStr + "]";
+            return $"[{returnStr}]";
         }
         public static string ValuesList(string words, int minimumWordLenForWordInWordMatch = 3)
         { // ( VALUES ('South'), ('North'), ('West'), ('East'))
@@ -62,7 +62,7 @@ namespace FuzzyPlusCSharp.Misc
                         returnStr += ", ";
                 }
             }
-            return returnStr + ")";
+            return $"{returnStr})";
         }
         public static string HasWordsInSameOrder(string words, string fieldToCompare) => HasWordsInSameOrder(words, fieldToCompare, false); // Needed for CPP code access
         public static string HasWordsInSameOrder(string words, string fieldToCompare, bool doNearWordSearch, int minimumWordLenForWordInWordMatch = 1, bool simplify = false) // SQL function extension

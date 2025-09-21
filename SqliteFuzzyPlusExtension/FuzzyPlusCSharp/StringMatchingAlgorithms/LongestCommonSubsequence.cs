@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
+#pragma warning disable CRR0047 // Disabling this warning because we want to keep this class here to simplify the code.
     public class ILongestCommonSubsequence : FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {
         public double Percentage(string source1, string source2, bool isCaseSensitive = true) => LongestCommonSubsequence.Percentage(source1, source2, isCaseSensitive);
@@ -44,7 +45,7 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
             return i == 0 || j == 0
                 ? ""
                 : source1[i - 1].Equals(source2[j - 1])
-                ? Backtrack(C, source1, source2, i - 1, j - 1) + source1[i - 1]
+                ? $"{Backtrack(C, source1, source2, i - 1, j - 1)}{source1[i - 1]}"
                 : C[i, j - 1] > C[i - 1, j]
                     ? Backtrack(C, source1, source2, i, j - 1)
                     : Backtrack(C, source1, source2, i - 1, j);

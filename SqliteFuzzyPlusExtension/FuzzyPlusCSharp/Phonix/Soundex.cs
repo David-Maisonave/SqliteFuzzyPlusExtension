@@ -4,6 +4,7 @@ using Phonix.Similarity;
 
 namespace Phonix
 {
+#pragma warning disable CRR0050 // Disabling this warning, because using string.compare() does NOT make the code more readable compared to a simple ==  or != operators.
     /// <summary> Encoder implementing the phonetic algorithm "Soundex".
     /// Soundex is described in Donald Knuth's
     /// <i>The Art of Computer Programming</i>, Vol.3.
@@ -59,7 +60,7 @@ namespace Phonix
         /// <summary> Returns a <tt>String</tt> identifying the algorithm.</summary>
         public override string ToString()
         {
-            return "Soundex_" + _full + "_" + _length;
+            return $"Soundex_{_full}_{_length}";
         }
 
         public bool IsSimilar(string[] words)

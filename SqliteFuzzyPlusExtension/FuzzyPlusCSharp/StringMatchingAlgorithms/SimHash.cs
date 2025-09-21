@@ -10,6 +10,7 @@ using static FuzzyPlusCSharp.StringMatchingAlgorithms.Sift4;
 
 namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
+#pragma warning disable CRR0047 // Disabling this warning because we want to keep this class here to simplify the code.
     public class ISimHash : FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {
         public double Percentage(string source1, string source2, bool isCaseSensitive = true)
@@ -25,7 +26,7 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
     }
     public class ISimHash2 : FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {
-        private int HashLen = 0;
+        private int HashLen;
         public double Percentage(string source1, string source2, bool isCaseSensitive = true)
         {
             double d = Distance(source1, source2, isCaseSensitive);

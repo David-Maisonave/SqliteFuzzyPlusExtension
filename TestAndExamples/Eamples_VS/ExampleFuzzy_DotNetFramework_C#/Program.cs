@@ -10,7 +10,7 @@ namespace ExampleFuzzy_DotNetFramework_C_
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            Console.WriteLine($"Hello, World!{args.Length}");
         }
     }
 }

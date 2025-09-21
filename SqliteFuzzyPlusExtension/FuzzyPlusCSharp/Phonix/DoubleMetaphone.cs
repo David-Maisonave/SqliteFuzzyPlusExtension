@@ -3,6 +3,7 @@ using Phonix.Similarity;
 
 namespace Phonix
 {
+#pragma warning disable CRR0050 // Disabling this warning, because using string.compare() does NOT make the code more readable compared to a simple ==  or != operators.
 #pragma warning disable IDE0046 // If can be simplified
 #pragma warning disable IDE0047 // Remove unnecessary parentheses
 #pragma warning disable IDE2002 // Consecutive braces must not have blank line between them
@@ -126,7 +127,7 @@ namespace Phonix
         /// <summary> Returns a <tt>String</tt> identifying the algorithm.</summary>
         public override string ToString()
         {
-            return "DoubleMetaphone_" + MaxLength;
+            return $"DoubleMetaphone_{MaxLength}";
         }
 
         public bool IsSimilar(string[] words)

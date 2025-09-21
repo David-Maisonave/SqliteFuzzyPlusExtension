@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Phonix.Encoding;
+using Phonix.Similarity;
+
+using System;
 using System.Text;
 using System.Text.RegularExpressions;
-using Phonix.Encoding;
-using Phonix.Similarity;
 
 namespace Phonix
 {
@@ -11,7 +12,7 @@ namespace Phonix
     /// It performs well with names containing the letter "y"
     /// MRA does not perform well with encoded names that differ in length by more than 2
     /// </summary>
-    public sealed class MatchRatingApproach:PhoneticEncoder, ISimilarity, FuzzyPlusCSharp.StringMatchingAlgorithms.ISimilarity3Types, FuzzyPlusCSharp.StringMatchingAlgorithms.INotSimilar, FuzzyPlusCSharp.StringMatchingAlgorithms.IHowSimilar
+    public sealed class MatchRatingApproach : PhoneticEncoder, ISimilarity, FuzzyPlusCSharp.StringMatchingAlgorithms.ISimilarity3Types, FuzzyPlusCSharp.StringMatchingAlgorithms.INotSimilar, FuzzyPlusCSharp.StringMatchingAlgorithms.IHowSimilar
     {
         public static bool GenerateMatchRating(string name, out string key)
         {
@@ -25,14 +26,14 @@ namespace Phonix
             if (upperName.Length > 1)
             {
                 string start = upperName[0].ToString();
-                upperName = start + SioHelpers.Vowels.Replace(upperName.Substring(1), string.Empty);
+                upperName = $"{start}{SioHelpers.Vowels.Replace(upperName.Substring(1), string.Empty)}";
             }
             //Remove the second consonant of any double consonants present
             upperName = CollapseRepeatingConsonants(upperName);
             //Reduce codex to 6 letters by joining the first 3 and last 3 letters only
             int length = upperName.Length;
             if (length > 6)
-                upperName = upperName.Substring(0, 3) + upperName.Substring(length - 3, 3);
+                upperName = $"{upperName.Substring(0, 3)}{upperName.Substring(length - 3, 3)}";
             key = upperName;
             return true;
         }
@@ -45,7 +46,7 @@ namespace Phonix
             {
                 if (c != prev || first || SioHelpers.IsVowel(c))
                 {
-                    sb.Append(c);
+                    _ = sb.Append(c);
                     first = false;
                 }
                 prev = c;
@@ -77,20 +78,20 @@ namespace Phonix
             //Obtain the minimum rating value by calculating the length sum of the encoded strings and using table A
             int minRating = MinimumRating(x + y);
             //Process the encoded strings from left to right and remove any identical characters found from both strings respectively.
-            for (int i = 0; i < small.Length; )
+            for (int i = 0; i < small.Length;)
             {
                 bool found = false;
                 for (int j = 0; j < large.Length; j++)
                 {
-					try
+                    try
                     {
-						if (small[i] == large[j])
-						{
-							small = small.Remove(i, 1);
-							large = large.Remove(j, 1);
-							found = true;
-						}
-					}
+                        if (small[i] == large[j])
+                        {
+                            small = small.Remove(i, 1);
+                            large = large.Remove(j, 1);
+                            found = true;
+                        }
+                    }
                     catch
                     {
                         continue;
@@ -105,7 +106,7 @@ namespace Phonix
             large = SioHelpers.ReverseString(large);
             small = SioHelpers.ReverseString(small);
             //Process the unmatched characters from right to left and remove any identical characters found from both names respectively.
-            for (int i = 0; i < small.Length; )
+            for (int i = 0; i < small.Length;)
             {
                 bool found = false;
                 for (int j = 0; j < large.Length; j++)
@@ -157,7 +158,7 @@ namespace Phonix
             if (upperName.Length > 1)
             {
                 string start = upperName[0].ToString();
-                upperName = start + SioHelpers.Vowels.Replace(upperName.Substring(1), string.Empty);
+                upperName = $"{start}{SioHelpers.Vowels.Replace(upperName.Substring(1), string.Empty)}";
             }
 
             //Remove the second consonant of any double consonants present
@@ -167,7 +168,7 @@ namespace Phonix
             int length = upperName.Length;
             if (length > 6)
             {
-                upperName = upperName.Substring(0, 3) + upperName.Substring(length - 3, 3);
+                upperName = $"{upperName.Substring(0, 3)}{upperName.Substring(length - 3, 3)}";
             }
 
             return upperName;

@@ -8,6 +8,8 @@ using static FuzzyPlusCSharp.StringMatchingAlgorithms.Sift4;
 
 namespace FuzzyPlusCSharp.StringMatchingAlgorithms
 {
+#pragma warning disable CRR0050 // Disabling this warning, because using string.compare() does NOT make the code more readable compared to a simple ==  or != operators.
+#pragma warning disable CRR0047 // Disabling this warning because we want to keep this class here to simplify the code.
     public class ISift4 : FuzzyPlusCSharp.StringMatchingAlgorithms.IDistance
     {
         /// <param name="maxOffset"></param>
@@ -24,7 +26,7 @@ namespace FuzzyPlusCSharp.StringMatchingAlgorithms
             };
             sift4 = new Sift4(options);
         }
-        private readonly Sift4 sift4 = null;
+        private readonly Sift4 sift4;
         private readonly int maxOffset = 256; // maxOffset is the number of characters to search for matching letters
         public double Percentage(string source1, string source2, bool isCaseSensitive = true)
         {

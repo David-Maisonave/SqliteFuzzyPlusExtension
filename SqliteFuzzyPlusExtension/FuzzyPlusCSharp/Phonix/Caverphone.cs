@@ -1,9 +1,12 @@
-﻿using System.Text.RegularExpressions;
-using Phonix.Encoding;
+﻿using Phonix.Encoding;
 using Phonix.Similarity;
+
+using System.Text.RegularExpressions;
 
 namespace Phonix
 {
+#pragma warning disable CRR0050 // Disabling this warning, because using string.compare() does NOT make the code more readable compared to a simple ==  or != operators.
+#pragma warning disable CRR0048
     /// <summary>
     /// Phonetic algorithm created by David Hood
     /// For more info see: <a href="http://en.wikipedia.org/wiki/Caverphone">http://en.wikipedia.org/wiki/Caverphone</a>
@@ -54,7 +57,7 @@ namespace Phonix
             //any initial vowel with an A
             if (LowerVowel.IsMatch(key.Substring(0, 1)))
             {
-                key = "A" + key.Substring(1 < nameLength ? 1 : nameLength);
+                key = $"A{(key.Substring(1 < nameLength ? 1 : nameLength))}";
             }
             //all other vowels with a 3
             key = LowerVowel.Replace(key, "3");
@@ -69,14 +72,14 @@ namespace Phonix
             //key = key.Replace("y3", "Y3");
             if (key.Substring(0, 2) == "y3")
             {
-                key = "Y3" + key.Substring(2 < nameLength ? 2 : nameLength);
+                key = $"Y3{(key.Substring(2 < nameLength ? 2 : nameLength))}";
             }
 
             //this was new in revised 2004
             //any initial y with an A
             if (key.Substring(0, 1) == "y")
             {
-                key = "A" + key.Substring(1 < nameLength ? 1 : nameLength);
+                key = $"A{(key.Substring(1 < nameLength ? 1 : nameLength))}";
             }
 
             //the next one was revised in revised 2004 caverphone to y->3
@@ -118,7 +121,7 @@ namespace Phonix
             //if the name ends in w replace the final w with 3
             if (key.EndsWith("w", System.StringComparison.Ordinal))
             {
-                key = key.Substring(0, key.Length - 1) + "3";
+                key = $"{key.Substring(0, key.Length - 1)}3";
             }
 
             //w with 2
@@ -126,7 +129,7 @@ namespace Phonix
             //any initial h with an A
             if (key.Substring(0, 1) == "h")
             {
-                key = "A" + key.Substring(1 < nameLength ? 1 : nameLength);
+                key = $"A{(key.Substring(1 < nameLength ? 1 : nameLength))}";
             }
             //all other occurrences of h with a 2
             key = key.Replace("h", "2");
@@ -137,7 +140,7 @@ namespace Phonix
             //if the name ends in r replace the replace final r with 3
             if (key.EndsWith("r", System.StringComparison.Ordinal))
             {
-                key = key.Substring(0, key.Length - 1) + "3";
+                key = $"{key.Substring(0, key.Length - 1)}3";
             }
 
             //The next one was removed in revised 2004 caverphone
@@ -153,7 +156,7 @@ namespace Phonix
             //if the name ends in r replace the replace final r with 3
             if (key.EndsWith("l", System.StringComparison.Ordinal))
             {
-                key = key.Substring(0, key.Length - 1) + "3";
+                key = $"{key.Substring(0, key.Length - 1)}3";
             }
 
             //The next one was removed in revised 2004 caverphone
@@ -171,7 +174,7 @@ namespace Phonix
             //if the name ends in 3 replace the replace final 3 with A
             if (key.EndsWith("3", System.StringComparison.Ordinal))
             {
-                key = key.Substring(0, key.Length - 1) + "A";
+                key = $"{key.Substring(0, key.Length - 1)}A";
             }
 
             //remove all
@@ -195,31 +198,31 @@ namespace Phonix
 
             if (name.StartsWith("cough", System.StringComparison.Ordinal))
             {
-                name = "cou2f" + name.Substring(5 < nameLength ? 5 : nameLength);
+                name = $"cou2f{(name.Substring(5 < nameLength ? 5 : nameLength))}";
             }
             else if (name.StartsWith("rough", System.StringComparison.Ordinal))
             {
-                name = "rou2f" + name.Substring(5 < nameLength ? 5 : nameLength);
+                name = $"rou2f{(name.Substring(5 < nameLength ? 5 : nameLength))}";
             }
             else if (name.StartsWith("tough", System.StringComparison.Ordinal))
             {
-                name = "tou2f" + name.Substring(5 < nameLength ? 5 : nameLength);
+                name = $"tou2f{(name.Substring(5 < nameLength ? 5 : nameLength))}";
             }
             else if (name.StartsWith("trough", System.StringComparison.Ordinal)) //this was new in revised 2004
             {
-                name = "trou2f" + name.Substring(6 < nameLength ? 6 : nameLength);
+                name = $"trou2f{(name.Substring(6 < nameLength ? 6 : nameLength))}";
             }
             else if (name.StartsWith("enough", System.StringComparison.Ordinal))
             {
-                name = "enou2f" + name.Substring(6 < nameLength ? 6 : nameLength);
+                name = $"enou2f{(name.Substring(6 < nameLength ? 6 : nameLength))}";
             }
             else if (name.StartsWith("gn", System.StringComparison.Ordinal))
             {
-                name = "2n" + name.Substring(2 < nameLength ? 2 : nameLength);
+                name = $"2n{(name.Substring(2 < nameLength ? 2 : nameLength))}";
             }
             else if (name.StartsWith("mb", System.StringComparison.Ordinal))
             {
-                name = "m2" + name.Substring(2 < nameLength ? 2 : nameLength);
+                name = $"m2{(name.Substring(2 < nameLength ? 2 : nameLength))}";
             }
 
             return name;
@@ -237,8 +240,8 @@ namespace Phonix
 
         public override string BuildKey(string word)
         {
-            if (string.IsNullOrEmpty(word)) 
-                return string.Empty; 
+            if (string.IsNullOrEmpty(word))
+                return string.Empty;
 
             var key = word.ToLower();
             key = Alpha.Replace(key, string.Empty);
@@ -271,7 +274,7 @@ namespace Phonix
             for (int i = 0; i < words.Length; i++)
             {
                 encoders[i] = BuildKey(words[i]);
-                if (i == 0) 
+                if (i == 0)
                     continue;
                 if (encoders[i] != encoders[i - 1])
                     return false;

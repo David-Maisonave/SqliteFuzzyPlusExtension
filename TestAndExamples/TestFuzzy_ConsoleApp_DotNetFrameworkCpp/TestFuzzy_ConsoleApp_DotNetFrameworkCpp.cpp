@@ -5,7 +5,6 @@
 #include <windows.h>
 using namespace std;
 using namespace System;
-#define SQLITEFUZZYPLUSEXTENSION_LIB "SQLITEFUZZYPLUSEXTENSION.LIB"
 #include "..\..\SqliteFuzzyPlusExtension\SqliteFuzzyPlusExtension.h"
 
 static void CreateScriptSimilarWords(string rootDir, string fieldName, string table, string FunctionName, string CompareTo, bool byName) 
