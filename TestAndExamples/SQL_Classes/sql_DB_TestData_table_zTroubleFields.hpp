@@ -31,8 +31,8 @@ Example Usage:		(Using sqlite3pp::Table container)
 			std::cout << my_tbl[row].get_Some__Names() << " | " << my_tbl[row].get_Zip__Code() << " | " << my_tbl[row].get_City__and__State() << " | " << my_tbl[row].get_Area__Code() << " | " << my_tbl[row].get_Bad__Type() << " | " << my_tbl[row].get_Is__US__Born() << " | " << my_tbl[row].get_Is__US__Citizen__() << " | " << my_tbl[row].get_Unsigned__Big__Integer__Support() << " | " << my_tbl[row].get_Unsigned__Big__Integer__Support2() << " | " << my_tbl[row].get_Big__Integer__Support() << " | " << my_tbl[row].get_Big__Integer__Support__2() << " | " << my_tbl[row].get_Big__Integer__Support__3() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
-#ifndef SQL_DB_TESTDATA_TABLE_ZTROUBLEFIELDS_HPP
-#define SQL_DB_TESTDATA_TABLE_ZTROUBLEFIELDS_HPP
+#ifndef SQL_DB_TESTDATA_TABLE_ZTROUBLEFIELDS_H
+#define SQL_DB_TESTDATA_TABLE_ZTROUBLEFIELDS_H
 #include <string>
 #include "sqlite3pp_ez.h"
 
@@ -157,4 +157,4 @@ public:
 inline std::ostream& operator<<(std::ostream& os, const sql_DB_TestData_table_zTroubleFields& t) { sqlite3pp::ostream_a o(os, t.Delimiter()); return t.OStream(o).os; }
 inline std::wostream& operator<<(std::wostream& os, const sql_DB_TestData_table_zTroubleFields& t) { sqlite3pp::ostream_w o(os, t.Delimiter());  return t.OStream(o).os; }
 
-#endif // !SQL_DB_TESTDATA_TABLE_ZTROUBLEFIELDS_HPP
+#endif // !SQL_DB_TESTDATA_TABLE_ZTROUBLEFIELDS_H

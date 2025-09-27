@@ -31,8 +31,8 @@ Example Usage:		(Using sqlite3pp::Table container)
 			std::cout << my_tbl[row].get_InvoiceId() << " | " << my_tbl[row].get_CustomerId() << " | " << my_tbl[row].get_InvoiceDate() << " | " << my_tbl[row].get_BillingAddress() << " | " << my_tbl[row].get_BillingCity() << " | " << my_tbl[row].get_BillingState() << " | " << my_tbl[row].get_BillingCountry() << " | " << my_tbl[row].get_BillingPostalCode() << " | " << my_tbl[row].get_Total() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
-#ifndef SQL_DB_CHINOOK_TABLE_INVOICES_HPP
-#define SQL_DB_CHINOOK_TABLE_INVOICES_HPP
+#ifndef SQL_DB_CHINOOK_TABLE_INVOICES_H
+#define SQL_DB_CHINOOK_TABLE_INVOICES_H
 #include <string>
 #include "..\sqlite3pp_ez.h"
 
@@ -142,4 +142,4 @@ public:
 inline std::ostream& operator<<(std::ostream& os, const sql_DB_chinook_table_invoices& t) { sqlite3pp::ostream_a o(os, t.Delimiter()); return t.OStream(o).os; }
 inline std::wostream& operator<<(std::wostream& os, const sql_DB_chinook_table_invoices& t) { sqlite3pp::ostream_w o(os, t.Delimiter());  return t.OStream(o).os; }
 
-#endif // !SQL_DB_CHINOOK_TABLE_INVOICES_HPP
+#endif // !SQL_DB_CHINOOK_TABLE_INVOICES_H

@@ -31,8 +31,8 @@ Example Usage:		(Using sqlite3pp::Table container)
 			std::cout << my_tbl[row].get_inventory_id() << " | " << my_tbl[row].get_film_id() << " | " << my_tbl[row].get_store_id() << " | " << my_tbl[row].get_last_update() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
-#ifndef SQL_DB_SAKILA_TABLE_INVENTORY_HPP
-#define SQL_DB_SAKILA_TABLE_INVENTORY_HPP
+#ifndef SQL_DB_SAKILA_TABLE_INVENTORY_H
+#define SQL_DB_SAKILA_TABLE_INVENTORY_H
 #include <string>
 #include "..\sqlite3pp_ez.h"
 
@@ -117,4 +117,4 @@ public:
 inline std::ostream& operator<<(std::ostream& os, const sql_DB_sakila_table_inventory& t) { sqlite3pp::ostream_a o(os, t.Delimiter()); return t.OStream(o).os; }
 inline std::wostream& operator<<(std::wostream& os, const sql_DB_sakila_table_inventory& t) { sqlite3pp::ostream_w o(os, t.Delimiter());  return t.OStream(o).os; }
 
-#endif // !SQL_DB_SAKILA_TABLE_INVENTORY_HPP
+#endif // !SQL_DB_SAKILA_TABLE_INVENTORY_H

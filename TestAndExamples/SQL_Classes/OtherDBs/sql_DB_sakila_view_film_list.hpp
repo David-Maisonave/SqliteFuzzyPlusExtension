@@ -31,8 +31,8 @@ Example Usage:		(Using sqlite3pp::Table container)
 			std::cout << my_tbl[row].get_FID() << " | " << my_tbl[row].get_title() << " | " << my_tbl[row].get_description() << " | " << my_tbl[row].get_category() << " | " << my_tbl[row].get_price() << " | " << my_tbl[row].get_length() << " | " << my_tbl[row].get_rating() << " | " << my_tbl[row].get_actors() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
-#ifndef SQL_DB_SAKILA_VIEW_FILM_LIST_HPP
-#define SQL_DB_SAKILA_VIEW_FILM_LIST_HPP
+#ifndef SQL_DB_SAKILA_VIEW_FILM_LIST_H
+#define SQL_DB_SAKILA_VIEW_FILM_LIST_H
 #include <string>
 #include "..\sqlite3pp_ez.h"
 
@@ -137,4 +137,4 @@ public:
 inline std::ostream& operator<<(std::ostream& os, const sql_DB_sakila_view_film_list& t) { sqlite3pp::ostream_a o(os, t.Delimiter()); return t.OStream(o).os; }
 inline std::wostream& operator<<(std::wostream& os, const sql_DB_sakila_view_film_list& t) { sqlite3pp::ostream_w o(os, t.Delimiter());  return t.OStream(o).os; }
 
-#endif // !SQL_DB_SAKILA_VIEW_FILM_LIST_HPP
+#endif // !SQL_DB_SAKILA_VIEW_FILM_LIST_H

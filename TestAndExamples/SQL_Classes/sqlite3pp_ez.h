@@ -29,6 +29,7 @@
 #define T_(x)      x
 #endif // _UNICODE
 
+
 namespace sqlite3pp
 {
 	enum VerbosityLevels {
@@ -40,52 +41,11 @@ namespace sqlite3pp
 		, VBLV_DETAIL = 5	// Prints out expected behavior
 	};
 
-	enum ActionIfDatabaseOpen {
-		AIO_SkipIfSameFile,
-		AIO_CloseBeforeOpen,
-		AIO_IgnoreOpenRequest,
+	enum ActionIfDatabaseOpen{
+		AIO_SkipIfSameFile, 
+		AIO_CloseBeforeOpen, 
+		AIO_IgnoreOpenRequest, 
 		AIO_Throw
-	};
-
-	enum ProgLang { // Warning: Only C++ is fully implemented at this time.
-		C_Lang = 1,					// Work in progress
-		CPP_Lang = 2,				//Default Language
-		CS_Lang = 4,
-		FS_Lang = 8,
-		Go_Lang = 16,
-		Java_Lang = 32,
-		ObjectiveC_Lang = 64,
-		ObjectiveCPP_Lang = 128,
-		PHP_Lang = 256,
-		PowerShell_Lang = 512,
-		Python_Lang = 1024,
-		VisualBasic_Lang = 2048,
-
-		// Languages not yet ready for consideration
-		ClassicVisualBasic_Lang = 4096,
-		COBOL_Lang,
-		D_Lang,
-		Dart_Lang,
-		Fortran_Lang,
-		JavaScript_Lang,
-		Kotlin_Lang,
-		Lisp_Lang,
-		MATLAB_Lang,
-		Pascal_Lang,
-		Perl_Lang,
-		R_Lang,
-		Ruby_Lang,
-		Rust_Lang,
-		Scala_Lang,
-		Swift_Lang,
-		TypeScript_Lang,
-		VBScript_Lang,
-	};
-
-	enum ProgLangFolder {
-		NeverCreateProgLangFolder = 0,
-		AlwaysCreateProgLangFolder = 1,
-		AutoCreateProgLangFolder = 2 // Only create if more than one language is being generated
 	};
 
 	static std::string GetSqlite3EzVer() { return "1.0.6"; }
@@ -188,10 +148,10 @@ namespace sqlite3pp
 #endif // _UNICODE
 
 	typedef std::match_results<tstring::const_iterator> tsmatch;
-	std::string GetUpdatedSrcPath(std::string &src, int EnvVarToFetch = 3, const std::string VarNamePrefix = "%", const std::string VarNamePostfix = "%");// EnvVarToFetch BIT Settings: 1=Get User Var, 2=Get System Paths, 4=Get Misc Var
-	std::string Get_UpdatedPathCopy(std::string src, int EnvVarToFetch = 3, const std::string VarNamePrefix = "%", const std::string VarNamePostfix = "%");
-	std::wstring GetUpdatedSrcPath(std::wstring &src, int EnvVarToFetch = 3, const std::string VarNamePrefix = "%", const std::string VarNamePostfix = "%");
-	std::wstring Get_UpdatedPathCopy(std::wstring src, int EnvVarToFetch = 3, const std::string VarNamePrefix = "%", const std::string VarNamePostfix = "%");
+	std::string GetUpdatedSrcPath(std::string &src, int EnvVarToFetch = 3, const std::string VarNamePrefix = "%", const std::string VarNameSuffix = "%");// EnvVarToFetch BIT Settings: 1=Get User Var, 2=Get System Paths, 4=Get Misc Var
+	std::string Get_UpdatedPathCopy(std::string src, int EnvVarToFetch = 3, const std::string VarNamePrefix = "%", const std::string VarNameSuffix = "%");
+	std::wstring GetUpdatedSrcPath(std::wstring &src, int EnvVarToFetch = 3, const std::string VarNamePrefix = "%", const std::string VarNameSuffix = "%");
+	std::wstring Get_UpdatedPathCopy(std::wstring src, int EnvVarToFetch = 3, const std::string VarNamePrefix = "%", const std::string VarNameSuffix = "%");
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////
@@ -504,8 +464,8 @@ namespace sqlite3pp
 	{
 		std::string dest_folder;		// Default: "SQL\\"				Destination folder where headers are created. If drive letter is not included in the path, folder is treated as relative path.
 		std::string header_prefix;		// Default: "sql_"				Desired prefix for headers created.
-		std::string header_postfix;		// Default: ""					Desired postfix for header created.
-		std::string file_type;			// Default: "hpp"				Other options (hpp, hxx, class) Default CPP_Lang=hpp, C_Lang=h, CS_Lang=CS, Python_Lang=py, Java_Lang=java, JavaScript_Lang=js, PHP_Lang=php, FS_Lang=fs, Go_Lang=go
+		std::string header_suffix;		// Default: ""					Desired suffix for header created.
+		std::string file_type;			// Default: "h"					Other options (hpp, hxx, class)
 		std::string header_include;		// Default: "..\sqlite3pp_ez.h"	Other options (SQLite3pp_ez.h)
 	};
 	struct MiscOptions
@@ -522,8 +482,6 @@ namespace sqlite3pp
 		bool exclude_comment_out_example = false;// If true, does NOT comment out example code
 		bool initialize_member_variables = true;// If true, initialize class member variables in header
 		bool initialize_str_member_var = false;	// If true, initialize class member string variables in header
-		ProgLang progLang = ProgLang::CPP_Lang;	// Set to desired programming language.  Currently only C++ is supported.
-		ProgLangFolder progLangFolder = ProgLangFolder::AutoCreateProgLangFolder; // Only create sub folder for programming language if creating classes for multiple programming languages
 	}; // Create a custom defined TblClassOptions variable, or used one of the SQLiteClassBuilder predefined types, or use the default type which is automatically set by the SQLiteClassBuilder constructor
 
 	struct TblClassOptions
@@ -605,13 +563,6 @@ namespace sqlite3pp
 
 		static const char *Nill; // = "#NILL#"
 		static const char *CreateHeaderForAllTables; // = "%_CreateHeaderForAllTables_%"
-	private:
-		bool CreateHeaderPrefix_CPP(const std::string& TableName, std::ofstream& myfile,
-			std::string& ClassName, std::string& HeaderUpper, std::string FirstColumnName = "", std::string LastColumnName = "",
-			bool AppendToVect = true, const std::vector<std::pair<std::string, std::string> >& columns = columns_dummy);
-		bool CreateHeaderPrefix_C(const std::string& TableName, std::ofstream& myfile,
-			std::string& ClassName, std::string& HeaderUpper, std::string FirstColumnName = "", std::string LastColumnName = "",
-			bool AppendToVect = true, const std::vector<std::pair<std::string, std::string> >& columns = columns_dummy);
 	};
 
 	using SqlBld = SQLiteClassBuilder; // Short alias

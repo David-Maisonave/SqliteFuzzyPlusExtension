@@ -31,8 +31,8 @@ Example Usage:		(Using sqlite3pp::Table container)
 			std::cout << my_tbl[row].get_Id() << " | " << my_tbl[row].get_LastName() << " | " << my_tbl[row].get_FirstName() << " | " << my_tbl[row].get_Title() << " | " << my_tbl[row].get_TitleOfCourtesy() << " | " << my_tbl[row].get_BirthDate() << " | " << my_tbl[row].get_HireDate() << " | " << my_tbl[row].get_Address() << " | " << my_tbl[row].get_City() << " | " << my_tbl[row].get_Region() << " | " << my_tbl[row].get_PostalCode() << " | " << my_tbl[row].get_Country() << " | " << my_tbl[row].get_HomePhone() << " | " << my_tbl[row].get_Extension() << " | " << my_tbl[row].get_Photo() << " | " << my_tbl[row].get_Notes() << " | " << my_tbl[row].get_ReportsTo() << " | " << my_tbl[row].get_PhotoPath() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
-#ifndef SQL_DB_NORTHWIND_TABLE_EMPLOYEE_HPP
-#define SQL_DB_NORTHWIND_TABLE_EMPLOYEE_HPP
+#ifndef SQL_DB_NORTHWIND_TABLE_EMPLOYEE_H
+#define SQL_DB_NORTHWIND_TABLE_EMPLOYEE_H
 #include <string>
 #include "..\sqlite3pp_ez.h"
 
@@ -187,4 +187,4 @@ public:
 inline std::ostream& operator<<(std::ostream& os, const sql_DB_NorthWind_table_Employee& t) { sqlite3pp::ostream_a o(os, t.Delimiter()); return t.OStream(o).os; }
 inline std::wostream& operator<<(std::wostream& os, const sql_DB_NorthWind_table_Employee& t) { sqlite3pp::ostream_w o(os, t.Delimiter());  return t.OStream(o).os; }
 
-#endif // !SQL_DB_NORTHWIND_TABLE_EMPLOYEE_HPP
+#endif // !SQL_DB_NORTHWIND_TABLE_EMPLOYEE_H

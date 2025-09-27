@@ -31,8 +31,8 @@ Example Usage:		(Using sqlite3pp::Table container)
 			std::cout << my_tbl[row].get_Id() << " | " << my_tbl[row].get_ProductName() << " | " << my_tbl[row].get_SupplierId() << " | " << my_tbl[row].get_CategoryId() << " | " << my_tbl[row].get_QuantityPerUnit() << " | " << my_tbl[row].get_UnitPrice() << " | " << my_tbl[row].get_UnitsInStock() << " | " << my_tbl[row].get_UnitsOnOrder() << " | " << my_tbl[row].get_ReorderLevel() << " | " << my_tbl[row].get_Discontinued() << " | " << my_tbl[row].get_CategoryName() << " | " << my_tbl[row].get_CategoryDescription() << " | " << my_tbl[row].get_SupplierName() << " | " << my_tbl[row].get_SupplierRegion() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
-#ifndef SQL_DB_NORTHWIND_VIEW_PRODUCTDETAILS_V_HPP
-#define SQL_DB_NORTHWIND_VIEW_PRODUCTDETAILS_V_HPP
+#ifndef SQL_DB_NORTHWIND_VIEW_PRODUCTDETAILS_V_H
+#define SQL_DB_NORTHWIND_VIEW_PRODUCTDETAILS_V_H
 #include <string>
 #include "..\sqlite3pp_ez.h"
 
@@ -167,4 +167,4 @@ public:
 inline std::ostream& operator<<(std::ostream& os, const sql_DB_NorthWind_view_ProductDetails_V& t) { sqlite3pp::ostream_a o(os, t.Delimiter()); return t.OStream(o).os; }
 inline std::wostream& operator<<(std::wostream& os, const sql_DB_NorthWind_view_ProductDetails_V& t) { sqlite3pp::ostream_w o(os, t.Delimiter());  return t.OStream(o).os; }
 
-#endif // !SQL_DB_NORTHWIND_VIEW_PRODUCTDETAILS_V_HPP
+#endif // !SQL_DB_NORTHWIND_VIEW_PRODUCTDETAILS_V_H

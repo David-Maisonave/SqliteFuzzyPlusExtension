@@ -31,8 +31,8 @@ Example Usage:		(Using sqlite3pp::Table container)
 			std::cout << my_tbl[row].get_film_id() << " | " << my_tbl[row].get_title() << " | " << my_tbl[row].get_description() << " | " << my_tbl[row].get_release_year() << " | " << my_tbl[row].get_language_id() << " | " << my_tbl[row].get_original_language_id() << " | " << my_tbl[row].get_rental_duration() << " | " << my_tbl[row].get_rental_rate() << " | " << my_tbl[row].get_length() << " | " << my_tbl[row].get_replacement_cost() << " | " << my_tbl[row].get_rating() << " | " << my_tbl[row].get_special_features() << " | " << my_tbl[row].get_last_update() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
-#ifndef SQL_DB_SAKILA_TABLE_FILM_HPP
-#define SQL_DB_SAKILA_TABLE_FILM_HPP
+#ifndef SQL_DB_SAKILA_TABLE_FILM_H
+#define SQL_DB_SAKILA_TABLE_FILM_H
 #include <string>
 #include "..\sqlite3pp_ez.h"
 
@@ -162,4 +162,4 @@ public:
 inline std::ostream& operator<<(std::ostream& os, const sql_DB_sakila_table_film& t) { sqlite3pp::ostream_a o(os, t.Delimiter()); return t.OStream(o).os; }
 inline std::wostream& operator<<(std::wostream& os, const sql_DB_sakila_table_film& t) { sqlite3pp::ostream_w o(os, t.Delimiter());  return t.OStream(o).os; }
 
-#endif // !SQL_DB_SAKILA_TABLE_FILM_HPP
+#endif // !SQL_DB_SAKILA_TABLE_FILM_H

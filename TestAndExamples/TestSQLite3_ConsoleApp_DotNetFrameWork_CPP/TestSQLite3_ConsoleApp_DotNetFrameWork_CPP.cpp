@@ -2,12 +2,12 @@ using namespace System;
 #include <iostream>
 #include "../SQL_Classes/SQLiteDLLConnect.h"
 #include "../SQL_Classes/sqlite3pp_ez.h"
-#include "../SQL_Classes/sql_DB_TestData_Master_Header.hpp"
-#include "../SQL_Classes/OtherDBs/sql_DB_chinook_Master_Header.hpp"
-#include "../SQL_Classes/OtherDBs/sql_DB_GameNames_Master_Header.hpp"
-#include "../SQL_Classes/OtherDBs/sql_DB_KenshoDataset_Master_Header.hpp"
-#include "../SQL_Classes/OtherDBs/sql_DB_NorthWind_Master_Header.hpp"
-#include "../SQL_Classes/OtherDBs/sql_DB_sakila_Master_Header.hpp"
+#include "../SQL_Classes/sql_DB_TestData__Master_Header.hpp"
+#include "../SQL_Classes/OtherDBs/sql_DB_chinook__Master_Header.hpp"
+#include "../SQL_Classes/OtherDBs/sql_DB_GameNames__Master_Header.hpp"
+#include "../SQL_Classes/OtherDBs/sql_DB_KenshoDataset__Master_Header.hpp"
+#include "../SQL_Classes/OtherDBs/sql_DB_NorthWind__Master_Header.hpp"
+#include "../SQL_Classes/OtherDBs/sql_DB_sakila__Master_Header.hpp"
 using namespace sqlite3pp;
 using namespace std;
 
@@ -131,6 +131,14 @@ int main(int argc, char* argv[])
         sqlite3pp::Table<sql_DB_sakila_table_address> tbl7;
         for (auto& row : tbl7)
             std::cout << row.get_address_id() << " | " << row.get_address() << " | " << row.get_address2() << " | " << row.get_district() << " | " << row.get_city_id() << " | " << row.get_postal_code() << " | " << row.get_phone() << " | " << row.get_last_update() << " | " << std::endl;
+
+        sqlite3pp::Table<sql_DB_sakila_view_customer_list> tbl8;
+        for (auto& row : tbl8)
+            std::cout << row.get_ID() << " | " << row.get_name() << " | " << row.get_address() << " | " << row.get_zip_code() << " | " << row.get_phone() << " | " << row.get_city() << " | " << row.get_country() << " | " << row.get_notes() << " | " << row.get_SID() << " | " << std::endl;
+
+        sqlite3pp::Table<sql_DB_sakila_view_sales_by_film_category> tbl9;
+        for (auto& row : tbl9)
+            std::cout << row.get_category() << " | " << row.get_total_sales() << " | " << std::endl;
     }
 
     return 0;

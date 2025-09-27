@@ -31,8 +31,8 @@ Example Usage:		(Using sqlite3pp::Table container)
 			std::cout << my_tbl[row].get_Id() << " | " << my_tbl[row].get_CustomerId() << " | " << my_tbl[row].get_EmployeeId() << " | " << my_tbl[row].get_OrderDate() << " | " << my_tbl[row].get_RequiredDate() << " | " << my_tbl[row].get_ShippedDate() << " | " << my_tbl[row].get_ShipVia() << " | " << my_tbl[row].get_Freight() << " | " << my_tbl[row].get_ShipName() << " | " << my_tbl[row].get_ShipAddress() << " | " << my_tbl[row].get_ShipCity() << " | " << my_tbl[row].get_ShipRegion() << " | " << my_tbl[row].get_ShipPostalCode() << " | " << my_tbl[row].get_ShipCountry() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
-#ifndef SQL_DB_NORTHWIND_TABLE_ORDER_HPP
-#define SQL_DB_NORTHWIND_TABLE_ORDER_HPP
+#ifndef SQL_DB_NORTHWIND_TABLE_ORDER_H
+#define SQL_DB_NORTHWIND_TABLE_ORDER_H
 #include <string>
 #include "..\sqlite3pp_ez.h"
 
@@ -167,4 +167,4 @@ public:
 inline std::ostream& operator<<(std::ostream& os, const sql_DB_NorthWind_table_Order& t) { sqlite3pp::ostream_a o(os, t.Delimiter()); return t.OStream(o).os; }
 inline std::wostream& operator<<(std::wostream& os, const sql_DB_NorthWind_table_Order& t) { sqlite3pp::ostream_w o(os, t.Delimiter());  return t.OStream(o).os; }
 
-#endif // !SQL_DB_NORTHWIND_TABLE_ORDER_HPP
+#endif // !SQL_DB_NORTHWIND_TABLE_ORDER_H

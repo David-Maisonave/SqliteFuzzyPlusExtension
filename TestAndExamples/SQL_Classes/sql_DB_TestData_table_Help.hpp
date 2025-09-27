@@ -31,8 +31,8 @@ Example Usage:		(Using sqlite3pp::Table container)
 			std::cout << my_tbl[row].get_Function() << " | " << my_tbl[row].get_Description() << " | " << my_tbl[row].get_Arguments() << " | " << my_tbl[row].get_Return() << " | " << my_tbl[row].get_Details() << " | " << my_tbl[row].get_ExtensionAlias() << " | " << my_tbl[row].get_WikiAlias() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
-#ifndef SQL_DB_TESTDATA_TABLE_HELP_HPP
-#define SQL_DB_TESTDATA_TABLE_HELP_HPP
+#ifndef SQL_DB_TESTDATA_TABLE_HELP_H
+#define SQL_DB_TESTDATA_TABLE_HELP_H
 #include <string>
 #include "sqlite3pp_ez.h"
 
@@ -132,4 +132,4 @@ public:
 inline std::ostream& operator<<(std::ostream& os, const sql_DB_TestData_table_Help& t) { sqlite3pp::ostream_a o(os, t.Delimiter()); return t.OStream(o).os; }
 inline std::wostream& operator<<(std::wostream& os, const sql_DB_TestData_table_Help& t) { sqlite3pp::ostream_w o(os, t.Delimiter());  return t.OStream(o).os; }
 
-#endif // !SQL_DB_TESTDATA_TABLE_HELP_HPP
+#endif // !SQL_DB_TESTDATA_TABLE_HELP_H

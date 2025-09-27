@@ -31,8 +31,8 @@ Example Usage:		(Using sqlite3pp::Table container)
 			std::cout << my_tbl[row].get_TrackId() << " | " << my_tbl[row].get_Name() << " | " << my_tbl[row].get_AlbumId() << " | " << my_tbl[row].get_MediaTypeId() << " | " << my_tbl[row].get_GenreId() << " | " << my_tbl[row].get_Composer() << " | " << my_tbl[row].get_Milliseconds() << " | " << my_tbl[row].get_Bytes() << " | " << my_tbl[row].get_UnitPrice() << " | " << std::endl;
 For more details see  https://github.com/David-Maisonave/sqlite3pp_EZ
 */
-#ifndef SQL_DB_CHINOOK_TABLE_TRACKS_HPP
-#define SQL_DB_CHINOOK_TABLE_TRACKS_HPP
+#ifndef SQL_DB_CHINOOK_TABLE_TRACKS_H
+#define SQL_DB_CHINOOK_TABLE_TRACKS_H
 #include <string>
 #include "..\sqlite3pp_ez.h"
 
@@ -142,4 +142,4 @@ public:
 inline std::ostream& operator<<(std::ostream& os, const sql_DB_chinook_table_tracks& t) { sqlite3pp::ostream_a o(os, t.Delimiter()); return t.OStream(o).os; }
 inline std::wostream& operator<<(std::wostream& os, const sql_DB_chinook_table_tracks& t) { sqlite3pp::ostream_w o(os, t.Delimiter());  return t.OStream(o).os; }
 
-#endif // !SQL_DB_CHINOOK_TABLE_TRACKS_HPP
+#endif // !SQL_DB_CHINOOK_TABLE_TRACKS_H

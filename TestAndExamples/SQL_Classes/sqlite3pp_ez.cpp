@@ -626,74 +626,74 @@ namespace sqlite3pp
 		}
 	}
 
-	static void CheckEnv(std::wstring &src, const std::string &VarName, const std::string VarNamePrefix, const std::string VarNamePostfix)
+	static void CheckEnv(std::wstring &src, const std::string &VarName, const std::string VarNamePrefix, const std::string VarNameSuffix)
 	{
 		char env_p[_MAX_PATH] = { 0 };
 		size_t Sz = 0;
 		if (!getenv_s(&Sz, env_p, sizeof(env_p), VarName.c_str()))
 		{
-			const std::wstring EncVarName = to_wstring(VarNamePrefix + VarName + VarNamePostfix);
+			const std::wstring EncVarName = to_wstring(VarNamePrefix + VarName + VarNameSuffix);
 			replace_all(src, EncVarName, to_tstring(env_p));
 		}
 	}
-	std::string GetUpdatedSrcPath(std::string &src, int EnvVarToFetch, const std::string VarNamePrefix, const std::string VarNamePostfix)
+	std::string GetUpdatedSrcPath(std::string &src, int EnvVarToFetch, const std::string VarNamePrefix, const std::string VarNameSuffix)
 	{
-		src = to_string(Get_UpdatedPathCopy(to_wstring(src), EnvVarToFetch, VarNamePrefix, VarNamePostfix));
+		src = to_string(Get_UpdatedPathCopy(to_wstring(src), EnvVarToFetch, VarNamePrefix, VarNameSuffix));
 		return src;
 	}
-	std::string Get_UpdatedPathCopy(std::string src, int EnvVarToFetch, const std::string VarNamePrefix, const std::string VarNamePostfix)
+	std::string Get_UpdatedPathCopy(std::string src, int EnvVarToFetch, const std::string VarNamePrefix, const std::string VarNameSuffix)
 	{
-		return to_string(Get_UpdatedPathCopy(to_wstring(src), EnvVarToFetch, VarNamePrefix, VarNamePostfix));
+		return to_string(Get_UpdatedPathCopy(to_wstring(src), EnvVarToFetch, VarNamePrefix, VarNameSuffix));
 	}
 
-	std::wstring GetUpdatedSrcPath(std::wstring &src, int EnvVarToFetch, const std::string VarNamePrefix, const std::string VarNamePostfix)
+	std::wstring GetUpdatedSrcPath(std::wstring &src, int EnvVarToFetch, const std::string VarNamePrefix, const std::string VarNameSuffix)
 	{ // EnvVarToFetch BIT Settings: 1=Get User Var, 2=Get System Paths, 4=Get Misc Var
 		if (EnvVarToFetch & 1)
 		{
 			// User level environmental variables
-			CheckEnv(src, "APPDATA", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "USERNAME", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "HOMEDRIVE", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "HOMEPATH", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "USERPROFILE", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "APPDATA", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "LOCALAPPDATA", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "TEMP", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "TMP", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "ONEDRIVE", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "USERDOMAIN", VarNamePrefix, VarNamePostfix);
+			CheckEnv(src, "APPDATA", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "USERNAME", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "HOMEDRIVE", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "HOMEPATH", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "USERPROFILE", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "APPDATA", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "LOCALAPPDATA", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "TEMP", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "TMP", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "ONEDRIVE", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "USERDOMAIN", VarNamePrefix, VarNameSuffix);
 		}
 
 		if (EnvVarToFetch & 2)
 		{
 			// System path level environmental variables
-			CheckEnv(src, "SYSTEMDRIVE", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "COMMONPROGRAMFILES", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "PROGRAMFILES", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "PROGRAMDATA", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "COMMONPROGRAMFILES(x86)", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "WINDIR", VarNamePrefix, VarNamePostfix);
+			CheckEnv(src, "SYSTEMDRIVE", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "COMMONPROGRAMFILES", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "PROGRAMFILES", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "PROGRAMDATA", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "COMMONPROGRAMFILES(x86)", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "WINDIR", VarNamePrefix, VarNameSuffix);
 		}
 
 		if (EnvVarToFetch & 4)
 		{
 			// Miscellaneous environmental variables
-			CheckEnv(src, "COMPUTERNAME", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "DATE", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "TIME", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "RANDOM", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "OS", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "CD", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "PUBLIC", VarNamePrefix, VarNamePostfix);
-			CheckEnv(src, "ALLUSERSPROFILE", VarNamePrefix, VarNamePostfix);
+			CheckEnv(src, "COMPUTERNAME", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "DATE", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "TIME", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "RANDOM", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "OS", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "CD", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "PUBLIC", VarNamePrefix, VarNameSuffix);
+			CheckEnv(src, "ALLUSERSPROFILE", VarNamePrefix, VarNameSuffix);
 		}
 
 		return src;
 	}
 
-	std::wstring Get_UpdatedPathCopy(std::wstring src, int EnvVarToFetch, const std::string VarNamePrefix, const std::string VarNamePostfix)
+	std::wstring Get_UpdatedPathCopy(std::wstring src, int EnvVarToFetch, const std::string VarNamePrefix, const std::string VarNameSuffix)
 	{
-		return GetUpdatedSrcPath(src, EnvVarToFetch, VarNamePrefix, VarNamePostfix);
+		return GetUpdatedSrcPath(src, EnvVarToFetch, VarNamePrefix, VarNameSuffix);
 	}
 
 
@@ -1177,19 +1177,8 @@ namespace sqlite3pp
 		bool AppendToVect, const std::vector<std::pair<std::string, std::string> >& columns)
 	{
 		V_COUT(DEBUG, "Entering with arguments: '" << TableName << "', ofstream, '" << ClassName << "', '" << HeaderUpper << "', '" << FirstColumnName << "', '" << LastColumnName << "', " << AppendToVect);
-		if (m_options.m.progLang & ProgLang::CPP_Lang && !CreateHeaderPrefix_CPP(TableName, myfile, ClassName, HeaderUpper, FirstColumnName, LastColumnName, AppendToVect, columns))
-			return false;
-		if (m_options.m.progLang & ProgLang::C_Lang && !CreateHeaderPrefix_C(TableName, myfile, ClassName, HeaderUpper, FirstColumnName, LastColumnName, AppendToVect, columns))
-			return false;
-		return true;
-	}
-
-	bool SQLiteClassBuilder::CreateHeaderPrefix_C(const std::string& TableName, std::ofstream& myfile,
-			std::string& ClassName, std::string& HeaderUpper, std::string FirstColumnName, std::string LastColumnName,
-			bool AppendToVect, const std::vector<std::pair<std::string, std::string> >& columns)
-	{
 		std::ios_base::openmode openMode = m_AppendTableToHeader ? std::ios_base::out | std::ios_base::app : std::ios_base::out;
-		ClassName = m_options.h.header_prefix + TableName + m_options.h.header_postfix;
+		ClassName = m_options.h.header_prefix + TableName + m_options.h.header_suffix;
 		const std::string HeaderFileName = ClassName + "." + m_options.h.file_type;
 		if (!DirExists(m_options.h.dest_folder))
 			if (_mkdir(m_options.h.dest_folder.c_str()) != 0)
@@ -1208,60 +1197,6 @@ namespace sqlite3pp
 			m_HeadersCreated.push_back(HeaderFileName);
 		char headerUpper[256] = { 0 };
 		strcpy_s(headerUpper, (ClassName + "_H").c_str());
-		_strupr_s(headerUpper);
-		HeaderUpper = headerUpper;
-		if (!m_options.m.exclude_comments && AppendToVect == true)
-		{
-			myfile << TopHeaderCommnetsPrt1 << std::endl;
-			if (FirstColumnName.empty())
-				FirstColumnName = "ColumnFoo";
-			if (LastColumnName.empty())
-				LastColumnName = "ColumnWiget";
-			myfile << "Example Usage:\t\t(Using sqlite3pp::Table container)" << std::endl;
-			myfile << "\t// Example\n\t\tsetGlobalDB(\"myDatabase.db\");" << std::endl;
-			myfile << "\t\tfor (int i = 0; i < my_tbl.size(); ++i)\n\t\t\tprintf(my_tbl[i]." << GetValidFuncName(FirstColumnName) << ");\n" << std::endl;
-			myfile << TopHeaderCommnetsPrt2 << std::endl;
-			
-		}
-		// Add includes needed to support specified m_options.str_type
-		myfile << "#ifndef " << GetValidFuncName(HeaderUpper) << std::endl;
-		myfile << "#define " << GetValidFuncName(HeaderUpper) << std::endl;
-		const std::string AdditionalInclude = "#include \"" + m_options.h.header_include + "\"";
-		if (m_options.s.str_include.size() && m_options.s.str_include != AdditionalInclude &&
-			(m_options.s.str_include != strOpt_sql_tstring.str_include || (m_options.h.header_include != HeadersCreatedSqlDir.header_include && m_options.h.header_include != HeadersCreatedBaseDir.header_include) ))
-			myfile << m_options.s.str_include << std::endl;
-
-		if (m_options.h.header_include.size())
-			myfile << AdditionalInclude << std::endl;
-
-		V_COUT(DETAIL, "Created prefix data for class '" << ClassName << "' in file '" << HeaderFileNameWithFolder << "' for table '" << TableName << "'");
-		return true;
-	}
-
-	bool SQLiteClassBuilder::CreateHeaderPrefix_CPP(const std::string& TableName, std::ofstream& myfile,
-			std::string& ClassName, std::string& HeaderUpper, std::string FirstColumnName, std::string LastColumnName,
-			bool AppendToVect, const std::vector<std::pair<std::string, std::string> >& columns)
-	{
-		std::ios_base::openmode openMode = m_AppendTableToHeader ? std::ios_base::out | std::ios_base::app : std::ios_base::out;
-		ClassName = m_options.h.header_prefix + TableName + m_options.h.header_postfix;
-		const std::string HeaderFileName = ClassName + "." + m_options.h.file_type;
-		if (!DirExists(m_options.h.dest_folder))
-			if (_mkdir(m_options.h.dest_folder.c_str()) != 0)
-			{
-				V_COUT(ERROR, "Failed to create folder '" << m_options.h.dest_folder << "'");
-				return false;
-			}
-		const std::string HeaderFileNameWithFolder = m_options.h.dest_folder + HeaderFileName;
-		myfile.open(HeaderFileNameWithFolder.c_str(), openMode);
-		if (!myfile.is_open())
-		{
-			V_COUT(ERROR, "Failed to open file '" << HeaderFileNameWithFolder << "'");
-			return false;
-		}
-		if (AppendToVect)
-			m_HeadersCreated.push_back(HeaderFileName);
-		char headerUpper[256] = { 0 };
-		strcpy_s(headerUpper, (ClassName + "_HPP").c_str());
 		_strupr_s(headerUpper);
 		HeaderUpper = headerUpper;
 		if (!m_options.m.exclude_comments && AppendToVect == true)
@@ -1347,7 +1282,7 @@ namespace sqlite3pp
 		m_options.h.header_prefix = OrgPrefix;
 		std::ofstream myfile;
 		std::string ClassName, HeaderUpper;
-		if (CreateHeaderPrefix("Master_Header", myfile, ClassName, HeaderUpper, "", "", false))
+		if (CreateHeaderPrefix("_Master_Header", myfile, ClassName, HeaderUpper, "", "", false))
 		{
 			for (auto& s : m_HeadersCreated)
 				myfile << "#include \"" << s << "\"" << std::endl;
@@ -1487,11 +1422,7 @@ namespace sqlite3pp
 		m_ClassNames.push_back(GetValidFuncName(ClassName));
 		////////////////////////////////////////////////////////////////////////////////////////////
 		// Create Table/View class
-		if (m_options.m.progLang & ProgLang::CPP_Lang)
-			myfile << "\nclass " << GetValidFuncName(ClassName) << ": public sqlite3pp::sql_base\n{" << std::endl;
-		else if (m_options.m.progLang & ProgLang::C_Lang)
-			myfile << "\ntypedef struct " << GetValidFuncName(ClassName) << " \n{" << std::endl;
-
+		myfile << "\nclass " << GetValidFuncName(ClassName) << ": public sqlite3pp::sql_base\n{" << std::endl;
 
 		if (!m_options.m.exclude_table_interface)
 		{
@@ -1499,15 +1430,13 @@ namespace sqlite3pp
 				myfile << "\t// A member variable for each field in the table" << std::endl;
 			// Define if data member variables are protected or public
 			const char* publicOrPrivate = m_options.m.is_public_var_members ? "public" : "protected";
-			if (m_options.m.progLang & ProgLang::CPP_Lang)
-				myfile << publicOrPrivate << ":" << std::endl;
+			myfile << publicOrPrivate << ":" << std::endl;
 			
 			// Define data member variables associated with the table/view
 			for (auto& c : columns)
 				myfile << "\t" << c.second << " " << GetValidFuncName(c.first) << InitializeValue(c.second) << ";" << std::endl;
 
-			if (m_options.m.progLang & ProgLang::CPP_Lang)
-				myfile << "\npublic:" << std::endl;
+			myfile << "\npublic:" << std::endl;
 			// Create a define type for strings
 			myfile << "\tusing StrType = " << m_options.s.str_type << ";" << std::endl;
 			//myfile << "\n\tusing Text = StrType;" << std::endl;
