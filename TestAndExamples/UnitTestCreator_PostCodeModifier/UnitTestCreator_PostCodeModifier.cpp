@@ -6,7 +6,7 @@
 #include <filesystem> 
 #include <string>
 #include <windows.h>
-#include "../SQL_Classes/sqlite3pp_ez.h"
+#include "../sqlite3pp_EZ/sqlite3pp_ez.h"
 #include "..\..\SqliteFuzzyPlusExtension\SqliteFuzzyPlusExtension.h"
 using namespace std;
 using namespace System;
@@ -290,8 +290,7 @@ int main(int argc, char* argv[])
     const std::string dbFileName = "..\\..\\SqliteFuzzyPlusExtension\\TestData\\TestData.db";
 	sqlite3pp::HeaderOpt headerOpt = sqlite3pp::SQLiteClassBuilder::HeadersCreatedSqlDir; // Get default header option
 	headerOpt.dest_folder = "..\\SQL_Classes\\"; // Change default destination folder
-    headerOpt.header_prefix = "sql_DB_TestData_";
-	headerOpt.header_include = "sqlite3pp_ez.h";
+    //headerOpt.header_prefix = "sql_DB_TestData_";
     sqlite3pp::MiscOptions miscOptions = sqlite3pp::SQLiteClassBuilder::MiscOpt_max; // Get default MiscOptions
     // miscOptions.initialize_str_member_var = true;
     if (CreateDbClassInterface(dbFileName, headerOpt, miscOptions) != 0)
@@ -301,21 +300,12 @@ int main(int argc, char* argv[])
     }
 
     headerOpt.dest_folder = "..\\SQL_Classes\\OtherDBs\\";
-    headerOpt.header_include = "..\\sqlite3pp_ez.h";
+    headerOpt.header_include = "..\\..\\sqlite3pp_ez\\sqlite3pp_ez.h";
 
-    headerOpt.header_prefix = "sql_DB_NorthWind_";
-    CreateDbClassInterface("..\\TestDatabase\\NorthWind_small.db", headerOpt, miscOptions);
-
-    headerOpt.header_prefix = "sql_DB_chinook_";
-    CreateDbClassInterface("..\\TestDatabase\\chinook3.5Krows.db", headerOpt, miscOptions);
-
-    headerOpt.header_prefix = "sql_DB_GameNames_";
-    CreateDbClassInterface("..\\TestDatabase\\GameNames53KRows.db", headerOpt, miscOptions);
-
-    headerOpt.header_prefix = "sql_DB_KenshoDataset_";
-    CreateDbClassInterface("..\\TestDatabase\\kensho_dataset(1millionRows).db", headerOpt, miscOptions);
-
-    headerOpt.header_prefix = "sql_DB_sakila_";
+    CreateDbClassInterface("..\\TestDatabase\\NorthWind.db", headerOpt, miscOptions);
+    CreateDbClassInterface("..\\TestDatabase\\chinook.db", headerOpt, miscOptions);
+    CreateDbClassInterface("..\\TestDatabase\\GameNames.db", headerOpt, miscOptions);
+    CreateDbClassInterface("..\\TestDatabase\\Kensho_Dataset.db", headerOpt, miscOptions);
     CreateDbClassInterface("..\\TestDatabase\\sakila.db", headerOpt, miscOptions);
 
 

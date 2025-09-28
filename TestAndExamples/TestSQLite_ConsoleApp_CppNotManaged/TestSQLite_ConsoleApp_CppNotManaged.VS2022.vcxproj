@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\SQL_Classes\shell.c">
+    <ClCompile Include="..\sqlite3pp_EZ\shell.c">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -29,7 +29,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="..\SQL_Classes\sqlite3.c">
+    <ClCompile Include="..\sqlite3pp_EZ\sqlite3.c">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -39,7 +39,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="..\SQL_Classes\sqlite3pp.cpp">
+    <ClCompile Include="..\sqlite3pp_EZ\sqlite3pp.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -49,7 +49,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="..\SQL_Classes\sqlite3pp_ez.cpp">
+    <ClCompile Include="..\sqlite3pp_EZ\sqlite3pp_ez.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -62,10 +62,10 @@
     <ClCompile Include="TestSQLite_ConsoleApp_CppNotManaged.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\SQL_Classes\sqlite3.h" />
-    <ClInclude Include="..\SQL_Classes\sqlite3pp.h" />
-    <ClInclude Include="..\SQL_Classes\sqlite3pp_ez.h" />
-    <ClInclude Include="..\SQL_Classes\SQLiteDLLConnect.h" />
+    <ClInclude Include="..\sqlite3pp_EZ\sqlite3.h" />
+    <ClInclude Include="..\sqlite3pp_EZ\sqlite3pp.h" />
+    <ClInclude Include="..\sqlite3pp_EZ\sqlite3pp_ez.h" />
+    <ClInclude Include="..\sqlite3pp_EZ\SQLiteDLLConnect.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

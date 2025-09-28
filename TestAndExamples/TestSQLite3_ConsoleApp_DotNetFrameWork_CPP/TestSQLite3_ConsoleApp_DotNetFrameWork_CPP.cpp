@@ -1,13 +1,13 @@
 using namespace System;
 #include <iostream>
-#include "../SQL_Classes/SQLiteDLLConnect.h"
-#include "../SQL_Classes/sqlite3pp_ez.h"
-#include "../SQL_Classes/sql_DB_TestData__Master_Header.hpp"
-#include "../SQL_Classes/OtherDBs/sql_DB_chinook__Master_Header.hpp"
-#include "../SQL_Classes/OtherDBs/sql_DB_GameNames__Master_Header.hpp"
-#include "../SQL_Classes/OtherDBs/sql_DB_KenshoDataset__Master_Header.hpp"
-#include "../SQL_Classes/OtherDBs/sql_DB_NorthWind__Master_Header.hpp"
-#include "../SQL_Classes/OtherDBs/sql_DB_sakila__Master_Header.hpp"
+#include "../sqlite3pp_EZ/SQLiteDLLConnect.h"
+#include "../sqlite3pp_EZ/sqlite3pp_ez.h"
+#include "../SQL_Classes/SQL_TestData_db__Master_Header.hpp"
+#include "../SQL_Classes/OtherDBs/SQL_chinook_db__Master_Header.hpp"
+#include "../SQL_Classes/OtherDBs/SQL_GameNames_db__Master_Header.hpp"
+#include "../SQL_Classes/OtherDBs/SQL_Kensho_Dataset_db__Master_Header.hpp"
+#include "../SQL_Classes/OtherDBs/SQL_NorthWind_db__Master_Header.hpp"
+#include "../SQL_Classes/OtherDBs/SQL_sakila_db__Master_Header.hpp"
 using namespace sqlite3pp;
 using namespace std;
 
@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
 
     // Test sqlite3pp_ez API's
     sqlite3pp::setGlobalDB(dbFileName);
-    sqlite3pp::Table<sql_DB_TestData_table_Help> tbl;
+    sqlite3pp::Table<SQL_TestData_db_table_Help> tbl;
     for (auto& row : tbl)											// (C++11) Range-based loop
         std::wcout << row.get_Function() << row.get_Description() << row.get_Arguments() << row.get_Return() << row.get_Details() << row.get_ExtensionAlias() << row.get_WikiAlias() << std::endl;
 
@@ -50,19 +50,19 @@ int main(int argc, char* argv[])
     for (int row = 0; row < tbl.size(); ++row)								// C style iteration
         std::wcout << tbl[row].get_Function() << tbl[row].get_Description() << tbl[row].get_Arguments() << tbl[row].get_Return() << tbl[row].get_Details() << tbl[row].get_ExtensionAlias() << tbl[row].get_WikiAlias() << std::endl;
 
-    sqlite3pp::Table<sql_DB_TestData_table_zTroubleFields> tbl2; // Table with problematic field and table names.
+    sqlite3pp::Table<SQL_TestData_db_table_zTroubleFields> tbl2; // Table with problematic field and table names.
     for (auto& row : tbl2)
         std::cout << row.get_Some__Names() << " | " << row.get_Zip__Code() << " | " << row.get_City__and__State() << " | " << row.get_Area__Code() << " | " << row.get_Bad__Type() << " | " << row.get_Is__US__Born() << " | " << row.get_Is__US__Citizen__() << " | " << row.get_Unsigned__Big__Integer__Support() << " | " << row.get_Unsigned__Big__Integer__Support2() << " | " << row.get_Big__Integer__Support() << " | " << row.get_Big__Integer__Support__2() << " | " << row.get_Big__Integer__Support__3() << " | " << std::endl;
 
-    sqlite3pp::Table<sql_DB_TestData_table_zz__Trouble__Fields> tbl3; // Table with problematic field and table names.
+    sqlite3pp::Table<SQL_TestData_db_table_zz__Trouble__Fields> tbl3; // Table with problematic field and table names.
     for (auto& row : tbl3)
         std::cout << row.get_Some__Names() << " | " << row.get_Zip__Code() << " | " << row.get_City__and__State() << " | " << row.get_Area__Code() << " | " << row.get_Bad__Type() << " | " << row.get_Is__US__Born() << " | " << row.get_Is__US__Citizen__() << " | " << row.get_Unsigned__Big__Integer__Support() << " | " << row.get_Unsigned__Big__Integer__Support2() << " | " << row.get_Big__Integer__Support() << " | " << row.get_Big__Integer__Support__2() << " | " << row.get_Big__Integer__Support__3() << " | " << std::endl;
 
-    dbFileName = "..\\TestDatabase\\chinook3.5Krows.db";
+    dbFileName = "..\\TestDatabase\\chinook.db";
     if (sqlite3pp::file_exists(dbFileName))
     {
         sqlite3pp::setGlobalDB(dbFileName, true);
-        sqlite3pp::Table<sql_DB_chinook_table_tracks> tbl;
+        sqlite3pp::Table<SQL_chinook_db_table_tracks> tbl;
         for (auto row = tbl.begin(); row != tbl.end(); ++row)
             std::cout << row->get_TrackId() << " | " << row->get_Name() << " | " << row->get_AlbumId() << " | " << row->get_MediaTypeId() << " | " << row->get_GenreId() << " | " << row->get_Composer() << " | " << row->get_Milliseconds() << " | " << row->get_Bytes() << " | " << row->get_UnitPrice() << " | " << std::endl;
   
@@ -73,29 +73,29 @@ int main(int argc, char* argv[])
             std::cout << row.get_TrackId() << " | " << row.get_Name() << " | " << row.get_AlbumId() << " | " << row.get_MediaTypeId() << " | " << row.get_GenreId() << " | " << row.get_Composer() << " | " << row.get_Milliseconds() << " | " << row.get_Bytes() << " | " << row.get_UnitPrice() << " | " << std::endl;
     }
 
-    dbFileName = "..\\TestDatabase\\NorthWind_small.db";
+    dbFileName = "..\\TestDatabase\\NorthWind.db";
     if (sqlite3pp::file_exists(dbFileName))
     {
         sqlite3pp::setGlobalDB(dbFileName, true);
-        sqlite3pp::Table<sql_DB_NorthWind_table_Customer> tbl;
+        sqlite3pp::Table<SQL_NorthWind_db_table_Customer> tbl;
         for (auto& row : tbl)  // Note: Varchar type needs cout instead of wcout
             std::cout << row.get_Id() << " | " << row.get_CompanyName() << " | " << row.get_ContactName() << " | " << row.get_ContactTitle() << " | " << row.get_Address() << " | " << row.get_City() << " | " << row.get_Region() << " | " << row.get_PostalCode() << " | " << row.get_Country() << " | " << row.get_Phone() << " | " << row.get_Fax() << " | " << std::endl;
     }
 
-    dbFileName = "..\\TestDatabase\\kensho_dataset(1millionRows).db";
+    dbFileName = "..\\TestDatabase\\Kensho_Dataset.db";
     if (sqlite3pp::file_exists(dbFileName))
     {
         sqlite3pp::setGlobalDB(dbFileName, true);
-        sqlite3pp::Table<sql_DB_KenshoDataset_table_Items> tbl;
+        sqlite3pp::Table<SQL_Kensho_Dataset_db_table_Items> tbl;
         for (auto& row : tbl)
             std::wcout << row.get_Labels() << L" | " << row.get_Description() << L" | " << row.get_HashDescription() << L" | " << std::endl;
     }
 
-    dbFileName = "..\\TestDatabase\\GameNames53KRows.db";
+    dbFileName = "..\\TestDatabase\\GameNames.db";
     if (sqlite3pp::file_exists(dbFileName))
     {
         sqlite3pp::setGlobalDB(dbFileName, true);
-        sqlite3pp::Table<sql_DB_GameNames_table_AlternateNames> tbl;
+        sqlite3pp::Table<SQL_GameNames_db_table_AlternateNames> tbl;
         for (auto& row : tbl)
             std::wcout << row.get_Name() << L" | " << row.get_Alternate() << L" | " << row.get_Title() << L" | " << row.get_HashName() << L" | " << row.get_HashAlternate() << L" | " << row.get_HashTitle() << L" | " << std::endl;
     }
@@ -104,39 +104,39 @@ int main(int argc, char* argv[])
     if (sqlite3pp::file_exists(dbFileName))
     {
         sqlite3pp::setGlobalDB(dbFileName, true);
-        sqlite3pp::Table<sql_DB_sakila_table_actor> tbl;
+        sqlite3pp::Table<SQL_sakila_db_table_actor> tbl;
         for (auto& row : tbl)
             std::cout << row.get_actor_id() << " | " << row.get_first_name() << " | " << row.get_last_name() << " | " << row.get_last_update() << " | " << std::endl;
 
-        sqlite3pp::Table<sql_DB_sakila_table_film> tbl2;
+        sqlite3pp::Table<SQL_sakila_db_table_film> tbl2;
         for (auto& row : tbl2)
             std::cout << row.get_film_id() << " | " << row.get_title() << " | " << row.get_description() << " | " << row.get_release_year() << " | " << row.get_language_id() << " | " << row.get_original_language_id() << " | " << row.get_rental_duration() << " | " << row.get_rental_rate() << " | " << row.get_length() << " | " << row.get_replacement_cost() << " | " << row.get_rating() << " | " << row.get_special_features() << " | " << row.get_last_update() << " | " << std::endl;
 
-        sqlite3pp::Table<sql_DB_sakila_table_customer> tbl3;
+        sqlite3pp::Table<SQL_sakila_db_table_customer> tbl3;
         for (auto& row : tbl3)
             std::cout << row.get_customer_id() << " | " << row.get_store_id() << " | " << row.get_first_name() << " | " << row.get_last_name() << " | " << row.get_email() << " | " << row.get_address_id() << " | " << row.get_active() << " | " << row.get_create_date() << " | " << row.get_last_update() << " | " << std::endl;
 
-        sqlite3pp::Table<sql_DB_sakila_table_language> tbl4;
+        sqlite3pp::Table<SQL_sakila_db_table_language> tbl4;
         for (auto& row : tbl4)
             std::cout << row.get_language_id() << " | " << row.get_name() << " | " << row.get_last_update() << " | " << std::endl;
 
-        sqlite3pp::Table<sql_DB_sakila_table_payment> tbl5;
+        sqlite3pp::Table<SQL_sakila_db_table_payment> tbl5;
         for (auto& row : tbl5)
             std::cout << row.get_payment_id() << " | " << row.get_customer_id() << " | " << row.get_staff_id() << " | " << row.get_rental_id() << " | " << row.get_amount() << " | " << row.get_payment_date() << " | " << row.get_last_update() << " | " << std::endl;
 
-        sqlite3pp::Table<sql_DB_sakila_view_staff_list> tbl6;
+        sqlite3pp::Table<SQL_sakila_db_view_staff_list> tbl6;
         for (auto& row : tbl6)
             std::cout << row.get_ID() << " | " << row.get_name() << " | " << row.get_address() << " | " << row.get_zip_code() << " | " << row.get_phone() << " | " << row.get_city() << " | " << row.get_country() << " | " << row.get_SID() << " | " << std::endl;
 
-        sqlite3pp::Table<sql_DB_sakila_table_address> tbl7;
+        sqlite3pp::Table<SQL_sakila_db_table_address> tbl7;
         for (auto& row : tbl7)
             std::cout << row.get_address_id() << " | " << row.get_address() << " | " << row.get_address2() << " | " << row.get_district() << " | " << row.get_city_id() << " | " << row.get_postal_code() << " | " << row.get_phone() << " | " << row.get_last_update() << " | " << std::endl;
 
-        sqlite3pp::Table<sql_DB_sakila_view_customer_list> tbl8;
+        sqlite3pp::Table<SQL_sakila_db_view_customer_list> tbl8;
         for (auto& row : tbl8)
             std::cout << row.get_ID() << " | " << row.get_name() << " | " << row.get_address() << " | " << row.get_zip_code() << " | " << row.get_phone() << " | " << row.get_city() << " | " << row.get_country() << " | " << row.get_notes() << " | " << row.get_SID() << " | " << std::endl;
 
-        sqlite3pp::Table<sql_DB_sakila_view_sales_by_film_category> tbl9;
+        sqlite3pp::Table<SQL_sakila_db_view_sales_by_film_category> tbl9;
         for (auto& row : tbl9)
             std::cout << row.get_category() << " | " << row.get_total_sales() << " | " << std::endl;
     }

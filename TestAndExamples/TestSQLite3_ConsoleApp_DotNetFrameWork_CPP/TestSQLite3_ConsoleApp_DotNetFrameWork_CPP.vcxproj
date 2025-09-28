@@ -171,14 +171,14 @@
     <ResourceCompile Include="app.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\SQL_Classes\sqlite3.h" />
-    <ClInclude Include="..\SQL_Classes\sqlite3pp.h" />
-    <ClInclude Include="..\SQL_Classes\sqlite3pp_ez.h" />
-    <ClInclude Include="..\SQL_Classes\SQLiteDLLConnect.h" />
+    <ClInclude Include="..\sqlite3pp_EZ\sqlite3.h" />
+    <ClInclude Include="..\sqlite3pp_EZ\sqlite3pp.h" />
+    <ClInclude Include="..\sqlite3pp_EZ\sqlite3pp_ez.h" />
+    <ClInclude Include="..\sqlite3pp_EZ\SQLiteDLLConnect.h" />
     <ClInclude Include="Resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\SQL_Classes\sqlite3pp.cpp">
+    <ClCompile Include="..\sqlite3pp_EZ\sqlite3pp.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeaderFile>
@@ -192,7 +192,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="..\SQL_Classes\sqlite3pp_ez.cpp">
+    <ClCompile Include="..\sqlite3pp_EZ\sqlite3pp_ez.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeaderFile>
@@ -206,7 +206,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="..\SQL_Classes\SQLiteDLLConnect.cpp">
+    <ClCompile Include="..\sqlite3pp_EZ\SQLiteDLLConnect.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeaderFile>
@@ -235,7 +235,7 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\SQL_Classes\sqlite3.lib" />
+    <Library Include="..\sqlite3pp_EZ\sqlite3.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

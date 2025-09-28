@@ -18,30 +18,30 @@
     <ClCompile Include="TestSQLite_ConsoleApp_CppNotManaged.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\SQL_Classes\shell.c">
+    <ClCompile Include="..\sqlite3pp_EZ\shell.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\SQL_Classes\sqlite3.c">
+    <ClCompile Include="..\sqlite3pp_EZ\sqlite3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\SQL_Classes\sqlite3pp.cpp">
+    <ClCompile Include="..\sqlite3pp_EZ\sqlite3pp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\SQL_Classes\sqlite3pp_ez.cpp">
+    <ClCompile Include="..\sqlite3pp_EZ\sqlite3pp_ez.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\SQL_Classes\sqlite3.h">
+    <ClInclude Include="..\sqlite3pp_EZ\sqlite3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\SQL_Classes\sqlite3pp.h">
+    <ClInclude Include="..\sqlite3pp_EZ\sqlite3pp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\SQL_Classes\sqlite3pp_ez.h">
+    <ClInclude Include="..\sqlite3pp_EZ\sqlite3pp_ez.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\SQL_Classes\SQLiteDLLConnect.h">
+    <ClInclude Include="..\sqlite3pp_EZ\SQLiteDLLConnect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
