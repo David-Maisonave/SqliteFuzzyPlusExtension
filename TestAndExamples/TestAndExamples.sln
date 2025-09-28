@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11018.127 d18.0
+VisualStudioVersion = 18.0.11018.127
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestFuzzy_ConsoleApp_DotNetFrameworkCpp", "TestFuzzy_ConsoleApp_DotNetFrameworkCpp\TestFuzzy_ConsoleApp_DotNetFrameworkCpp.vcxproj", "{E27EDAB2-C3CC-23CF-A1D7-25F674E59D76}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -176,6 +176,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestSQLite_ConsoleApp_CppNo
 		{B1DE0268-D7E9-4868-BF3C-6298E5905597} = {B1DE0268-D7E9-4868-BF3C-6298E5905597}
 		{E50AF77F-B0A9-37C2-BEE9-E0203EB9712C} = {E50AF77F-B0A9-37C2-BEE9-E0203EB9712C}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SQLiteClassBuilder", "..\..\SQLiteClassBuilder\SQLiteClassBuilder.vcxproj", "{FE3A9A4C-5357-4D2A-BE8E-E61EDDDC3533}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -511,6 +513,18 @@ Global
 		{3C716187-45DF-47C6-BC19-16DA432306B0}.Release|x64.Build.0 = Release|x64
 		{3C716187-45DF-47C6-BC19-16DA432306B0}.Release|x86.ActiveCfg = Release|Win32
 		{3C716187-45DF-47C6-BC19-16DA432306B0}.Release|x86.Build.0 = Release|Win32
+		{FE3A9A4C-5357-4D2A-BE8E-E61EDDDC3533}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{FE3A9A4C-5357-4D2A-BE8E-E61EDDDC3533}.Debug|Any CPU.Build.0 = Debug|x64
+		{FE3A9A4C-5357-4D2A-BE8E-E61EDDDC3533}.Debug|x64.ActiveCfg = Debug|x64
+		{FE3A9A4C-5357-4D2A-BE8E-E61EDDDC3533}.Debug|x64.Build.0 = Debug|x64
+		{FE3A9A4C-5357-4D2A-BE8E-E61EDDDC3533}.Debug|x86.ActiveCfg = Debug|Win32
+		{FE3A9A4C-5357-4D2A-BE8E-E61EDDDC3533}.Debug|x86.Build.0 = Debug|Win32
+		{FE3A9A4C-5357-4D2A-BE8E-E61EDDDC3533}.Release|Any CPU.ActiveCfg = Release|x64
+		{FE3A9A4C-5357-4D2A-BE8E-E61EDDDC3533}.Release|Any CPU.Build.0 = Release|x64
+		{FE3A9A4C-5357-4D2A-BE8E-E61EDDDC3533}.Release|x64.ActiveCfg = Release|x64
+		{FE3A9A4C-5357-4D2A-BE8E-E61EDDDC3533}.Release|x64.Build.0 = Release|x64
+		{FE3A9A4C-5357-4D2A-BE8E-E61EDDDC3533}.Release|x86.ActiveCfg = Release|Win32
+		{FE3A9A4C-5357-4D2A-BE8E-E61EDDDC3533}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
